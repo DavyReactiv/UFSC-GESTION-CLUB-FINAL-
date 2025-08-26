@@ -27,7 +27,8 @@ if (!defined('ABSPATH')) {
 define('UFSC_GESTION_CLUB_VERSION', '1.3.0');
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
-
+// Global helper functions (including ufsc_verify_club_access)
+require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
 add_action('plugins_loaded', 'ufsc_run_migrations');
@@ -62,9 +63,6 @@ if (!defined('UFSC_LICENCE_MODE')) {
 /**
  * Include required files
  */
-// Helper functions - must be loaded first
-require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
-
 // Helper classes
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
