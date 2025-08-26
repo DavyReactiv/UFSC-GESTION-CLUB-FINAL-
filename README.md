@@ -49,6 +49,7 @@ Plugin WordPress complet et professionnel permettant aux clubs UFSC (Union Fran�
    - Les tables de base de données sont créées automatiquement
    - Configurez les pages dans `UFSC > Réglages`
    - Définissez les permissions utilisateurs
+   - Un message est enregistré dans les logs PHP si le fichier `includes/frontend/frontend-club-dashboard.php` est manquant, afin de faciliter le diagnostic d'une installation incomplète
 
 ## ⚙️ Configuration
 
