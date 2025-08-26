@@ -512,11 +512,14 @@ class UFSC_Club_Manager
      */
     public function get_licences_by_club($club_id)
     {
+        if (empty($club_id)) {
+            return [];
+        }
         // Use License Manager for proper license operations
         if (!class_exists('UFSC_Licence_Manager')) {
             require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
         }
-        
+
         $licence_manager = new UFSC_Licence_Manager();
         return $licence_manager->get_licences(['club_id' => $club_id]);
     }

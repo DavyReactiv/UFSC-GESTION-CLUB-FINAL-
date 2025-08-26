@@ -289,6 +289,11 @@ function ufsc_get_safe_page_url($page_type, $fallback_text = 'Page non configur√
     }
     
     $page_id = get_option($option_map[$page_type], 0);
+
+    // Fallback: if club_form is not configured, use affiliation page
+    if ($page_type === 'club_form' && (int) $page_id === 0) {
+        $page_id = get_option('ufsc_affiliation_page_id', 0);
+    }
     
     if ($page_id && get_post_status($page_id) === 'publish') {
         return [

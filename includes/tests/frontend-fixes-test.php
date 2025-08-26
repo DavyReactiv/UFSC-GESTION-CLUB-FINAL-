@@ -152,6 +152,7 @@ function ufsc_test_frontend_fixes()
             $errors[] = $error;
         }
 
+
         // Test 7: Ensure guests see login prompt on club dashboard
         echo "<h3>Test 7: Message de connexion pour le dashboard</h3>";
 
@@ -215,6 +216,46 @@ function ufsc_test_frontend_fixes()
             $error = "❌ Le message de connexion pour les invités n'est pas affiché.";
             echo "<p>$error</p>";
             $errors[] = $error;
+
+        // Test 7: Fallback vers la page d'affiliation pour la création de club
+        echo "<h3>Test 7: Fallback de la page club vers l'affiliation</h3>";
+
+        if (function_exists('ufsc_get_safe_page_url')) {
+            global $mock_options;
+            $mock_options = [
+                'ufsc_club_form_page_id' => 0,
+                'ufsc_affiliation_page_id' => 123,
+            ];
+
+            if (!function_exists('get_option')) {
+                function get_option($name, $default = false) {
+                    global $mock_options;
+                    return $mock_options[$name] ?? $default;
+                }
+            }
+
+            if (!function_exists('get_post_status')) {
+                function get_post_status($id) {
+                    return $id ? 'publish' : false;
+                }
+            }
+
+            if (!function_exists('get_permalink')) {
+                function get_permalink($id) {
+                    return 'page-' . $id;
+                }
+            }
+
+            $fallback_result = ufsc_get_safe_page_url('club_form');
+            if ($fallback_result['available'] && $fallback_result['url'] === 'page-123') {
+                echo "<p>✅ La fonction retourne la page d'affiliation lorsque la page de formulaire de club n'est pas configurée.</p>";
+                $tests_passed++;
+            } else {
+                $error = "❌ La fonction n'a pas utilisé la page d'affiliation en fallback.";
+                echo "<p>$error</p>";
+                $errors[] = $error;
+            }
+
         }
 
     } catch (Exception $e) {
