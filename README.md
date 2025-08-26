@@ -62,6 +62,7 @@ Le plugin utilise des pages WordPress dédiées pour l'interface frontend. Ces p
 |------|-----------|-----|-------------|
 | **Tableau de Bord Club** | `[ufsc_club_dashboard]` | `/tableau-de-bord-club/` | Espace privé des clubs affiliés |
 | **Affiliation Club** | `[ufsc_affiliation_form]` | `/affiliation-club/` | Formulaire d'affiliation |
+| **Formulaire de Club** | `[ufsc_formulaire_club]` | `/formulaire-club/` | Création ou modification du club |
 | **Compte Club** | `[ufsc_club_account]` | `/compte-club/` | Gestion du compte club |
 | **Gestion des Licences** | `[ufsc_club_licences]` | `/gestion-licences/` | Gestion des licences du club |
 | **Ajouter un Licencié** | `[ufsc_ajouter_licencie]` | `/ajouter-licencie/` | Ajout de licenciés |
@@ -73,6 +74,15 @@ Le plugin utilise des pages WordPress dédiées pour l'interface frontend. Ces p
 
 Les pages sont créées automatiquement avec des permaliens optimisés. Vous pouvez les personnaliser dans `Pages > Toutes les pages`.
 
+
+### Formulaire de club
+
+L'option `ufsc_club_form_page_id` permet de définir la page WordPress qui héberge le formulaire de création ou d'édition de club. Cette page doit contenir le shortcode `[ufsc_formulaire_club]`.
+
+Configurez cette page dans l'interface d'administration : `UFSC > Réglages > Configuration des pages`.
+
+![Réglage Page Formulaire de club](assets/docs/club-form-page-setting.svg)
+=======
 > ℹ️ Si aucune page "Formulaire Club" n'est configurée, le bouton "Créer un club" du tableau de bord redirige automatiquement vers la page d'affiliation.
 
 ### Shortcodes disponibles

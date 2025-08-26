@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400">
+  <rect width="800" height="400" fill="#fff"/>
+  <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-size="24" font-family="Arial" fill="#000">UFSC &gt; Réglages</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-family="Arial" fill="#000">Page Formulaire de club</text>
+</svg>

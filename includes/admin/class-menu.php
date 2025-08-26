@@ -2262,6 +2262,10 @@ class UFSC_Menu
             'sanitize_callback' => 'absint',
             'default' => 0
         ));
+        register_setting('ufsc_settings', 'ufsc_club_form_page_id', array(
+            'sanitize_callback' => 'absint',
+            'default' => 0
+        ));
         register_setting('ufsc_settings', 'ufsc_licence_page_id', array(
             'sanitize_callback' => 'absint',
             'default' => 0
@@ -2336,6 +2340,15 @@ class UFSC_Menu
             'affiliation_page',
             __('Page Affiliation', 'plugin-ufsc-gestion-club-13072025'),
             array($this, 'affiliation_page_callback'),
+            'ufsc-settings',
+            'ufsc_page_config_section'
+        );
+
+        // Club form page setting
+        add_settings_field(
+            'club_form_page',
+            __('Page Formulaire de club', 'plugin-ufsc-gestion-club-13072025'),
+            array($this, 'club_form_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
         );
@@ -4122,6 +4135,26 @@ class UFSC_Menu
             <?php endforeach; ?>
         </select>
         <p class="description"><?php esc_html_e('Page contenant le formulaire d\'affiliation des clubs.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <?php
+    }
+
+    /**
+     * Club form page field callback
+     */
+    public function club_form_page_callback()
+    {
+        $page_id = get_option('ufsc_club_form_page_id', 0);
+        $pages = $this->get_pages_for_dropdown();
+        ?>
+        <select id="ufsc_club_form_page_id" name="ufsc_club_form_page_id">
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <?php foreach ($pages as $page): ?>
+                <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
+                    <?php echo esc_html($page->post_title); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <p class="description"><?php esc_html_e('Page contenant le formulaire de création ou d\'édition de club.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
         <?php
     }
 

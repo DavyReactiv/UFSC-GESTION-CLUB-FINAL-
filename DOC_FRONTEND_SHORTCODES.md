@@ -102,7 +102,17 @@ Formulaires et boutons de téléchargement d'attestations.
 ### [ufsc_liste_clubs]
 Liste publique des clubs affiliés.
 
-### [ufsc_affiliation_club_form] / [ufsc_formulaire_club]
+### [ufsc_formulaire_club]
+Affiche le formulaire de création ou d'édition de club. La page qui contient ce shortcode doit être définie via l'option `ufsc_club_form_page_id` dans `UFSC > Réglages`.
+
+**Exemple :**
+```
+[ufsc_formulaire_club]
+```
+
+![Réglage Page Formulaire de club](assets/docs/club-form-page-setting.svg)
+
+### [ufsc_affiliation_club_form]
 Formulaire d'affiliation club (version standalone).
 
 ## Fonctionnalités Techniques
@@ -137,6 +147,7 @@ Formulaire d'affiliation club (version standalone).
 - `ufsc_licence_product_id` : ID du produit WooCommerce pour les licences (défaut: 2934)
 - `ufsc_affiliation_product_id` : ID du produit WooCommerce pour les affiliations (défaut: 2933)
 - `ufsc_manual_validation` : Active la validation manuelle des licences (défaut: false)
+- `ufsc_club_form_page_id` : ID de la page contenant le shortcode `[ufsc_formulaire_club]`
 
 ### Pages Requises
 Pour un fonctionnement optimal, configurez ces pages dans les réglages UFSC :
