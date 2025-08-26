@@ -221,7 +221,7 @@ function ufsc_club_render_home($club)
     $output .= '</div>';
 
     // Get license statistics
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $licences = $club_manager->get_licences_by_club($club->id);
     $stats = ufsc_calculate_licence_stats($licences, $club);
 
@@ -306,7 +306,7 @@ function ufsc_handle_contact_update($club)
     }
 
     // Update the field
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $success = $club_manager->update_club_field($club_id, $field_name, $new_value);
 
     if ($success) {

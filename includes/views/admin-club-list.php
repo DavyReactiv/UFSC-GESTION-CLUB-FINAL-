@@ -24,7 +24,7 @@ if (isset($_POST['export_selected']) && isset($_POST['selected_clubs']) && is_ar
         ));
         
         if (!empty($clubs)) {
-            UFSC_CSV_Export::export_clubs($clubs, 'clubs_ufsc_selection_' . gmdate('Y-m-d') . '.csv');
+            \UFSC\Helpers\CSVExport::export_clubs($clubs, 'clubs_ufsc_selection_' . gmdate('Y-m-d') . '.csv');
         }
     }
 }
@@ -186,7 +186,7 @@ $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslas
                 <tbody>
                     <?php 
                     // Initialize document manager to check document status
-                    $doc_manager = UFSC_Document_Manager::get_instance();
+                    $doc_manager = \UFSC\Admin\DocumentManager::get_instance();
                     
                     foreach ($clubs as $club): 
                         // Check document status

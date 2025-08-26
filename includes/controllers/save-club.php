@@ -148,7 +148,7 @@ function ufsc_handle_club_submission()
     // 🎫 Création automatique des 3 licences incluses (si nouvelle insertion)
     if (!$is_edit) {
         require_once plugin_dir_path(__FILE__) . '/../clubs/class-club-manager.php';
-        $manager = UFSC_Club_Manager::get_instance();
+        $manager = \UFSC\Clubs\ClubManager::get_instance();
 
         $licences_table = $wpdb->prefix . 'ufsc_licences';
         $now = current_time('mysql');

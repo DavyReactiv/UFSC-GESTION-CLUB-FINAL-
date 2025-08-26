@@ -69,10 +69,10 @@ function ufsc_process_club_logo_upload()
     }
 
     $club = $access_check['club'];
-    if (!class_exists('UFSC_Club_Manager')) {
+    if (!class_exists('\UFSC\Clubs\ClubManager')) {
         wp_die('Service indisponible', 'Erreur', ['response' => 500]);
     }
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
     // Fichier présent ?
     if (empty($_FILES['club_logo']['name'])) {

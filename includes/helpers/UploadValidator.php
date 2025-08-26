@@ -1,12 +1,6 @@
 <?php
 
-/**
- * UFSC Upload Validator
- *
- * Centralized file upload validation for club documents
- *
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Helpers;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -91,7 +85,7 @@ function ufsc_validate_club_document_upload($file, $club_id, $doc_type) {
  * 
  * Static class for centralized upload validation
  */
-class UFSC_Upload_Validator {
+class UploadValidator {
     
     /**
      * Validate club document upload

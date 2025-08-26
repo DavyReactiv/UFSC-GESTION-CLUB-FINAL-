@@ -1,12 +1,9 @@
 <?php
 
-/**
- * Document Manager Class
- *
- * Handles secure document access and management for UFSC clubs
- *
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Admin;
+
+use UFSC\Clubs\ClubManager;
+use UFSC\Helpers\UploadValidator;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -16,7 +13,7 @@ if (!defined('ABSPATH')) {
 /**
  * Document Manager Class
  */
-class UFSC_Document_Manager
+class DocumentManager
 {
     /**
      * Singleton instance
@@ -26,7 +23,7 @@ class UFSC_Document_Manager
     /**
      * Get singleton instance
      *
-     * @return UFSC_Document_Manager
+     * @return \UFSC\Admin\DocumentManager
      */
     public static function get_instance()
     {
@@ -130,7 +127,7 @@ class UFSC_Document_Manager
      */
     private function get_document_url($club_id, $doc_type)
     {
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
 
         if (!$club) {
@@ -230,7 +227,7 @@ class UFSC_Document_Manager
      */
     public function get_missing_documents($club_id)
     {
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
 
         if (!$club) {
@@ -293,7 +290,7 @@ class UFSC_Document_Manager
 
         // Update club status to 'Actif' (standardized status)
         // CORRECTION: Changed from 'valide' to 'Actif' to standardize club status throughout the plugin
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $result = $club_manager->update_club($club_id, [
             'statut' => 'Actif',
             'date_affiliation' => current_time('mysql')

@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
 define('UFSC_GESTION_CLUB_VERSION', '1.3.0');
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
-
+require __DIR__ . '/vendor/autoload.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
 add_action('plugins_loaded', 'ufsc_run_migrations');
@@ -66,25 +66,16 @@ if (!defined('UFSC_LICENCE_MODE')) {
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 // Helper classes
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
+// Classes are autoloaded via Composer
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/attestations-helper.php';
 
 // Compatibility shims
 require_once UFSC_PLUGIN_PATH . 'includes/compat/monetico-compat.php';
 require_once UFSC_PLUGIN_PATH . 'includes/compat/wc-id-reconciliation.php';
 
-// Core files
-require_once UFSC_PLUGIN_PATH . 'includes/core/class-gestionclub-core.php';
-require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
+// Core files handled by autoloader
 
-// Admin files
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-dashboard.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-frontend-pro-settings.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-admin-settings.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-sync-monitor.php';
+// Admin files handled by autoloader
 
 // Include test file for development
 if (WP_DEBUG) {
@@ -183,8 +174,8 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
     }
 
     if (is_admin()) {
-        new UFSC_Menu();
-        UFSC_Document_Manager::get_instance();
+        new \UFSC\Admin\Menu();
+        \UFSC\Admin\DocumentManager::get_instance();
     }
 
     /**
@@ -202,7 +193,7 @@ add_action('init', 'ufsc_gestion_club_load_textdomain');
 /**
  * Initialize the plugin core after WordPress loads
  */
-add_action('plugins_loaded', ['UFSC_GestionClub_Core', 'init']);
+add_action('plugins_loaded', ['UFSC\Core\GestionClubCore', 'init']);
 
 /**
  * Enqueue admin scripts and styles
@@ -319,7 +310,7 @@ function ufsc_handle_delete_club() {
         return;
     }
     
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     
     if ($club_manager->delete_club($club_id)) {
         wp_send_json_success(__('Club deleted successfully.', 'plugin-ufsc-gestion-club-13072025'));
@@ -331,7 +322,7 @@ function ufsc_handle_delete_club() {
 // Club validation AJAX handler - connects to Document Manager's validate_club() method
 // This hook validates clubs by checking required documents and updating status to 'valide'
 // Handles permissions, nonce verification, document validation, and status updates
-add_action('wp_ajax_ufsc_validate_club', array(UFSC_Document_Manager::get_instance(), 'validate_club'));
+add_action('wp_ajax_ufsc_validate_club', array(\UFSC\Admin\DocumentManager::get_instance(), 'validate_club'));
 
 // Delete license AJAX handler
 add_action('wp_ajax_ufsc_delete_licence', 'ufsc_handle_delete_licence');
@@ -595,7 +586,7 @@ function ufsc_handle_save_club_ajax() {
         return;
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $is_edit = isset($_POST['club_id']) && intval($_POST['club_id']) > 0;
     $club_id = $is_edit ? intval($_POST['club_id']) : 0;
 
@@ -680,7 +671,7 @@ function ufsc_handle_get_club_data() {
         return;
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club_data = $club_manager->get_club($club_id);
 
     if ($club_data) {
@@ -708,7 +699,7 @@ function ufsc_handle_get_clubs_list() {
         return;
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $clubs = $club_manager->get_clubs();
 
     wp_send_json_success([
@@ -775,7 +766,7 @@ function ufsc_gestion_club_enqueue_scripts()
     ufsc_enqueue_form_enhancements();
 
     // Enqueue professional frontend enhancements if enabled
-    if (UFSC_ENABLE_FRONTEND_PRO && class_exists('UFSC_Frontend_Pro_Settings') && UFSC_Frontend_Pro_Settings::is_enabled()) {
+    if (UFSC_ENABLE_FRONTEND_PRO && class_exists('\UFSC\Admin\FrontendProSettings') && \UFSC\Admin\FrontendProSettings::is_enabled()) {
         ufsc_enqueue_frontend_pro_assets();
     }
 }
@@ -1099,8 +1090,8 @@ if (!function_exists('ufsc_render_club_info_section') && function_exists('ufsc_c
 function ufsc_gestion_club_activate()
 {
     // Create database tables
-    if (class_exists('UFSC_Club_Manager')) {
-        $manager = UFSC_Club_Manager::get_instance();
+    if (class_exists('\UFSC\Clubs\ClubManager')) {
+        $manager = \UFSC\Clubs\ClubManager::get_instance();
         $manager->create_table();
     }
 
@@ -1161,10 +1152,10 @@ function ufsc_show_debug_info()
 
     $files_to_check = [
         'Fichier principal' => UFSC_PLUGIN_PATH . 'Plugin_UFSC_GESTION_CLUB_13072025.php',
-        'Core' => UFSC_PLUGIN_PATH . 'includes/core/class-gestionclub-core.php',
-        'Club Manager' => UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php',
-        'Dashboard' => UFSC_PLUGIN_PATH . 'includes/admin/class-dashboard.php',
-        'Menu' => UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php',
+        'Core' => UFSC_PLUGIN_PATH . 'includes/core/GestionClubCore.php',
+        'Club Manager' => UFSC_PLUGIN_PATH . 'includes/clubs/ClubManager.php',
+        'Dashboard' => UFSC_PLUGIN_PATH . 'includes/admin/Dashboard.php',
+        'Menu' => UFSC_PLUGIN_PATH . 'includes/admin/Menu.php',
         'Frontend Dashboard' => UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php',
         'CSS Admin' => UFSC_PLUGIN_PATH . 'assets/css/admin.css',
         'JS Admin' => UFSC_PLUGIN_PATH . 'assets/js/admin.js',
@@ -1308,17 +1299,17 @@ function ufsc_handle_club_file_uploads($club_id, $files) {
         require_once(ABSPATH . 'wp-admin/includes/file.php');
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $upload_results = [];
     
-    $allowed_docs = UFSC_Upload_Validator::get_allowed_document_types();
+    $allowed_docs = \UFSC\Helpers\UploadValidator::get_allowed_document_types();
 
     foreach ($allowed_docs as $doc_key => $doc_label) {
         if (!empty($files[$doc_key]['name'])) {
             $file = $files[$doc_key];
             
             // Use centralized validation
-            $validation = UFSC_Upload_Validator::validate_document($file, $club_id, $doc_key);
+            $validation = \UFSC\Helpers\UploadValidator::validate_document($file, $club_id, $doc_key);
             
             if (is_wp_error($validation)) {
                 $upload_results[$doc_key] = [
@@ -1463,7 +1454,7 @@ function ufsc_generate_licence_attestation_pdf($licence, $club) {
 // Register admin license attestation download handler
 add_action('wp_ajax_ufsc_download_licence_attestation_admin', 'ufsc_handle_licence_attestation_admin_download');
 
-// Register attestation generation handler (handled by UFSC_Document_Manager class)
+// Register attestation generation handler (handled by \UFSC\Admin\DocumentManager class)
 
 // Register license card download handler
 add_action('init', 'ufsc_handle_licence_card_download');
@@ -2313,7 +2304,7 @@ register_activation_hook(__FILE__, 'ufsc_run_migrations');
 add_action('admin_init', 'ufsc_run_migrations');
 
 // Load Packs & Exports admin
-if (is_admin()) { require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-pack-exports.php'; }
+// Pack exports handled by autoloader
 
 
 // === WooCommerce Pack Credits Logic ===

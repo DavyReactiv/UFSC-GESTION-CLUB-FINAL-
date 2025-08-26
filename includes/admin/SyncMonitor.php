@@ -1,12 +1,6 @@
 <?php
 
-/**
- * UFSC Sync Monitor Class
- * 
- * Provides synchronization monitoring and diagnostic tools
- * 
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Admin;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -16,7 +10,7 @@ if (!defined('ABSPATH')) {
 /**
  * UFSC Sync Monitor Class
  */
-class UFSC_Sync_Monitor
+class SyncMonitor
 {
     /**
      * Singleton instance
@@ -568,4 +562,4 @@ class UFSC_Sync_Monitor
 }
 
 // Initialize the sync monitor
-UFSC_Sync_Monitor::get_instance();
+\UFSC\Admin\SyncMonitor::get_instance();

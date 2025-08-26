@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Dashboard Class
- *
- * Handles the dashboard functionality for the UFSC Gestion Club plugin
- *
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Admin;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -16,7 +10,7 @@ if (!defined('ABSPATH')) {
 /**
  * Dashboard Class
  */
-class UFSC_Dashboard
+class Dashboard
 {
     /**
      * Constructor

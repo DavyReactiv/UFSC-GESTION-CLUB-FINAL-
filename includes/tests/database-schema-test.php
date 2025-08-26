@@ -251,8 +251,8 @@ class UFSC_Database_Schema_Test
      */
     public static function trigger_table_creation()
     {
-        if (class_exists('UFSC_Club_Manager')) {
-            $manager = UFSC_Club_Manager::get_instance();
+        if (class_exists('\UFSC\Clubs\ClubManager')) {
+            $manager = \UFSC\Clubs\ClubManager::get_instance();
             $manager->create_table();
             return true;
         }

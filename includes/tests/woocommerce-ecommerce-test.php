@@ -186,10 +186,10 @@ function ufsc_test_admin_settings_methods() {
         'errors' => []
     ];
     
-    // Check if UFSC_Admin_Settings class exists
-    if (!class_exists('UFSC_Admin_Settings')) {
+    // Check if \UFSC\Admin\AdminSettings class exists
+    if (!class_exists('\UFSC\Admin\AdminSettings')) {
         $test['passed'] = false;
-        $test['errors'][] = 'UFSC_Admin_Settings class not found';
+        $test['errors'][] = '\UFSC\Admin\AdminSettings class not found';
         return $test;
     }
     
@@ -202,9 +202,9 @@ function ufsc_test_admin_settings_methods() {
     ];
     
     foreach ($methods_to_check as $method) {
-        if (!method_exists('UFSC_Admin_Settings', $method)) {
+        if (!method_exists('\UFSC\Admin\AdminSettings', $method)) {
             $test['passed'] = false;
-            $test['errors'][] = "Method $method not found in UFSC_Admin_Settings";
+            $test['errors'][] = "Method $method not found in \UFSC\Admin\AdminSettings";
         }
     }
     

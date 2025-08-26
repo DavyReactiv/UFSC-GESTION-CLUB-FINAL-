@@ -282,7 +282,7 @@ function ufsc_apply_quota_discount($cart)
     }
 
     // Vérifier si le club a encore du quota
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club = $club_manager->get_club($club_id);
 
     if (!$club) {
@@ -332,7 +332,7 @@ function ufsc_process_licence_order($order_id)
 
             if ($club_id && $licence_data) {
                 // Créer la licence dans la base de données
-                $club_manager = UFSC_Club_Manager::get_instance();
+                $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
                 // Compléter les données de licence
                 $licence_data['club_id'] = $club_id;
@@ -470,7 +470,7 @@ function ufsc_process_licence_order_enhanced($order_id) {
         return;
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
     foreach ($order->get_items() as $item) {
         $product_id = $item->get_product_id();
@@ -558,7 +558,7 @@ function ufsc_handle_order_cancellation($order_id) {
         return;
     }
 
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
     foreach ($order->get_items() as $item) {
         $licence_id = $item->get_meta('ufsc_licence_id');

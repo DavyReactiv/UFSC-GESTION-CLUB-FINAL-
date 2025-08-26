@@ -44,7 +44,7 @@ function ufsc_recent_licences_shortcode($atts = array()) {
     }
     
     // Get club manager instance
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     if (!$club_manager) {
         return '<div class="ufsc-alert ufsc-alert-error"><p>' . __('Erreur : impossible de charger les données.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
     }

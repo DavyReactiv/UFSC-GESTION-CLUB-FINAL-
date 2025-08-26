@@ -20,7 +20,7 @@ function ufsc_get_club_stats($club_id) {
     global $wpdb;
     
     // Safety check for club manager
-    if (!class_exists('UFSC_Club_Manager')) {
+    if (!class_exists('\UFSC\Clubs\ClubManager')) {
         return [
             'total_licences' => 0,
             'active_licences' => 0,
@@ -29,7 +29,7 @@ function ufsc_get_club_stats($club_id) {
         ];
     }
     
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club = $club_manager->get_club($club_id);
     $licences = $club_manager->get_licences_by_club($club_id);
     
@@ -72,7 +72,7 @@ function ufsc_get_club_stats($club_id) {
  */
 function ufsc_get_club_detailed_stats($club_id) {
     // Safety check for club manager
-    if (!class_exists('UFSC_Club_Manager')) {
+    if (!class_exists('\UFSC\Clubs\ClubManager')) {
         return [
             'total_licences' => 0,
             'by_gender' => ['M' => 0, 'F' => 0],
@@ -88,7 +88,7 @@ function ufsc_get_club_detailed_stats($club_id) {
         ];
     }
     
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $licences = $club_manager->get_licences_by_club($club_id);
     
     $stats = [
@@ -139,7 +139,7 @@ function ufsc_get_quota_pack_info($club_id) {
     global $wpdb;
     
     // Safety check for club manager
-    if (!class_exists('UFSC_Club_Manager')) {
+    if (!class_exists('\UFSC\Clubs\ClubManager')) {
         return [
             'quota_total' => 10,
             'inclus_used' => 0,
@@ -150,7 +150,7 @@ function ufsc_get_quota_pack_info($club_id) {
         ];
     }
     
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club = $club_manager->get_club($club_id);
     $licences = $club_manager->get_licences_by_club($club_id);
     

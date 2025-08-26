@@ -33,7 +33,7 @@ if (!function_exists('ufsc_add_affiliation_to_cart')) {
         WC()->cart->empty_cart();
 
         // Récupérer les informations du club
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
 
         if (!$club) {
@@ -109,7 +109,7 @@ if (!function_exists('ufsc_process_affiliation_order')) {
 
                 if ($club_id) {
                     // Mettre à jour le club comme "En attente de validation"
-                    $club_manager = UFSC_Club_Manager::get_instance();
+                    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
                     $club = $club_manager->get_club($club_id);
 
                     if ($club) {

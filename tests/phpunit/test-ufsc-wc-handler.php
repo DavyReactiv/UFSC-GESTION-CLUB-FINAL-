@@ -27,7 +27,7 @@ class Test_UFSC_WC_Handler extends WP_UnitTestCase
         parent::setUp();
         
         // Ensure UFSC plugin classes are loaded
-        if (!class_exists('UFSC_Club_Manager')) {
+        if (!class_exists('\UFSC\Clubs\ClubManager')) {
             $this->markTestSkipped('UFSC plugin classes not available');
         }
     }

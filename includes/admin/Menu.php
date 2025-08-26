@@ -5,21 +5,19 @@
  * Handles the admin menu setup for UFSC Gestion Club
  */
 
+namespace UFSC\Admin;
+
+use UFSC\Helpers\CSVExport;
+
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Ensure class-dashboard.php exists before requiring it
-require_once plugin_dir_path(__FILE__) . 'class-dashboard.php';
-
-// Include UFSC CSV Export helper
-require_once plugin_dir_path(__FILE__) . '../helpers/class-ufsc-csv-export.php';
-
 /**
  * Menu Class
  */
-class UFSC_Menu
+class Menu
 {
     /**
      * Constructor
@@ -228,7 +226,7 @@ class UFSC_Menu
      */
     public function render_dashboard_page()
     {
-        $dashboard = new UFSC_Dashboard();
+        $dashboard = new \UFSC\Admin\Dashboard();
         $dashboard->render_dashboard();
     }
 
@@ -381,7 +379,7 @@ class UFSC_Menu
 
                 // Save club if no errors
                 if (empty($errors)) {
-                    $club_manager = UFSC_Club_Manager::get_instance();
+                    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
                     $result = $club_manager->add_club($club_data);
 
                     if ($result) {
@@ -1213,9 +1211,9 @@ class UFSC_Menu
                     if (!empty($clubs)) {
 
                         // Use the new configurable CSV export
-                        UFSC_CSV_Export::export_clubs($clubs, 'clubs-selection-' . date('Y-m-d') . '.csv');
+                        \UFSC\Helpers\CSVExport::export_clubs($clubs, 'clubs-selection-' . date('Y-m-d') . '.csv');
 
-                        UFSC_CSV_Export::export_clubs($clubs, 'clubs_ufsc_selection_' . date('Y-m-d') . '.csv');
+                        \UFSC\Helpers\CSVExport::export_clubs($clubs, 'clubs_ufsc_selection_' . date('Y-m-d') . '.csv');
  
                     }
                 }
@@ -1229,9 +1227,9 @@ class UFSC_Menu
             if (!empty($clubs)) {
 
                 // Use the new configurable CSV export
-                UFSC_CSV_Export::export_clubs($clubs);
+                \UFSC\Helpers\CSVExport::export_clubs($clubs);
 
-                UFSC_CSV_Export::export_clubs($clubs, 'clubs_ufsc_complet_' . date('Y-m-d') . '.csv');
+                \UFSC\Helpers\CSVExport::export_clubs($clubs, 'clubs_ufsc_complet_' . date('Y-m-d') . '.csv');
             }
         }
         
@@ -1856,7 +1854,7 @@ class UFSC_Menu
         }
 
         // Get club data
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
             echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
@@ -1910,14 +1908,14 @@ class UFSC_Menu
                         require_once(ABSPATH . 'wp-admin/includes/file.php');
                     }
                     
-                    $document_types = UFSC_Upload_Validator::get_allowed_document_types();
+                    $document_types = \UFSC\Helpers\UploadValidator::get_allowed_document_types();
                     
                     foreach ($document_types as $doc_key => $doc_label) {
                         if (!empty($_FILES[$doc_key]['name'])) {
                             $file = $_FILES[$doc_key];
                             
                             // Use centralized validation
-                            $validation = UFSC_Upload_Validator::validate_document($file, $club_id, $doc_key);
+                            $validation = \UFSC\Helpers\UploadValidator::validate_document($file, $club_id, $doc_key);
                             
                             if (is_wp_error($validation)) {
                                 $errors[] = 'Erreur pour ' . $doc_label . ': ' . $validation->get_error_message();
@@ -3005,7 +3003,7 @@ class UFSC_Menu
             }
             
             // Use the new configurable CSV export
-            UFSC_CSV_Export::export_licenses($licenses);
+            \UFSC\Helpers\CSVExport::export_licenses($licenses);
         }
     }
     /**
@@ -3127,7 +3125,7 @@ class UFSC_Menu
         
         // Use UFSC-compliant export
         $filename = 'licences_ufsc_' . date('Y-m-d') . '.csv';
-        UFSC_CSV_Export::export_licenses($rows, $filename);
+        \UFSC\Helpers\CSVExport::export_licenses($rows, $filename);
     }
 
     /**
@@ -3146,7 +3144,7 @@ class UFSC_Menu
         $edit_mode = isset($_GET['edit']) && $_GET['edit'] === '1';
 
         // Get club data
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
             echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
@@ -3871,7 +3869,7 @@ class UFSC_Menu
         }
 
         // Get club data
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($licence->club_id);
 
         // Handle form submission for license update (if in edit mode)

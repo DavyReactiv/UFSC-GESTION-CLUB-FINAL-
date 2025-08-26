@@ -1,14 +1,18 @@
 <?php
 
+namespace UFSC\Core;
+
+use UFSC\Clubs\ClubManager;
+
 if (!defined('ABSPATH')) {
     exit; // 🔐 Sécurité : blocage de l'accès direct
 }
 
-class UFSC_GestionClub_Core
+class GestionClubCore
 {
     /**
      * Instance du gestionnaire de clubs
-     * @var UFSC_Club_Manager
+     * @var ClubManager
      */
     private static $club_manager;
 
@@ -25,17 +29,16 @@ class UFSC_GestionClub_Core
         );
 
         // 🧩 Inclusion des classes
-        require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
         require_once UFSC_PLUGIN_PATH . 'includes/clubs/admin-club-list-page.php';
 
-        if (!class_exists('UFSC_Club_Manager')) {
+        if (!class_exists(ClubManager::class)) {
             return;
         }
 
-        self::$club_manager = UFSC_Club_Manager::get_instance();
+        self::$club_manager = ClubManager::get_instance();
 
         // ⚙️ Hooks
-        // Note: Admin menu is handled by UFSC_Menu class to avoid duplication
+        // Note: Admin menu is handled by \UFSC\Admin\Menu class to avoid duplication
         // The register_admin_menu method below is kept for legacy/backup purposes
         // add_action('admin_menu', [self::class, 'register_admin_menu']);
         add_action('init', [self::class, 'register_post_types']);
@@ -77,7 +80,7 @@ class UFSC_GestionClub_Core
             [self::class, 'render_add_club_page']
         );
 
-        // Note: Licence menu items moved to UFSC_Menu class to avoid duplication
+        // Note: Licence menu items moved to \UFSC\Admin\Menu class to avoid duplication
 
         // Sous-menu : Paramètres
         add_submenu_page(

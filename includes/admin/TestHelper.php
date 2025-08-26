@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Test Helper Class
- *
- * Provides testing utilities for the UFSC document management system
- *
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Admin;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -16,7 +10,7 @@ if (!defined('ABSPATH')) {
 /**
  * Test Helper Class
  */
-class UFSC_Test_Helper
+class TestHelper
 {
     /**
      * Singleton instance
@@ -26,7 +20,7 @@ class UFSC_Test_Helper
     /**
      * Get singleton instance
      *
-     * @return UFSC_Test_Helper
+     * @return \UFSC\Admin\TestHelper
      */
     public static function get_instance()
     {
@@ -64,8 +58,8 @@ class UFSC_Test_Helper
         ];
 
         $required_classes = [
-            'UFSC_Club_Manager',
-            'UFSC_Document_Manager'
+            '\UFSC\Clubs\ClubManager',
+            '\UFSC\Admin\DocumentManager'
         ];
 
         foreach ($required_classes as $class) {
@@ -143,7 +137,7 @@ class UFSC_Test_Helper
         ];
 
         try {
-            $doc_manager = UFSC_Document_Manager::get_instance();
+            $doc_manager = \UFSC\Admin\DocumentManager::get_instance();
             $tests['document_manager']['details'][] = "✓ Instance du gestionnaire créée";
 
             // Test secure link generation
@@ -227,7 +221,7 @@ class UFSC_Test_Helper
             return false;
         }
 
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         
         $test_data = [
             'nom' => 'Club Test UFSC - ' . date('Y-m-d H:i:s'),

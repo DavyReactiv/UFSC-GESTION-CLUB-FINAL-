@@ -170,7 +170,7 @@ function ufsc_render_licence_attestations($club)
                 </div>';
 
     // Get club licenses - only show validated licenses
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $licences = $club_manager->get_licences_by_club($club->id);
     $validated_licences = array_filter($licences, function($licence) {
         return isset($licence->statut) && $licence->statut === 'validee';

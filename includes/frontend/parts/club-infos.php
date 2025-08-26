@@ -5,7 +5,7 @@ if (! defined('ABSPATH')) {
 
 // Chargement de la classe via le singleton
 require_once plugin_dir_path(__FILE__) . '../clubs/class-club-manager.php';
-$manager = UFSC_Club_Manager::get_instance();
+$manager = \UFSC\Clubs\ClubManager::get_instance();
 
 // Récupère l’ID du club de l’utilisateur
 $user_id = get_current_user_id();

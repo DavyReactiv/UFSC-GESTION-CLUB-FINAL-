@@ -1,13 +1,6 @@
 <?php
-/**
- * UFSC CSV Export Helper Class
- *
- * Handles CSV exports in compliance with UFSC templates:
- * - Semicolon separator (;) instead of comma
- * - Proper HTTP headers to prevent HTML contamination
- * - UFSC-compliant column structure
- * - Status filtering support
- */
+
+namespace UFSC\Helpers;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -17,7 +10,7 @@ if (!defined('ABSPATH')) {
 /**
  * UFSC CSV Export Class
  */
-class UFSC_CSV_Export
+class CSVExport
 {
     /**
      * Export clubs in UFSC-compliant format

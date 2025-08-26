@@ -416,7 +416,7 @@ function ufsc_handle_attestation_download()
     }
 
     // Get club data
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club = $club_manager->get_club($club_id);
 
     if (!$club) {
@@ -467,7 +467,7 @@ function ufsc_handle_document_download()
     }
 
     // Get club data
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $club = $club_manager->get_club($club_id);
 
     if (!$club) {
@@ -726,7 +726,7 @@ function ufsc_process_document_update()
     }
 
     $club = $access_check['club'];
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
     // Document fields mapping
     $doc_fields = [

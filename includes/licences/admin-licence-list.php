@@ -156,7 +156,7 @@ if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . 
 
     // Use UFSC-compliant export
     $filename = 'licences_' . sanitize_file_name($club->nom) . '_' . date('Y-m-d') . '.csv';
-    UFSC_CSV_Export::export_licenses($rows, $filename);
+    \UFSC\Helpers\CSVExport::export_licenses($rows, $filename);
 }
 
 // Get filtered license data using the filter system

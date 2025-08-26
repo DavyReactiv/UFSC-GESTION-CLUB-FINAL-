@@ -1,15 +1,13 @@
 <?php
-/**
- * UFSC Frontend Pro Settings
- * Admin settings page for professional frontend features
- */
+
+namespace UFSC\Admin;
 
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class UFSC_Frontend_Pro_Settings {
+class FrontendProSettings {
     
     /**
      * Initialize the settings
@@ -260,5 +258,5 @@ class UFSC_Frontend_Pro_Settings {
 
 // Initialize settings if in admin
 if (is_admin()) {
-    UFSC_Frontend_Pro_Settings::init();
+    \UFSC\Admin\FrontendProSettings::init();
 }

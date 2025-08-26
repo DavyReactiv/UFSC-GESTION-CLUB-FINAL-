@@ -29,7 +29,7 @@ function ufsc_run_sync_tests() {
     $test_results['logging_function'] = function_exists('ufsc_log_operation');
 
     // Test 4: Check if sync monitor class is loaded
-    $test_results['sync_monitor'] = class_exists('UFSC_Sync_Monitor');
+    $test_results['sync_monitor'] = class_exists('\UFSC\Admin\SyncMonitor');
 
     // Test 5: Check database tables
     global $wpdb;

@@ -245,7 +245,7 @@ add_action('woocommerce_order_status_processing', 'ufsc_process_affiliation_afte
  */
 function ufsc_create_or_update_club_from_order_item($item, $order)
 {
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     
     // Get affiliation data from order item meta
     $club_data = [

@@ -28,7 +28,7 @@ function ufsc_bouton_licence_shortcode($atts)
     }
 
     // Récupérer le nombre de licences
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $licences = $club_manager->get_licences_by_club($club->id);
     $quota_total = intval($club->quota_licences);
     $licences_count = count($licences);

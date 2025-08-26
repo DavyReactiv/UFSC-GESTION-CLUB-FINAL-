@@ -1,7 +1,10 @@
 <?php
+
+namespace UFSC\Admin;
+
 if (!defined('ABSPATH')) { exit; }
 
-class UFSC_Pack_Exports_Admin {
+class PackExports {
     const OPT_KEY = 'ufsc_pack_settings';
 
     public function __construct() {
@@ -173,5 +176,5 @@ class UFSC_Pack_Exports_Admin {
 }
 
 if (is_admin()) {
-    new UFSC_Pack_Exports_Admin();
+    new \UFSC\Admin\PackExports();
 }

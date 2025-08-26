@@ -18,10 +18,10 @@ function test_ufsc_admin_settings() {
     $results = [];
     
     // Test 1: Check if admin settings class exists
-    if (class_exists('UFSC_Admin_Settings')) {
-        $results['admin_class'] = 'PASS - UFSC_Admin_Settings class exists';
+    if (class_exists('\UFSC\Admin\AdminSettings')) {
+        $results['admin_class'] = 'PASS - \UFSC\Admin\AdminSettings class exists';
     } else {
-        $results['admin_class'] = 'FAIL - UFSC_Admin_Settings class not found';
+        $results['admin_class'] = 'FAIL - \UFSC\Admin\AdminSettings class not found';
     }
     
     // Test 2: Test default option values
@@ -63,8 +63,8 @@ function test_ufsc_admin_settings() {
     }
     
     // Test 4: Test CSV sanitization (if admin class is available)
-    if (class_exists('UFSC_Admin_Settings')) {
-        $admin_settings = new UFSC_Admin_Settings();
+    if (class_exists('\UFSC\Admin\AdminSettings')) {
+        $admin_settings = new \UFSC\Admin\AdminSettings();
         
         // Test valid CSV
         $test_csv = '2934, 2935, 2936';

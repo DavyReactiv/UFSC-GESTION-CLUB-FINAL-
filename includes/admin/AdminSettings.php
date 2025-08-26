@@ -1,13 +1,6 @@
 <?php
-/**
- * UFSC Admin Settings
- *
- * Admin settings page for UFSC plugin configuration
- * Provides WooCommerce integration options and frontend behavior settings
- *
- * @package UFSC_Gestion_Club
- * @since 1.2.1
- */
+
+namespace UFSC\Admin;
 
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
@@ -17,7 +10,7 @@ if (!defined('ABSPATH')) {
 /**
  * UFSC Admin Settings Class
  */
-class UFSC_Admin_Settings {
+class AdminSettings {
 
     /**
      * Settings page hook suffix
@@ -449,5 +442,5 @@ class UFSC_Admin_Settings {
 
 // Initialize the admin settings class
 if (is_admin()) {
-    new UFSC_Admin_Settings();
+    new \UFSC\Admin\AdminSettings();
 }

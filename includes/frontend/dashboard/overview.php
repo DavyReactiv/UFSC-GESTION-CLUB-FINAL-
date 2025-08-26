@@ -261,7 +261,7 @@ function ufsc_render_documents_section($club) {
  * @return string HTML output
  */
 function ufsc_render_licences_section($club, $limit = 10) {
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $licences = $club_manager->get_licences_by_club($club->id);
     
     // Calculate statistics

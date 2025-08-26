@@ -18,7 +18,7 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
     // Récupérer le club si en mode édition
     $club = null;
     if ($club_id > 0) {
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($club_id);
     }
 
@@ -150,7 +150,7 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
 
             // Si pas d'erreurs, enregistrer le club
             if (empty($errors)) {
-                $club_manager = UFSC_Club_Manager::get_instance();
+                $club_manager = \UFSC\Clubs\ClubManager::get_instance();
 
                 if ($is_edit) {
                     $result = $club_manager->update_club($club_id, $club_data);

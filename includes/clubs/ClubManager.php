@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Club Manager Class
- *
- * Handles operations related to clubs
- *
- * @package UFSC_Gestion_Club
- */
+namespace UFSC\Clubs;
 
 // Exit if accessed directly.
 if (! defined('ABSPATH')) {
@@ -16,7 +10,7 @@ if (! defined('ABSPATH')) {
 /**
  * Club Manager Class
  */
-class UFSC_Club_Manager
+class ClubManager
 {
     /**
      * Database table name
@@ -31,7 +25,7 @@ class UFSC_Club_Manager
     /**
      * Get singleton instance
      *
-     * @return UFSC_Club_Manager
+     * @return ClubManager
      */
     public static function get_instance()
     {

@@ -274,7 +274,7 @@ function ufsc_render_club_attestation($atts = [])
 function ufsc_render_liste_clubs($atts = [])
 {
     // Récupérer tous les clubs affiliés
-    $club_manager = UFSC_Club_Manager::get_instance();
+    $club_manager = \UFSC\Clubs\ClubManager::get_instance();
     $all_clubs = $club_manager->get_clubs();
     
     // Filtrer pour ne garder que les clubs validés/actifs

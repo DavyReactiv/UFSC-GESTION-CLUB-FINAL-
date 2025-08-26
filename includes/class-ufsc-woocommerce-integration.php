@@ -223,8 +223,8 @@ class UFSC_WooCommerce_Integration {
      */
     private function fallback_activate_affiliation($club_id, $order) {
         // Try to get club manager
-        if (class_exists('UFSC_Club_Manager')) {
-            $club_manager = UFSC_Club_Manager::get_instance();
+        if (class_exists('\UFSC\Clubs\ClubManager')) {
+            $club_manager = \UFSC\Clubs\ClubManager::get_instance();
             $club = $club_manager->get_club($club_id);
 
             if ($club) {
@@ -374,8 +374,8 @@ class UFSC_WooCommerce_Integration {
         }
         
         // Get club data to retrieve leader information
-        if (class_exists('UFSC_Club_Manager')) {
-            $club_manager = UFSC_Club_Manager::get_instance();
+        if (class_exists('\UFSC\Clubs\ClubManager')) {
+            $club_manager = \UFSC\Clubs\ClubManager::get_instance();
             $club = $club_manager->get_club($club_id);
             
             if ($club) {

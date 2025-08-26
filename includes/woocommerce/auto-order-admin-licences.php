@@ -87,7 +87,7 @@ class UFSC_Auto_Order_Admin_Licences {
         
         // Get club data to find the responsible user
         require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
-        $club_manager = UFSC_Club_Manager::get_instance();
+        $club_manager = \UFSC\Clubs\ClubManager::get_instance();
         $club = $club_manager->get_club($licence->club_id);
         
         // Create WooCommerce order

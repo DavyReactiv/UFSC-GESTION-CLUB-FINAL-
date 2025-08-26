@@ -1,0 +1,13 @@
+{
+  "name": "ufsc/gestion-club",
+  "description": "UFSC Gestion de Club plugin",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "UFSC\\Core\\": "includes/core/",
+      "UFSC\\Clubs\\": "includes/clubs/",
+      "UFSC\\Admin\\": "includes/admin/",
+      "UFSC\\Helpers\\": "includes/helpers/"
+    }
+  }
+}
