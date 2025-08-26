@@ -14,6 +14,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Include additional frontend shortcodes
+require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/order-history.php';
+
 /**
  * Register all frontend shortcodes
  */
@@ -21,6 +24,7 @@ function ufsc_register_frontend_shortcodes() {
     add_shortcode('ufsc_club_register', 'ufsc_club_register_shortcode');
     add_shortcode('ufsc_club_account', 'ufsc_club_account_shortcode');
     add_shortcode('ufsc_club_licenses', 'ufsc_club_licenses_shortcode');
+    add_shortcode('ufsc_order_history', 'ufsc_order_history_shortcode');
 
     // Le shortcode dashboard peut être défini ailleurs (ex: frontend/frontend-club-dashboard.php).
     // On enregistre le shortcode seulement si la fonction existe ou sera fournie par ce fichier.
