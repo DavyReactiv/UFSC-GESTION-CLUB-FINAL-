@@ -251,7 +251,7 @@ function ufsc_render_affiliation_form($args = [])
         <button type="submit" class="ufsc-btn ufsc-btn-primary" id="ufsc-submit-affiliation">
             ' . esc_html($args['submit_button_text']) . '
         </button>
-        <div class="ufsc-form-loading" style="display:none;">
+        <div class="ufsc-form-loading ufsc-hidden">
             <span class="ufsc-spinner"></span> Traitement en cours...
         </div>
     </div>';

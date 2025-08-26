@@ -185,7 +185,7 @@ function ufsc_render_licence_form($args = array()){
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
           </div>
-          <div class="ufsc-form-field" id="numero_licence_delegataire_field" style="display:none;">
+          <div class="ufsc-form-field ufsc-hidden" id="numero_licence_delegataire_field">
             <label for="numero_licence_delegataire">N° délégataire</label>
             <input type="text" id="numero_licence_delegataire" name="numero_licence_delegataire" value="<?php echo $v('numero_licence_delegataire'); ?>">
             <p class="ufsc-form-hint"></p>

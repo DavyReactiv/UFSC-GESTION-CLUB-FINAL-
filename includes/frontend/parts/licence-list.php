@@ -30,9 +30,9 @@ $licences = $wpdb->get_results($wpdb->prepare(
 ));
 ?>
 
-<form method="get" class="ufsc-search-form" style="margin-bottom: 20px;">
+<form method="get" class="ufsc-search-form ufsc-mb-20">
     <input type="hidden" name="page_id" value="<?php echo esc_attr(get_the_ID()); ?>">
-    <input type="text" name="search_licence" placeholder="🔍 Rechercher..." value="<?php echo esc_attr($search); ?>" style="width:250px;">
+    <input type="text" name="search_licence" placeholder="🔍 Rechercher..." value="<?php echo esc_attr($search); ?>" class="ufsc-w-250">
     <button type="submit" class="button button-primary">Filtrer</button>
 </form>
 
@@ -73,7 +73,7 @@ $licences = $wpdb->get_results($wpdb->prepare(
                                 📄 Télécharger
                             </a>
                         <?php else: ?>
-                            <span style="color: #999;">—</span>
+                            <span class="ufsc-color-gray">—</span>
                         <?php endif; ?>
                     </td>
                 </tr>

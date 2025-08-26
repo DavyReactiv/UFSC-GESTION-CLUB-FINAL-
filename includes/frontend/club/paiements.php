@@ -61,7 +61,7 @@ function ufsc_render_payment_status($club)
     $output .= '<div class="ufsc-card-body">';
 
     // Information about UFSC fees - according to requirements
-    $output .= '<div class="ufsc-info-box" style="margin-bottom: 20px;">
+    $output .= '<div class="ufsc-info-box ufsc-mb-20">
                 <h4>Tarifs UFSC</h4>
                 <p>• <strong>Cotisation d\'affiliation :</strong> 150€/an</p>
                 <p>• <strong>Licence individuelle :</strong> 35€</p>
@@ -340,7 +340,7 @@ function ufsc_render_invoice_management($club)
     // Banking information for transfers - Updated with correct UFSC details
     $output .= '<div class="ufsc-banking-info">';
     $output .= '<h4>Coordonnées bancaires pour virement</h4>';
-    $output .= '<div class="ufsc-info-box ufsc-info-box-important" style="margin-bottom: 15px;">';
+    $output .= '<div class="ufsc-info-box ufsc-info-box-important ufsc-mb-15">';
     $output .= '<h5>⚠️ Nouvelles coordonnées bancaires UFSC</h5>';
     $output .= '<p>Merci d\'utiliser exclusivement ces coordonnées pour vos virements à l\'UFSC.</p>';
     $output .= '</div>';

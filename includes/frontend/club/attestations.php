@@ -60,7 +60,7 @@ function ufsc_render_official_attestations($club)
     $output .= '</div>';
     $output .= '<div class="ufsc-card-body">';
 
-    $output .= '<div class="ufsc-info-box" style="margin-bottom: 20px;">
+    $output .= '<div class="ufsc-info-box ufsc-mb-20">
                 <p>Ces documents sont transmis après validation par l\'administration UFSC.</p>
                 </div>';
 
@@ -165,7 +165,7 @@ function ufsc_render_licence_attestations($club)
     $output .= '</div>';
     $output .= '<div class="ufsc-card-body">';
 
-    $output .= '<div class="ufsc-info-box" style="margin-bottom: 20px;">
+    $output .= '<div class="ufsc-info-box ufsc-mb-20">
                 <p><strong>Note :</strong> Les attestations de licence sont ajoutées en back-office par l\'administration pour chaque licence validée.</p>
                 </div>';
 
