@@ -515,6 +515,14 @@ $upload_dir = wp_upload_dir();
 4. Push vers la branche (`git push origin feature/amelioration`)
 5. Créez une Pull Request
 
+### Exécution des tests
+
+Pour exécuter les tests unitaires :
+
+```bash
+phpunit --testsuite core
+```
+
 ## 📄 Licence
 
 Ce plugin est distribué sous licence GPL-2.0+. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
