@@ -44,8 +44,8 @@
         <td><span class="ufscx-pill">${r.statut||''}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
         <td>
-          <button class="ufscx-btn ufscx-btn-soft" data-a="view" data-id="${r.id}">Voir</button>
-          <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
+          <button class="ufscx-btn${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>
+          ${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':`<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`}
         </td>
       </tr>
     `).join('');
@@ -70,6 +70,13 @@
       a.href = URL.createObjectURL(blob); a.download='licences.csv'; a.click();
     });
   }
+
+  tbody.addEventListener('click',e=>{
+    const btn = e.target.closest('button[data-a="view"]');
+    if(!btn) return;
+    const id = btn.getAttribute('data-id');
+    if(id) window.location.href = `?view_licence=${id}`;
+  });
 
   render();
 })();
