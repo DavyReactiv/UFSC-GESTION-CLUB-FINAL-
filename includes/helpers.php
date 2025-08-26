@@ -110,7 +110,10 @@ function ufsc_get_user_club($user_id = null)
 }
 
 /**
- * Vérifie si l'utilisateur courant a accès au club spécifié
+ * Vérifie si l'utilisateur courant a accès au club spécifié.
+ *
+ * Déplacée depuis `includes/frontend/club/club-infos.php` afin d'être
+ * chargée globalement pour toutes les fonctionnalités du plugin.
  *
  * @param int $club_id Identifiant du club à vérifier
  * @return bool True si l'utilisateur est associé à ce club
