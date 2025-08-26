@@ -19,6 +19,41 @@ function ufsc_profix_ajax_add_to_cart(){
 }
 add_action('wp_ajax_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
+
+function ufsc_profix_ajax_save_draft(){
+    check_ajax_referer('ufsc_front_nonce');
+    if (!is_user_logged_in()) wp_send_json_error('Connexion requise');
+    global $wpdb; $table = $wpdb->prefix.'ufsc_licences';
+    $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
+    $club_id = ($club && isset($club->id)) ? (int)$club->id : 0;
+    if (!$club_id) wp_send_json_error('Club introuvable');
+    $nom = isset($_POST['nom']) ? sanitize_text_field(wp_unslash($_POST['nom'])) : '';
+    $prenom = isset($_POST['prenom']) ? sanitize_text_field(wp_unslash($_POST['prenom'])) : '';
+    $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
+    $role = isset($_POST['role']) ? sanitize_text_field(wp_unslash($_POST['role'])) : '';
+    if ($nom===''||$prenom===''||$email==='') wp_send_json_error('Nom, prénom et email requis');
+    $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    $now = current_time('mysql');
+    if ($licence_id) {
+        $ok = $wpdb->update($table,
+            ['nom'=>$nom,'prenom'=>$prenom,'email'=>$email,'role'=>$role,'statut'=>'brouillon','date_creation'=>$now],
+            ['id'=>$licence_id,'club_id'=>$club_id],
+            ['%s','%s','%s','%s','%s','%s'],
+            ['%d','%d']
+        );
+        if ($ok!==false) wp_send_json_success(['licence_id'=>$licence_id]);
+        wp_send_json_error('Échec de mise à jour du brouillon');
+    } else {
+        $ok = $wpdb->insert($table,
+            ['club_id'=>$club_id,'role'=>$role,'nom'=>$nom,'prenom'=>$prenom,'email'=>$email,'statut'=>'brouillon','date_creation'=>$now],
+            ['%d','%s','%s','%s','%s','%s','%s']
+        );
+        if ($ok) wp_send_json_success(['licence_id'=>(int)$wpdb->insert_id]);
+        wp_send_json_error('Échec de création du brouillon');
+    }
+}
+add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
+add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 function ufsc_profix_ajax_delete_draft(){
     check_ajax_referer('ufsc_front_nonce'); global $wpdb;
     $id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0; if(!$id) wp_send_json_error('ID manquant');
@@ -28,3 +63,4 @@ function ufsc_profix_ajax_delete_draft(){
 }
 add_action('wp_ajax_ufsc_delete_licence_draft','ufsc_profix_ajax_delete_draft');
 add_action('wp_ajax_nopriv_ufsc_delete_licence_draft','ufsc_profix_ajax_delete_draft');
+
