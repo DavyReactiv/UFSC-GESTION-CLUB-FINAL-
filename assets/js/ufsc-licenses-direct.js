@@ -43,28 +43,31 @@
         <td>${r.quota||''}</td>
         <td><span class="ufscx-pill">${r.statut||''}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
-
-        <td>
-          <button class="ufscx-btn${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>
-          ${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':`<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`}
-        </td>
-
         <td>${(()=>{
-          if(r.statut==='brouillon'){
-            return `
-              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>
-              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>
-              <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>
-              <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
-            `;
+          const status = (r.statut||'').toLowerCase();
+          const isFinal = ['validee','refusee','expiree'].includes(status);
+          const buttons = [];
+          const viewBtn = `<button class="ufscx-btn${isFinal?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>`;
+          const quotaBtn = `<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`;
+          if(status==='brouillon'){
+            buttons.push(`<button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>`);
+            buttons.push(`<button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>`);
+            buttons.push(`<button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>`);
+            if(!isFinal) buttons.push(quotaBtn);
+            buttons.push(viewBtn);
+          } else if(status==='in_cart'){
+            buttons.push(`<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`);
+            if(!isFinal) buttons.push(quotaBtn);
+            buttons.push(viewBtn);
+          } else if(status==='pending_payment'){
+            buttons.push(`<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`);
+            if(!isFinal) buttons.push(quotaBtn);
+            buttons.push(viewBtn);
+          } else {
+            buttons.push(viewBtn);
+            if(!isFinal) buttons.push(quotaBtn);
           }
-          if(r.statut==='in_cart'){
-            return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`;
-          }
-          if(r.statut==='pending_payment'){
-            return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`;
-          }
-          return `<button class="ufscx-btn ufscx-btn-soft" data-a="view" data-id="${r.id}">Voir</button>`;
+          return buttons.join(' ');
         })()}</td>
 
       </tr>
@@ -98,7 +101,7 @@
       return;
     }
 
-    if(act==='cart'){
+    if(act==='pay'){
       window.location.href = '?ufsc_pay_licence='+id;
       return;
     }
