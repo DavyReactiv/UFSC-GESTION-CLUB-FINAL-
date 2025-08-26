@@ -36,10 +36,10 @@ function ufsc_get_no_club_message($context = 'general') {
                     <p>Vous n\'êtes pas associé à un club affilié.</p>
                     </div>';
         case 'dashboard':
-            $club_form_button = ufsc_generate_safe_navigation_button('club_form', 'Créer un club', 'ufsc-btn', true);
+            $affiliation_button = ufsc_generate_safe_navigation_button('affiliation', 'Créer un club', 'ufsc-btn', true);
             return '<div class="ufsc-alert ufsc-alert-error">
                     <p>Vous n\'êtes pas associé à un club. Veuillez contacter l\'administrateur ou créer un club.</p>
-                    <p>' . $club_form_button . '</p>
+                    <p>' . $affiliation_button . '</p>
                     </div>';
         default:
             return '<div class="ufsc-alert ufsc-alert-error">
