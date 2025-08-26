@@ -523,7 +523,7 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
                     </div>
                     
                     <div class="ufsc-form-actions-secondary">
-                        <button type="submit" name="ufsc_save_draft" class="ufsc-btn ufsc-btn-outline ufsc-btn-medium">
+                        <button type="button" id="ufsc-save-draft" name="ufsc_save_draft" class="ufsc-btn ufsc-btn-outline ufsc-btn-medium ufsc-btn-save-draft">
                             <i class="dashicons dashicons-edit"></i>
                             Mettre en brouillon
                         </button>
