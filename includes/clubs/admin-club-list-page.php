@@ -39,7 +39,7 @@ function ufsc_render_club_list_page()
     wp_enqueue_script(
         'datatables-js',
         'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js',
-        ['jquery'],
+        [],
         '1.13.6',
         true
     );
@@ -83,7 +83,7 @@ function ufsc_render_club_list_page()
     wp_enqueue_script(
         'ufsc-admin-script',
         UFSC_PLUGIN_URL . 'assets/js/admin.js',
-        ['jquery', 'ufsc-datatables-config'],
+        ['ufsc-datatables-config'],
         UFSC_GESTION_CLUB_VERSION,
         true
     );

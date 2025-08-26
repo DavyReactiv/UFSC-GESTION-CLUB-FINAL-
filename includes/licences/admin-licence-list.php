@@ -50,7 +50,7 @@ wp_enqueue_style(
 wp_enqueue_script(
     'datatables-js',
     'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js',
-    ['jquery'],
+    [],
     '1.13.6',
     true
 );

@@ -15,10 +15,10 @@ function ufsc_formulaire_affiliation_shortcode($atts)
 {
     // Si l'utilisateur n'est pas connecté, afficher formulaire de connexion
     if (!is_user_logged_in()) {
-        return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Vous devez être connecté pour accéder au formulaire d\'affiliation.</p>' .
-                ufsc_render_login_prompt() .
-                '</div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error">'
+            . '<p>Vous devez être connecté pour accéder au formulaire d\'affiliation.</p>'
+            . ufsc_render_login_prompt()
+            . '</div></div></div></div>';
     }
 
     // Vérifier si l'utilisateur a déjà un club affilié
@@ -26,30 +26,34 @@ function ufsc_formulaire_affiliation_shortcode($atts)
     
     // Vérifier que la fonction existe pour éviter les erreurs fatales
     if (!function_exists('ufsc_get_user_club')) {
-        return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Erreur de configuration du plugin. Veuillez contacter l\'administrateur.</p>
-                </div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error">'
+                . '<p>Erreur de configuration du plugin. Veuillez contacter l\'administrateur.</p>'
+                . '</div></div></div></div>';
     }
     
     $club = ufsc_get_user_club($user_id);
 
     if ($club && $club->statut !== 'Refusé') {
         $dashboard_button = ufsc_generate_safe_navigation_button('dashboard', 'Accéder à mon espace club', 'ufsc-btn ufsc-btn-primary', true);
-        return '<div class="ufsc-alert ufsc-alert-info">
-                <h4>✅ Vous avez déjà un club</h4>
-                <p>Vous avez déjà un club en cours d\'affiliation ou affilié.</p>
-                <p>' . $dashboard_button . '</p>
-                </div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-info">'
+                . '<h4>✅ Vous avez déjà un club</h4>'
+                . '<p>Vous avez déjà un club en cours d\'affiliation ou affilié.</p>'
+                . '<p>' . $dashboard_button . '</p>'
+                . '</div></div></div></div>';
     }
 
     // Démarrer la capture de sortie
     ob_start();
+
+    echo '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">';
 
     // Inclusion du formulaire club avec paramètre spécial pour affiliation
     require_once UFSC_PLUGIN_PATH . 'includes/clubs/form-club.php';
 
     // Appel de la fonction avec le paramètre affiliation=true
     ufsc_render_club_form(($club ? $club->id : 0), true, true);
+
+    echo '</div></div></div>';
 
     // Récupérer le contenu capturé
     return ob_get_clean();

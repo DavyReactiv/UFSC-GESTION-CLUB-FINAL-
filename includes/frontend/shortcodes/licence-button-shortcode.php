@@ -17,14 +17,16 @@ function ufsc_bouton_licence_shortcode($atts)
     $access_check = ufsc_check_frontend_access('licence');
     
     if (!$access_check['allowed']) {
-        return $access_check['error_message'];
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+            . $access_check['error_message'] . '</div></div></div>';
     }
     
     $club = $access_check['club'];
 
     // CORRECTION: Use standardized status checking 
     if (!ufsc_is_club_active($club)) {
-        return ufsc_render_club_status_alert($club, 'licence');
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+            . ufsc_render_club_status_alert($club, 'licence') . '</div></div></div>';
     }
 
     // Récupérer le nombre de licences
@@ -42,7 +44,7 @@ function ufsc_bouton_licence_shortcode($atts)
     $product_url = get_permalink(ufsc_get_licence_product_id());
 
     // Générer le bouton avec informations de quota
-    $output = '<div class="ufsc-licence-button-container">';
+    $output = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufsc-licence-button-container">';
 
     // Show quota status only if not unlimited
     if (!$is_unlimited_quota) {
@@ -75,7 +77,7 @@ function ufsc_bouton_licence_shortcode($atts)
                     </div>';
     }
 
-    $output .= '</div>';
+    $output .= '</div></div></div>';
 
     return $output;
 }
