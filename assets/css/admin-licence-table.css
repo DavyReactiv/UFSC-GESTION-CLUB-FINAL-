@@ -78,6 +78,22 @@
     padding-bottom: 8px;
 }
 
+/* Wrapper to allow horizontal scrolling */
+.ufsc-licences-table-wrapper {
+    overflow-x: auto;
+}
+
+/* Base table configuration */
+.ufsc-licences-table {
+    table-layout: auto;
+}
+
+/* Allow cell content to wrap normally */
+.ufsc-licences-table th,
+.ufsc-licences-table td {
+    white-space: normal !important;
+}
+
 /* Table styling improvements - Applicable to both licenses tables */
 #licenses-table-club,
 #licenses-table-global {
@@ -92,7 +108,6 @@
     padding: 12px 8px;
     font-weight: 600;
     text-align: left;
-    white-space: nowrap;
 }
 
 #licenses-table-club tbody td,
