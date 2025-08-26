@@ -13,15 +13,12 @@ if (!defined('ABSPATH')) {
  */
 function ufsc_formulaire_club_shortcode($atts)
 {
-    // Si l'utilisateur n'est pas connecté, afficher le bloc de connexion/inscription
+    // Si l'utilisateur n'est pas connecté, afficher le formulaire de connexion/inscription
     if (!is_user_logged_in()) {
-        $register_page_id = get_option('ufsc_login_page_id', 0);
-        $register_url = $register_page_id ? get_permalink($register_page_id) : wp_registration_url();
-        return '<div class="ufsc-alert ufsc-alert-error">'
-            . '<p>Vous devez être connecté pour accéder à ce formulaire.</p>'
-            . '<p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a> ou '
-            . '<a href="' . $register_url . '" class="ufsc-btn ufsc-btn-outline">Créer un compte</a></p>'
-            . '</div>';
+        return ufsc_login_register_shortcode([
+            'redirect' => get_permalink(),
+            'show_register' => 'yes',
+        ]);
     }
 
     // Démarrer la capture de sortie
