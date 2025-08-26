@@ -135,10 +135,9 @@ function ufsc_render_affiliation_club_form($atts = [])
     // Si l'utilisateur n'est pas connecté, afficher formulaire de connexion
     if (!is_user_logged_in()) {
         return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Vous devez être connecté pour accéder au formulaire d\'affiliation.</p>
-                <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a> ou 
-                <a href="' . wp_registration_url() . '" class="ufsc-btn ufsc-btn-outline">Créer un compte</a></p>
-                </div>';
+                <p>Vous devez être connecté pour accéder au formulaire d\'affiliation.</p>' .
+                ufsc_render_login_prompt() .
+                '</div>';
     }
 
     // Vérifier si l'utilisateur a déjà un club affilié

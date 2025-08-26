@@ -35,14 +35,9 @@ function ufsc_render_affiliation_form($args = [])
     
     // Check if user is logged in
     if (!is_user_logged_in()) {
-        return '<div class="ufsc-alert ufsc-alert-error">
-            <h4>Connexion requise</h4>
-            <p>Vous devez être connecté pour procéder à une affiliation.</p>
-            <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a></p>
-            </div>';
+        return '<div class="ufsc-alert ufsc-alert-error">\n            <h4>Connexion requise</h4>\n            <p>Vous devez être connecté pour procéder à une affiliation.</p>' .
+            ufsc_render_login_prompt() . '\n            </div>';
     }
-    
-    $user_id = get_current_user_id();
     
     // Check if user already has a club
     $existing_club = ufsc_get_user_club($user_id);

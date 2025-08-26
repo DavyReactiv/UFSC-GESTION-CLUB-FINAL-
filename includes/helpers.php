@@ -522,8 +522,26 @@ function ufsc_render_club_status_alert($club, $context = 'general')
 }
 
 /**
+ * Render standardized login/register prompt.
+ *
+ * @param string $login_url    Optional custom login URL.
+ * @param string $register_url Optional custom registration URL.
+ * @return string HTML block containing login and registration buttons.
+ */
+function ufsc_render_login_prompt($login_url = '', $register_url = '')
+{
+    $login_url = $login_url ?: wp_login_url(get_permalink());
+    $register_url = $register_url ?: wp_registration_url();
+
+    return '<p><a href="' . esc_url($login_url) . '" class="ufsc-btn">' .
+        esc_html__('Se connecter', 'plugin-ufsc-gestion-club-13072025') . '</a> ' .
+        '<a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-outline">' .
+        esc_html__('Créer un compte', 'plugin-ufsc-gestion-club-13072025') . '</a></p>';
+}
+
+/**
  * CORRECTION: Comprehensive frontend access control check
- * 
+ *
  * This function centralizes all frontend access control logic including:
  * - User authentication verification
  * - Club association validation 
@@ -540,11 +558,11 @@ function ufsc_check_frontend_access($context = 'general')
     if (!is_user_logged_in()) {
         return [
             'allowed' => false,
-            'error_message' => '<div class="ufsc-alert ufsc-alert-error">
-                <h4>Connexion requise</h4>
-                <p>Vous devez être connecté pour accéder à cette page.</p>
-                <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a></p>
-                </div>',
+            'error_message' => '<div class="ufsc-alert ufsc-alert-error">'
+                . '<h4>Connexion requise</h4>'
+                . '<p>Vous devez être connecté pour accéder à cette page.</p>'
+                . ufsc_render_login_prompt()
+                . '</div>',
             'club' => null
         ];
     }

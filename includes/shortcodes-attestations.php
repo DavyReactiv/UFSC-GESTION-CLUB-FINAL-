@@ -69,9 +69,9 @@ function ufsc_attestation_upload_club_shortcode($atts) {
     // Check if user is logged in
     if (!is_user_logged_in()) {
         return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Vous devez être connecté pour télécharger une attestation.</p>
-                <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a></p>
-                </div>';
+                <p>Vous devez être connecté pour télécharger une attestation.</p>' .
+                ufsc_render_login_prompt() .
+                '</div>';
     }
     
     $atts = shortcode_atts([
@@ -121,9 +121,9 @@ function ufsc_attestation_upload_license_shortcode($atts) {
     // Check if user is logged in
     if (!is_user_logged_in()) {
         return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Vous devez être connecté pour télécharger une attestation.</p>
-                <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a></p>
-                </div>';
+                <p>Vous devez être connecté pour télécharger une attestation.</p>' .
+                ufsc_render_login_prompt() .
+                '</div>';
     }
     
     $atts = shortcode_atts([
@@ -173,9 +173,9 @@ function ufsc_attestation_list_shortcode($atts) {
     // Check if user is logged in
     if (!is_user_logged_in()) {
         return '<div class="ufsc-alert ufsc-alert-error">
-                <p>Vous devez être connecté pour voir vos attestations.</p>
-                <p><a href="' . wp_login_url(get_permalink()) . '" class="ufsc-btn">Se connecter</a></p>
-                </div>';
+                <p>Vous devez être connecté pour voir vos attestations.</p>' .
+                ufsc_render_login_prompt() .
+                '</div>';
     }
     
     $atts = shortcode_atts([

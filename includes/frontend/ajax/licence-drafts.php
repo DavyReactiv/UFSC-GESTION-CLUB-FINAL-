@@ -27,6 +27,7 @@ function ufsc_ajax_save_draft(){
     $nom    = isset($_POST['nom'])    ? sanitize_text_field( wp_unslash($_POST['nom']) )    : '';
     $prenom = isset($_POST['prenom']) ? sanitize_text_field( wp_unslash($_POST['prenom']) ) : '';
     $email  = isset($_POST['email'])  ? sanitize_email(       wp_unslash($_POST['email']) )  : '';
+    $role   = isset($_POST['role'])   ? sanitize_text_field( wp_unslash($_POST['role']) )   : '';
 
     if ( $nom === '' || $prenom === '' || $email === '' ) {
         wp_send_json_error( array('message' => __('Nom, prénom et email sont requis.', 'plugin-ufsc-gestion-club-13072025')) );
@@ -42,11 +43,18 @@ function ufsc_ajax_save_draft(){
         $updated = $wpdb->update(
             $table,
             array(
+
                 'nom'           => $nom,
                 'prenom'        => $prenom,
                 'email'         => $email,
                 'statut'        => 'brouillon',
                 'date_creation' => $now,
+                'role'           => $role,
+                'nom'            => $nom,
+                'prenom'         => $prenom,
+                'email'          => $email,
+                'statut'         => 'brouillon',
+                'date_creation'  => $now,
             ),
             array(
                 'id'      => $licence_id,
