@@ -1,0 +1,419 @@
+/**
+ * UFSC Dashboard Fixes
+ * 
+ * Fixes for UI/UX issues including:
+ * - Table column overlap prevention
+ * - Avatar/logo sizing and styling
+ * - Container max-width constraints
+ * - Responsive design improvements
+ * 
+ * @package UFSC_Gestion_Club
+ * @since 1.3.1
+ */
+
+/* =============================================================================
+   Container Width Constraints
+   ============================================================================= */
+
+.ufsc-dashboard-overview,
+.ufsc-licence-list-container,
+.ufsc-admin-licence-table-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =============================================================================
+   Table Layout Fixes - Prevent Column Overlap
+   ============================================================================= */
+
+.ufsc-licence-table,
+.ufsc-admin-licence-table,
+.wp-list-table.licences {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ufsc-licence-table th,
+.ufsc-licence-table td,
+.ufsc-admin-licence-table th,
+.ufsc-admin-licence-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Specific column width constraints */
+.ufsc-col-nom,
+.ufsc-col-prenom {
+    width: 12%;
+}
+
+.ufsc-col-club {
+    width: 15%;
+    max-width: 150px;
+}
+
+.ufsc-col-region {
+    width: 12%;
+    max-width: 120px;
+}
+
+.ufsc-col-email {
+    width: 18%;
+    max-width: 180px;
+}
+
+.ufsc-col-statut {
+    width: 10%;
+    text-align: center;
+}
+
+.ufsc-col-actions {
+    width: 15%;
+    text-align: center;
+    white-space: normal; /* Allow button wrapping */
+}
+
+.ufsc-col-date {
+    width: 10%;
+}
+
+/* =============================================================================
+   Avatar/Logo Styling
+   ============================================================================= */
+
+.ufsc-club-avatar,
+.ufsc-logo-container,
+.ufsc-avatar-display {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border: 3px solid #e0e0e0;
+    margin: 0 auto 15px;
+    position: relative;
+}
+
+.ufsc-club-avatar img,
+.ufsc-logo-container img,
+.ufsc-avatar-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.ufsc-club-avatar .placeholder,
+.ufsc-logo-container .placeholder,
+.ufsc-avatar-display .placeholder {
+    font-size: 48px;
+    color: #999;
+    text-align: center;
+}
+
+/* Compact avatar version for tables */
+.ufsc-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ufsc-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =============================================================================
+   Admin Action Styling
+   ============================================================================= */
+
+.ufsc-admin-actions {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.ufsc-admin-notice {
+    margin-bottom: 10px;
+}
+
+.ufsc-admin-notice p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.ufsc-admin-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ufsc-btn-green {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.ufsc-btn-green:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    color: white;
+}
+
+/* =============================================================================
+   Button and Action Improvements
+   ============================================================================= */
+
+.ufsc-action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.ufsc-action-buttons .button {
+    margin: 0;
+    font-size: 11px;
+    padding: 4px 8px;
+    min-height: auto;
+    line-height: 1.2;
+}
+
+/* =============================================================================
+   Status Badge Improvements
+   ============================================================================= */
+
+.ufsc-status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 60px;
+}
+
+.ufsc-status-pending,
+.ufsc-status-en-attente {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.ufsc-status-active,
+.ufsc-status-validated,
+.ufsc-status-validee {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.ufsc-status-refused,
+.ufsc-status-refusee {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f1aeb5;
+}
+
+.ufsc-status-draft {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+/* =============================================================================
+   Title and Header Compacting
+   ============================================================================= */
+
+.ufsc-section-title {
+    font-size: 1.4em;
+    line-height: 1.3;
+    margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+.ufsc-overview-section-title {
+    font-size: 1.2em;
+    line-height: 1.2;
+    margin: 0 0 10px;
+}
+
+.ufsc-card-header {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.ufsc-card-body {
+    padding: 15px;
+}
+
+/* =============================================================================
+   Responsive Design
+   ============================================================================= */
+
+@media (max-width: 768px) {
+    .ufsc-dashboard-overview,
+    .ufsc-licence-list-container,
+    .ufsc-admin-licence-table-container {
+        padding: 0 10px;
+    }
+    
+    /* Smaller avatar on mobile */
+    .ufsc-club-avatar,
+    .ufsc-logo-container,
+    .ufsc-avatar-display {
+        width: 96px;
+        height: 96px;
+    }
+    
+    /* Stack table columns differently on mobile */
+    .ufsc-licence-table,
+    .ufsc-admin-licence-table {
+        font-size: 12px;
+    }
+    
+    .ufsc-licence-table th,
+    .ufsc-licence-table td,
+    .ufsc-admin-licence-table th,
+    .ufsc-admin-licence-table td {
+        padding: 4px;
+    }
+    
+    .ufsc-action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .ufsc-action-buttons .button {
+        width: 100%;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+    
+    .ufsc-admin-buttons {
+        flex-direction: column;
+    }
+    
+    .ufsc-admin-buttons .ufsc-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Even smaller avatar on very small screens */
+    .ufsc-club-avatar,
+    .ufsc-logo-container,
+    .ufsc-avatar-display {
+        width: 72px;
+        height: 72px;
+    }
+    
+    .ufsc-club-avatar .placeholder,
+    .ufsc-logo-container .placeholder,
+    .ufsc-avatar-display .placeholder {
+        font-size: 24px;
+    }
+    
+    /* Hide less important columns on very small screens */
+    .ufsc-col-region,
+    .ufsc-col-date {
+        display: none;
+    }
+    
+    .ufsc-section-title {
+        font-size: 1.2em;
+    }
+    
+    .ufsc-overview-section-title {
+        font-size: 1.1em;
+    }
+}
+
+/* =============================================================================
+   DataTables Integration Fixes
+   ============================================================================= */
+
+.dataTables_wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    margin: 0 0.5em;
+}
+
+/* =============================================================================
+   Club Info Grid Improvements
+   ============================================================================= */
+
+.ufsc-club-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.ufsc-club-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ufsc-club-info-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.ufsc-club-info-value {
+    color: #666;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+/* =============================================================================
+   Utility Classes
+   ============================================================================= */
+
+.ufsc-text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ufsc-text-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.ufsc-text-center {
+    text-align: center;
+}
+
+.ufsc-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

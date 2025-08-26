@@ -1,0 +1,275 @@
+/**
+ * CSS pour le tableau des licences dans l'administration
+ * Améliore la lisibilité et la responsivité du tableau DataTables
+ * 
+ * @version 1.0.0
+ * @date 2025-07-23
+ */
+
+/* Enhanced visual status badges */
+.ufsc-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    min-width: 70px;
+    white-space: nowrap;
+}
+
+.badge-pink {
+    background: linear-gradient(135deg, #e91e63, #f06292);
+    box-shadow: 0 2px 4px rgba(233, 30, 99, 0.3);
+}
+
+.badge-blue {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+.badge-green {
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.badge-orange {
+    background: linear-gradient(135deg, #ff9800, #ffb74d);
+    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+}
+
+.badge-red {
+    background: linear-gradient(135deg, #f44336, #ef5350);
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+/* Results summary styling */
+.ufsc-results-summary {
+    background: #f0f6fc;
+    border: 1px solid #c6ddf0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.ufsc-results-summary p {
+    margin: 0;
+    color: #0969da;
+    font-size: 14px;
+}
+
+/* DataTables wrapper improvements */
+.dataTables_wrapper {
+    margin-top: 20px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dataTables_info {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/* Table styling improvements - Applicable to both licenses tables */
+#licenses-table-club,
+#licenses-table-global {
+    font-size: 13px;
+    border-collapse: collapse !important;
+}
+
+#licenses-table-club thead th,
+#licenses-table-global thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 8px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+}
+
+#licenses-table-club tbody td,
+#licenses-table-global tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+/* Empty state styling */
+#licenses-table-club tbody tr td[colspan],
+#licenses-table-global tbody tr td[colspan] {
+    text-align: center;
+    padding: 30px;
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f8f9fa;
+}
+
+/* Additional styling for empty state */
+.ufsc-empty-state td[colspan] {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+}
+
+/* Action buttons styling */
+.ufsc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.ufsc-actions .button {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 11px;
+    padding: 4px 8px;
+    height: auto;
+    line-height: 1.3;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.button-link-delete {
+    color: #d63638 !important;
+    text-decoration: none !important;
+    border-color: #d63638;
+    background: transparent;
+}
+
+.button-link-delete:hover {
+    color: #fff !important;
+    background-color: #d63638;
+    border-color: #a00;
+}
+
+.button-link-delete:focus {
+    box-shadow: 0 0 0 1px #d63638;
+}
+
+/* Export buttons styling */
+.ufsc-export-buttons {
+    margin-bottom: 15px;
+}
+
+.ufsc-export-buttons .dt-button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* Responsive improvements */
+@media screen and (max-width: 1200px) {
+    #licenses-table-club,
+    #licenses-table-global {
+        font-size: 12px;
+    }
+    
+    #licenses-table-club thead th,
+    #licenses-table-club tbody td,
+    #licenses-table-global thead th,
+    #licenses-table-global tbody td {
+        padding: 8px 6px;
+    }
+    
+    .ufsc-badge {
+        padding: 4px 8px;
+        min-width: 60px;
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ufsc-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+    }
+    
+    .ufsc-actions .button {
+        text-align: center;
+        margin-bottom: 2px;
+        width: 100%;
+    }
+    
+    #licenses-table-club,
+    #licenses-table-global {
+        font-size: 11px;
+    }
+    
+    .ufsc-badge {
+        display: block;
+        width: 100%;
+        margin: 2px 0;
+    }
+}
+
+/* DataTables responsive adjustments */
+.dtr-details {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.dtr-details .dtr-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Improve table cell content wrapping */
+#licenses-table-club tbody td,
+#licenses-table-global tbody td {
+    max-width: 200px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Column width adjustments for club view (14 columns with checkbox) */
+#licenses-table-club thead th:nth-child(1) { min-width: 40px; }   /* Checkbox */
+#licenses-table-club thead th:nth-child(2) { min-width: 50px; }   /* ID */
+#licenses-table-club thead th:nth-child(3) { min-width: 100px; }  /* Nom */
+#licenses-table-club thead th:nth-child(4) { min-width: 100px; }  /* Prénom */
+#licenses-table-club thead th:nth-child(5) { min-width: 80px; }   /* Sexe */
+#licenses-table-club thead th:nth-child(6) { min-width: 100px; }  /* Naissance */
+#licenses-table-club thead th:nth-child(7) { min-width: 150px; }  /* Email */
+#licenses-table-club thead th:nth-child(8) { min-width: 100px; }  /* Ville */
+#licenses-table-club thead th:nth-child(9) { min-width: 100px; }  /* Région */
+#licenses-table-club thead th:nth-child(10) { min-width: 120px; } /* Club */
+#licenses-table-club thead th:nth-child(11) { min-width: 90px; }  /* Compétition */
+#licenses-table-club thead th:nth-child(12) { min-width: 80px; }  /* Inclus */
+#licenses-table-club thead th:nth-child(13) { min-width: 90px; }  /* Inscrit */
+#licenses-table-club thead th:nth-child(14) { min-width: 180px; } /* Actions */
+
+/* Column width adjustments for global view (13 columns without checkbox) */
+#licenses-table-global thead th:nth-child(1) { min-width: 50px; }   /* ID */
+#licenses-table-global thead th:nth-child(2) { min-width: 100px; }  /* Nom */
+#licenses-table-global thead th:nth-child(3) { min-width: 100px; }  /* Prénom */
+#licenses-table-global thead th:nth-child(4) { min-width: 80px; }   /* Sexe */
+#licenses-table-global thead th:nth-child(5) { min-width: 100px; }  /* Naissance */
+#licenses-table-global thead th:nth-child(6) { min-width: 150px; }  /* Email */
+#licenses-table-global thead th:nth-child(7) { min-width: 100px; }  /* Ville */
+#licenses-table-global thead th:nth-child(8) { min-width: 100px; }  /* Région */
+#licenses-table-global thead th:nth-child(9) { min-width: 120px; }  /* Club */
+#licenses-table-global thead th:nth-child(10) { min-width: 90px; }  /* Compétition */
+#licenses-table-global thead th:nth-child(11) { min-width: 80px; }  /* Inclus */
+#licenses-table-global thead th:nth-child(12) { min-width: 90px; }  /* Inscrit */
+#licenses-table-global thead th:nth-child(13) { min-width: 180px; } /* Actions */
+
+/* Loading state improvements */
+.dataTables_processing {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

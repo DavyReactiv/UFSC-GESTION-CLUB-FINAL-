@@ -1,0 +1,165 @@
+/* Styles personnalisés pour l'intégration WooCommerce */
+
+/* Formulaire de licence sur la page produit */
+.ufsc-product-licence-form {
+    background: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.ufsc-product-licence-form h3 {
+    color: #2e2d54;
+    border-bottom: 2px solid #d40000;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.ufsc-licence-quota-info {
+    background: #e7f5ff;
+    border-left: 4px solid #2e2d54;
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin: 0 0 30px;
+    font-size: 15px;
+}
+
+.ufsc-quota-positive {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.ufsc-quota-negative {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.ufsc-quota-exhausted {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Tableau de formulaire */
+.ufsc-licence-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.ufsc-licence-table th {
+    width: 230px;
+    vertical-align: top;
+    padding: 12px 20px 12px 0;
+    text-align: left;
+    font-weight: 600;
+}
+
+.ufsc-licence-table td {
+    padding: 8px 0;
+}
+
+.ufsc-licence-table .required {
+    color: #d40000;
+    margin-left: 3px;
+}
+
+.ufsc-licence-table input[type="text"],
+.ufsc-licence-table input[type="email"],
+.ufsc-licence-table input[type="tel"],
+.ufsc-licence-table input[type="date"],
+.ufsc-licence-table select,
+.ufsc-licence-table textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.ufsc-licence-table input:focus,
+.ufsc-licence-table select:focus,
+.ufsc-licence-table textarea:focus {
+    border-color: #2e2d54;
+    box-shadow: 0 0 0 2px rgba(46, 45, 84, 0.1);
+    outline: none;
+}
+
+/* Bouton d'achat de licence */
+.ufsc-licence-button-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.ufsc-licence-quota-status {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.ufsc-licence-count {
+    font-weight: 700;
+    color: #2e2d54;
+}
+
+.ufsc-licence-info {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.ufsc-licence-button {
+    padding: 12px 28px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .ufsc-product-licence-form {
+        padding: 20px;
+    }
+    
+    .ufsc-licence-table th,
+    .ufsc-licence-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .ufsc-licence-table th {
+        padding-bottom: 5px;
+    }
+    
+    .ufsc-licence-table td {
+        padding-bottom: 15px;
+    }
+    
+    .ufsc-licence-button-container {
+        padding: 20px;
+    }
+}
+
+/* Améliorations pour le checkout WooCommerce */
+.woocommerce-checkout .ufsc-licence-data-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.woocommerce-checkout .ufsc-licence-data-title {
+    font-weight: 700;
+    color: #2e2d54;
+    margin-bottom: 5px;
+}

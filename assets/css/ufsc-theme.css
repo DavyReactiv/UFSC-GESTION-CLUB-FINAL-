@@ -1,0 +1,364 @@
+/**
+ * UFSC Theme - Styles professionnels pour formulaires et tableaux de bord
+ */
+
+:root {
+  --ufsc-navy: #2e2d54;
+  --ufsc-red: #d40000;
+  --ufsc-light-gray: #f5f5f5;
+  --ufsc-border: #e0e0e0;
+  --ufsc-text: #333333;
+  --ufsc-success: #46b450;
+  --ufsc-warning: #ffb900;
+  --ufsc-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --ufsc-transition: all 0.3s ease;
+}
+
+/* ===== LAYOUT GÉNÉRAL ===== */
+.ufsc-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--ufsc-text);
+  line-height: 1.6;
+}
+
+.ufsc-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--ufsc-shadow);
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.ufsc-card-header {
+  background: var(--ufsc-navy);
+  color: white;
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ufsc-card-header i, 
+.ufsc-card-header svg {
+  margin-right: 10px;
+}
+
+.ufsc-card-body {
+  padding: 20px;
+}
+
+.ufsc-section-title {
+  color: var(--ufsc-navy);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 30px 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ufsc-red);
+  display: inline-block;
+}
+
+/* ===== TABLEAUX DE BORD ===== */
+.ufsc-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 25px;
+  margin-bottom: 40px;
+}
+
+.ufsc-stat-card {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--ufsc-shadow);
+  text-align: center;
+  transition: var(--ufsc-transition);
+}
+
+.ufsc-stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.ufsc-stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ufsc-navy);
+  margin: 10px 0;
+}
+
+.ufsc-stat-label {
+  color: #777;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ufsc-stat-icon {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  background: var(--ufsc-light-gray);
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.ufsc-stat-icon i {
+  font-size: 24px;
+  color: var(--ufsc-navy);
+}
+
+/* ===== QUOTAS ET PROGRESS BARS ===== */
+.ufsc-quota-box {
+  margin-bottom: 25px;
+}
+
+.ufsc-quota-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ufsc-quota-progress {
+  height: 10px;
+  background: var(--ufsc-light-gray);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.ufsc-quota-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ufsc-navy), var(--ufsc-red));
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* ===== TABLEAUX ===== */
+.ufsc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.ufsc-table th {
+  background: var(--ufsc-navy);
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ufsc-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--ufsc-border);
+  font-size: 14px;
+}
+
+.ufsc-table tr:hover {
+  background-color: var(--ufsc-light-gray);
+}
+
+.ufsc-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* ===== BADGES ===== */
+.ufsc-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.ufsc-badge-active {
+  background-color: var(--ufsc-success);
+}
+
+.ufsc-badge-inactive {
+  background-color: #999;
+}
+
+.ufsc-badge-pending {
+  background-color: var(--ufsc-warning);
+}
+
+.ufsc-badge-featured {
+  background-color: var(--ufsc-red);
+}
+
+/* ===== FORMULAIRES ===== */
+.ufsc-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ufsc-form-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--ufsc-shadow);
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.ufsc-form-section-header {
+  background: var(--ufsc-navy);
+  color: white;
+  padding: 12px 20px;
+  font-weight: 600;
+}
+
+.ufsc-form-section-body {
+  padding: 20px;
+}
+
+.ufsc-form-row {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .ufsc-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ufsc-form label {
+  font-weight: 600;
+  color: var(--ufsc-text);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.ufsc-form input[type="text"],
+.ufsc-form input[type="email"],
+.ufsc-form input[type="tel"],
+.ufsc-form input[type="number"],
+.ufsc-form input[type="date"],
+.ufsc-form input[type="password"],
+.ufsc-form select,
+.ufsc-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--ufsc-border);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: var(--ufsc-transition);
+}
+
+.ufsc-form input:focus,
+.ufsc-form select:focus,
+.ufsc-form textarea:focus {
+  border-color: var(--ufsc-navy);
+  box-shadow: 0 0 0 3px rgba(46, 45, 84, 0.1);
+  outline: none;
+}
+
+.ufsc-form input[type="file"] {
+  padding: 8px 0;
+}
+
+.ufsc-form-hint {
+  font-size: 13px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.ufsc-form-required {
+  color: var(--ufsc-red);
+}
+
+/* ===== BOUTONS ===== */
+.ufsc-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--ufsc-navy);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--ufsc-transition);
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.ufsc-btn:hover {
+  background: #3b3a6b;
+  transform: translateY(-2px);
+}
+
+.ufsc-btn-red {
+  background: var(--ufsc-red);
+}
+
+.ufsc-btn-red:hover {
+  background: #c10000;
+}
+
+.ufsc-btn-outline {
+  background: transparent;
+  border: 2px solid var(--ufsc-navy);
+  color: var(--ufsc-navy);
+}
+
+.ufsc-btn-outline:hover {
+  background: var(--ufsc-navy);
+  color: white;
+}
+
+/* ===== ALERTS ===== */
+.ufsc-alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.ufsc-alert-success {
+  background-color: #e7f6ea;
+  border-left: 4px solid var(--ufsc-success);
+  color: #287d36;
+}
+
+.ufsc-alert-error {
+  background-color: #fde9e9;
+  border-left: 4px solid var(--ufsc-red);
+  color: #c10000;
+}
+
+.ufsc-alert-warning {
+  background-color: #fff9e6;
+  border-left: 4px solid var(--ufsc-warning);
+  color: #a67c00;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .ufsc-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ufsc-dashboard {
+    grid-template-columns: 1fr;
+  }
+  
+  .ufsc-form {
+    padding: 0 15px;
+  }
+}

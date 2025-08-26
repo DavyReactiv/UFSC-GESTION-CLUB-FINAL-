@@ -1,0 +1,29 @@
+/* Styles pour le formulaire d'affiliation */
+
+.ufsc-alert-info {
+    background-color: #e7f5ff;
+    border-left: 4px solid #2196f3;
+    color: #0c5460;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.ufsc-badge-featured {
+    background-color: #d40000;
+}
+
+.ufsc-card .ufsc-card-header {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.ufsc-card ul {
+    margin-left: 20px;
+}
+
+.ufsc-card ul ul {
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}

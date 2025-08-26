@@ -1,0 +1,598 @@
+/**
+ * Dashboard MVP Styles
+ * 
+ * CSS styles for the new dashboard MVP implementation
+ */
+
+/* Dashboard Container */
+.ufsc-dashboard-mvp {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header Section */
+.ufsc-dashboard-header {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+.ufsc-club-identity {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ufsc-club-logo-container {
+    flex-shrink: 0;
+}
+
+.ufsc-logo-upload-section {
+    text-align: center;
+}
+
+.ufsc-club-logo-display {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+}
+
+.ufsc-club-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ufsc-no-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.ufsc-no-logo-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.ufsc-logo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ufsc-club-info h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #1a202c;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ufsc-affiliation-number {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Badges */
+.ufsc-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ufsc-badge-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.ufsc-badge-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.ufsc-badge-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.ufsc-badge-warning {
+    background: #ffeaa7;
+    color: #e17055;
+}
+
+.ufsc-badge-inactive {
+    background: #e9ecef;
+    color: #6c757d;
+}
+
+/* KPIs Section */
+.ufsc-kpis-section {
+    margin-bottom: 30px;
+}
+
+.ufsc-kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.ufsc-kpi-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ufsc-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ufsc-kpi-card.ufsc-kpi-warning {
+    border-left: 4px solid #ff6b6b;
+}
+
+.ufsc-kpi-icon {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.ufsc-kpi-content {
+    flex: 1;
+}
+
+.ufsc-kpi-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.ufsc-kpi-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Quota Section */
+.ufsc-quota-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+.ufsc-quota-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+}
+
+.ufsc-quota-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ufsc-quota-card {
+    padding: 20px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.ufsc-quota-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 15px 0;
+}
+
+.ufsc-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.ufsc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.ufsc-quota-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.ufsc-quota-label {
+    font-weight: 400;
+    color: #6c757d;
+}
+
+.ufsc-quota-note {
+    font-size: 12px;
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Statistics Section */
+.ufsc-stats-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+.ufsc-stats-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+}
+
+.ufsc-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ufsc-stat-card {
+    padding: 20px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.ufsc-stat-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 15px 0;
+}
+
+.ufsc-stat-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ufsc-stat-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ufsc-stat-label {
+    min-width: 80px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.ufsc-bar-container {
+    flex: 1;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.ufsc-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.ufsc-stat-value {
+    min-width: 80px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #495057;
+    text-align: right;
+}
+
+/* Downloads Section */
+.ufsc-downloads-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+.ufsc-downloads-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+}
+
+.ufsc-downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ufsc-download-group h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 15px 0;
+}
+
+.ufsc-download-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ufsc-download-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    background: #f8f9fa;
+}
+
+.ufsc-download-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Recent Licenses Section */
+.ufsc-recent-licenses-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+.ufsc-recent-licenses-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+}
+
+.ufsc-licenses-table {
+    overflow-x: auto;
+}
+
+.ufsc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ufsc-table th,
+.ufsc-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.ufsc-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ufsc-table td {
+    color: #495057;
+}
+
+.ufsc-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+/* Empty State */
+.ufsc-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.ufsc-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.ufsc-empty-state p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.ufsc-empty-actions {
+    margin-top: 20px;
+}
+
+/* Buttons */
+.ufsc-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #007bff;
+    color: #fff;
+}
+
+.ufsc-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #fff;
+}
+
+.ufsc-btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.ufsc-btn-outline {
+    background: transparent;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.ufsc-btn-outline:hover {
+    background: #007bff;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ufsc-dashboard-mvp {
+        padding: 15px;
+    }
+    
+    .ufsc-dashboard-header,
+    .ufsc-quota-section,
+    .ufsc-stats-section,
+    .ufsc-downloads-section,
+    .ufsc-recent-licenses-section {
+        padding: 20px;
+    }
+    
+    .ufsc-club-identity {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .ufsc-club-info h1 {
+        font-size: 24px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ufsc-kpis-grid,
+    .ufsc-quota-grid,
+    .ufsc-stats-grid,
+    .ufsc-downloads-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-kpi-card {
+        padding: 20px;
+    }
+    
+    .ufsc-stat-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    
+    .ufsc-stat-label,
+    .ufsc-stat-value {
+        min-width: auto;
+        text-align: left;
+    }
+    
+    .ufsc-download-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .ufsc-table {
+        font-size: 12px;
+    }
+    
+    .ufsc-table th,
+    .ufsc-table td {
+        padding: 8px 12px;
+    }
+}
+
+/* Logo Upload Message Styling */
+.ufsc-logo-upload-message {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.ufsc-logo-upload-message.ufsc-alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.ufsc-logo-upload-message.ufsc-alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Animation for progress bars */
+@keyframes fillProgress {
+    from {
+        width: 0%;
+    }
+}
+
+.ufsc-progress-fill,
+.ufsc-bar-fill {
+    animation: fillProgress 1s ease-out;
+}

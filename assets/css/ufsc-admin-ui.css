@@ -1,0 +1,42 @@
+
+/* UFSC Admin UI Enhancements */
+.ufsc-wrap { max-width: 100%; }
+.ufsc-table { table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; }
+.ufsc-table th, .ufsc-table td { padding: 8px 10px; vertical-align: middle; }
+.ufsc-table thead th { position: sticky; top: 32px; background: #fff; z-index: 1; }
+.ufsc-table tr:nth-child(even){ background: #fafafa; }
+.ufsc-table th, .ufsc-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ufsc-col--id { width: 70px; text-align: right; }
+.ufsc-col--name { width: 220px; }
+.ufsc-col--role { width: 120px; }
+.ufsc-col--status { width: 120px; }
+.ufsc-col--club { width: 220px; }
+.ufsc-col--email { width: 220px; }
+.ufsc-col--phone { width: 140px; }
+.ufsc-col--date { width: 140px; }
+.ufsc-col--actions { width: 180px; text-align: right; }
+.ufsc-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 12px; border: 1px solid #e5e7eb; background: #f8fafc; gap: 6px; }
+.ufsc-badge--ok { background: #ecfdf5; border-color: #10b981; }
+.ufsc-badge--warn { background: #fffbeb; border-color: #f59e0b; }
+.ufsc-badge--err { background: #fef2f2; border-color: #ef4444; }
+.ufsc-cell--wrap { white-space: normal; word-break: break-word; }
+.ufsc-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 6px; }
+.ufsc-actions .button { height: 28px; line-height: 26px; padding: 0 8px; }
+.ufsc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ufsc-form .ufsc-field { display: flex; flex-direction: column; gap: 6px; }
+.ufsc-form .ufsc-field label { font-weight: 600; }
+.select2-container { max-width: 100% !important; }
+.wrap .tablenav .actions select { max-width: 220px; }
+@media (max-width: 1200px) {
+  .ufsc-col--email, .ufsc-col--phone, .ufsc-col--club { display: none; }
+  .ufsc-col--actions { width: 140px; }
+}
+@media (max-width: 960px) {
+  .ufsc-table, .ufsc-table thead, .ufsc-table tbody, .ufsc-table th, .ufsc-table td, .ufsc-table tr { display: block; }
+  .ufsc-table thead { display: none; }
+  .ufsc-row { border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 12px; background: #fff; }
+  .ufsc-row .ufsc-cell { display: grid; grid-template-columns: 120px 1fr; gap: 8px; padding: 8px 10px; }
+  .ufsc-row .ufsc-cell::before { content: attr(data-label); font-weight: 600; color: #111827; }
+  .ufsc-actions { justify-content: flex-start; padding: 8px 10px; }
+}
+.postbox .inside { display: grid; gap: 12px; }

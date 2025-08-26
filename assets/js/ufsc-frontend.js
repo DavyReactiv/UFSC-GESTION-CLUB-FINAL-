@@ -1,0 +1,31 @@
+
+(function($){
+  function serializeForm($form){
+    var arr = $form.serializeArray(), data = {};
+    arr.forEach(function(it){ data[it.name] = it.value; });
+    return data;
+  }
+  $(document).on('click','#ufsc-save-draft',function(e){
+    e.preventDefault();
+    var $f = $(this).closest('form');
+    var data = serializeForm($f);
+    data.action = 'ufsc_save_licence_draft';
+    $.post(ajaxurl || (window.ufsc_ajax && ufsc_ajax.url) || '/wp-admin/admin-ajax.php', data, function(resp){
+      if (resp && resp.success){
+        alert('Brouillon enregistré.');
+        if (resp.data && resp.data.redirect) window.location.href = resp.data.redirect;
+      } else {
+        alert((resp && resp.data && resp.data.message) || 'Erreur lors de la sauvegarde.');
+      }
+    });
+  });
+  $(document).on('click','.ufsc-delete-draft',function(e){
+    e.preventDefault();
+    if(!confirm('Supprimer ce brouillon ?')) return;
+    var id = $(this).data('id');
+    $.post(ajaxurl || (window.ufsc_ajax && ufsc_ajax.url) || '/wp-admin/admin-ajax.php', {action:'ufsc_delete_licence_draft', licence_id:id}, function(resp){
+      if (resp && resp.success){ location.reload(); }
+      else alert('Suppression impossible.');
+    });
+  });
+})(jQuery);

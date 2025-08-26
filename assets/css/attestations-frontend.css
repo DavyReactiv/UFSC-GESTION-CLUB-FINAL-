@@ -1,0 +1,326 @@
+/**
+ * Frontend CSS for UFSC Attestation Uploads
+ * 
+ * @package UFSC_Gestion_Club
+ */
+
+/* Main container */
+.ufsc-attestation-upload-form {
+    max-width: 600px;
+    margin: 20px 0;
+}
+
+.ufsc-attestation-upload-form .ufsc-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.ufsc-attestation-upload-form .ufsc-card-header {
+    background: #f8f9fa;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ufsc-attestation-upload-form .ufsc-card-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.ufsc-attestation-upload-form .ufsc-card-body {
+    padding: 20px;
+}
+
+/* Form styling */
+.ufsc-attestation-form {
+    margin: 0;
+}
+
+.ufsc-form-group {
+    margin-bottom: 20px;
+}
+
+.ufsc-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ufsc-form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #ddd;
+    border-radius: 6px;
+    background: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ufsc-form-group input[type="file"]:hover {
+    border-color: #007cba;
+    background: #f0f8ff;
+}
+
+.ufsc-form-group input[type="file"]:focus {
+    outline: none;
+    border-color: #007cba;
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+}
+
+.ufsc-help-text {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Button styling */
+.ufsc-form-actions {
+    margin-top: 20px;
+}
+
+.ufsc-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #007cba;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ufsc-btn:hover {
+    background: #005a87;
+    color: #fff;
+    text-decoration: none;
+}
+
+.ufsc-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ufsc-btn-primary {
+    background: #007cba;
+}
+
+.ufsc-btn-small {
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+.ufsc-btn-loading-state {
+    pointer-events: none;
+}
+
+.ufsc-btn-loading {
+    display: none;
+}
+
+/* Feedback messages */
+.ufsc-upload-feedback {
+    margin-top: 15px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ufsc-upload-feedback .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.ufsc-feedback-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.ufsc-feedback-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.ufsc-feedback-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Attestation list */
+.ufsc-attestation-list {
+    max-width: 800px;
+    margin: 20px 0;
+}
+
+.ufsc-attestation-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.ufsc-attestation-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: box-shadow 0.3s ease;
+}
+
+.ufsc-attestation-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ufsc-attestation-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.ufsc-attestation-type .dashicons {
+    color: #007cba;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.ufsc-attestation-type span {
+    font-weight: 600;
+    color: #333;
+}
+
+.ufsc-attestation-info {
+    flex-grow: 1;
+}
+
+.ufsc-attestation-info small {
+    color: #666;
+    font-size: 0.85em;
+}
+
+.ufsc-attestation-actions {
+    flex-shrink: 0;
+}
+
+/* Empty state */
+.ufsc-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.ufsc-empty-state p {
+    margin: 0;
+    font-style: italic;
+}
+
+/* Alert styling */
+.ufsc-alert {
+    padding: 16px;
+    border-radius: 6px;
+    margin: 20px 0;
+}
+
+.ufsc-alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.ufsc-alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.ufsc-alert p {
+    margin: 0 0 8px 0;
+}
+
+.ufsc-alert p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .ufsc-attestation-upload-form,
+    .ufsc-attestation-list {
+        margin: 15px 0;
+    }
+    
+    .ufsc-attestation-upload-form .ufsc-card-header,
+    .ufsc-attestation-upload-form .ufsc-card-body {
+        padding: 15px;
+    }
+    
+    .ufsc-attestation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-attestation-item {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .ufsc-attestation-type,
+    .ufsc-attestation-info,
+    .ufsc-attestation-actions {
+        justify-content: center;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ufsc-attestation-upload-form .ufsc-card {
+        border-color: #000;
+    }
+    
+    .ufsc-form-group input[type="file"] {
+        border-color: #000;
+    }
+    
+    .ufsc-btn {
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ufsc-form-group input[type="file"],
+    .ufsc-btn,
+    .ufsc-attestation-item {
+        transition: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .ufsc-attestation-upload-form {
+        display: none;
+    }
+    
+    .ufsc-attestation-list .ufsc-btn {
+        display: none;
+    }
+}

@@ -1,0 +1,508 @@
+/* Layout général */
+.wrap {
+    max-width: 1200px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Form inline */
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.inline-form input[type="text"],
+.inline-form select {
+    min-width: 200px;
+}
+
+/* Quotas */
+.ufsc-quota-box {
+    background: #f9f9f9;
+    border-left: 5px solid #007cba;
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+.ufsc-quota-progress {
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 20px;
+    margin: 10px 0;
+}
+
+.ufsc-quota-bar {
+    background: #007cba;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+}
+
+.ufsc-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    color: #fff;
+    margin-right: 8px;
+}
+
+.badge-green {
+    background: #46b450;
+}
+
+.badge-red {
+    background: #dc3232;
+}
+
+/* Formulaires club/licence */
+form.ufsc-club-infos-form input,
+form.ufsc-club-infos-form select,
+form.ufsc-club-infos-form textarea {
+    width: 100%;
+    max-width: 450px;
+}
+
+table.form-table th {
+    width: 200px;
+}
+
+/* Filtres */
+.ufsc-licences-filters {
+    margin-bottom: 20px;
+}
+
+.ufsc-licences-filters label {
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+/* Table liste */
+table.widefat {
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+table.widefat th,
+table.widefat td {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+/* Pagination */
+.tablenav-pages {
+    margin-top: 10px;
+}
+
+.tablenav-pages .page-numbers {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+}
+
+.tablenav-pages .current {
+    background-color: #0073aa;
+    color: white;
+    border-color: #0073aa;
+}
+
+/* Notices WordPress */
+.notice-success {
+    border-left-color: #46b450;
+}
+
+.notice-error {
+    border-left-color: #dc3232;
+}
+
+/* === Form Validation Styles === */
+/* Error field styling */
+.ufsc-field-error {
+    border-color: #dc3232 !important;
+    box-shadow: 0 0 2px rgba(220, 50, 50, 0.8) !important;
+    background-color: #ffeaea !important;
+}
+
+/* Error message styling */
+.ufsc-error-message {
+    color: #dc3232;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-weight: normal;
+}
+
+/* Required field indicator */
+.ufsc-form-required {
+    color: #dc3232;
+    font-weight: bold;
+}
+
+/* Form section styling for better organization */
+.ufsc-form-section {
+    margin-bottom: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ufsc-form-section-header {
+    background: #f7f7f7;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ufsc-form-section-body {
+    padding: 20px;
+}
+
+.ufsc-form-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: start;
+}
+
+.ufsc-form-row label {
+    font-weight: 600;
+    padding-top: 8px;
+}
+
+.ufsc-form-hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Badge styling for form sections */
+.ufsc-badge-featured {
+    background: #dc3232;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: normal;
+    margin-left: auto;
+}
+
+/* Button styling */
+.ufsc-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ufsc-btn-red {
+    background: #dc3232;
+    color: white;
+}
+
+.ufsc-btn-red:hover {
+    background: #c73232;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ufsc-form-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .ufsc-form-row label {
+        padding-top: 0;
+    }
+}
+
+/* Action buttons styling */
+.ufsc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.ufsc-actions .button {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 12px;
+    padding: 4px 8px;
+    height: auto;
+    line-height: 1.2;
+}
+
+.button-link-delete {
+    color: #d63638 !important;
+    text-decoration: none !important;
+    border-color: #d63638;
+    background: transparent;
+}
+
+.button-link-delete:hover {
+    color: #fff !important;
+    background-color: #d63638;
+    border-color: #a00;
+}
+
+.button-link-delete:focus {
+    box-shadow: 0 0 0 1px #d63638;
+}
+
+/* Detail pages styling */
+.ufsc-detail-section {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.ufsc-detail-section h2 {
+    margin-top: 0;
+    color: #1d2327;
+    border-bottom: 1px solid #c3c4c7;
+    padding-bottom: 10px;
+}
+
+.ufsc-detail-section h2 .dashicons {
+    margin-right: 8px;
+    color: #2271b1;
+}
+
+.ufsc-detail-section h3 {
+    margin: 20px 0 10px 0;
+    color: #1d2327;
+}
+
+.ufsc-danger-zone {
+    border-left: 4px solid #d63638;
+}
+
+.ufsc-danger-zone h2 .dashicons {
+    color: #d63638 !important;
+}
+
+/* Responsive actions for smaller screens */
+@media (max-width: 768px) {
+    .ufsc-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .ufsc-actions .button {
+        text-align: center;
+        margin-bottom: 2px;
+    }
+}
+
+/* Enhanced visual status badges */
+.ufsc-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    min-width: 60px;
+}
+
+.badge-pink {
+    background: linear-gradient(135deg, #e91e63, #f06292);
+    box-shadow: 0 2px 4px rgba(233, 30, 99, 0.3);
+}
+
+.badge-blue {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+.badge-green {
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.badge-orange {
+    background: linear-gradient(135deg, #ff9800, #ffb74d);
+    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+}
+
+.badge-red {
+    background: linear-gradient(135deg, #f44336, #ef5350);
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+/* Responsive Design for Admin Pages */
+@media screen and (max-width: 1024px) {
+    .wrap {
+        margin: 10px;
+        padding: 0 10px;
+    }
+    
+    .inline-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .inline-form input[type="text"],
+    .inline-form select {
+        min-width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* Table responsive */
+    .wp-list-table {
+        font-size: 14px;
+    }
+    
+    .wp-list-table th,
+    .wp-list-table td {
+        padding: 8px 4px;
+    }
+    
+    /* Admin forms */
+    .form-table th {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        display: block;
+    }
+    
+    .form-table td {
+        width: 100%;
+        padding-left: 0;
+        display: block;
+        margin-bottom: 15px;
+    }
+    
+    .form-table input[type="text"],
+    .form-table input[type="email"],
+    .form-table input[type="tel"],
+    .form-table select,
+    .form-table textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrap {
+        margin: 5px;
+        padding: 0 5px;
+    }
+    
+    /* Hide less important columns in tables */
+    .wp-list-table .column-date,
+    .wp-list-table .column-region {
+        display: none;
+    }
+    
+    /* Stack buttons vertically */
+    .page-title-action,
+    .button-secondary,
+    .button-primary {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+    }
+    
+    /* Quota boxes */
+    .ufsc-quota-box {
+        padding: 10px 15px;
+        margin-bottom: 15px;
+    }
+    
+    /* Cards layout */
+    .card {
+        margin: 10px 0;
+    }
+    
+    /* Navigation */
+    .nav-tab-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .nav-tab {
+        display: inline-block;
+        min-width: 120px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wrap h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .wp-list-table {
+        font-size: 12px;
+    }
+    
+    .wp-list-table th,
+    .wp-list-table td {
+        padding: 6px 2px;
+    }
+    
+    /* Hide even more columns on very small screens */
+    .wp-list-table .column-email,
+    .wp-list-table .column-telephone {
+        display: none;
+    }
+    
+    /* Make action buttons smaller */
+    .button-small,
+    .row-actions {
+        font-size: 11px;
+    }
+    
+    .row-actions span {
+        margin-right: 5px;
+    }
+    
+    /* Admin notices */
+    .notice {
+        margin: 5px 0;
+        padding: 8px 12px;
+    }
+    
+    /* Dashboard widgets responsive */
+    .dashboard-widget {
+        margin-bottom: 15px;
+    }
+    
+    .dashboard-widget h3 {
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+    
+    .dashboard-widget .inside {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,25 @@
+<?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+return [
+    'regions' => [
+        'UFSC AUVERGNE-RHONE-ALPES',
+        'UFSC BOURGOGNE-FRANCHE-COMTE',
+        'UFSC BRETAGNE',
+        'UFSC CENTRE-VAL-DE-LOIRE',
+        'UFSC DROM-COM',
+        'UFSC GRAND EST',
+        'UFSC HAUTS-DE-FRANCE',
+        'UFSC ILE DE FRANCE',
+        'UFSC NORMANDIE',
+        'UFSC NOUVELLE AQUITAINE',
+        'UFSC OCCITANIE',
+        'UFSC PACA - CORSE',
+        'UFSC PAYS DE LA LOIRE'
+    ],
+    'statuts' => ['Actif', 'Inactif'],
+    'types'   => ['Association', 'Entreprise', 'Indépendant']
+];

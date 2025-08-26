@@ -1,0 +1,10 @@
+(function($){'use strict';
+var ajaxUrl=(UFSC_ADMIN&&UFSC_ADMIN.ajaxUrl)||'/wp-admin/admin-ajax.php';var nonce=(UFSC_ADMIN&&UFSC_ADMIN.nonce)||'';
+function doAction(a,p,f){p=p||{};p.action=a;if(nonce)p.nonce=nonce;return $.ajax({url:ajaxUrl,method:'POST',data:p,dataType:'json'})
+ .done(function(r){if(r&&r.success){location.reload();}else if(f){window.location.href=f;}else{alert((r&&r.data)||'Action failed');}})
+ .fail(function(j){console.error('UFSC AJAX fail',j&&j.status,j&&j.responseText);if(f)window.location.href=f;else alert('Network error');});}
+function idFrom($e){return $e.data('licenceId')||$e.data('licence-id')||$e.data('id')||$e.closest('[data-licence-id]').data('licence-id')||0;}
+$(document).on('click','.change-status-approve,.ufsc-validate,.btn-validate,[data-action="validate"]',function(e){e.preventDefault();var $b=$(this),id=idFrom($b);if(!id)return;$b.prop('disabled',true);doAction('ufsc_validate_licence',{licence_id:id},(window.ajaxurl||('/wp-admin/admin-post.php'))+'?action=ufsc_validate_licence&licence_id='+id).always(function(){$b.prop('disabled',false);});});
+$(document).on('click','.change-status-reject,.ufsc-reject,.btn-reject,[data-action="reject"]',function(e){e.preventDefault();var $b=$(this),id=idFrom($b);if(!id)return;if(!confirm('Refuser cette licence ?'))return;$b.prop('disabled',true);doAction('ufsc_reject_licence',{licence_id:id},(window.ajaxurl||('/wp-admin/admin-post.php'))+'?action=ufsc_reject_licence&licence_id='+id).always(function(){$b.prop('disabled',false);});});
+$(document).on('click','.ufsc-delete-licence,.btn-delete,.delete-licence,[data-action="delete"]',function(e){e.preventDefault();var $b=$(this),id=idFrom($b);if(!id)return;if(!confirm('Supprimer définitivement cette licence ?'))return;$b.prop('disabled',true);doAction('ufsc_delete_licence',{licence_id:id},(window.ajaxurl||('/wp-admin/admin-post.php'))+'?action=ufsc_delete_licence&licence_id='+id).always(function(){$b.prop('disabled',false);});});
+})(jQuery);

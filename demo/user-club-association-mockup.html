@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFSC - Association Utilisateur Club (Mockup)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+        .wrap {
+            background: white;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.13);
+        }
+        h1 {
+            color: #23282d;
+            margin: 0 0 20px 0;
+            font-size: 23px;
+            font-weight: 400;
+        }
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+        }
+        .form-section-header {
+            background: #f9f9f9;
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+            font-weight: 600;
+        }
+        .form-section-body {
+            padding: 20px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+            color: #23282d;
+        }
+        .required {
+            color: #d63638;
+        }
+        input, select {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .form-hint {
+            font-size: 12px;
+            color: #646970;
+            margin-top: 5px;
+        }
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 10px 0;
+        }
+        .club-list {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e5e5e5;
+        }
+        .club-list th, .club-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .club-list th {
+            background: #f9f9f9;
+            font-weight: 600;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-green {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+        .user-info {
+            line-height: 1.4;
+        }
+        .user-info strong {
+            color: #23282d;
+        }
+        .user-info small {
+            color: #646970;
+            font-size: 12px;
+        }
+        .no-user {
+            color: #8c8f94;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>🎯 UFSC - Nouvelle fonctionnalité : Association Utilisateur WordPress → Club</h1>
+        
+        <div class="highlight">
+            <strong>✅ Fonctionnalité implémentée avec succès!</strong><br>
+            Cette page montre l'interface utilisateur pour associer un utilisateur WordPress à un club.
+        </div>
+
+        <h2>1. Interface d'administration - Formulaire de club</h2>
+        
+        <div class="form-section">
+            <div class="form-section-header">
+                📝 Informations générales (section admin uniquement)
+            </div>
+            <div class="form-section-body">
+                <div class="form-row">
+                    <label for="nom">Nom du club <span class="required">*</span></label>
+                    <div>
+                        <input type="text" id="nom" value="Club de Sport UFSC Paris">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <label for="quota_licences">Quota de licences</label>
+                    <div>
+                        <input type="number" id="quota_licences" value="25">
+                    </div>
+                </div>
+                
+                <div class="form-row" style="background: #f0f8ff; padding: 15px; border-radius: 4px; grid-column: 1 / -1;">
+                    <label for="responsable_id">🆕 Utilisateur WordPress associé</label>
+                    <div>
+                        <select id="responsable_id" style="max-width: 600px;">
+                            <option value="">-- Aucun utilisateur associé --</option>
+                            <option value="2" selected>Marie Dupont (marie.dupont) - marie.dupont@example.com</option>
+                            <option value="3">Jean Martin (jean.martin) - jean.martin@example.com</option>
+                            <option value="4" disabled title="Cet utilisateur est déjà associé à un autre club">Pierre Durand (pierre.durand) - pierre.durand@example.com</option>
+                            <option value="5">Sophie Blanc (sophie.blanc) - sophie.blanc@example.com</option>
+                        </select>
+                        <div class="form-hint">
+                            Associer un utilisateur WordPress qui aura accès à la gestion du club.<br>
+                            <strong>Actuellement associé :</strong> Marie Dupont (marie.dupont)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>2. Liste des clubs avec utilisateurs associés</h2>
+        
+        <table class="club-list">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">☑️</th>
+                    <th style="width: 20%;">Nom</th>
+                    <th style="width: 12%;">Région</th>
+                    <th style="width: 12%;">Ville</th>
+                    <th style="width: 12%;">Statut</th>
+                    <th style="width: 15%;">🆕 Utilisateur associé</th>
+                    <th style="width: 12%;">Date création</th>
+                    <th style="width: 13%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <strong>Club de Sport UFSC Paris</strong><br>
+                        <small>contact@ufscparis.fr</small>
+                    </td>
+                    <td>Île-de-France</td>
+                    <td>Paris</td>
+                    <td><span class="badge badge-green">Actif</span></td>
+                    <td>
+                        <div class="user-info">
+                            <strong>Marie Dupont</strong><br>
+                            <small>marie.dupont</small><br>
+                            <small>marie.dupont@example.com</small>
+                        </div>
+                    </td>
+                    <td>15/01/2024</td>
+                    <td>
+                        <button style="margin-right: 5px;">Modifier</button>
+                        <button>Licences (12)</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <strong>ASPTT Lyon</strong><br>
+                        <small>info@aspttlyon.fr</small>
+                    </td>
+                    <td>Auvergne-Rhône-Alpes</td>
+                    <td>Lyon</td>
+                    <td><span class="badge badge-green">Actif</span></td>
+                    <td>
+                        <div class="user-info">
+                            <strong>Jean Martin</strong><br>
+                            <small>jean.martin</small><br>
+                            <small>jean.martin@example.com</small>
+                        </div>
+                    </td>
+                    <td>22/01/2024</td>
+                    <td>
+                        <button style="margin-right: 5px;">Modifier</button>
+                        <button>Licences (8)</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <strong>Club Sportif Marseille</strong><br>
+                        <small>contact@csmarseille.fr</small>
+                    </td>
+                    <td>Provence-Alpes-Côte d'Azur</td>
+                    <td>Marseille</td>
+                    <td><span class="badge badge-green">Actif</span></td>
+                    <td>
+                        <div class="no-user">Aucun utilisateur</div>
+                    </td>
+                    <td>28/01/2024</td>
+                    <td>
+                        <button style="margin-right: 5px;">Modifier</button>
+                        <button>Licences (5)</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>3. Fonctionnalités de sécurité</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+            <div style="padding: 20px; border: 1px solid #28a745; border-radius: 4px; background: #f8fff9;">
+                <h3 style="color: #28a745; margin-top: 0;">✅ Validations mises en place</h3>
+                <ul>
+                    <li><strong>Unicité</strong> : Un utilisateur = un seul club</li>
+                    <li><strong>Permissions</strong> : Admin uniquement</li>
+                    <li><strong>Existence</strong> : Vérification de l'utilisateur</li>
+                    <li><strong>Sécurité</strong> : Sanitisation des données</li>
+                </ul>
+            </div>
+            
+            <div style="padding: 20px; border: 1px solid #007cba; border-radius: 4px; background: #f7fcff;">
+                <h3 style="color: #007cba; margin-top: 0;">🔒 Contrôle d'accès frontend</h3>
+                <ul>
+                    <li><strong>Automatique</strong> : Utilise responsable_id</li>
+                    <li><strong>Sécurisé</strong> : Vérification côté serveur</li>
+                    <li><strong>Intégré</strong> : Compatible avec l'existant</li>
+                    <li><strong>Transparent</strong> : Aucun impact utilisateur</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>🎉 Résultat :</strong> La fonctionnalité est entièrement opérationnelle et prête à être utilisée!<br>
+            <em>Les administrateurs peuvent maintenant associer facilement des utilisateurs WordPress aux clubs pour un contrôle d'accès sécurisé.</em>
+        </div>
+    </div>
+</body>
+</html>

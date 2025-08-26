@@ -1,0 +1,22 @@
+/* Typo compacte et lisible */
+.ufsc-card .ufsc-card-body, .ufsc-table { font-size: 13px; line-height: 1.25; }
+
+/* Césure propre des valeurs longues (emails, régions, adresses) */
+.ufsc-profile-value, .ufsc-value { overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
+
+/* Tables plus denses */
+.ufsc-card .ufsc-card-body th, .ufsc-card .ufsc-card-body td { font-size: 13px; line-height: 1.25; padding: 6px 8px; }
+.ufsc-card .ufsc-card-body th { white-space: nowrap; color: #6b7280; font-weight: 600; }
+
+/* Grille fluide pour documents */
+.ufsc-docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.ufsc-doc-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; }
+.ufsc-doc-item .ufsc-doc-label { font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+.ufsc-doc-item .ufsc-btn, .ufsc-doc-item .button { font-size: 12px; padding: 6px 10px; white-space: nowrap; }
+
+/* Team cards en grille (si présent) */
+.ufsc-team-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 12px; }
+@media (max-width: 1100px){ .ufsc-team-grid{ grid-template-columns: repeat(2, minmax(220px,1fr)); } }
+@media (max-width: 700px){ .ufsc-team-grid{ grid-template-columns: 1fr; } }
+.ufsc-team-card { padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; }
+.ufsc-team-card .ufsc-detail + .ufsc-detail { margin-top: 6px; }

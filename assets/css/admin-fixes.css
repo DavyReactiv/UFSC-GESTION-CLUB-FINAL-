@@ -1,0 +1,199 @@
+/**
+ * UFSC Admin Fixes CSS
+ * Fixes for various admin UI issues
+ */
+
+/* Table responsiveness fixes for license listing */
+.ufsc-admin-table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.ufsc-admin-table-wrapper table {
+    width: 100% !important;
+    table-layout: auto;
+    max-width: 100%;
+}
+
+.ufsc-licences-table {
+    width: 100% !important;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.ufsc-licences-table td,
+.ufsc-licences-table th {
+    white-space: normal;
+    word-wrap: break-word;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.ufsc-licences-table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+
+/* DataTables responsiveness improvements */
+.dataTables_wrapper {
+    width: 100% !important;
+    overflow: visible;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    padding-top: 0.755em;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    padding-top: 0.25em;
+}
+
+/* Fix for overlapping search field */
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 20px;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 782px) {
+    .ufsc-admin-table-wrapper {
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .ufsc-licences-table td,
+    .ufsc-licences-table th {
+        min-width: 120px;
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+}
+
+/* Admin form improvements */
+.ufsc-admin-section {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.ufsc-admin-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Attestation section styling */
+.ufsc-existing-document,
+.ufsc-missing-document {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.ufsc-existing-document .dashicons,
+.ufsc-missing-document .dashicons {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.ufsc-existing-document .dashicons {
+    color: #00a32a;
+}
+
+.ufsc-missing-document .dashicons {
+    color: #d63638;
+}
+
+/* Button group spacing */
+.ufsc-existing-document .button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* Loading states */
+.ufsc-upload-club-attestation:disabled,
+.ufsc-replace-club-attestation:disabled,
+.ufsc-delete-club-attestation:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Notice improvements */
+.notice.ufsc-inline-notice {
+    margin: 15px 0;
+    padding: 12px;
+}
+
+.notice.ufsc-inline-notice p {
+    margin: 0;
+}
+
+/* Form table improvements */
+.form-table th {
+    width: 200px;
+    vertical-align: top;
+    padding-top: 15px;
+}
+
+.form-table td {
+    vertical-align: top;
+}
+
+/* Admin list table fixes */
+.wp-list-table {
+    width: 100% !important;
+}
+
+.wp-list-table .column-nom {
+    width: 20%;
+}
+
+.wp-list-table .column-email {
+    width: 20%;
+}
+
+.wp-list-table .column-statut {
+    width: 15%;
+}
+
+.wp-list-table .column-actions {
+    width: 15%;
+}
+
+/* Prevent text overflow in admin tables */
+.wp-list-table td {
+    word-wrap: break-word;
+    max-width: 0;
+    overflow: hidden;
+}
+
+.wp-list-table .column-nom,
+.wp-list-table .column-email {
+    max-width: 200px;
+}

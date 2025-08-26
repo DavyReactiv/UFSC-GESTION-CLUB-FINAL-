@@ -1,0 +1,44 @@
+# WordPress specific files
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup*/
+
+# Logs
+*.log
+error_log
+access_log
+
+# Build artifacts
+node_modules/
+dist/
+build/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Demo and test files (keep demo folder but ignore temp files)
+demo/*.tmp
+demo/temp/
+
+# PHP specific
+composer.phar
+vendor/
+
+# Backup files
+*.bak
+*.backup

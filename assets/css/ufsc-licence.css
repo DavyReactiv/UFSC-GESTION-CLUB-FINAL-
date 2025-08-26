@@ -1,0 +1,595 @@
+/**
+ * UFSC Licence Form and Dashboard Styles
+ * 
+ * Modern styling for multi-licence forms, draft management,
+ * and dashboard overview components.
+ *
+ * @package UFSC_Gestion_Club
+ * @since 1.3.1
+ */
+
+/* ===============================================
+   LICENCE MULTI-FORM STYLES
+   =============================================== */
+
+.ufsc-licence-multi-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ufsc-licence-form-header {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ufsc-licence-form-header h2 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.ufsc-licence-form-header p {
+    margin: 0;
+    color: #7f8c8d;
+}
+
+/* Licence Cards Container */
+.ufsc-licence-cards-container {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.ufsc-licence-card {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.ufsc-licence-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border-color: #3498db;
+}
+
+.ufsc-licence-card.ufsc-card-new {
+    border: 2px dashed #bdc3c7;
+    background: #f8f9fa;
+}
+
+.ufsc-licence-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.ufsc-licence-card-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.ufsc-licence-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ufsc-card-action-btn {
+    background: none;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.ufsc-card-action-btn:hover {
+    background: #ecf0f1;
+}
+
+.ufsc-card-action-btn.ufsc-btn-danger:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.ufsc-card-action-btn.ufsc-btn-success:hover {
+    background: #27ae60;
+    color: white;
+}
+
+/* Form Grid Layout */
+.ufsc-licence-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.ufsc-licence-form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.ufsc-licence-form-field label {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.ufsc-licence-form-field input,
+.ufsc-licence-form-field select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.ufsc-licence-form-field input:focus,
+.ufsc-licence-form-field select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.ufsc-licence-form-field.required label::after {
+    content: ' *';
+    color: #e74c3c;
+}
+
+/* Card Actions */
+.ufsc-licence-card-bottom {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ufsc-card-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.ufsc-card-status.draft {
+    background: #f39c12;
+    color: white;
+}
+
+.ufsc-card-status.ready {
+    background: #27ae60;
+    color: white;
+}
+
+/* Button Styles */
+.ufsc-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.ufsc-btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.ufsc-btn-primary:hover {
+    background: #2980b9;
+}
+
+.ufsc-btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.ufsc-btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.ufsc-btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.ufsc-btn-success:hover {
+    background: #229954;
+}
+
+.ufsc-btn-warning {
+    background: #f39c12;
+    color: white;
+}
+
+.ufsc-btn-warning:hover {
+    background: #e67e22;
+}
+
+.ufsc-btn-outline {
+    background: transparent;
+    border: 1px solid #3498db;
+    color: #3498db;
+}
+
+.ufsc-btn-outline:hover {
+    background: #3498db;
+    color: white;
+}
+
+.ufsc-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Global Actions Bar */
+.ufsc-licence-global-actions {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.ufsc-global-actions-left,
+.ufsc-global-actions-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ===============================================
+   DASHBOARD OVERVIEW STYLES
+   =============================================== */
+
+.ufsc-dashboard-overview {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ufsc-overview-section {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.ufsc-overview-section-header {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e1e5e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ufsc-overview-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.ufsc-overview-section-content {
+    padding: 20px;
+}
+
+/* Club Info Grid */
+.ufsc-club-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.ufsc-club-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ufsc-club-info-label {
+    font-weight: 500;
+    color: #2c3e50;
+    min-width: 120px;
+}
+
+.ufsc-club-info-value {
+    color: #7f8c8d;
+}
+
+/* Document Status */
+.ufsc-documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.ufsc-document-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.ufsc-document-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.ufsc-document-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.ufsc-document-status.present {
+    background: #d4edda;
+    color: #155724;
+}
+
+.ufsc-document-status.missing {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Licence Counters */
+.ufsc-licence-counters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.ufsc-counter-card {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.ufsc-counter-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.ufsc-counter-label {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.ufsc-counter-card.warning {
+    border-left-color: #f39c12;
+}
+
+.ufsc-counter-card.danger {
+    border-left-color: #e74c3c;
+}
+
+.ufsc-counter-card.success {
+    border-left-color: #27ae60;
+}
+
+/* Tables */
+.ufsc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.ufsc-table th,
+.ufsc-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.ufsc-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.ufsc-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+/* Draft Actions */
+.ufsc-draft-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.ufsc-draft-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.ufsc-draft-info {
+    flex: 1;
+}
+
+.ufsc-draft-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.ufsc-draft-meta {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+/* ===============================================
+   RESPONSIVE STYLES
+   =============================================== */
+
+@media (max-width: 768px) {
+    .ufsc-licence-multi-container,
+    .ufsc-dashboard-overview {
+        padding: 15px;
+    }
+    
+    .ufsc-licence-form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-licence-global-actions {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .ufsc-global-actions-left,
+    .ufsc-global-actions-right {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .ufsc-club-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-documents-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-licence-counters {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .ufsc-table {
+        font-size: 14px;
+    }
+    
+    .ufsc-table th,
+    .ufsc-table td {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ufsc-licence-counters {
+        grid-template-columns: 1fr;
+    }
+    
+    .ufsc-draft-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .ufsc-draft-actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+}
+
+/* ===============================================
+   LOADING AND FEEDBACK STYLES
+   =============================================== */
+
+.ufsc-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: ufsc-spin 1s linear infinite;
+}
+
+@keyframes ufsc-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.ufsc-feedback-message {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.ufsc-feedback-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.ufsc-feedback-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.ufsc-feedback-message.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.ufsc-feedback-message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* ===============================================
+   ANIMATION STYLES
+   =============================================== */
+
+.ufsc-fade-in {
+    animation: ufscFadeIn 0.3s ease-in-out;
+}
+
+@keyframes ufscFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ufsc-slide-up {
+    animation: ufscSlideUp 0.3s ease-in-out;
+}
+
+@keyframes ufscSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

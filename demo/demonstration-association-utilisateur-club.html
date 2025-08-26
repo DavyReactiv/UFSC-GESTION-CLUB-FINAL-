@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démonstration - Association Utilisateur-Club UFSC</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .demo-section {
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .form-section {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .radio-option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .radio-option:hover {
+            background: #f0f0f0;
+        }
+        .conditional-fields {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            display: none;
+        }
+        .conditional-fields.active {
+            display: block;
+        }
+        .form-row {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .hint {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 8px;
+        }
+        .admin-interface {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+        }
+        .frontend-interface {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+        }
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔗 Association Utilisateur-Club UFSC - Démonstration</h1>
+    
+    <div class="demo-section">
+        <h2>📋 Vue d'ensemble des fonctionnalités</h2>
+        <p>Cette démonstration présente les nouvelles fonctionnalités d'association entre utilisateurs WordPress et clubs UFSC :</p>
+        <ul class="feature-list">
+            <li>Association d'utilisateurs lors de l'affiliation frontend</li>
+            <li>Création automatique d'utilisateurs WordPress</li>
+            <li>Gestion bidirectionnelle admin (club ↔ utilisateur)</li>
+            <li>Contraintes d'unicité (1 utilisateur = 1 club)</li>
+            <li>Synchronisation automatique des données</li>
+        </ul>
+    </div>
+
+    <div class="demo-section frontend-interface">
+        <h2>🌐 Interface Frontend - Affiliation de Club</h2>
+        <p><strong>Contexte :</strong> Un nouveau club souhaite s'affilier à l'UFSC via le formulaire frontend.</p>
+        
+        <div class="form-section">
+            <h3>Utilisateur WordPress pour gérer le club</h3>
+            <p class="hint">Sélectionnez comment associer un utilisateur à ce club :</p>
+            
+            <label class="radio-option">
+                <input type="radio" name="user_association_demo" value="current" checked onclick="showFields('current')">
+                <span>Utiliser mon compte actuel</span>
+                <div class="hint">Compte: Jean Dupont (jean.dupont) - jean.dupont@example.com</div>
+            </label>
+            
+            <label class="radio-option">
+                <input type="radio" name="user_association_demo" value="create" onclick="showFields('create')">
+                <span>Créer un nouveau compte utilisateur</span>
+            </label>
+            
+            <label class="radio-option">
+                <input type="radio" name="user_association_demo" value="existing" onclick="showFields('existing')">
+                <span>Associer un compte existant</span>
+            </label>
+            
+            <!-- Create new user fields -->
+            <div id="create-fields" class="conditional-fields">
+                <div class="form-row">
+                    <label for="new_user_login">Nom d'utilisateur <span class="required">*</span></label>
+                    <input type="text" id="new_user_login" placeholder="Ex: club.tennis.paris">
+                </div>
+                <div class="form-row">
+                    <label for="new_user_email">Email <span class="required">*</span></label>
+                    <input type="email" id="new_user_email" placeholder="Ex: president@tennisparis.fr">
+                </div>
+                <div class="form-row">
+                    <label for="new_user_display_name">Nom d'affichage</label>
+                    <input type="text" id="new_user_display_name" placeholder="Ex: Club Tennis Paris">
+                </div>
+                <div class="hint">
+                    Un mot de passe sera généré automatiquement et envoyé par email.
+                </div>
+            </div>
+            
+            <!-- Existing user selection -->
+            <div id="existing-fields" class="conditional-fields">
+                <div class="form-row">
+                    <label for="existing_user_id">Sélectionner un utilisateur <span class="required">*</span></label>
+                    <select id="existing_user_id">
+                        <option value="">-- Choisir un utilisateur --</option>
+                        <option value="15">Marie Martin (marie.martin) - marie.martin@example.com</option>
+                        <option value="23">Pierre Durand (pierre.durand) - pierre.durand@example.com</option>
+                        <option value="31">Sophie Bernard (sophie.bernard) - sophie.bernard@example.com</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="hint" style="margin-top: 15px;">
+                <strong>Important :</strong> L'utilisateur associé pourra gérer le club depuis l'espace membre. 
+                Cette association ne pourra être modifiée que par un administrateur après la création.
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section admin-interface">
+        <h2>⚙️ Interface Admin - Profil Utilisateur WordPress</h2>
+        <p><strong>Contexte :</strong> Un administrateur modifie le profil d'un utilisateur et souhaite l'associer à un club.</p>
+        
+        <div class="form-section">
+            <h3>Association Club UFSC</h3>
+            <div class="form-row">
+                <label for="ufsc_club_id">Club associé</label>
+                <select id="ufsc_club_id">
+                    <option value="">-- Aucun club associé --</option>
+                    <option value="12" selected>Tennis Club de Paris (Paris)</option>
+                    <option value="25">Association Sportive Lyon (Lyon)</option>
+                    <option value="38" disabled>Club Volleyball Nice (Nice) - Déjà associé</option>
+                    <option value="42">Racing Club Marseille (Marseille)</option>
+                </select>
+                <div class="hint">
+                    Associer cet utilisateur à un club UFSC. Un utilisateur ne peut être associé qu'à un seul club.
+                    <br><strong>Actuellement associé à:</strong> Tennis Club de Paris (Paris)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section admin-interface">
+        <h2>🏢 Interface Admin - Formulaire Club</h2>
+        <p><strong>Contexte :</strong> Un administrateur crée ou modifie un club et souhaite associer un utilisateur.</p>
+        
+        <div class="form-section">
+            <h3>Utilisateur WordPress associé</h3>
+            <div class="form-row">
+                <label for="responsable_id">Utilisateur WordPress associé</label>
+                <select id="responsable_id">
+                    <option value="">-- Aucun utilisateur associé --</option>
+                    <option value="15">Marie Martin (marie.martin) - marie.martin@example.com</option>
+                    <option value="23" selected>Pierre Durand (pierre.durand) - pierre.durand@example.com</option>
+                    <option value="31" disabled title="Cet utilisateur est déjà associé à un autre club">Sophie Bernard (sophie.bernard) - sophie.bernard@example.com - Déjà associé</option>
+                </select>
+                <div class="hint">
+                    Associer un utilisateur WordPress qui aura accès à la gestion du club.
+                    <br><strong>Actuellement associé :</strong> Pierre Durand (pierre.durand)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>🔄 Synchronisation Bidirectionnelle</h2>
+        <p>Le système garantit la cohérence des données entre les profils utilisateur et les fiches club :</p>
+        
+        <div class="code-example">
+<strong>Scénario :</strong> Modification de l'association via le profil utilisateur
+
+1. Admin va dans "Utilisateurs" → "Modifier Pierre Durand"
+2. Change "Club associé" de "Tennis Club Paris" vers "Racing Club Marseille"
+3. Sauvegarde
+
+<strong>Résultat automatique :</strong>
+- Pierre Durand n'est plus associé au Tennis Club Paris
+- Pierre Durand est maintenant associé au Racing Club Marseille
+- La fiche du Tennis Club Paris n'affiche plus d'utilisateur associé
+- La fiche du Racing Club Marseille affiche Pierre Durand comme utilisateur associé
+
+<strong>Sécurité :</strong>
+- Gestion transactionnelle (rollback en cas d'erreur)
+- Validation de l'unicité
+- Messages d'erreur explicites
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>⚡ Fonctionnalités Avancées</h2>
+        <ul class="feature-list">
+            <li>Prévention des associations multiples avec messages explicites</li>
+            <li>Validation côté client (JavaScript) et serveur (PHP)</li>
+            <li>Création automatique d'utilisateurs avec génération de mot de passe</li>
+            <li>Notification email automatique pour nouveaux comptes</li>
+            <li>Interface responsive avec champs conditionnels</li>
+            <li>Gestion des cas d'erreur (utilisateur supprimé, club inexistant)</li>
+            <li>Tests automatisés pour validation continue</li>
+            <li>Documentation complète et exemples d'utilisation</li>
+        </ul>
+    </div>
+
+    <script>
+        function showFields(type) {
+            // Hide all conditional fields
+            document.querySelectorAll('.conditional-fields').forEach(field => {
+                field.classList.remove('active');
+            });
+            
+            // Show selected fields
+            if (type === 'create') {
+                document.getElementById('create-fields').classList.add('active');
+            } else if (type === 'existing') {
+                document.getElementById('existing-fields').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

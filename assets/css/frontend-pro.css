@@ -1,0 +1,485 @@
+/**
+ * UFSC Professional Frontend Enhancements
+ * Professional UI improvements for better user experience
+ * Can be disabled via UFSC_ENABLE_FRONTEND_PRO constant
+ */
+
+/* =============================================================================
+   VARIABLES - WCAG AA Compliant Color Palette
+   ============================================================================= */
+:root {
+    /* Primary Colors - Higher contrast for better accessibility */
+    --ufsc-primary: #0066cc;
+    --ufsc-primary-dark: #004499;
+    --ufsc-primary-light: #3385db;
+    
+    /* Status Colors - WCAG AA compliant */
+    --ufsc-success: #008a00;
+    --ufsc-warning: #cc7a00;
+    --ufsc-error: #cc0000;
+    --ufsc-info: #0066cc;
+    
+    /* Neutral Colors */
+    --ufsc-gray-100: #f8f9fa;
+    --ufsc-gray-200: #e9ecef;
+    --ufsc-gray-300: #dee2e6;
+    --ufsc-gray-400: #ced4da;
+    --ufsc-gray-500: #6c757d;
+    --ufsc-gray-600: #495057;
+    --ufsc-gray-700: #343a40;
+    --ufsc-gray-800: #212529;
+    
+    /* Focus and interaction */
+    --ufsc-focus-color: #0066cc;
+    --ufsc-focus-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+    
+    /* Spacing */
+    --ufsc-spacing-xs: 0.25rem;
+    --ufsc-spacing-sm: 0.5rem;
+    --ufsc-spacing-md: 1rem;
+    --ufsc-spacing-lg: 1.5rem;
+    --ufsc-spacing-xl: 2rem;
+    
+    /* Border radius */
+    --ufsc-border-radius: 0.375rem;
+    --ufsc-border-radius-lg: 0.5rem;
+    
+    /* Transitions */
+    --ufsc-transition: all 0.15s ease-in-out;
+    --ufsc-transition-fast: all 0.1s ease-in-out;
+    --ufsc-transition-slow: all 0.3s ease-in-out;
+}
+
+/* =============================================================================
+   LOADING SPINNER COMPONENT
+   ============================================================================= */
+.ufsc-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--ufsc-transition);
+}
+
+.ufsc-loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ufsc-loading-spinner {
+    display: inline-block;
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+}
+
+.ufsc-loading-spinner div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    margin: 5px;
+    border: 3px solid var(--ufsc-primary);
+    border-radius: 50%;
+    animation: ufsc-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: var(--ufsc-primary) transparent transparent transparent;
+}
+
+.ufsc-loading-spinner div:nth-child(1) { animation-delay: -0.45s; }
+.ufsc-loading-spinner div:nth-child(2) { animation-delay: -0.3s; }
+.ufsc-loading-spinner div:nth-child(3) { animation-delay: -0.15s; }
+
+@keyframes ufsc-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Inline spinner for smaller contexts */
+.ufsc-loading-inline {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--ufsc-gray-300);
+    border-top: 2px solid var(--ufsc-primary);
+    border-radius: 50%;
+    animation: ufsc-spin 1s linear infinite;
+    vertical-align: middle;
+    margin-right: var(--ufsc-spacing-sm);
+}
+
+/* =============================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================================================= */
+
+/* Focus Management */
+.ufsc-container *:focus,
+.ufsc-dashboard *:focus {
+    outline: 2px solid var(--ufsc-focus-color);
+    outline-offset: 2px;
+    border-radius: var(--ufsc-border-radius);
+}
+
+/* Skip Links */
+.ufsc-skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--ufsc-gray-800);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: var(--ufsc-border-radius);
+    z-index: 10000;
+    transition: var(--ufsc-transition-fast);
+}
+
+.ufsc-skip-link:focus {
+    top: 6px;
+    outline: 2px solid white;
+}
+
+/* Screen Reader Only Content */
+.ufsc-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --ufsc-primary: #000080;
+        --ufsc-success: #006400;
+        --ufsc-error: #8B0000;
+        --ufsc-warning: #B8860B;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .ufsc-loading-spinner {
+        animation: none;
+        border: 3px solid var(--ufsc-primary);
+    }
+}
+
+/* =============================================================================
+   TOOLTIPS
+   ============================================================================= */
+.ufsc-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.ufsc-tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ufsc-gray-800);
+    color: white;
+    padding: var(--ufsc-spacing-sm) var(--ufsc-spacing-md);
+    border-radius: var(--ufsc-border-radius);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--ufsc-transition);
+    z-index: 1000;
+    pointer-events: none;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ufsc-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--ufsc-gray-800);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--ufsc-transition);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.ufsc-tooltip:hover::before,
+.ufsc-tooltip:hover::after,
+.ufsc-tooltip:focus::before,
+.ufsc-tooltip:focus::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =============================================================================
+   IMPROVED FORM ELEMENTS
+   ============================================================================= */
+.ufsc-form-group {
+    margin-bottom: var(--ufsc-spacing-lg);
+}
+
+.ufsc-form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--ufsc-spacing-sm);
+    color: var(--ufsc-gray-700);
+}
+
+.ufsc-form-label.required::after {
+    content: ' *';
+    color: var(--ufsc-error);
+}
+
+.ufsc-form-input,
+.ufsc-form-select,
+.ufsc-form-textarea {
+    width: 100%;
+    padding: var(--ufsc-spacing-sm) var(--ufsc-spacing-md);
+    border: 1px solid var(--ufsc-gray-300);
+    border-radius: var(--ufsc-border-radius);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: var(--ufsc-transition);
+    background-color: white;
+}
+
+.ufsc-form-input:focus,
+.ufsc-form-select:focus,
+.ufsc-form-textarea:focus {
+    border-color: var(--ufsc-primary);
+    box-shadow: var(--ufsc-focus-shadow);
+    outline: none;
+}
+
+.ufsc-form-input[aria-invalid="true"],
+.ufsc-form-select[aria-invalid="true"],
+.ufsc-form-textarea[aria-invalid="true"] {
+    border-color: var(--ufsc-error);
+}
+
+.ufsc-form-error {
+    color: var(--ufsc-error);
+    font-size: 0.875rem;
+    margin-top: var(--ufsc-spacing-xs);
+    display: flex;
+    align-items: center;
+}
+
+.ufsc-form-error::before {
+    content: '⚠';
+    margin-right: var(--ufsc-spacing-xs);
+}
+
+/* =============================================================================
+   ENHANCED BUTTONS
+   ============================================================================= */
+.ufsc-btn-pro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ufsc-spacing-sm) var(--ufsc-spacing-lg);
+    border: 1px solid transparent;
+    border-radius: var(--ufsc-border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--ufsc-transition);
+    min-height: 44px; /* Touch-friendly minimum */
+    position: relative;
+    overflow: hidden;
+}
+
+.ufsc-btn-pro:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ufsc-btn-pro:active {
+    transform: translateY(0);
+}
+
+.ufsc-btn-pro:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ufsc-btn-pro.loading {
+    color: transparent;
+}
+
+.ufsc-btn-pro.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid currentColor;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: ufsc-spin 1s linear infinite;
+}
+
+/* Button Variants */
+.ufsc-btn-primary {
+    background-color: var(--ufsc-primary);
+    color: white;
+}
+
+.ufsc-btn-primary:hover:not(:disabled) {
+    background-color: var(--ufsc-primary-dark);
+}
+
+.ufsc-btn-success {
+    background-color: var(--ufsc-success);
+    color: white;
+}
+
+.ufsc-btn-error {
+    background-color: var(--ufsc-error);
+    color: white;
+}
+
+/* =============================================================================
+   ENHANCED TABLES (DataTables Integration)
+   ============================================================================= */
+.ufsc-datatable-wrapper {
+    background: white;
+    border-radius: var(--ufsc-border-radius-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: var(--ufsc-spacing-xl);
+}
+
+.ufsc-datatable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ufsc-datatable th,
+.ufsc-datatable td {
+    padding: var(--ufsc-spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--ufsc-gray-200);
+}
+
+.ufsc-datatable th {
+    background-color: var(--ufsc-gray-100);
+    font-weight: 600;
+    color: var(--ufsc-gray-700);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.ufsc-datatable tbody tr:hover {
+    background-color: var(--ufsc-gray-50);
+}
+
+/* DataTables Custom Styling */
+.dataTables_wrapper {
+    padding: var(--ufsc-spacing-lg);
+}
+
+.dataTables_filter input {
+    border: 1px solid var(--ufsc-gray-300);
+    border-radius: var(--ufsc-border-radius);
+    padding: var(--ufsc-spacing-sm);
+    margin-left: var(--ufsc-spacing-sm);
+}
+
+.dataTables_length select {
+    border: 1px solid var(--ufsc-gray-300);
+    border-radius: var(--ufsc-border-radius);
+    padding: var(--ufsc-spacing-sm);
+    margin: 0 var(--ufsc-spacing-sm);
+}
+
+.dataTables_paginate .paginate_button {
+    padding: var(--ufsc-spacing-sm) var(--ufsc-spacing-md);
+    margin: 0 2px;
+    border-radius: var(--ufsc-border-radius);
+    border: 1px solid var(--ufsc-gray-300);
+    background: white;
+    color: var(--ufsc-gray-700);
+    text-decoration: none;
+    transition: var(--ufsc-transition);
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: var(--ufsc-primary);
+    color: white;
+    border-color: var(--ufsc-primary);
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: var(--ufsc-primary);
+    color: white;
+    border-color: var(--ufsc-primary);
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================= */
+@media (max-width: 768px) {
+    .ufsc-datatable-wrapper {
+        overflow-x: auto;
+    }
+    
+    .ufsc-tooltip::before {
+        white-space: normal;
+        max-width: 200px;
+    }
+    
+    .ufsc-btn-pro {
+        min-height: 48px; /* Larger touch targets on mobile */
+    }
+}
+
+/* =============================================================================
+   PRINT STYLES
+   ============================================================================= */
+@media print {
+    .ufsc-loading-overlay,
+    .ufsc-tooltip::before,
+    .ufsc-tooltip::after {
+        display: none !important;
+    }
+    
+    .ufsc-datatable {
+        font-size: 12px;
+    }
+}

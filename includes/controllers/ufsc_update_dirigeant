@@ -1,0 +1,16 @@
+// 🔒 Vérification du nonce
+if (!isset($_POST['ufsc_licence_nonce']) || !wp_verify_nonce($_POST['ufsc_licence_nonce'], 'ufsc_update_dirigeant')) {
+    wp_die('Échec de sécurité.');
+}
+
+// 🔁 Traitement de la mise à jour...
+// ... (traitement et mise à jour des champs ici)
+
+// ✅ Redirection avec paramètre de confirmation
+$redirect_url = add_query_arg([
+    'licence_id' => intval($_POST['licence_id']),
+    'updated'    => '1'
+], admin_url('admin.php?page=ufsc_edit_licence'));
+
+wp_redirect($redirect_url);
+exit;

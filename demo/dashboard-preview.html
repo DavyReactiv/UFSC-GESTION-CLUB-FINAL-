@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Club MVP - Preview</title>
+    <link rel="stylesheet" href="../assets/css/dashboard-mvp.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="ufsc-dashboard-mvp">
+        
+        <!-- Header Section -->
+        <div class="ufsc-dashboard-header">
+            <div class="ufsc-club-identity">
+                <div class="ufsc-club-logo-container">
+                    <div class="ufsc-logo-upload-section">
+                        <div class="ufsc-club-logo-display">
+                            <div class="ufsc-no-logo">
+                                <div class="ufsc-no-logo-icon">🏢</div>
+                                <span>Aucun logo</span>
+                            </div>
+                        </div>
+                        <div class="ufsc-logo-actions">
+                            <button type="button" class="ufsc-upload-logo-btn ufsc-btn ufsc-btn-sm">
+                                Ajouter le logo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ufsc-club-info">
+                    <h1>Club Test UFSC <span class="ufsc-badge ufsc-badge-success">Validé</span></h1>
+                    <p class="ufsc-affiliation-number">N° Affiliation: TEST001</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- KPIs Section -->
+        <div class="ufsc-kpis-section">
+            <div class="ufsc-kpis-grid">
+                
+                <!-- Total Licenses -->
+                <div class="ufsc-kpi-card">
+                    <div class="ufsc-kpi-icon">📊</div>
+                    <div class="ufsc-kpi-content">
+                        <div class="ufsc-kpi-number">15</div>
+                        <div class="ufsc-kpi-label">Licences totales</div>
+                    </div>
+                </div>
+                
+                <!-- Active Licenses -->
+                <div class="ufsc-kpi-card">
+                    <div class="ufsc-kpi-icon">✅</div>
+                    <div class="ufsc-kpi-content">
+                        <div class="ufsc-kpi-number">12</div>
+                        <div class="ufsc-kpi-label">Licences actives</div>
+                    </div>
+                </div>
+                
+                <!-- Available Licenses -->
+                <div class="ufsc-kpi-card">
+                    <div class="ufsc-kpi-icon">🎯</div>
+                    <div class="ufsc-kpi-content">
+                        <div class="ufsc-kpi-number">5</div>
+                        <div class="ufsc-kpi-label">Licences disponibles</div>
+                    </div>
+                </div>
+                
+                <!-- Expiring Soon -->
+                <div class="ufsc-kpi-card ufsc-kpi-warning">
+                    <div class="ufsc-kpi-icon">⚠️</div>
+                    <div class="ufsc-kpi-content">
+                        <div class="ufsc-kpi-number">2</div>
+                        <div class="ufsc-kpi-label">Expirent bientôt</div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Quota Pack Affiliation Section -->
+        <div class="ufsc-quota-section">
+            <h3>Quota Pack Affiliation</h3>
+            
+            <div class="ufsc-quota-grid">
+                <!-- Included Licenses -->
+                <div class="ufsc-quota-card">
+                    <h4>Licences incluses</h4>
+                    <div class="ufsc-progress-bar">
+                        <div class="ufsc-progress-fill" style="width: 70%"></div>
+                    </div>
+                    <div class="ufsc-quota-text">
+                        7/10
+                        <span class="ufsc-quota-label">(70%)</span>
+                    </div>
+                </div>
+                
+                <!-- Board Members -->
+                <div class="ufsc-quota-card">
+                    <h4>Membres du bureau</h4>
+                    <div class="ufsc-progress-bar">
+                        <div class="ufsc-progress-fill" style="width: 66.7%"></div>
+                    </div>
+                    <div class="ufsc-quota-text">
+                        2/3
+                        <span class="ufsc-quota-label">(Président/Secrétaire/Trésorier)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Section -->
+        <div class="ufsc-stats-section">
+            <h3>Statistiques</h3>
+            
+            <div class="ufsc-stats-grid">
+                
+                <!-- Gender Distribution -->
+                <div class="ufsc-stat-card">
+                    <h4>Répartition par sexe</h4>
+                    <div class="ufsc-stat-bars">
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">Masculin</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 60%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">9 (60%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">Féminin</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 40%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">6 (40%)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Age Distribution -->
+                <div class="ufsc-stat-card">
+                    <h4>Répartition par âge</h4>
+                    <div class="ufsc-stat-bars">
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">U11</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 13.3%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">2 (13.3%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">12-15</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 20%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">3 (20%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">16-18</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 26.7%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">4 (26.7%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">19-34</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 33.3%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">5 (33.3%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">35-49</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 6.7%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">1 (6.7%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">50+</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">0 (0%)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Competition vs Leisure -->
+                <div class="ufsc-stat-card">
+                    <h4>Compétition vs Loisir</h4>
+                    <div class="ufsc-stat-bars">
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">Compétition</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 73.3%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">11 (73.3%)</div>
+                        </div>
+                        <div class="ufsc-stat-bar">
+                            <div class="ufsc-stat-label">Loisir</div>
+                            <div class="ufsc-bar-container">
+                                <div class="ufsc-bar-fill" style="width: 26.7%"></div>
+                            </div>
+                            <div class="ufsc-stat-value">4 (26.7%)</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Downloads Section -->
+        <div class="ufsc-downloads-section">
+            <h3>Téléchargements</h3>
+            
+            <div class="ufsc-downloads-grid">
+                
+                <!-- Club Attestations -->
+                <div class="ufsc-download-group">
+                    <h4>Attestations du club</h4>
+                    <div class="ufsc-download-list">
+                        <div class="ufsc-download-item">
+                            <span class="ufsc-download-name">Attestation d'affiliation</span>
+                            <a href="#" class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" target="_blank" rel="noopener">
+                                📄 Télécharger
+                            </a>
+                        </div>
+                        <div class="ufsc-download-item">
+                            <span class="ufsc-download-name">Attestation d'assurance</span>
+                            <a href="#" class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" target="_blank" rel="noopener">
+                                📄 Télécharger
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Individual Attestations -->
+                <div class="ufsc-download-group">
+                    <h4>Dernières attestations individuelles</h4>
+                    <div class="ufsc-download-list">
+                        <div class="ufsc-download-item">
+                            <span class="ufsc-download-name">Jean Dupont</span>
+                            <a href="#" class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" target="_blank" rel="noopener">Télécharger</a>
+                        </div>
+                        <div class="ufsc-download-item">
+                            <span class="ufsc-download-name">Marie Martin</span>
+                            <a href="#" class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" target="_blank" rel="noopener">Télécharger</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Recent Licenses Section -->
+        <div class="ufsc-recent-licenses-section">
+            <h3>Dernières licences</h3>
+            
+            <div class="ufsc-licenses-table">
+                <table class="ufsc-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Fonction</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dupont</td>
+                            <td>Jean</td>
+                            <td>Président</td>
+                            <td><span class="ufsc-badge ufsc-badge-success">Validée</span></td>
+                        </tr>
+                        <tr>
+                            <td>Martin</td>
+                            <td>Marie</td>
+                            <td>Secrétaire</td>
+                            <td><span class="ufsc-badge ufsc-badge-success">Validée</span></td>
+                        </tr>
+                        <tr>
+                            <td>Bernard</td>
+                            <td>Pierre</td>
+                            <td>Trésorier</td>
+                            <td><span class="ufsc-badge ufsc-badge-pending">En attente</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dubois</td>
+                            <td>Sophie</td>
+                            <td>Membre</td>
+                            <td><span class="ufsc-badge ufsc-badge-success">Validée</span></td>
+                        </tr>
+                        <tr>
+                            <td>Moreau</td>
+                            <td>François</td>
+                            <td>Membre</td>
+                            <td><span class="ufsc-badge ufsc-badge-success">Validée</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

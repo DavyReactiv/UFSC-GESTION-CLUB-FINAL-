@@ -1,0 +1,81 @@
+/**
+ * Admin Licences Table Layout Fixes
+ * 
+ * Fixes wrapping/overflow issues in the admin licences table
+ * Ensures proper layout for Actions column and badges
+ * 
+ * @package UFSC_Gestion_Club
+ * @since 1.3.0
+ */
+
+/* Main table layout */
+.ufsc-licences-table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cell layout and spacing */
+.ufsc-licences-table th,
+.ufsc-licences-table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Actions column specific styling */
+.ufsc-licences-table td.ufsc-col-actions {
+    white-space: nowrap;
+}
+
+/* Badge styling for proper alignment */
+.ufsc-licences-table .badge {
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* Ensure inline divs don't break layout */
+.ufsc-licences-table td > div {
+    display: inline;
+}
+
+/* DataTables specific fixes if DataTables is used */
+table.dataTable tbody td,
+table.dataTable tbody th {
+    box-sizing: border-box;
+}
+
+/* Additional fixes for actions column content */
+.ufsc-licences-table .ufsc-actions {
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.ufsc-licences-table .ufsc-actions .button {
+    flex-shrink: 0;
+    margin: 0 2px 0 0;
+}
+
+/* Status badges specific styling */
+.ufsc-licences-table .ufsc-status-badge {
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Ensure content doesn't overflow on narrow screens */
+@media (max-width: 1200px) {
+    .ufsc-licences-table td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+    
+    .ufsc-licences-table td.ufsc-col-actions {
+        white-space: nowrap;
+        min-width: 200px;
+    }
+}
