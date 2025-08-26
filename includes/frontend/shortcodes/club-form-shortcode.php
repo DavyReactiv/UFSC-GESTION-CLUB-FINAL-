@@ -15,6 +15,15 @@ function ufsc_formulaire_club_shortcode($atts)
 {
     // Si l'utilisateur n'est pas connecté, afficher le formulaire de connexion/inscription
     if (!is_user_logged_in()) {
+        if (!function_exists('ufsc_login_register_shortcode')) {
+            require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
+        }
+
+        // Rediriger vers la même page après connexion/inscription
+        return ufsc_login_register_shortcode(array(
+            'redirect' => get_permalink(),
+        ));
+
         return ufsc_login_register_shortcode([
             'redirect' => get_permalink(),
             'show_register' => 'yes',
