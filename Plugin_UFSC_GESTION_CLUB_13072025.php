@@ -112,7 +112,7 @@ $file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
 if (file_exists($file)) {
     require_once $file;
 } else {
-    // Optionnel : noter une erreur, mais ça ne plantera plus
+    error_log('UFSC Gestion Club: missing file ' . $file);
 }
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-form-shortcode.php';
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/affiliation-form-shortcode.php';
