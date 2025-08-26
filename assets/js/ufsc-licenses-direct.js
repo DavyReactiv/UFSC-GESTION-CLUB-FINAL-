@@ -43,10 +43,30 @@
         <td>${r.quota||''}</td>
         <td><span class="ufscx-pill">${r.statut||''}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
+
         <td>
           <button class="ufscx-btn${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>
           ${['validee','refusee','expiree'].includes((r.statut||'').toLowerCase())?'':`<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`}
         </td>
+
+        <td>${(()=>{
+          if(r.statut==='brouillon'){
+            return `
+              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>
+              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>
+              <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>
+              <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
+            `;
+          }
+          if(r.statut==='in_cart'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`;
+          }
+          if(r.statut==='pending_payment'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`;
+          }
+          return `<button class="ufscx-btn ufscx-btn-soft" data-a="view" data-id="${r.id}">Voir</button>`;
+        })()}</td>
+
       </tr>
     `).join('');
   }
@@ -60,6 +80,61 @@
   });
 
   [q,st,cat,qt,pp].forEach(el=> el && el.addEventListener('input', render));
+
+  tbody.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-a]');
+    if(!btn) return;
+    e.preventDefault();
+    const id = btn.getAttribute('data-id');
+    const act = btn.getAttribute('data-a');
+    if(!id) return;
+
+    if(act==='view'){
+      window.location.href = '?view_licence='+id;
+      return;
+    }
+    if(act==='edit'){
+      window.location.href = '?edit_licence='+id;
+      return;
+    }
+
+    if(act==='cart'){
+      window.location.href = '?ufsc_pay_licence='+id;
+      return;
+    }
+
+    if(act==='toggleq' || act==='delete'){
+      btn.disabled = true;
+      const params = new URLSearchParams();
+      params.append('action', act==='toggleq'?'ufscx_toggle_quota':'ufscx_delete_draft');
+      params.append('nonce', UFSCX_AJAX.nonce);
+      params.append('id', id);
+      fetch(UFSCX_AJAX.ajax, {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: params
+      }).then(r=>r.json()).then(res=>{
+        if(res && res.success){
+          if(act==='toggleq'){
+            const row = data.find(r=>String(r.id)===String(id));
+            if(row){
+              row.quota = res.data && res.data.is_included ? 'Oui':'Non';
+            }
+          } else if(act==='delete'){
+            const idx = data.findIndex(r=>String(r.id)===String(id));
+            if(idx>-1){ data.splice(idx,1); }
+          }
+          render();
+        } else {
+          alert((res && res.data && res.data.message) || 'Erreur');
+        }
+      }).catch(()=>{
+        alert('Erreur');
+      }).finally(()=>{
+        btn.disabled = false;
+      });
+    }
+  });
 
   if(exportBtn){
     exportBtn.addEventListener('click',()=>{
