@@ -78,7 +78,7 @@ function ufsc_render_notifications_summary($club)
         $output .= '<p>Vous avez <strong>' . $notifications_stats['unread_count'] . '</strong> notification' . ($notifications_stats['unread_count'] > 1 ? 's' : '') . ' non lue' . ($notifications_stats['unread_count'] > 1 ? 's' : '') . '.</p>';
         $output .= '</div>';
         $output .= '<div class="ufsc-summary-actions">';
-        $output .= '<form method="post" style="display: inline;">';
+        $output .= '<form method="post" class="ufsc-inline">';
         $output .= wp_nonce_field('ufsc_notifications_actions', 'ufsc_notifications_nonce', true, false);
         $output .= '<button type="submit" name="ufsc_mark_all_read" class="ufsc-btn ufsc-btn-outline">Tout marquer comme lu</button>';
         $output .= '</form>';
@@ -165,7 +165,7 @@ function ufsc_render_notifications_list($club)
             $output .= '<div class="ufsc-notification-actions">';
             
             if (!$notification['read']) {
-                $output .= '<form method="post" style="display: inline;">';
+                $output .= '<form method="post" class="ufsc-inline">';
                 $output .= wp_nonce_field('ufsc_notifications_actions', 'ufsc_notifications_nonce', true, false);
                 $output .= '<input type="hidden" name="notification_id" value="' . esc_attr($notification['id']) . '">';
                 $output .= '<button type="submit" name="ufsc_mark_read" class="ufsc-btn-sm" title="Marquer comme lu">';

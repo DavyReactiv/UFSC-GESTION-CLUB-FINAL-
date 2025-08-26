@@ -142,7 +142,7 @@ function ufsc_render_licence_form($args = array()){
           <div class="ufsc-form-field">
             <label><input type="checkbox" id="licence_delegataire" name="licence_delegataire" value="1"<?php echo $is_checked('licence_delegataire'); ?>> Licence délégataire</label>
           </div>
-          <div class="ufsc-form-field" id="numero_licence_delegataire_field" style="display:none;">
+          <div class="ufsc-form-field ufsc-hidden" id="numero_licence_delegataire_field">
             <label for="numero_licence_delegataire">N° délégataire</label>
             <input type="text" id="numero_licence_delegataire" name="numero_licence_delegataire" value="<?php echo $v('numero_licence_delegataire'); ?>">
           </div>

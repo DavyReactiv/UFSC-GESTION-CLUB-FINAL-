@@ -324,7 +324,7 @@ function ufsc_handle_contact_update($club)
  */
 function ufsc_render_contact_edit_form($club)
 {
-    $output = '<div id="ufsc-edit-contact-form" style="display:none; margin-top:20px; padding:15px; background:#f9f9f9; border-radius:5px;">';
+    $output = '<div id="ufsc-edit-contact-form" class="ufsc-edit-contact ufsc-hidden ufsc-mt-20">';
     $output .= '<h4>Modifier mes coordonnées</h4>';
     $output .= '<form method="post" class="ufsc-inline-form">';
     $output .= wp_nonce_field('ufsc_update_contact', 'ufsc_contact_nonce', true, false);
@@ -333,19 +333,19 @@ function ufsc_render_contact_edit_form($club)
     $output .= '<input type="hidden" id="ufsc-edit-field-name" name="field_name" value="">';
 
     // Email field
-    $output .= '<div id="ufsc-edit-email-field" style="display:none">';
+    $output .= '<div id="ufsc-edit-email-field" class="ufsc-hidden">';
     $output .= '<label for="email">Adresse email:</label>';
     $output .= '<input type="email" name="email" id="email" value="' . esc_attr($club->email) . '" required>';
     $output .= '</div>';
 
     // Phone field
-    $output .= '<div id="ufsc-edit-telephone-field" style="display:none">';
+    $output .= '<div id="ufsc-edit-telephone-field" class="ufsc-hidden">';
     $output .= '<label for="telephone">Téléphone:</label>';
     $output .= '<input type="tel" name="telephone" id="telephone" value="' . esc_attr($club->telephone) . '">';
     $output .= '</div>';
 
     // Action buttons
-    $output .= '<div style="margin-top:10px;">';
+    $output .= '<div class="ufsc-mt-10">';
     $output .= '<button type="submit" class="ufsc-btn">Enregistrer</button>';
     $output .= '<button type="button" class="ufsc-btn ufsc-btn-outline" id="ufsc-cancel-edit">Annuler</button>';
     $output .= '</div>';
@@ -472,11 +472,11 @@ function ufsc_render_quota_section($club, $stats)
         $output .= '</div>';
 
         if ($stats['remaining'] <= 0) {
-            $output .= '<div class="ufsc-form-hint" style="color:var(--ufsc-red); margin-top:8px;">';
+        $output .= '<div class="ufsc-form-hint ufsc-color-red ufsc-mt-8">';
             $output .= 'Votre quota est épuisé. <a href="mailto:contact@ufsc-france.org?subject=Demande%20d%27augmentation%20de%20quota">Contactez l\'administration</a> pour l\'augmenter.';
             $output .= '</div>';
         } else {
-            $output .= '<div class="ufsc-form-hint" style="margin-top:8px;">';
+        $output .= '<div class="ufsc-form-hint ufsc-mt-8">';
             $output .= 'Licences incluses dans votre pack d\'affiliation. ';
             $output .= '<a href="' . esc_url(add_query_arg(['section' => 'licences', 'action' => 'new'], get_permalink())) . '">Ajouter une licence</a>';
             $output .= '</div>';

@@ -357,8 +357,24 @@
   .ufsc-dashboard {
     grid-template-columns: 1fr;
   }
-  
+
   .ufsc-form {
     padding: 0 15px;
   }
 }
+
+/* ===== UTILITY CLASSES ===== */
+.ufsc-mb-20 { margin-bottom: 20px; }
+.ufsc-mb-15 { margin-bottom: 15px; }
+.ufsc-mt-20 { margin-top: 20px; }
+.ufsc-mt-30 { margin-top: 30px; }
+.ufsc-mt-8 { margin-top: 8px; }
+.ufsc-mt-10 { margin-top: 10px; }
+.ufsc-ml-10 { margin-left: 10px; }
+.ufsc-w-250 { width: 250px; }
+.ufsc-color-red { color: var(--ufsc-red); }
+.ufsc-color-gray { color: #999; }
+.ufsc-hidden { display: none; }
+.ufsc-inline { display: inline; }
+.ufsc-justify-end { justify-content: flex-end; }
+.ufsc-edit-contact { padding: 15px; background: #f9f9f9; border-radius: 5px; }
