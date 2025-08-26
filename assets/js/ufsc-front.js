@@ -58,6 +58,13 @@
 
   // Intercept form submit to add to cart via AJAX
   $(document).on('submit', '#ufsc-licence-form, form#ufsc-licence-form, form.ufsc-licence-form', function(e){
+    var submitter = e.originalEvent && e.originalEvent.submitter;
+    if(submitter && (submitter.id === 'ufsc-save-draft' || $(submitter).hasClass('ufsc-btn-save-draft') || submitter.name === 'ufsc_save_draft')){
+      return;
+    }
+    if($(this).find('input[name="ufsc_save_draft"]').length){
+      return;
+    }
     e.preventDefault();
     var $form = $(this);
     var $btn = $form.find('button[type=\"submit\"], .ufsc-btn-add-to-cart').first();
