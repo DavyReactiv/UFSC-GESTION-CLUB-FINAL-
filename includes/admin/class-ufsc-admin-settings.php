@@ -235,6 +235,28 @@ class UFSC_Admin_Settings {
     }
 
     /**
+     * Retrieve a boolean option value.
+     *
+     * @param string $name    Option name.
+     * @param bool   $default Default value.
+     * @return bool
+     */
+    private function get_bool_option($name, $default = false) {
+        return (bool) get_option($name, $default);
+    }
+
+    /**
+     * Retrieve an integer option value.
+     *
+     * @param string $name    Option name.
+     * @param int    $default Default value.
+     * @return int
+     */
+    private function get_int_option($name, $default = 0) {
+        return (int) get_option($name, $default);
+    }
+
+    /**
      * Render settings page
      */
     public function render_settings_page() {
@@ -298,7 +320,7 @@ class UFSC_Admin_Settings {
      * Render affiliation product ID field
      */
     public function render_affiliation_product_id_field() {
-        $value = get_option('ufsc_wc_affiliation_product_id', 2933);
+        $value = $this->get_int_option('ufsc_wc_affiliation_product_id', 2933);
         ?>
         <input type="number" 
                id="ufsc_wc_affiliation_product_id" 
@@ -316,7 +338,7 @@ class UFSC_Admin_Settings {
      * Render license product IDs field
      */
     public function render_license_product_ids_field() {
-        $value = get_option('ufsc_wc_license_product_ids', '2934');
+        $value = (string) get_option('ufsc_wc_license_product_ids', '2934');
         ?>
         <input type="text" 
                id="ufsc_wc_license_product_ids" 
@@ -334,7 +356,7 @@ class UFSC_Admin_Settings {
      * Render auto create user field
      */
     public function render_auto_create_user_field() {
-        $value = get_option('ufsc_auto_create_user', false);
+        $value = $this->get_bool_option('ufsc_auto_create_user', false);
         ?>
         <label for="ufsc_auto_create_user">
             <input type="checkbox" 
@@ -354,7 +376,7 @@ class UFSC_Admin_Settings {
      * Render require login field
      */
     public function render_require_login_field() {
-        $value = get_option('ufsc_require_login_shortcodes', true);
+        $value = $this->get_bool_option('ufsc_require_login_shortcodes', true);
         ?>
         <label for="ufsc_require_login_shortcodes">
             <input type="checkbox" 
@@ -374,7 +396,7 @@ class UFSC_Admin_Settings {
      * Render Pack 10 product ID field
      */
     public function render_pack_10_product_id_field() {
-        $value = get_option('ufsc_wc_pack_10_product_id', 0);
+        $value = $this->get_int_option('ufsc_wc_pack_10_product_id', 0);
         ?>
         <input type="number" 
                id="ufsc_wc_pack_10_product_id" 
@@ -392,7 +414,7 @@ class UFSC_Admin_Settings {
      * Render Individual licence product ID field
      */
     public function render_individual_licence_product_id_field() {
-        $value = get_option('ufsc_wc_individual_licence_product_id', 0);
+        $value = $this->get_int_option('ufsc_wc_individual_licence_product_id', 0);
         ?>
         <input type="number" 
                id="ufsc_wc_individual_licence_product_id" 
@@ -410,7 +432,7 @@ class UFSC_Admin_Settings {
      * Render auto pack enabled field
      */
     public function render_auto_pack_enabled_field() {
-        $value = get_option('ufsc_auto_pack_enabled', true);
+        $value = $this->get_bool_option('ufsc_auto_pack_enabled', true);
         ?>
         <label for="ufsc_auto_pack_enabled">
             <input type="checkbox" 
@@ -430,7 +452,7 @@ class UFSC_Admin_Settings {
      * Render auto order for admin licences field
      */
     public function render_auto_order_for_admin_licences_field() {
-        $value = get_option('ufsc_auto_order_for_admin_licences', true);
+        $value = $this->get_bool_option('ufsc_auto_order_for_admin_licences', true);
         ?>
         <label for="ufsc_auto_order_for_admin_licences">
             <input type="checkbox" 
