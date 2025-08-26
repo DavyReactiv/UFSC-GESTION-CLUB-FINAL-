@@ -37,10 +37,11 @@ function ufsc_order_history_shortcode($atts = array()) {
         }
 
         if (empty($orders)) {
-            return '<p>' . esc_html__("Aucune commande trouvée.", 'plugin-ufsc-gestion-club-13072025') . '</p>';
+            return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><p>'
+                . esc_html__("Aucune commande trouvée.", 'plugin-ufsc-gestion-club-13072025') . '</p></div></div></div>';
         }
 
-        $output  = '<table class="ufsc-order-history">';
+        $output  = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><table class="ufsc-order-history">';
         $output .= '<thead><tr>';
         $output .= '<th>' . esc_html__("Commande", 'plugin-ufsc-gestion-club-13072025') . '</th>';
         $output .= '<th>' . esc_html__("Date", 'plugin-ufsc-gestion-club-13072025') . '</th>';
@@ -65,7 +66,7 @@ function ufsc_order_history_shortcode($atts = array()) {
             $output .= '</tr>';
         }
 
-        $output .= '</tbody></table>';
+        $output .= '</tbody></table></div></div></div>';
 
         return $output;
     }, $atts);

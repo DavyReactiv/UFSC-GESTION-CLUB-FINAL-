@@ -35,8 +35,11 @@ function ufsc_render_affiliation_form($args = [])
     
     // Check if user is logged in
     if (!is_user_logged_in()) {
-        return '<div class="ufsc-alert ufsc-alert-error">\n            <h4>Connexion requise</h4>\n            <p>Vous devez être connecté pour procéder à une affiliation.</p>' .
-            ufsc_render_login_prompt() . '\n            </div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+            . '<div class="ufsc-alert ufsc-alert-error">'
+            . '<h4>Connexion requise</h4><p>Vous devez être connecté pour procéder à une affiliation.</p>'
+            . ufsc_render_login_prompt()
+            . '</div></div></div></div>';
     }
     
     // Check if user already has a club
@@ -48,11 +51,11 @@ function ufsc_render_affiliation_form($args = [])
         
         // If club is already active, show info message
         if (ufsc_is_club_active($existing_club)) {
-            return '<div class="ufsc-alert ufsc-alert-info">
-                <h4>Club déjà affilié</h4>
-                <p>Votre club "' . esc_html($existing_club->nom) . '" est déjà affilié et actif.</p>
-                <p>Si vous souhaitez renouveler votre affiliation ou mettre à jour vos informations, contactez l\'administration UFSC.</p>
-                </div>';
+            return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-info">'
+                . '<h4>Club déjà affilié</h4>'
+                . '<p>Votre club "' . esc_html($existing_club->nom) . '" est déjà affilié et actif.</p>'
+                . '<p>Si vous souhaitez renouveler votre affiliation ou mettre à jour vos informations, contactez l\'administration UFSC.</p>'
+                . '</div></div></div></div>';
         }
     }
     
@@ -61,11 +64,11 @@ function ufsc_render_affiliation_form($args = [])
         $product_url = get_permalink(wc_get_product(ufsc_get_affiliation_product_id()));
         if ($product_url) {
             $action_text = $is_renewal ? 'Renouveler l\'affiliation' : 'Procéder à l\'affiliation';
-            return '<div class="ufsc-alert ufsc-alert-info">
-                <h4>' . ($is_renewal ? 'Renouvellement d\'affiliation' : 'Affiliation club') . '</h4>
-                <p>Pour ' . ($is_renewal ? 'renouveler votre affiliation' : 'affilier votre club') . ', veuillez utiliser notre système de commande intégré.</p>
-                <p><a href="' . esc_url($product_url) . '" class="ufsc-btn ufsc-btn-primary">' . esc_html($action_text) . '</a></p>
-                </div>';
+            return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-info">'
+                . '<h4>' . ($is_renewal ? 'Renouvellement d\'affiliation' : 'Affiliation club') . '</h4>'
+                . '<p>Pour ' . ($is_renewal ? 'renouveler votre affiliation' : 'affilier votre club') . ', veuillez utiliser notre système de commande intégré.</p>'
+                . '<p><a href="' . esc_url($product_url) . '" class="ufsc-btn ufsc-btn-primary">' . esc_html($action_text) . '</a></p>'
+                . '</div></div></div></div>';
         }
     }
     
@@ -73,11 +76,11 @@ function ufsc_render_affiliation_form($args = [])
     if (function_exists('WC') && WC()->cart) {
         foreach (WC()->cart->get_cart() as $cart_item) {
             if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id()) {
-                return '<div class="ufsc-alert ufsc-alert-warning">
-                    <h4>Affiliation en cours</h4>
-                    <p>Une demande d\'affiliation est déjà dans votre panier.</p>
-                    <p><a href="' . wc_get_cart_url() . '" class="ufsc-btn">Voir le panier</a></p>
-                    </div>';
+                return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-warning">'
+                    . '<h4>Affiliation en cours</h4>'
+                    . '<p>Une demande d\'affiliation est déjà dans votre panier.</p>'
+                    . '<p><a href="' . wc_get_cart_url() . '" class="ufsc-btn">Voir le panier</a></p>'
+                    . '</div></div></div></div>';
             }
         }
     }
@@ -90,7 +93,7 @@ function ufsc_render_affiliation_form($args = [])
     $nonce = wp_create_nonce('ufsc_affiliation_nonce');
     
     // Start form output
-    $output = '';
+    $output = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">';
     
     if ($args['show_title']) {
         $title = $is_renewal ? 'Renouvellement d\'affiliation' : 'Affiliation de club';
@@ -232,7 +235,8 @@ function ufsc_render_affiliation_form($args = [])
     </div>';
     
     $output .= '</form>';
-    
+    $output .= '</div></div></div>';
+
     // Add JavaScript for form handling
     $output .= '<script>
     jQuery(document).ready(function($) {

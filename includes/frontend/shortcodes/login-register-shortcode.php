@@ -30,7 +30,8 @@ function ufsc_login_register_shortcode($atts = array()) {
     
     // If user is already logged in, show message and dashboard link
     if (is_user_logged_in()) {
-        return ufsc_render_logged_in_message();
+        return '<div class="ufsc-container"><div class="ufsc-grid">'
+            . ufsc_render_logged_in_message() . '</div></div>';
     }
     
     // Handle registration form submission
@@ -47,7 +48,7 @@ function ufsc_login_register_shortcode($atts = array()) {
         // If there are errors, they will be displayed in the form
     }
     
-    $output = '<div class="ufsc-login-register-wrapper">';
+    $output = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-login-register-wrapper">';
     
     // Add any error messages
     if (isset($registration_result) && !$registration_result['success']) {
@@ -109,7 +110,7 @@ function ufsc_render_logged_in_message() {
     $output .= __('Se déconnecter', 'plugin-ufsc-gestion-club-13072025');
     $output .= '</a>';
 
-    $output .= '</div>';
+    $output .= '</div></div></div>';
 
     return $output;
 }
