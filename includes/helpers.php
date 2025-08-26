@@ -39,6 +39,46 @@ function ufsc_get_statuts()
 }
 
 /**
+ * Generate a deterministic licence key based on licence data.
+ *
+ * Normalizes first name, last name, date of birth and optionally
+ * club ID to create a unique hash used across the plugin.
+ *
+ * @param array $data Licence data containing prenom, nom, date_naissance and optional club_id
+ * @return string MD5 hash representing the licence
+ */
+function ufsc_generate_licence_key(array $data): string
+{
+    $prenom = isset($data['prenom']) ? strtolower(trim((string) $data['prenom'])) : '';
+    $nom = isset($data['nom']) ? strtolower(trim((string) $data['nom'])) : '';
+    $date = isset($data['date_naissance']) ? strtolower(trim((string) $data['date_naissance'])) : '';
+    $club = isset($data['club_id']) ? (string) $data['club_id'] : '';
+
+    return md5($prenom . $nom . $date . $club);
+}
+
+/**
+ * Check if the cart already contains a licence with the provided key.
+ *
+ * @param string $key Licence unique key
+ * @return bool True if cart already has the licence
+ */
+function ufsc_cart_contains_licence(string $key): bool
+{
+    if (!function_exists('WC') || !WC()->cart) {
+        return false;
+    }
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        if (!empty($cart_item['unique_key']) && $cart_item['unique_key'] === $key) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Récupère le club associé à un utilisateur WordPress
  *
  * @param int|null $user_id ID de l'utilisateur WordPress (optionnel, utilise l'utilisateur connecté par défaut)

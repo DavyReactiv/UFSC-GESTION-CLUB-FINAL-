@@ -124,7 +124,7 @@ function ufsc_handle_add_licencie_to_cart() {
         $role = isset($_POST['role']) ? ufsc_sanitize_role($_POST['role']) : 'adherent';
         $cart_item_data = [
             'ufsc_licence_data' => [
-            'role' => $role,
+                'role' => $role,
                 'nom' => $nom,
                 'prenom' => $prenom,
                 'date_naissance' => $date_naissance,
@@ -142,8 +142,17 @@ function ufsc_handle_add_licencie_to_cart() {
             'ufsc_product_type' => 'licence',
             'ufsc_club_id' => $club->id,
             'ufsc_club_nom' => $club->nom,
-            'unique_key' => md5(microtime() . wp_rand())
         ];
+
+        // Generate unique key and prevent duplicates
+        $unique_key = ufsc_generate_licence_key($cart_item_data['ufsc_licence_data']);
+
+        if (ufsc_cart_contains_licence($unique_key)) {
+            wp_send_json_error(['message' => 'Ce licencié est déjà présent dans votre panier.']);
+            return;
+        }
+
+        $cart_item_data['unique_key'] = $unique_key;
 
         // Add to cart
         $cart_item_key = WC()->cart->add_to_cart($licence_product_id, 1, 0, [], $cart_item_data);

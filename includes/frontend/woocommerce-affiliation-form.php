@@ -122,12 +122,20 @@ function ufsc_handle_affiliation_form_submission()
     // This allows dashboard to show "affiliation in progress" even if session expires
     update_user_meta($user_id, 'ufsc_pending_affiliation_data', $club_data);
 
+    // Generate unique key and prevent duplicates
+    $unique_key = ufsc_generate_licence_key($club_data);
+
+    if (ufsc_cart_contains_licence($unique_key)) {
+        wp_send_json_error('Une demande similaire est déjà dans votre panier.');
+        return;
+    }
+
     // Add to cart
     $cart_item_data = [
         'ufsc_product_type' => 'affiliation',
         'ufsc_club_nom' => $club_data['nom'],
         'ufsc_is_renewal' => $is_renewal,
-        'unique_key' => md5(microtime() . wp_rand())
+        'unique_key' => $unique_key
     ];
 
     $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id(), 1, 0, [], $cart_item_data);
@@ -158,8 +166,8 @@ function ufsc_add_affiliation_data_from_session($cart_item_data, $product_id, $v
             // Clear session data
             WC()->session->__unset('ufsc_pending_affiliation_data');
             
-            // Make each item unique
-            $cart_item_data['unique_key'] = md5(microtime() . wp_rand());
+            // Generate deterministic unique key based on club data
+            $cart_item_data['unique_key'] = ufsc_generate_licence_key($affiliation_data);
         }
     }
     
