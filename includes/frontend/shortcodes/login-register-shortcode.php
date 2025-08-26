@@ -80,21 +80,37 @@ function ufsc_login_register_shortcode($atts = array()) {
  * @return string HTML output
  */
 function ufsc_render_logged_in_message() {
-    $current_user = wp_get_current_user();
+    $current_user  = wp_get_current_user();
     $dashboard_url = ufsc_get_dashboard_url();
-    
-    $output = '<div class="ufsc-card">';
+
+    // Determine redirect target for logout if provided
+    $logout_redirect = '';
+    if (isset($_REQUEST['redirect_to'])) {
+        $logout_redirect = esc_url_raw($_REQUEST['redirect_to']);
+    } elseif (isset($_REQUEST['redirect'])) {
+        $logout_redirect = esc_url_raw($_REQUEST['redirect']);
+    } else {
+        $logout_redirect = get_permalink();
+    }
+
+    $logout_url = wp_logout_url($logout_redirect);
+
+    $output  = '<div class="ufsc-card">';
     $output .= '<h3>' . __('Déjà connecté', 'plugin-ufsc-gestion-club-13072025') . '</h3>';
     $output .= '<p>' . sprintf(__('Bonjour %s, vous êtes déjà connecté.', 'plugin-ufsc-gestion-club-13072025'), esc_html($current_user->display_name)) . '</p>';
-    
+
     if ($dashboard_url) {
         $output .= '<a href="' . esc_url($dashboard_url) . '" class="ufsc-btn ufsc-btn-primary">';
         $output .= __('Accéder au tableau de bord', 'plugin-ufsc-gestion-club-13072025');
         $output .= '</a>';
     }
-    
+
+    $output .= '<a href="' . esc_url($logout_url) . '" class="ufsc-btn ufsc-btn-secondary">';
+    $output .= __('Se déconnecter', 'plugin-ufsc-gestion-club-13072025');
+    $output .= '</a>';
+
     $output .= '</div>';
-    
+
     return $output;
 }
 
