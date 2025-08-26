@@ -724,28 +724,31 @@ function ufsc_handle_get_clubs_list() {
  */
 function ufsc_gestion_club_enqueue_scripts()
 {
+    $frontend_style = ufsc_get_asset('frontend.css');
     wp_enqueue_style(
         'ufsc-frontend-style',
-        UFSC_PLUGIN_URL . 'assets/css/frontend.css',
+        $frontend_style['url'],
         [],
-        UFSC_GESTION_CLUB_VERSION
+        $frontend_style['version']
     );
 
     // Enqueue new responsive frontend CSS
-    if (file_exists(UFSC_PLUGIN_PATH . 'assets/css/ufsc-frontend.css')) {
+    $frontend_css = ufsc_get_asset('ufsc-frontend.css');
+    if (file_exists($frontend_css['path'])) {
         wp_enqueue_style(
             'ufsc-frontend-responsive',
-            UFSC_PLUGIN_URL . 'assets/css/ufsc-frontend.css',
+            $frontend_css['url'],
             ['ufsc-frontend-style'],
-            UFSC_GESTION_CLUB_VERSION
+            $frontend_css['version']
         );
     }
 
+    $frontend_script = ufsc_get_asset('frontend.js');
     wp_enqueue_script(
         'ufsc-frontend-script',
-        UFSC_PLUGIN_URL . 'assets/js/frontend.js',
+        $frontend_script['url'],
         ['jquery'],
-        UFSC_GESTION_CLUB_VERSION,
+        $frontend_script['version'],
         true
     );
 
@@ -1029,20 +1032,22 @@ function ufsc_enqueue_frontend_assets() {
     }
     
     if ($should_enqueue) {
+        $frontend_css = ufsc_get_asset('ufsc-frontend.css');
         wp_register_style(
             'ufsc-frontend',
-            UFSC_PLUGIN_URL . 'assets/css/ufsc-frontend.css',
+            $frontend_css['url'],
             array(),
-            UFSC_GESTION_CLUB_VERSION
+            $frontend_css['version']
         );
         wp_enqueue_style('ufsc-frontend');
-        
+
         // Enqueue frontend JavaScript for forms and interactions
+        $frontend_js = ufsc_get_asset('ufsc-frontend.js');
         wp_enqueue_script(
             'ufsc-frontend-js',
-            UFSC_PLUGIN_URL . 'assets/js/ufsc-frontend.js',
+            $frontend_js['url'],
             ['jquery'],
-            UFSC_GESTION_CLUB_VERSION,
+            $frontend_js['version'],
             true
         );
         

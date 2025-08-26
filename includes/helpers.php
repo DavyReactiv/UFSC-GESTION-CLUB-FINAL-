@@ -991,3 +991,37 @@ function ufsc_sanitize_role($raw) {
     $slug  = sanitize_key($raw);
     return array_key_exists($slug, $roles) ? $slug : 'adherent';
 }
+
+/**
+ * Retrieve built asset URL, path and version from Vite manifest.
+ *
+ * @param string $file Entry file name, e.g. 'ufsc-frontend.js' or 'ufsc-frontend.css'.
+ * @return array{url:string,path:string,version:int|null}
+ */
+function ufsc_get_asset(string $file): array {
+    static $manifest = null;
+
+    if ($manifest === null) {
+        $manifest_path = UFSC_PLUGIN_PATH . 'assets/build/manifest.json';
+        $manifest = file_exists($manifest_path)
+            ? json_decode(file_get_contents($manifest_path), true)
+            : [];
+    }
+
+    if (isset($manifest[$file]['file'])) {
+        $built = $manifest[$file]['file'];
+        $path = UFSC_PLUGIN_PATH . 'assets/build/' . $built;
+        return [
+            'url' => UFSC_PLUGIN_URL . 'assets/build/' . $built,
+            'path' => $path,
+            'version' => file_exists($path) ? filemtime($path) : null,
+        ];
+    }
+
+    $path = UFSC_PLUGIN_PATH . 'assets/' . $file;
+    return [
+        'url' => UFSC_PLUGIN_URL . 'assets/' . $file,
+        'path' => $path,
+        'version' => file_exists($path) ? filemtime($path) : null,
+    ];
+}

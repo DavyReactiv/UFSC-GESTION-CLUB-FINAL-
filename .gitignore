@@ -39,6 +39,9 @@ demo/temp/
 composer.phar
 vendor/
 
+# Allow built assets from plugin
+!assets/build/
+
 # Backup files
 *.bak
 *.backup
