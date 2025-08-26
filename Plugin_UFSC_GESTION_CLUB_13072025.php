@@ -2065,14 +2065,15 @@ function ufsc_handle_save_licence_draft(){
     if (!$club_id) {
         wp_send_json_error(['message'=>__('Club manquant.','plugin-ufsc-gestion-club-13072025')], 400);
     }
-    // TODO: real ownership check club<->user
-    // Minimal: ensure current user is linked to club
-    global $wpdb;
-    $rel = $wpdb->prefix . 'ufsc_user_clubs';
-    $has = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$rel} WHERE user_id=%d AND club_id=%d", get_current_user_id(), $club_id));
-    if (!$has) {
-        wp_send_json_error(['message'=>__('Accès non autorisé.','plugin-ufsc-gestion-club-13072025')], 403);
+
+    // Verify that the current user has rights on the target club
+    if (!current_user_can('manage_ufsc_licences') && !ufsc_verify_club_access($club_id)) {
+        wp_send_json_error([
+            'message' => __('Vous n\'avez pas les droits nécessaires pour ce club.','plugin-ufsc-gestion-club-13072025')
+        ], 403);
     }
+
+    global $wpdb;
 
     // Prepare data for licence manager
     $lic_data = [
