@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 /**
  * Constantes pour les produits WooCommerce
  */
-define('UFSC_AFFILIATION_PRODUCT_ID', 2933); // ID du produit affiliation
+define('UFSC_AFFILIATION_PRODUCT_ID', 4823); // ID du produit affiliation
 if (!defined('UFSC_LICENCE_PRODUCT_ID')) {
     define('UFSC_LICENCE_PRODUCT_ID', 2934); // ID du produit licence
 }

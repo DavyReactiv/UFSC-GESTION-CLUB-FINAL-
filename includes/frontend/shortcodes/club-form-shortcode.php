@@ -24,8 +24,8 @@ function ufsc_formulaire_club_shortcode($atts)
     // Inclusion du formulaire
     require_once UFSC_PLUGIN_PATH . 'includes/clubs/form-club.php';
 
-    // Appel de la fonction avec le paramètre frontend=true
-    ufsc_render_club_form(0, true);
+    // Appel de la fonction avec les paramètres frontend=true et affiliation=true
+    ufsc_render_club_form(0, true, true);
 
     // Récupérer le contenu capturé
     return ob_get_clean();
