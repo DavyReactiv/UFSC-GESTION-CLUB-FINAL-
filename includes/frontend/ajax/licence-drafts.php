@@ -43,6 +43,12 @@ function ufsc_ajax_save_draft(){
         $updated = $wpdb->update(
             $table,
             array(
+
+                'nom'           => $nom,
+                'prenom'        => $prenom,
+                'email'         => $email,
+                'statut'        => 'brouillon',
+                'date_creation' => $now,
                 'role'           => $role,
                 'nom'            => $nom,
                 'prenom'         => $prenom,
@@ -54,7 +60,7 @@ function ufsc_ajax_save_draft(){
                 'id'      => $licence_id,
                 'club_id' => $club_id,
             ),
-            array('%s','%s','%s','%s','%s','%s'),
+            array('%s','%s','%s','%s','%s'),
             array('%d','%d')
         );
         if ( $updated !== false ) {
