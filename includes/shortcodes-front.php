@@ -178,6 +178,10 @@ function ufsc_club_dashboard_content($atts = array()) {
     // Get user's club
     $club = ufsc_get_user_club();
     if (!$club) {
+        // When no club is associated, prompt guests to log in before creating one
+        if (!is_user_logged_in()) {
+            return ufsc_render_login_requirement('club_dashboard');
+        }
         return ufsc_render_no_club_message('dashboard');
     }
 
@@ -193,18 +197,24 @@ function ufsc_club_dashboard_content($atts = array()) {
 function ufsc_render_login_requirement($context = '') {
     $login_url = wp_login_url(get_permalink());
     $register_url = wp_registration_url();
-    
+
     $nonce = wp_create_nonce('ufsc_frontend_action');
-    
+
+    $extra_message = '';
+    if ($context === 'club_dashboard') {
+        $extra_message = '<p>' . esc_html__('Veuillez vous connecter pour créer votre club.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+    }
+
     return '<div class="ufsc-login-required">
         <div class="ufsc-alert ufsc-alert-info">
             <h4>' . esc_html__('Connexion requise', 'plugin-ufsc-gestion-club-13072025') . '</h4>
-            <p>' . esc_html__('Vous devez être connecté pour accéder à cette section.', 'plugin-ufsc-gestion-club-13072025') . '</p>
+            <p>' . esc_html__('Vous devez être connecté pour accéder à cette section.', 'plugin-ufsc-gestion-club-13072025') . '</p>' .
+            $extra_message . '
             <div class="ufsc-button-group">
-                <a href="' . esc_url($login_url) . '" class="ufsc-btn ufsc-btn-primary">' . 
+                <a href="' . esc_url($login_url) . '" class="ufsc-btn ufsc-btn-primary">' .
                     esc_html__('Se connecter', 'plugin-ufsc-gestion-club-13072025') . '</a>
-                ' . (get_option('users_can_register') ? 
-                    '<a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-outline">' . 
+                ' . (get_option('users_can_register') ?
+                    '<a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-outline">' .
                         esc_html__('Créer un compte', 'plugin-ufsc-gestion-club-13072025') . '</a>' : '') . '
             </div>
         </div>
