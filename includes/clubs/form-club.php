@@ -217,14 +217,18 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         }
                     }
 
-                    // Si c'est une affiliation, rediriger vers WooCommerce
-                    if ($is_affiliation && $is_frontend) {
-                        // Ajouter au panier
-                        if (function_exists('ufsc_add_affiliation_to_cart') && ufsc_add_affiliation_to_cart($club_id)) {
-                            // Rediriger vers la page panier
-                            wp_redirect(wc_get_checkout_url());
+                    // Redirection après création en frontend pour une affiliation
+                    if ($is_frontend && $is_affiliation) {
+                        $product_id = ufsc_get_affiliation_product_id_safe();
+                        $product    = wc_get_product($product_id);
+
+                        if ($product) {
+                            wp_safe_redirect(get_permalink($product_id));
                             exit;
                         }
+
+                        $success = false;
+                        $errors[] = "Produit d'affiliation introuvable. Veuillez contacter l'administrateur.";
                     }
 
                     // Notification admin si frontend sans affiliation
