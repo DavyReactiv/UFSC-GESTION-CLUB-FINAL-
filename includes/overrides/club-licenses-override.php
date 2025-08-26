@@ -57,6 +57,13 @@ function ufsc_club_licences_render_override($atts = array()){
 
     $is_logged = is_user_logged_in();
     $club_id   = ufsc__resolve_club_id($atts);
+    // Verify that current user has access to this club
+    if ($club_id && function_exists('ufsc_verify_club_access')) {
+        if (!ufsc_verify_club_access($club_id)) {
+            // Club access denied - treat as no club
+            $club_id = 0;
+        }
+    }
     $table     = ufsc__detect_licence_table();
 
     // Form page URL
