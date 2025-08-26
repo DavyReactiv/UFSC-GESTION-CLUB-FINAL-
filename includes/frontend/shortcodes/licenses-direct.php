@@ -56,7 +56,6 @@ function ufscx_licences_direct_shortcode($atts){
     ]);
 
     // Fetch data
-    global $wpdb;
     $t = $wpdb->prefix.'ufsc_licences';
     $licences = [];
     if ($wpdb->get_var("SHOW TABLES LIKE '$t'") == $t){
