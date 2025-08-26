@@ -39,8 +39,8 @@ function ufsc_add_licence_data_from_session($cart_item_data, $product_id, $varia
             // Clear session data
             WC()->session->__unset('ufsc_pending_licence_data');
             
-            // Make each item unique
-            $cart_item_data['unique_key'] = md5(microtime() . wp_rand());
+            // Generate deterministic unique key based on licence data
+            $cart_item_data['unique_key'] = ufsc_generate_licence_key($licence_data);
         }
     }
     
@@ -186,8 +186,18 @@ function ufsc_add_licence_data_to_cart_item($cart_item_data, $product_id, $varia
     $cart_item_data['ufsc_licence_data'] = $licence_data;
     $cart_item_data['ufsc_product_type'] = 'licence';
 
-    // S'assurer que chaque produit est unique dans le panier
-    $cart_item_data['unique_key'] = md5(microtime().wp_rand());
+    // Generate a deterministic unique key for the licence
+    $unique_key = ufsc_generate_licence_key(array_merge($licence_data, [
+        'club_id' => $cart_item_data['ufsc_club_id'] ?? 0,
+    ]));
+
+    // Prevent duplicate licences in the cart
+    if (ufsc_cart_contains_licence($unique_key)) {
+        wc_add_notice('Ce licencié est déjà présent dans votre panier.', 'error');
+        return false;
+    }
+
+    $cart_item_data['unique_key'] = $unique_key;
 
     return $cart_item_data;
 }

@@ -144,12 +144,19 @@ function ufsc_handle_add_licence_to_cart() {
 
 
 
+    // Generate unique key and prevent duplicates
+    $unique_key = ufsc_generate_licence_key(array_merge($licence_payload, ['club_id' => $club_id]));
+
+    if (ufsc_cart_contains_licence($unique_key)) {
+        wp_send_json_error(__('Ce licencié est déjà dans votre panier.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
     // Prepare cart item data with the correct structure
     $cart_item_data = [
         'ufsc_licence_data' => $licence_payload,
         'ufsc_product_type' => 'licence',
         'ufsc_club_id' => $club_id,
-        'unique_key' => md5(microtime() . wp_rand())
+        'unique_key' => $unique_key
     ];
 
     // Add to WooCommerce cart
