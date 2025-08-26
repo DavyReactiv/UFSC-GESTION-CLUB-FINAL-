@@ -110,6 +110,24 @@ function ufsc_get_user_club($user_id = null)
 }
 
 /**
+ * Vérifie si l'utilisateur courant a accès au club spécifié
+ *
+ * @param int $club_id Identifiant du club à vérifier
+ * @return bool True si l'utilisateur est associé à ce club
+ */
+function ufsc_verify_club_access($club_id)
+{
+    if (!$club_id || !is_user_logged_in()) {
+        return false;
+    }
+
+    $user_id   = get_current_user_id();
+    $user_club = ufsc_get_user_club($user_id);
+
+    return $user_club && (int) $user_club->id === (int) $club_id;
+}
+
+/**
  * Safely check user capabilities without causing fatal errors
  * This function ensures WordPress is fully loaded before checking capabilities
  *

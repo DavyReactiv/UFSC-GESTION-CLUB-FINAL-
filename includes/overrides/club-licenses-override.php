@@ -30,8 +30,8 @@ if (!function_exists('ufsc__resolve_club_id')) {
 function ufsc__resolve_club_id($atts){
     // 1) shortcode attr has priority (for debug) e.g. [ufsc_club_licences club_id="123"]
     if (!empty($atts['club_id'])) return (int) $atts['club_id'];
-    // 2) GET override (for debug)
-    if (!empty($_GET['club_id'])) return (int) $_GET['club_id'];
+    // 2) GET override (admin only)
+    if (!empty($_GET['club_id']) && current_user_can('manage_options')) return (int) $_GET['club_id'];
 
     // 3) official helper
     if (function_exists('ufsc_get_user_club')){
@@ -53,11 +53,7 @@ function ufsc__resolve_club_id($atts){
             )
         );
         if ($club_id){
-            $is_valid = false;
-            // Verify access using helper if available
-            if (function_exists('ufsc_verify_club_access')){
-                $is_valid = ufsc_verify_club_access($club_id);
-            }
+            $is_valid = ufsc_verify_club_access($club_id);
             // Fallback manual check: ensure the user is explicitly associated via responsable_id
             if (!$is_valid){
                 $club_table = $wpdb->prefix.'ufsc_clubs';
@@ -85,13 +81,12 @@ function ufsc_club_licences_render_override($atts = array()){
 
     $is_logged = is_user_logged_in();
     $club_id   = ufsc__resolve_club_id($atts);
-    // Verify that current user has access to this club
-    if ($club_id && function_exists('ufsc_verify_club_access')) {
-        if (!ufsc_verify_club_access($club_id)) {
-            // Club access denied - treat as no club
-            $club_id = 0;
-        }
+
+    // Always verify that current user has access to this club
+    if (!ufsc_verify_club_access($club_id)) {
+        $club_id = 0;
     }
+
     $table     = ufsc__detect_licence_table();
 
     // Form page URL
@@ -150,7 +145,7 @@ function ufsc_club_licences_render_override($atts = array()){
       <?php if (!$is_logged): ?>
         <p>Veuillez vous connecter à votre <strong>compte club</strong> pour voir vos licences.</p>
       <?php elseif (!$club_id): ?>
-        <p>Club introuvable pour ce compte.</p>
+        <p>Club introuvable pour ce compte</p>
       <?php elseif (empty($rows)): ?>
         <p>Aucune licence trouvée pour ce club.</p>
       <?php else: ?>
