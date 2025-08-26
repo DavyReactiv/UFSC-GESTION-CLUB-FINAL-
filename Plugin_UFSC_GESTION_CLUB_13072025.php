@@ -182,8 +182,10 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
         require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
     }
 
-    UFSC_Menu();
-    UFSC_Document_Manager::get_instance();
+    if (is_admin()) {
+        new UFSC_Menu();
+        UFSC_Document_Manager::get_instance();
+    }
 
     /**
      * Load text domain for translations
