@@ -20,20 +20,26 @@ function ufsc_formulaire_club_shortcode($atts)
         }
 
         // Rediriger vers la même page après connexion/inscription
-        return ufsc_login_register_shortcode([
-            'redirect'      => get_permalink(),
-            'show_register' => 'yes',
-        ]);
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">' .
+            ufsc_login_register_shortcode([
+                'redirect'      => get_permalink(),
+                'show_register' => 'yes',
+            ]) .
+            '</div></div></div>';
     }
 
     // Démarrer la capture de sortie
     ob_start();
+
+    echo '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">';
 
     // Inclusion du formulaire
     require_once UFSC_PLUGIN_PATH . 'includes/clubs/form-club.php';
 
     // Appel de la fonction avec les paramètres frontend=true et affiliation=true
     ufsc_render_club_form(0, true, true);
+
+    echo '</div></div></div>';
 
     // Récupérer le contenu capturé
     return ob_get_clean();

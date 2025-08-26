@@ -23,6 +23,18 @@
   line-height: 1.6;
 }
 
+.ufsc-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .ufsc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .ufsc-card {
   background: #fff;
   border-radius: 8px;

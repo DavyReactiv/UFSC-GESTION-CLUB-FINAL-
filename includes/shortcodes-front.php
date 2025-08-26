@@ -206,7 +206,7 @@ function ufsc_render_login_requirement($context = '') {
         $extra_message = '<p>' . esc_html__('Veuillez vous connecter pour créer votre club.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
     }
 
-    return '<div class="ufsc-login-required">'
+    return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufsc-login-required">'
         . '<div class="ufsc-alert ufsc-alert-info">'
             . '<h4>' . esc_html__('Connexion requise', 'plugin-ufsc-gestion-club-13072025') . '</h4>'
             . '<p>' . esc_html__('Vous devez être connecté pour accéder à cette section.', 'plugin-ufsc-gestion-club-13072025') . '</p>'
@@ -214,7 +214,7 @@ function ufsc_render_login_requirement($context = '') {
             . ufsc_render_login_prompt()
         . '</div>'
         . '<input type="hidden" name="ufsc_nonce" value="' . esc_attr($nonce) . '">'
-        . '</div>';
+        . '</div></div></div>';
 }
 
 /**
@@ -225,24 +225,24 @@ function ufsc_render_login_requirement($context = '') {
  */
 function ufsc_render_no_club_message($context = '') {
     $nonce = wp_create_nonce('ufsc_frontend_action');
-    
-    $message = '<div class="ufsc-no-club">
+
+    $message = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufsc-no-club">
         <div class="ufsc-alert ufsc-alert-warning">
             <h4>' . esc_html__('Aucun club associé', 'plugin-ufsc-gestion-club-13072025') . '</h4>
             <p>' . esc_html__('Vous n\'êtes pas encore associé à un club.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
-    
+
     if ($context === 'dashboard') {
         $register_url = ufsc_get_page_url('club_form') ?: '#';
         $message .= '<div class="ufsc-button-group">
-                <a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-primary">' . 
+                <a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-primary">' .
                     esc_html__('Créer un club', 'plugin-ufsc-gestion-club-13072025') . '</a>
             </div>';
     }
-    
+
     $message .= '</div>
         <input type="hidden" name="ufsc_nonce" value="' . esc_attr($nonce) . '">
-    </div>';
-    
+    </div></div></div>';
+
     return $message;
 }
 
@@ -257,6 +257,7 @@ function ufsc_render_simple_club_register_form($atts) {
     
     ob_start();
     ?>
+    <div class="ufsc-container"><div class="ufsc-grid">
     <div class="ufsc-club-register-form">
         <div class="ufsc-card">
             <div class="ufsc-card-header">
@@ -308,6 +309,7 @@ function ufsc_render_simple_club_register_form($atts) {
             </div>
         </div>
     </div>
+    </div></div>
     <?php
     return ob_get_clean();
 }
@@ -515,12 +517,17 @@ function ufsc_render_club_account_form($club, $atts) {
         }
     }
     </style>
+    <div class="ufsc-container"><div class="ufsc-grid">
     <div class="ufsc-club-account">
-        
+
         <?php if ($updated): ?>
-        <div class="ufsc-alert ufsc-alert-success">
-            <p><strong><?php esc_html_e('Succès !', 'plugin-ufsc-gestion-club-13072025'); ?></strong> 
-               <?php esc_html_e('Les informations du club ont été mises à jour.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <div class="ufsc-card">
+            <div class="ufsc-card-body">
+                <div class="ufsc-alert ufsc-alert-success">
+                    <p><strong><?php esc_html_e('Succès !', 'plugin-ufsc-gestion-club-13072025'); ?></strong>
+                       <?php esc_html_e('Les informations du club ont été mises à jour.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+                </div>
+            </div>
         </div>
         <?php endif; ?>
 
@@ -768,6 +775,7 @@ function ufsc_render_club_account_form($club, $atts) {
 
         <input type="hidden" name="ufsc_nonce" value="<?php echo esc_attr($nonce); ?>">
     </div>
+    </div></div>
     <?php
     return ob_get_clean();
 }

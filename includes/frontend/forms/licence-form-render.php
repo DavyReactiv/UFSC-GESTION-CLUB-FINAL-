@@ -16,10 +16,13 @@ function ufsc_render_licence_form($args = array()){
     if (empty($args['club'])){
         if (function_exists('ufsc_check_frontend_access')){
             $access = ufsc_check_frontend_access('licence');
-            if (!$access['allowed']) return $access['error_message'];
+            if (!$access['allowed']) {
+                return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+                    . $access['error_message'] . '</div></div></div>';
+            }
             $club = $access['club'];
         } else {
-            return '<div class="ufsc-error">Accès refusé.</div>';
+            return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-error">Accès refusé.</div></div></div></div>';
         }
     } else {
         $club = $args['club'];
@@ -40,6 +43,9 @@ function ufsc_render_licence_form($args = array()){
 
     ob_start();
     ?>
+    <div class="ufsc-container">
+    <div class="ufsc-grid">
+    <div class="ufsc-card">
     <?php if (!empty($args['show_title'])): ?>
       <h3>Nouvelle licence sportive</h3>
     <?php endif; ?>
@@ -180,6 +186,9 @@ function ufsc_render_licence_form($args = array()){
         <button type="submit" class="ufsc-btn"><?php echo esc_html($args['submit_button_text']); ?></button>
       </div>
     </form>
+    </div>
+    </div>
+    </div>
 
     <script>
     (function($){

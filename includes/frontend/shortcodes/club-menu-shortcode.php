@@ -64,11 +64,12 @@ function ufsc_club_menu_shortcode($atts = array()) {
     
     // Generate menu HTML
     $output = ufsc_render_club_menu($menu_pages);
-    
+
     // Enqueue CSS only once
     ufsc_enqueue_club_menu_css();
-    
-    return $output;
+
+    return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+        . $output . '</div></div></div>';
 }
 
 /**
