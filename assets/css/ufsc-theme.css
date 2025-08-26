@@ -246,6 +246,35 @@
   }
 }
 
+/* Nouvelle grille de champs : 1 colonne mobile, 2 colonnes >=1024px */
+.ufsc-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .ufsc-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Messages d'aide et d'erreur */
+.ufsc-form-error {
+  color: var(--ufsc-red);
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+.ufsc-form-field [aria-invalid="true"] {
+  border-color: var(--ufsc-red);
+}
+
+.ufsc-form-field [aria-invalid="true"] ~ .ufsc-form-error {
+  display: block;
+}
+
 .ufsc-form label {
   font-weight: 600;
   color: var(--ufsc-text);

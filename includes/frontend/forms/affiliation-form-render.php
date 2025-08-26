@@ -121,28 +121,38 @@ function ufsc_render_affiliation_form($args = [])
         <div class="ufsc-form-field">
             <label for="nom">Nom du club *</label>
             <input type="text" id="nom" name="nom" required maxlength="200" value="' . ($existing_club ? esc_attr($existing_club->nom) : '') . '">
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
         
         <div class="ufsc-form-field">
             <label for="description">Description du club</label>
             <textarea id="description" name="description" rows="4" maxlength="1000">' . ($existing_club ? esc_textarea($existing_club->description) : '') . '</textarea>
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
         
-        <div class="ufsc-form-row">
+        <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="adresse">Adresse *</label>
                 <input type="text" id="adresse" name="adresse" required maxlength="200" value="' . ($existing_club ? esc_attr($existing_club->adresse) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
         </div>
         
-        <div class="ufsc-form-row">
+        <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="code_postal">Code postal *</label>
                 <input type="text" id="code_postal" name="code_postal" required pattern="[0-9]{5}" maxlength="5" value="' . ($existing_club ? esc_attr($existing_club->code_postal) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
             <div class="ufsc-form-field">
                 <label for="ville">Ville *</label>
                 <input type="text" id="ville" name="ville" required maxlength="100" value="' . ($existing_club ? esc_attr($existing_club->ville) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
         </div>';
     
@@ -160,6 +170,8 @@ function ufsc_render_affiliation_form($args = [])
         }
         
         $output .= '</select>
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>';
     }
     
@@ -168,59 +180,69 @@ function ufsc_render_affiliation_form($args = [])
     // Contact information section
     $output .= '<div class="ufsc-form-section">
         <h4>Contact</h4>
-        <div class="ufsc-form-row">
+        <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="email">Email *</label>
                 <input type="email" id="email" name="email" required maxlength="150" value="' . ($existing_club ? esc_attr($existing_club->email) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
             <div class="ufsc-form-field">
                 <label for="telephone">Téléphone</label>
                 <input type="tel" id="telephone" name="telephone" maxlength="20" value="' . ($existing_club ? esc_attr($existing_club->telephone) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
         </div>
         
         <div class="ufsc-form-field">
             <label for="site_web">Site web</label>
             <input type="url" id="site_web" name="site_web" maxlength="200" placeholder="https://" value="' . ($existing_club ? esc_attr($existing_club->site_web) : '') . '">
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
     </div>';
     
     // Additional information section
     $output .= '<div class="ufsc-form-section">
         <h4>Informations complémentaires</h4>
-        <div class="ufsc-form-row">
+        <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="siret">SIRET</label>
                 <input type="text" id="siret" name="siret" maxlength="14" pattern="[0-9]{14}" value="' . ($existing_club ? esc_attr($existing_club->siret) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
             <div class="ufsc-form-field">
                 <label for="num_rna">Numéro RNA</label>
                 <input type="text" id="num_rna" name="num_rna" maxlength="10" value="' . ($existing_club ? esc_attr($existing_club->num_rna) : '') . '">
+                <p class="ufsc-form-hint"></p>
+                <span class="ufsc-form-error"></span>
             </div>
         </div>
         
         <div class="ufsc-form-field">
             <label for="activites">Activités pratiquées</label>
             <textarea id="activites" name="activites" rows="3" maxlength="500" placeholder="Décrivez les activités sportives proposées par votre club...">' . ($existing_club ? esc_textarea($existing_club->activites) : '') . '</textarea>
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
     </div>';
     
     // Terms and conditions
     $output .= '<div class="ufsc-form-section">
         <div class="ufsc-form-field">
-            <label class="ufsc-checkbox-label">
-                <input type="checkbox" id="accept_terms" name="accept_terms" required>
-                <span class="ufsc-checkbox-custom"></span>
-                J\'accepte les <a href="#" target="_blank">conditions générales</a> et le <a href="#" target="_blank">règlement intérieur</a> de l\'UFSC *
-            </label>
+            <label for="accept_terms">J\'accepte les <a href="#" target="_blank">conditions générales</a> et le <a href="#" target="_blank">règlement intérieur</a> de l\'UFSC *</label>
+            <input type="checkbox" id="accept_terms" name="accept_terms" required>
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
-        
+
         <div class="ufsc-form-field">
-            <label class="ufsc-checkbox-label">
-                <input type="checkbox" id="accept_data" name="accept_data" required>
-                <span class="ufsc-checkbox-custom"></span>
-                J\'accepte le traitement de mes données personnelles conformément à la <a href="#" target="_blank">politique de confidentialité</a> *
-            </label>
+            <label for="accept_data">J\'accepte le traitement de mes données personnelles conformément à la <a href="#" target="_blank">politique de confidentialité</a> *</label>
+            <input type="checkbox" id="accept_data" name="accept_data" required>
+            <p class="ufsc-form-hint"></p>
+            <span class="ufsc-form-error"></span>
         </div>
     </div>';
     
