@@ -195,9 +195,6 @@ function ufsc_club_dashboard_content($atts = array()) {
  * @return string HTML output
  */
 function ufsc_render_login_requirement($context = '') {
-    $login_url = wp_login_url(get_permalink());
-    $register_url = wp_registration_url();
-
     $nonce = wp_create_nonce('ufsc_frontend_action');
 
     $extra_message = '';
@@ -205,21 +202,15 @@ function ufsc_render_login_requirement($context = '') {
         $extra_message = '<p>' . esc_html__('Veuillez vous connecter pour créer votre club.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
     }
 
-    return '<div class="ufsc-login-required">
-        <div class="ufsc-alert ufsc-alert-info">
-            <h4>' . esc_html__('Connexion requise', 'plugin-ufsc-gestion-club-13072025') . '</h4>
-            <p>' . esc_html__('Vous devez être connecté pour accéder à cette section.', 'plugin-ufsc-gestion-club-13072025') . '</p>' .
-            $extra_message . '
-            <div class="ufsc-button-group">
-                <a href="' . esc_url($login_url) . '" class="ufsc-btn ufsc-btn-primary">' .
-                    esc_html__('Se connecter', 'plugin-ufsc-gestion-club-13072025') . '</a>
-                ' . (get_option('users_can_register') ?
-                    '<a href="' . esc_url($register_url) . '" class="ufsc-btn ufsc-btn-outline">' .
-                        esc_html__('Créer un compte', 'plugin-ufsc-gestion-club-13072025') . '</a>' : '') . '
-            </div>
-        </div>
-        <input type="hidden" name="ufsc_nonce" value="' . esc_attr($nonce) . '">
-    </div>';
+    return '<div class="ufsc-login-required">'
+        . '<div class="ufsc-alert ufsc-alert-info">'
+            . '<h4>' . esc_html__('Connexion requise', 'plugin-ufsc-gestion-club-13072025') . '</h4>'
+            . '<p>' . esc_html__('Vous devez être connecté pour accéder à cette section.', 'plugin-ufsc-gestion-club-13072025') . '</p>'
+            . $extra_message
+            . ufsc_render_login_prompt()
+        . '</div>'
+        . '<input type="hidden" name="ufsc_nonce" value="' . esc_attr($nonce) . '">'
+        . '</div>';
 }
 
 /**
