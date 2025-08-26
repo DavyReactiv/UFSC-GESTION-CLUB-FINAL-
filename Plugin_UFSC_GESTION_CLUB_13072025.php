@@ -172,30 +172,29 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
 }
 
 /**
- * Initialize the menu and document manager
- */
-new 
-// Licences direct shortcode & ajax (added)
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
-}
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
-}
-UFSC_Menu();
-UFSC_Document_Manager::get_instance();
+* Initialize the menu and document manager
+     */
+    // Licences direct shortcode & ajax (added)
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
+    }
 
-/**
- * Load text domain for translations
- */
-function ufsc_gestion_club_load_textdomain()
-{
-    load_plugin_textdomain(
-        'plugin-ufsc-gestion-club-13072025',
-        false,
-        dirname(plugin_basename(__FILE__)) . '/languages/'
-    );
-}
+    UFSC_Menu();
+    UFSC_Document_Manager::get_instance();
+
+    /**
+     * Load text domain for translations
+     */
+    function ufsc_gestion_club_load_textdomain() {
+        load_plugin_textdomain(
+            'plugin-ufsc-gestion-club-13072025',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages/'
+        );
+    }
 add_action('init', 'ufsc_gestion_club_load_textdomain');
 
 /**
