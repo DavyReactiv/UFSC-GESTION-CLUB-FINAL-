@@ -269,10 +269,7 @@ class UFSC_Club_Dashboard
         // Add action buttons based on error type
         switch ($error->get_error_code()) {
             case 'not_logged_in':
-                $output .= '<p>';
-                $output .= '<a href="' . esc_url($error_data['login_url']) . '" class="ufsc-btn">Se connecter</a> ou ';
-                $output .= '<a href="' . esc_url(wp_registration_url()) . '" class="ufsc-btn ufsc-btn-outline">Créer un compte</a>';
-                $output .= '</p>';
+                $output .= ufsc_render_login_prompt($error_data['login_url']);
                 break;
                 
             case 'no_club_associated':
