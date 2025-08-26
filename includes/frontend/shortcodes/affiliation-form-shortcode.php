@@ -68,7 +68,7 @@ if (!function_exists('ufsc_add_affiliation_to_cart')) {
     function ufsc_add_affiliation_to_cart($club_id)
     {
         // ID du produit "Pack Affiliation"
-        $product_id = get_option('ufsc_affiliation_product_id', 0);
+        $product_id = ufsc_get_affiliation_product_id_safe();
 
         if (!$product_id) {
             return false;

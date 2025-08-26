@@ -748,7 +748,10 @@ add_action('admin_notices', 'ufsc_admin_page_configuration_notices');
  */
 function ufsc_get_affiliation_product_id()
 {
-    $product_id = get_option('ufsc_affiliation_product_id', 4823);
+    $product_id = get_option('ufsc_wc_affiliation_product_id', 0);
+    if (!$product_id) {
+        $product_id = get_option('ufsc_affiliation_product_id', 4823);
+    }
     return (int) $product_id;
 }
 

@@ -116,12 +116,5 @@ function ufsc_get_licence_product_id_safe() {
  * @return int Affiliation product ID
  */
 function ufsc_get_affiliation_product_id_safe() {
-    $affiliation_id = ufsc_get_affiliation_product_id();
-    
-    // If no ID found in old option, try new option
-    if (!$affiliation_id) {
-        $affiliation_id = get_option('ufsc_wc_affiliation_product_id', 0);
-    }
-    
-    return (int) $affiliation_id;
+    return (int) ufsc_get_affiliation_product_id();
 }

@@ -1129,6 +1129,9 @@ function ufsc_gestion_club_activate()
     }
 
     // Set default WooCommerce product IDs
+    if (!get_option('ufsc_wc_affiliation_product_id')) {
+        add_option('ufsc_wc_affiliation_product_id', 4823);
+    }
     if (!get_option('ufsc_affiliation_product_id')) {
         add_option('ufsc_affiliation_product_id', 4823);
     }
