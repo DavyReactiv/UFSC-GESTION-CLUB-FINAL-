@@ -42,17 +42,17 @@ function ufsc_ajax_save_draft(){
         $updated = $wpdb->update(
             $table,
             array(
-                'nom'            => $nom,
-                'prenom'         => $prenom,
-                'email'          => $email,
-                'statut'         => 'brouillon',
-                'date_creation'  => $now,
+                'nom'           => $nom,
+                'prenom'        => $prenom,
+                'email'         => $email,
+                'statut'        => 'brouillon',
+                'date_creation' => $now,
             ),
             array(
                 'id'      => $licence_id,
                 'club_id' => $club_id,
             ),
-            array('%s','%s','%s','%s','%s','%s'),
+            array('%s','%s','%s','%s','%s'),
             array('%d','%d')
         );
         if ( $updated !== false ) {
@@ -62,15 +62,18 @@ function ufsc_ajax_save_draft(){
         }
     } else {
         // Create draft
-        $inserted = $wpdb->insert($table, array('club_id'=>$club_id,
-                'role' => $role,
-                'nom'            => $nom,
-                'prenom'         => $prenom,
-                'email'          => $email,
-                'statut'         => 'brouillon',
-                'date_creation'  => $now,
+        $inserted = $wpdb->insert(
+            $table,
+            array(
+                'club_id'       => $club_id,
+                'role'          => $role,
+                'nom'           => $nom,
+                'prenom'        => $prenom,
+                'email'         => $email,
+                'statut'        => 'brouillon',
+                'date_creation' => $now,
             ),
-            array('%d','%s','%s','%s','%s','%s')
+            array('%d','%s','%s','%s','%s','%s','%s')
         );
         if ( $inserted ) {
             $new_id = (int) $wpdb->insert_id;
