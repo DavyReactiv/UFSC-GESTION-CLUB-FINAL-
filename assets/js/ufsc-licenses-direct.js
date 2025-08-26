@@ -43,10 +43,23 @@
         <td>${r.quota||''}</td>
         <td><span class="ufscx-pill">${r.statut||''}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
-        <td>
-          <button class="ufscx-btn ufscx-btn-soft" data-a="view" data-id="${r.id}">Voir</button>
-          <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
-        </td>
+        <td>${(()=>{
+          if(r.statut==='brouillon'){
+            return `
+              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>
+              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>
+              <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>
+              <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
+            `;
+          }
+          if(r.statut==='in_cart'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`;
+          }
+          if(r.statut==='pending_payment'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`;
+          }
+          return `<button class="ufscx-btn ufscx-btn-soft" data-a="view" data-id="${r.id}">Voir</button>`;
+        })()}</td>
       </tr>
     `).join('');
   }
