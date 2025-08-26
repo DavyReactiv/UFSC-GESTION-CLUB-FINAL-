@@ -2278,7 +2278,7 @@ class UFSC_Menu
         // Register WooCommerce product ID settings
         register_setting('ufsc_settings', 'ufsc_affiliation_product_id', array(
             'sanitize_callback' => 'absint',
-            'default' => 2933
+            'default' => 4823
         ));
         register_setting('ufsc_settings', 'ufsc_licence_product_id', array(
             'sanitize_callback' => 'absint',
@@ -4207,12 +4207,12 @@ class UFSC_Menu
      */
     public function affiliation_product_id_callback()
     {
-        $product_id = get_option('ufsc_affiliation_product_id', 2933);
+        $product_id = get_option('ufsc_affiliation_product_id', 4823);
         ?>
         <input type="number" id="ufsc_affiliation_product_id" name="ufsc_affiliation_product_id" 
                value="<?php echo esc_attr($product_id); ?>" min="1" step="1" />
         <p class="description">
-            <?php esc_html_e('ID du produit WooCommerce pour les affiliations de club (par défaut: 2933).', 'plugin-ufsc-gestion-club-13072025'); ?>
+            <?php esc_html_e('ID du produit WooCommerce pour les affiliations de club (par défaut: 4823).', 'plugin-ufsc-gestion-club-13072025'); ?>
             <?php if ($product_id) { ?>
                 <?php 
                 if (function_exists('wc_get_product')) {

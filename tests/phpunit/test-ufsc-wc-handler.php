@@ -102,9 +102,9 @@ class Test_UFSC_WC_Handler extends WP_UnitTestCase
     public function test_woocommerce_product_configuration()
     {
         // Test affiliation product ID setting
-        update_option('ufsc_wc_affiliation_product_id', 2933);
+        update_option('ufsc_wc_affiliation_product_id', 4823);
         $affiliation_id = get_option('ufsc_wc_affiliation_product_id');
-        $this->assertEquals(2933, $affiliation_id);
+        $this->assertEquals(4823, $affiliation_id);
 
         // Test license product IDs setting (CSV)
         update_option('ufsc_wc_license_product_ids', '2934,2935,2936');

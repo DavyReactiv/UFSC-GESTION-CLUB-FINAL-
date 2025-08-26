@@ -55,7 +55,7 @@ class UFSC_Admin_Settings {
             'ufsc_wc_affiliation_product_id',
             array(
                 'type' => 'integer',
-                'default' => 2933,
+                'default' => 4823,
                 'sanitize_callback' => 'absint'
             )
         );
@@ -320,7 +320,7 @@ class UFSC_Admin_Settings {
      * Render affiliation product ID field
      */
     public function render_affiliation_product_id_field() {
-        $value = $this->get_int_option('ufsc_wc_affiliation_product_id', 2933);
+        $value = $this->get_int_option('ufsc_wc_affiliation_product_id', 4823);
         ?>
         <input type="number" 
                id="ufsc_wc_affiliation_product_id" 
@@ -329,7 +329,7 @@ class UFSC_Admin_Settings {
                min="1" 
                class="regular-text" />
         <p class="description">
-            <?php _e('ID du produit WooCommerce utilisé pour les affiliations de club (défaut: 2933).', 'plugin-ufsc-gestion-club-13072025'); ?>
+            <?php _e('ID du produit WooCommerce utilisé pour les affiliations de club (défaut: 4823).', 'plugin-ufsc-gestion-club-13072025'); ?>
         </p>
         <?php
     }

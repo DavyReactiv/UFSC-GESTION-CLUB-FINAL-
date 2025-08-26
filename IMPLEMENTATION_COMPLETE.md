@@ -16,7 +16,7 @@ This document confirms that all requirements from the task have been successfull
 **Status: CREATED**
 - ✅ Admin page under Settings → UFSC (`add_options_page`)
 - ✅ Required fields with correct defaults:
-  - `ufsc_wc_affiliation_product_id` (int, default: 2933)
+  - `ufsc_wc_affiliation_product_id` (int, default: 4823)
   - `ufsc_wc_license_product_ids` (csv, default: '2934')
   - `ufsc_auto_create_user` (bool, default: false)
   - `ufsc_require_login_shortcodes` (bool, default: true)

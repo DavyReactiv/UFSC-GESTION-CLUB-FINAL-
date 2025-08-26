@@ -26,7 +26,7 @@ function test_ufsc_admin_settings() {
     
     // Test 2: Test default option values
     $affiliation_id = (int) get_option('ufsc_wc_affiliation_product_id', 0);
-    if ($affiliation_id === 2933) {
+    if ($affiliation_id === 4823) {
         $results['default_affiliation'] = 'PASS - Default affiliation product ID is correct';
     } else {
         $results['default_affiliation'] = 'FAIL - Default affiliation product ID incorrect: ' . var_export($affiliation_id, true);

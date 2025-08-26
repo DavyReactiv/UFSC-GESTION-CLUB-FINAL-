@@ -63,7 +63,7 @@ Accessibles via `Réglages > UFSC > Intégration WooCommerce`:
 
 ### Réglages existants conservés
 
-- **ID Produit Affiliation** (`ufsc_wc_affiliation_product_id`): 2933
+- **ID Produit Affiliation** (`ufsc_wc_affiliation_product_id`): 4823
 - **IDs Produits Licences** (`ufsc_wc_license_product_ids`): 2934
 
 ## Structure des prix
