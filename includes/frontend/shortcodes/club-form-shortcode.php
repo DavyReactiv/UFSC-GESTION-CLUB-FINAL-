@@ -23,6 +23,11 @@ function ufsc_formulaire_club_shortcode($atts)
         return ufsc_login_register_shortcode(array(
             'redirect' => get_permalink(),
         ));
+
+        return ufsc_login_register_shortcode([
+            'redirect' => get_permalink(),
+            'show_register' => 'yes',
+        ]);
     }
 
     // Démarrer la capture de sortie
