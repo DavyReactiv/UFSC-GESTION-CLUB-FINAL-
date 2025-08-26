@@ -240,6 +240,12 @@ function ufsc_add_licence_data_to_order_items($item, $cart_item_key, $values, $o
 {
     if (isset($values['ufsc_licence_data'])) {
         $item->update_meta_data('ufsc_licence_data', $values['ufsc_licence_data']);
+
+        $data   = $values['ufsc_licence_data'];
+        $prenom = $data['prenom'] ?? '';
+        $nom    = $data['nom'] ?? '';
+
+        $item->update_meta_data('Licencié', trim($prenom . ' ' . $nom));
     }
 
     if (isset($values['ufsc_club_id'])) {
