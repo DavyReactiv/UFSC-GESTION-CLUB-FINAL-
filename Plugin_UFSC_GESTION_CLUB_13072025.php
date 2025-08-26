@@ -67,6 +67,7 @@ if (!defined('UFSC_LICENCE_MODE')) {
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/attestations-helper.php';
+require_once UFSC_PLUGIN_PATH . 'includes/helpers/security.php';
 
 // Compatibility shims
 require_once UFSC_PLUGIN_PATH . 'includes/compat/monetico-compat.php';

@@ -52,7 +52,7 @@ function ufscx_licences_direct_shortcode($atts){
     wp_enqueue_script('ufscx-licences-direct', plugins_url('../../../assets/js/ufsc-licenses-direct.js', __FILE__), ['jquery'], '1.0', true);
     wp_localize_script('ufscx-licences-direct', 'UFSCX_AJAX', [
         'ajax' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('ufscx_licences'),
+        'nonce' => ufsc_create_nonce('ufscx_licences'),
     ]);
 
     // Fetch data

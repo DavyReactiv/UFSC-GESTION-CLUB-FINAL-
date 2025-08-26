@@ -523,6 +523,18 @@ Pour exécuter les tests unitaires :
 phpunit --testsuite core
 ```
 
+## 🔐 Nonces Frontend
+
+| Action | Nonce | Vérification |
+| --- | --- | --- |
+| Ajout d'un licencié au panier | `ufsc_add_licencie_nonce` | `check_ajax_referer` |
+| Brouillons de licence / quota | `ufsc_front_nonce` | `check_ajax_referer` |
+| Liste des licences (actions directes) | `ufscx_licences` | `check_ajax_referer` |
+| Téléversement du logo de club | `ufsc_set_club_logo_nonce` | `check_ajax_referer` |
+| Formulaire d'affiliation | `ufsc_affiliation_nonce` | `check_ajax_referer` |
+| Soumission du formulaire licence | `ufsc_add_licence_nonce` | `check_admin_referer` |
+| Ajout de licence au panier | `ufsc_add_licence_to_cart` | `check_ajax_referer` |
+
 ## 📄 Licence
 
 Ce plugin est distribué sous licence GPL-2.0+. Voir le fichier [LICENSE](LICENSE) pour plus de détails.

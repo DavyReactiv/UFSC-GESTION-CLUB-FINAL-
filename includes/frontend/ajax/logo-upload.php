@@ -3,7 +3,7 @@
 if (!defined('ABSPATH')) { exit; }
 
 function ufsc_handle_set_club_logo() {
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ufsc_set_club_logo_nonce')) {
+    if (!ufsc_check_ajax_nonce('ufsc_set_club_logo_nonce', 'nonce', false)) {
         wp_send_json_error(['message' => 'Erreur de sécurité. Veuillez recharger la page.']);
     }
     if (!is_user_logged_in()) {

@@ -52,7 +52,7 @@ add_action('woocommerce_before_add_to_cart_button', 'ufsc_add_affiliation_form_t
 function ufsc_handle_affiliation_form_submission()
 {
     // Verify nonce
-    if (!wp_verify_nonce($_POST['_ufsc_affiliation_nonce'] ?? '', 'ufsc_affiliation_nonce')) {
+    if (!ufsc_check_ajax_nonce('ufsc_affiliation_nonce', 'ufsc_nonce', false)) {
         wp_send_json_error('Erreur de sécurité.');
         return;
     }

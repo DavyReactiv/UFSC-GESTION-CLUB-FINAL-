@@ -440,7 +440,7 @@ function ufsc_enqueue_dashboard_mvp_assets() {
         // Localize script for AJAX
         wp_localize_script('ufsc-club-logo', 'ufscLogoUpload', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'setLogoNonce' => wp_create_nonce('ufsc_set_club_logo_nonce'),
+            'setLogoNonce' => ufsc_create_nonce('ufsc_set_club_logo_nonce'),
             'maxSizeMB' => 2
         ]);
     }
