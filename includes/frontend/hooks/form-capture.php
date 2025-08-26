@@ -12,7 +12,7 @@ add_action('template_redirect', function(){
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
     if (empty($_POST['action']) || $_POST['action'] !== 'ufsc_submit_licence') return;
 
-    if (!isset($_POST['ufsc_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ufsc_nonce'])), 'ufsc_add_licence_nonce')){
+    if (!ufsc_check_admin_nonce('ufsc_add_licence_nonce', 'ufsc_nonce', false)){
         wp_die(__('Jeton de sécurité invalide.','plugin-ufsc-gestion-club-13072025'));
     }
     if (!is_user_logged_in()){ wp_safe_redirect( wp_login_url( get_permalink() ) ); exit; }

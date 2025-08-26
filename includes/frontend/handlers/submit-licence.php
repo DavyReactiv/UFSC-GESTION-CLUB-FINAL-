@@ -3,7 +3,9 @@ if (!defined('ABSPATH')) exit;
 
 function ufsc_handle_front_licence_submit(){
     if (!isset($_POST['action']) || $_POST['action']!=='ufsc_submit_licence') return;
-    if (!isset($_POST['ufsc_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ufsc_nonce'])), 'ufsc_add_licence_nonce')){ wp_die(__('Nonce invalide.','plugin-ufsc-gestion-club-13072025')); }
+    if (!ufsc_check_admin_nonce('ufsc_add_licence_nonce', 'ufsc_nonce', false)){
+        wp_die(__('Nonce invalide.','plugin-ufsc-gestion-club-13072025'));
+    }
     if (!is_user_logged_in()){ wp_safe_redirect( wp_login_url() ); exit; }
 
     $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');

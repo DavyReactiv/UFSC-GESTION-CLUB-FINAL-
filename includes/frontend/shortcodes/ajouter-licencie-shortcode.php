@@ -200,7 +200,7 @@ function ufsc_enqueue_add_licencie_assets()
     // Localize script with AJAX data
     wp_localize_script('ufsc-add-licencie', 'ufscAjax', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
-        'addLicencieNonce' => wp_create_nonce('ufsc_add_licencie_nonce')
+        'addLicencieNonce' => ufsc_create_nonce('ufsc_add_licencie_nonce')
     ]);
     
     // Enqueue frontend styles if available

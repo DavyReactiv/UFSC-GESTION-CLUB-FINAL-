@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 function ufsc_handle_add_licencie_to_cart() {
     try {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ufsc_add_licencie_nonce')) {
+        if (!ufsc_check_ajax_nonce('ufsc_add_licencie_nonce', 'nonce', false)) {
             wp_send_json_error(['message' => 'Erreur de sécurité. Veuillez recharger la page.']);
             return;
         }

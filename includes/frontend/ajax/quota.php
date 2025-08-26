@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) exit;
 
 add_action('wp_ajax_ufsc_include_quota', 'ufsc_ajax_include_quota');
 function ufsc_ajax_include_quota(){
-    if (!check_ajax_referer('ufsc_front_nonce', '_ajax_nonce', false)) wp_send_json_error('Bad nonce',403);
+    if (!ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false)) wp_send_json_error('Bad nonce',403);
     if (!is_user_logged_in()) wp_send_json_error('Non connecté',401);
 
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;

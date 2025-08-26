@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) exit;
 // Toggle quota
 add_action('wp_ajax_ufscx_toggle_quota','ufscx_toggle_quota');
 function ufscx_toggle_quota(){
-    check_ajax_referer('ufscx_licences');
+    ufsc_check_ajax_nonce('ufscx_licences','nonce');
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     if (!$id) wp_send_json_error(['message'=>'ID manquant']);
 
@@ -23,7 +23,7 @@ function ufscx_toggle_quota(){
 // Delete draft
 add_action('wp_ajax_ufscx_delete_draft','ufscx_delete_draft');
 function ufscx_delete_draft(){
-    check_ajax_referer('ufscx_licences');
+    ufsc_check_ajax_nonce('ufscx_licences','nonce');
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
     $row = $wpdb->get_row($wpdb->prepare("SELECT id, club_id, statut FROM $t WHERE id=%d", $id));
