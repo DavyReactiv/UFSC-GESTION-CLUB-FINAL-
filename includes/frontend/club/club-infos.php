@@ -623,22 +623,3 @@ function ufsc_get_licence_status_info($licence)
         'text' => $status_text
     ];
 }
-
-/**
- * Verify club access for current user
- *
- * @param int $club_id Club ID to verify access for
- * @return bool True if user has access to this club
- */
-function ufsc_verify_club_access($club_id)
-{
-    if (!is_user_logged_in()) {
-        return false;
-    }
-
-    $user_id = get_current_user_id();
-    $user_club = ufsc_get_user_club($user_id);
-
-    // Check if user's club matches the requested club
-    return $user_club && (int) $user_club->id === (int) $club_id;
-}
