@@ -64,7 +64,7 @@ class UFSC_WooCommerce_Integration {
      */
     private function init() {
         // Get product IDs from options with fallback to constants
-        $this->affiliation_product_id = get_option('ufsc_wc_affiliation_product_id', 4823);
+        $this->affiliation_product_id = ufsc_get_affiliation_product_id_safe();
         $license_product_ids = get_option('ufsc_wc_license_product_ids', '2934');
         
         // Support comma-separated list of license product IDs

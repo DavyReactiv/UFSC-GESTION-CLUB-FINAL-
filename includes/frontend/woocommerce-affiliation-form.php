@@ -25,7 +25,7 @@ function ufsc_add_affiliation_form_to_product_page()
     global $product;
 
     // Check if this is the affiliation product
-    if (!$product || $product->get_id() != ufsc_get_affiliation_product_id()) {
+    if (!$product || $product->get_id() != ufsc_get_affiliation_product_id_safe()) {
         return;
     }
 
@@ -75,7 +75,7 @@ function ufsc_handle_affiliation_form_submission()
 
     // Check for existing affiliation in cart
     foreach (WC()->cart->get_cart() as $cart_item) {
-        if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id()) {
+        if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id_safe()) {
             wp_send_json_error('Une demande d\'affiliation est déjà dans votre panier.');
             return;
         }
@@ -138,7 +138,7 @@ function ufsc_handle_affiliation_form_submission()
         'unique_key' => $unique_key
     ];
 
-    $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id(), 1, 0, [], $cart_item_data);
+    $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id_safe(), 1, 0, [], $cart_item_data);
 
     if ($added) {
         wp_send_json_success([
@@ -156,7 +156,7 @@ add_action('wp_ajax_ufsc_add_affiliation_to_cart', 'ufsc_handle_affiliation_form
  */
 function ufsc_add_affiliation_data_from_session($cart_item_data, $product_id, $variation_id)
 {
-    if ($product_id == ufsc_get_affiliation_product_id()) {
+    if ($product_id == ufsc_get_affiliation_product_id_safe()) {
         $affiliation_data = WC()->session->get('ufsc_pending_affiliation_data');
         
         if ($affiliation_data && is_array($affiliation_data)) {
@@ -232,7 +232,7 @@ function ufsc_process_affiliation_after_payment($order_id)
         $product_id = $item->get_product_id();
 
         // Check if this is an affiliation
-        if ($product_id == ufsc_get_affiliation_product_id()) {
+        if ($product_id == ufsc_get_affiliation_product_id_safe()) {
             ufsc_create_or_update_club_from_order_item($item, $order);
         }
     }
@@ -298,10 +298,10 @@ function ufsc_create_or_update_club_from_order_item($item, $order)
  */
 function ufsc_prevent_multiple_affiliations($passed, $product_id)
 {
-    if ($product_id == ufsc_get_affiliation_product_id()) {
+    if ($product_id == ufsc_get_affiliation_product_id_safe()) {
         // Check if affiliation is already in cart
         foreach (WC()->cart->get_cart() as $cart_item) {
-            if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id()) {
+            if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id_safe()) {
                 wc_add_notice('Une demande d\'affiliation est déjà dans votre panier.', 'error');
                 return false;
             }

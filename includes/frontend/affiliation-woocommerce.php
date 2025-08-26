@@ -48,7 +48,7 @@ if (!function_exists('ufsc_add_affiliation_to_cart')) {
         ];
 
         // Ajouter au panier (using configurable product ID)
-        $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id(), 1, 0, [], $cart_item_data);
+        $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id_safe(), 1, 0, [], $cart_item_data);
 
         return $added;
     }
@@ -104,7 +104,7 @@ if (!function_exists('ufsc_process_affiliation_order')) {
             $product_id = $item->get_product_id();
 
             // Vérifier si c'est une affiliation UFSC
-            if ($product_id == ufsc_get_affiliation_product_id()) {
+            if ($product_id == ufsc_get_affiliation_product_id_safe()) {
                 $club_id = $item->get_meta('ufsc_club_id');
 
                 if ($club_id) {

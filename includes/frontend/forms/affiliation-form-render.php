@@ -61,7 +61,7 @@ function ufsc_render_affiliation_form($args = [])
     
     // If this is a shortcode context and not on product page, redirect to product
     if ($args['context'] === 'shortcode' && $args['redirect_to_product']) {
-        $product_url = get_permalink(wc_get_product(ufsc_get_affiliation_product_id()));
+        $product_url = get_permalink(wc_get_product(ufsc_get_affiliation_product_id_safe()));
         if ($product_url) {
             $action_text = $is_renewal ? 'Renouveler l\'affiliation' : 'Procéder à l\'affiliation';
             return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-info">'
@@ -75,7 +75,7 @@ function ufsc_render_affiliation_form($args = [])
     // Check if there's already an affiliation product in cart
     if (function_exists('WC') && WC()->cart) {
         foreach (WC()->cart->get_cart() as $cart_item) {
-            if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id()) {
+            if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id_safe()) {
                 return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-warning">'
                     . '<h4>Affiliation en cours</h4>'
                     . '<p>Une demande d\'affiliation est déjà dans votre panier.</p>'

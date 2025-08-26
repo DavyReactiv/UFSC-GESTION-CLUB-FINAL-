@@ -100,7 +100,7 @@ function ufsc_render_product_button($product_id, $label, $classes = '', $context
             // Check if affiliation is already in cart
             if (function_exists('WC') && WC()->cart) {
                 foreach (WC()->cart->get_cart() as $cart_item) {
-                    if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id()) {
+                    if (isset($cart_item['product_id']) && $cart_item['product_id'] == ufsc_get_affiliation_product_id_safe()) {
                         return ufsc_render_disabled_button($label, $classes, 'En cours', 'Une demande d\'affiliation est déjà dans votre panier.');
                     }
                 }
@@ -212,7 +212,7 @@ function ufsc_generate_affiliation_button($args = [])
     }
 
     return ufsc_render_product_button(
-        ufsc_get_affiliation_product_id(),
+        ufsc_get_affiliation_product_id_safe(),
         $args['label'],
         $args['classes'],
         $args['context'],
@@ -292,7 +292,7 @@ function ufsc_generate_cart_aware_button($product_id, $label, $options = [])
     $context = 'general';
     if ($product_id == ufsc_get_licence_product_id()) {
         $context = 'licence';
-    } elseif ($product_id == ufsc_get_affiliation_product_id()) {
+    } elseif ($product_id == ufsc_get_affiliation_product_id_safe()) {
         $context = 'affiliation';
     }
 
