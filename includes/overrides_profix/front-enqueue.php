@@ -8,5 +8,6 @@ add_action('wp_enqueue_scripts', function(){
         'i18n'=>array('saved'=>__('Brouillon enregistré.','plugin-ufsc-gestion-club-13072025'),'deleted'=>__('Brouillon supprimé.','plugin-ufsc-gestion-club-13072025'),'error'=>__('Une erreur est survenue.','plugin-ufsc-gestion-club-13072025'))
     ));
     wp_enqueue_script('ufsc-front-profix');
-    wp_enqueue_style('ufsc-frontend', plugins_url('../../assets/css/ufsc-frontend.css', __FILE__), [], '1.0');
+    $css = ufsc_get_asset('ufsc-frontend.css');
+    wp_enqueue_style('ufsc-frontend', $css['url'], [], $css['version']);
 },20);

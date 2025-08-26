@@ -84,23 +84,23 @@ function ufsc_test_frontend_refonte_components() {
     }
     
     // Test 6: Check CSS file
-    $css_file = UFSC_PLUGIN_PATH . 'assets/css/ufsc-frontend.css';
+    $css = ufsc_get_asset('ufsc-frontend.css');
     $test_results['assets']['css'] = [
-        'exists' => file_exists($css_file),
-        'size' => file_exists($css_file) ? filesize($css_file) : 0,
+        'exists' => file_exists($css['path']),
+        'size' => file_exists($css['path']) ? filesize($css['path']) : 0,
         'classes_count' => 0
     ];
-    
-    if (file_exists($css_file)) {
-        $css_content = file_get_contents($css_file);
+
+    if (file_exists($css['path'])) {
+        $css_content = file_get_contents($css['path']);
         $test_results['assets']['css']['classes_count'] = preg_match_all('/\.ufsc-[a-zA-Z0-9_-]+/', $css_content);
     }
-    
+
     // Test 7: Check JS file
-    $js_file = UFSC_PLUGIN_PATH . 'assets/js/ufsc-frontend.js';
+    $js = ufsc_get_asset('ufsc-frontend.js');
     $test_results['assets']['js'] = [
-        'exists' => file_exists($js_file),
-        'size' => file_exists($js_file) ? filesize($js_file) : 0
+        'exists' => file_exists($js['path']),
+        'size' => file_exists($js['path']) ? filesize($js['path']) : 0
     ];
     
     return $test_results;
