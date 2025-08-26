@@ -1,12 +1,17 @@
 
-jQuery(function($){
+document.addEventListener('DOMContentLoaded', () => {
   // Add titles for truncated cells
-  $('.ufsc-table td, .ufsc-table th').each(function(){
-    var $c = $(this);
-    if (!$c.attr('title')) { $c.attr('title', $.trim($c.text())); }
+  document.querySelectorAll('.ufsc-table td, .ufsc-table th').forEach(c => {
+    if (!c.getAttribute('title')) {
+      c.setAttribute('title', c.textContent.trim());
+    }
   });
-  var $tn = $('.wrap .tablenav.top');
-  if ($tn.length) {
-    $tn.css({ position: 'sticky', top: '32px', zIndex: 10, background: '#fff' });
+
+  const tn = document.querySelector('.wrap .tablenav.top');
+  if (tn) {
+    tn.style.position = 'sticky';
+    tn.style.top = '32px';
+    tn.style.zIndex = '10';
+    tn.style.background = '#fff';
   }
 });

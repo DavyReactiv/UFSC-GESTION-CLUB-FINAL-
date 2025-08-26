@@ -1,46 +1,50 @@
-jQuery(document).ready(function($) {
-    $('#ufsc-search').on('input', function() {
-        const query = $(this).val();
+document.addEventListener('DOMContentLoaded', () => {
+    const search = document.querySelector('#ufsc-search');
+    const results = document.querySelector('#ufsc-results');
+    if (search) {
+        search.addEventListener('input', async function() {
+            const query = this.value;
 
-        if (query.length < 2) {
-            $('#ufsc-results').html('');
-            return;
-        }
+            if (query.length < 2) {
+                if (results) results.innerHTML = '';
+                return;
+            }
 
-        $.ajax({
-            url: ufscAjax.ajax_url,
-            method: 'POST',
-            data: {
-                action: 'ufsc_search_dashboard',
-                query: query,
-                nonce: ufscAjax.nonce
-            },
-            success: function(response) {
-                if (response.success) {
+            try {
+                const response = await fetch(ufscAjax.ajax_url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                    body: new URLSearchParams({
+                        action: 'ufsc_search_dashboard',
+                        query: query,
+                        nonce: ufscAjax.nonce
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
                     let html = '<ul>';
-                    if (response.data.clubs.length > 0) {
+                    if (data.data.clubs.length > 0) {
                         html += '<li><strong>Clubs</strong><ul>';
-                        response.data.clubs.forEach(function(club) {
+                        data.data.clubs.forEach(club => {
                             html += '<li>🏛️ ' + club.nom + '</li>';
                         });
                         html += '</ul></li>';
                     }
-                    if (response.data.licences.length > 0) {
+                    if (data.data.licences.length > 0) {
                         html += '<li><strong>Licenciés</strong><ul>';
-                        response.data.licences.forEach(function(licence) {
+                        data.data.licences.forEach(licence => {
                             html += '<li>👤 ' + licence.prenom + ' ' + licence.nom + '</li>';
                         });
                         html += '</ul></li>';
                     }
                     html += '</ul>';
-                    $('#ufsc-results').html(html);
-                } else {
-                    $('#ufsc-results').html('<p>Aucun résultat trouvé.</p>');
+                    if (results) results.innerHTML = html;
+                } else if (results) {
+                    results.innerHTML = '<p>Aucun résultat trouvé.</p>';
                 }
-            },
-            error: function() {
-                $('#ufsc-results').html('<p>Erreur AJAX.</p>');
+            } catch (error) {
+                if (results) results.innerHTML = '<p>Erreur AJAX.</p>';
             }
         });
-    });
+    }
 });

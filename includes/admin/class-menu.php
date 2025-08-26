@@ -69,7 +69,7 @@ class UFSC_Menu
             
         // Enqueue enhanced admin UI styles/scripts for UFSC screens
         wp_enqueue_style('ufsc-admin-ui', plugins_url('../../assets/css/ufsc-admin-ui.css', __FILE__), [], '1.0.0');
-        wp_enqueue_script('ufsc-admin-ui', plugins_url('../../assets/js/ufsc-admin-ui.js', __FILE__), ['jquery'], '1.0.0', true);
+        wp_enqueue_script('ufsc-admin-ui', plugins_url('../../assets/js/ufsc-admin-ui.js', __FILE__), [], '1.0.0', true);
     
             wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
