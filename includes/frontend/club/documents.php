@@ -290,28 +290,28 @@ function ufsc_render_general_documents()
             'title' => 'Règlement intérieur UFSC',
             'description' => 'Règlement intérieur de la fédération',
             'icon' => 'book',
-            'url' => '#', // TODO: Add actual URL
+            'url' => UFSC_PLUGIN_URL . 'assets/docs/reglement_interieur.pdf',
             'available' => true
         ],
         'guide_affiliation' => [
             'title' => 'Guide d\'affiliation',
             'description' => 'Guide complet pour l\'affiliation des clubs',
             'icon' => 'info',
-            'url' => '#', // TODO: Add actual URL
+            'url' => UFSC_PLUGIN_URL . 'assets/docs/guide_affiliation.pdf',
             'available' => true
         ],
         'modeles_documents' => [
             'title' => 'Modèles de documents',
             'description' => 'Modèles de documents utiles pour votre club',
             'icon' => 'format-aside',
-            'url' => '#', // TODO: Add actual URL
+            'url' => UFSC_PLUGIN_URL . 'assets/docs/modeles_documents.zip',
             'available' => true
         ],
         'calendrier_competitions' => [
             'title' => 'Calendrier des compétitions',
             'description' => 'Planning des compétitions UFSC',
             'icon' => 'calendar-alt',
-            'url' => '#', // TODO: Add actual URL
+            'url' => UFSC_PLUGIN_URL . 'assets/docs/calendrier_competitions.pdf',
             'available' => true
         ]
     ];
