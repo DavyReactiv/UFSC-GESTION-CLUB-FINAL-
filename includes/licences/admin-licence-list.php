@@ -209,34 +209,35 @@ $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
     </div>
 
     <!-- 📋 Tableau des licences avec DataTables -->
-    <table id="licenses-table-club" class="widefat fixed striped display nowrap ufsc-licences-table" style="width:100%">
-        <thead>
-        <tr>
-            <th style="width: 40px;"><input type="checkbox" id="ufsc-select-all" title="Sélectionner tout"></th>
-            <th>ID</th><th>Nom</th><th>Prénom</th><th>Sexe</th><th>Naissance</th>
-            <th>Email</th><th>Ville</th><th>Région</th><th>Club</th><th>Statut</th><th>Compétition</th><th>Inclus</th><th>Inscrit</th><th>Attestation</th><th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php if ($data): foreach ($data as $lic): ?>
+    <div class="ufsc-licences-table-wrapper">
+        <table id="licenses-table-club" class="widefat fixed striped display nowrap ufsc-licences-table" style="width:100%">
+            <thead>
             <tr>
-                <td><input type="checkbox" name="licence_ids[]" value="<?php echo esc_attr($lic->id); ?>" class="ufsc-licence-checkbox"></td>
-                <td><?php echo esc_html($lic->id); ?></td>
-                <td><?php echo esc_html($lic->nom); ?></td>
-                <td><?php echo esc_html($lic->prenom); ?></td>
-                <td>
-                    <span class="ufsc-badge <?php echo $lic->sexe === 'F' ? 'badge-pink' : 'badge-blue'; ?>">
-                        <?php echo $lic->sexe === 'F' ? 'Femme' : 'Homme'; ?>
-                    </span>
-                </td>
-                <td><?php echo esc_html($lic->date_naissance); ?></td>
-                <td><?php echo esc_html($lic->email); ?></td>
-                <td><?php echo esc_html($lic->ville); ?></td>
-                <td><?php echo esc_html($lic->region); ?></td>
-                <td><strong><?php echo esc_html($lic->club_nom); ?></strong></td>
-                <td>
-                    <?php 
-                    $statut = $lic->statut ?? 'en_attente';
+                <th style="width: 40px;"><input type="checkbox" id="ufsc-select-all" title="Sélectionner tout"></th>
+                <th>ID</th><th>Nom</th><th>Prénom</th><th>Sexe</th><th>Naissance</th>
+                <th>Email</th><th>Ville</th><th>Région</th><th>Club</th><th>Statut</th><th>Compétition</th><th>Inclus</th><th>Inscrit</th><th>Attestation</th><th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if ($data): foreach ($data as $lic): ?>
+                <tr>
+                    <td><input type="checkbox" name="licence_ids[]" value="<?php echo esc_attr($lic->id); ?>" class="ufsc-licence-checkbox"></td>
+                    <td><?php echo esc_html($lic->id); ?></td>
+                    <td><?php echo esc_html($lic->nom); ?></td>
+                    <td><?php echo esc_html($lic->prenom); ?></td>
+                    <td>
+                        <span class="ufsc-badge <?php echo $lic->sexe === 'F' ? 'badge-pink' : 'badge-blue'; ?>">
+                            <?php echo $lic->sexe === 'F' ? 'Femme' : 'Homme'; ?>
+                        </span>
+                    </td>
+                    <td><?php echo esc_html($lic->date_naissance); ?></td>
+                    <td><?php echo esc_html($lic->email); ?></td>
+                    <td><?php echo esc_html($lic->ville); ?></td>
+                    <td><?php echo esc_html($lic->region); ?></td>
+                    <td><strong><?php echo esc_html($lic->club_nom); ?></strong></td>
+                    <td>
+                        <?php
+                        $statut = $lic->statut ?? 'en_attente';
                     $statut_labels = [
                         'en_attente' => 'En attente',
                         'validee' => 'Validée',
@@ -371,7 +372,8 @@ $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
             <tr><td colspan="15">Aucune licence trouvée avec les critères sélectionnés.</td></tr>
         <?php endif; ?>
         </tbody>
-    </table>
+        </table>
+    </div>
 
 </div>
 

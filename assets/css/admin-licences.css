@@ -8,6 +8,11 @@
  * @since 1.3.0
  */
 
+/* Wrapper to enable horizontal scroll when table overflows */
+.ufsc-licences-table-wrapper {
+    overflow-x: auto;
+}
+
 /* Main table layout */
 .ufsc-licences-table {
     table-layout: auto;
@@ -19,7 +24,7 @@
 .ufsc-licences-table th,
 .ufsc-licences-table td {
     vertical-align: middle;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 /* Actions column specific styling */
