@@ -217,7 +217,8 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
     }
     
     // Also check for specific page parameters
-    if (isset($_GET['page']) && strpos($_GET['page'], 'ufsc') !== false) {
+    $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
+    if ($page && strpos($page, 'ufsc') !== false) {
         $is_ufsc_page = true;
     }
     
@@ -241,7 +242,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
     );
 
     // Enqueue WordPress media scripts on edit club page
-    if (isset($_GET['page']) && $_GET['page'] === 'ufsc_edit_club') {
+    if ('ufsc_edit_club' === $page) {
         wp_enqueue_media();
     }
 
@@ -791,7 +792,8 @@ function ufsc_enqueue_form_enhancements()
     $should_enqueue = false;
     
     // Check if we're in admin and on a club page
-    if (is_admin() && isset($_GET['page']) && strpos($_GET['page'], 'ufsc') !== false) {
+    $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
+    if (is_admin() && $page && strpos($page, 'ufsc') !== false) {
         $should_enqueue = true;
     }
     
@@ -1384,8 +1386,8 @@ function ufsc_handle_licence_attestation_admin_download() {
         wp_die('Permissions insuffisantes', 'Erreur', ['response' => 403]);
     }
 
-    $licence_id = intval($_GET['licence_id'] ?? 0);
-    $nonce = sanitize_text_field($_GET['nonce'] ?? '');
+    $licence_id = intval( wp_unslash( $_GET['licence_id'] ?? '0' ) ); // Sanitize GET parameters
+    $nonce = sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) );
 
     // Verify nonce
     if (!wp_verify_nonce($nonce, 'ufsc_licence_attestation_admin_' . $licence_id)) {
@@ -1472,12 +1474,13 @@ add_action('init', 'ufsc_handle_licence_card_download');
  * Handle license card download requests
  */
 function ufsc_handle_licence_card_download() {
-    if (!isset($_GET['action']) || $_GET['action'] !== 'download_licence_card') {
+    $action = isset($_GET['action']) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : ''; // Sanitize GET parameters
+    if ('download_licence_card' !== $action) {
         return;
     }
-    
-    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
-    $nonce = isset($_GET['nonce']) ? sanitize_text_field($_GET['nonce']) : '';
+
+    $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
+    $nonce = isset($_GET['nonce']) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
     
     if (!$licence_id) {
         wp_die('Invalid license ID', 'Error', ['response' => 400]);
@@ -1914,8 +1917,8 @@ function ufsc_handle_licence_attestation_download() {
         wp_die('Accès non autorisé', 'Erreur', ['response' => 403]);
     }
 
-    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
-    $nonce = isset($_GET['nonce']) ? sanitize_text_field($_GET['nonce']) : '';
+    $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0; // Sanitize GET parameters
+    $nonce = isset($_GET['nonce']) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
 
     if (!$licence_id) {
         wp_die('ID de licence invalide', 'Erreur', ['response' => 400]);
