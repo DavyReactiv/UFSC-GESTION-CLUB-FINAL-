@@ -36,6 +36,10 @@ function ufscx_licences_direct_shortcode($atts){
     if (!$club_id){
         return '<div class="ufsc-alert ufsc-alert-error">Club introuvable pour ce compte.</div>';
     }
+    global $wpdb;
+    $club_name = $wpdb->get_var(
+        $wpdb->prepare("SELECT nom FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d", $club_id)
+    );
     $a = shortcode_atts([
         'per_page' => 25,
         'add_url'  => home_url('/ajouter-licencie/'),
@@ -71,7 +75,9 @@ function ufscx_licences_direct_shortcode($atts){
         <?php if ($a['enable_csv']==='yes'): ?>
         <button type="button" class="ufscx-btn ufscx-btn-soft" id="ufscx-export">Exporter CSV</button>
         <?php endif; ?>
-        <div class="ufscx-club">Club #<?php echo (int)$club_id; ?></div>
+        <div class="ufscx-club">
+            <?php echo esc_html($club_name ?: "Club #$club_id"); ?>
+        </div>
       </div>
 
       <div class="ufscx-filters">
