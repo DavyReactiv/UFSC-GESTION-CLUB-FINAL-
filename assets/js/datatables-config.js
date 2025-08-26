@@ -52,29 +52,29 @@ jQuery(document).ready(function($) {
                 const exportColumns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; // Exclut checkbox (0) et Actions (14)
                 const columnDefs = [
                     // Colonne de sélection (checkbox)
-                    { targets: 0, orderable: false, searchable: false, width: '40px' },
+                    { targets: 0, orderable: false, searchable: false },
                     // ID
-                    { targets: 1, width: '50px' },
+                    { targets: 1 },
                     // Nom et prénom
-                    { targets: [2, 3], width: '120px' },
+                    { targets: [2, 3] },
                     // Sexe
-                    { targets: 4, width: '80px' },
+                    { targets: 4 },
                     // Date de naissance
-                    { targets: 5, width: '100px' },
+                    { targets: 5 },
                     // Email
-                    { targets: 6, width: '180px' },
+                    { targets: 6 },
                     // Ville et région
-                    { targets: [7, 8], width: '120px' },
+                    { targets: [7, 8] },
                     // Club
-                    { targets: 9, width: '150px' },
+                    { targets: 9 },
                     // Statut (nouvelle colonne)
-                    { targets: 10, width: '100px' },
+                    { targets: 10 },
                     // Compétition et Inclus
-                    { targets: [11, 12], width: '90px' },
+                    { targets: [11, 12] },
                     // Date d'inscription
-                    { targets: 13, width: '100px' },
+                    { targets: 13 },
                     // Actions
-                    { targets: 14, orderable: false, searchable: false, width: '200px' }
+                    { targets: 14, orderable: false, searchable: false }
                 ];
                 
                 initializeDataTable(tableId, exportColumns, columnDefs, true, 'Club');
@@ -109,25 +109,25 @@ jQuery(document).ready(function($) {
                 const exportColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // Exclut seulement Actions (12)
                 const columnDefs = [
                     // ID
-                    { targets: 0, width: '50px' },
+                    { targets: 0 },
                     // Nom et prénom
-                    { targets: [1, 2], width: '120px' },
+                    { targets: [1, 2] },
                     // Sexe
-                    { targets: 3, width: '80px' },
+                    { targets: 3 },
                     // Date de naissance
-                    { targets: 4, width: '100px' },
+                    { targets: 4 },
                     // Email
-                    { targets: 5, width: '180px' },
+                    { targets: 5 },
                     // Ville et région
-                    { targets: [6, 7], width: '120px' },
+                    { targets: [6, 7] },
                     // Club
-                    { targets: 8, width: '150px' },
+                    { targets: 8 },
                     // Compétition et Inclus
-                    { targets: [9, 10], width: '90px' },
+                    { targets: [9, 10] },
                     // Date d'inscription
-                    { targets: 11, width: '100px' },
+                    { targets: 11 },
                     // Actions
-                    { targets: 12, orderable: false, searchable: false, width: '180px' }
+                    { targets: 12, orderable: false, searchable: false }
                 ];
                 
                 initializeDataTable(tableId, exportColumns, columnDefs, false, 'Global');
