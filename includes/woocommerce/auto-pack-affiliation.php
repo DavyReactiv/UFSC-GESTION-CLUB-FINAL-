@@ -57,7 +57,7 @@ class UFSC_Auto_Pack_Affiliation {
      * @return int
      */
     private function get_affiliation_product_id() {
-        return get_option('ufsc_wc_affiliation_product_id', 2933);
+        return get_option('ufsc_wc_affiliation_product_id', 4823);
     }
     
     /**

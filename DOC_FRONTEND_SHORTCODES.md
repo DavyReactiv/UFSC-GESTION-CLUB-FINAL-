@@ -118,7 +118,7 @@ Formulaire d'affiliation club (version standalone).
 ## Fonctionnalités Techniques
 
 ### Intégration WooCommerce
-- Les formulaires `ufsc_licence_form` et `ufsc_affiliation_form` s'intègrent automatiquement aux produits WooCommerce (IDs 2933 et 2934)
+- Les formulaires `ufsc_licence_form` et `ufsc_affiliation_form` s'intègrent automatiquement aux produits WooCommerce (IDs 4823 et 2934)
 - Gestion automatique du panier avec métadonnées
 - Synchronisation des statuts commande ↔ licence
 - Prévention des doublons et gestion des quotas
@@ -145,7 +145,7 @@ Formulaire d'affiliation club (version standalone).
 
 ### Options Plugin
 - `ufsc_licence_product_id` : ID du produit WooCommerce pour les licences (défaut: 2934)
-- `ufsc_affiliation_product_id` : ID du produit WooCommerce pour les affiliations (défaut: 2933)
+- `ufsc_affiliation_product_id` : ID du produit WooCommerce pour les affiliations (défaut: 4823)
 - `ufsc_manual_validation` : Active la validation manuelle des licences (défaut: false)
 - `ufsc_club_form_page_id` : ID de la page contenant le shortcode `[ufsc_formulaire_club]`
 

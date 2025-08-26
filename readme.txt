@@ -50,7 +50,7 @@ Gestion complète des documents, licences, affiliations et expérience utilisate
 
 **Formulaires d'affiliation et création**
 * `[ufsc_formulaire_affiliation]` - Formulaire d'affiliation club avec intégration WooCommerce et upload de documents
-  - Redirige automatiquement vers le produit WooCommerce d'affiliation (ID 2933)
+  - Redirige automatiquement vers le produit WooCommerce d'affiliation (ID 4823)
   - Ajoute les métadonnées du club au panier (nom, ID, type de produit)
   - Traite automatiquement les commandes terminées pour mettre à jour le statut du club
 * `[ufsc_affiliation_club_form]` - Formulaire d'affiliation club avec upload des 6 documents obligatoires
@@ -83,7 +83,7 @@ Le plugin UFSC Gestion Club s'intègre avec WooCommerce pour gérer les achats d
 = IDs de produits requis =
 
 **Produit d'affiliation UFSC**
-* ID requis : `2933`
+* ID requis : `4823`
 * Constante : `UFSC_AFFILIATION_PRODUCT_ID`
 * Option alternative : `ufsc_affiliation_product_id`
 * Utilisation : Pack d'affiliation club (1 an + 10 licences incluses)
@@ -97,7 +97,7 @@ Le plugin UFSC Gestion Club s'intègre avec WooCommerce pour gérer les achats d
 
 **Méthode 1 : Création directe des produits**
 1. Aller dans `WooCommerce > Produits > Ajouter`
-2. Créer le produit d'affiliation avec l'ID 2933 :
+2. Créer le produit d'affiliation avec l'ID 4823 :
    - Titre : "Pack Affiliation Club UFSC"
    - Description : "Affiliation du club pour 1 an + 10 licences incluses"
    - Type : Produit simple
@@ -113,13 +113,13 @@ Si vous devez modifier les IDs de produits existants :
 
 ```sql
 -- Modifier l'ID d'un produit existant pour l'affiliation
-UPDATE wp_posts SET ID = 2933 WHERE post_type = 'product' AND post_title = 'Votre Produit Affiliation';
+UPDATE wp_posts SET ID = 4823 WHERE post_type = 'product' AND post_title = 'Votre Produit Affiliation';
 
 -- Modifier l'ID d'un produit existant pour les licences  
 UPDATE wp_posts SET ID = 2934 WHERE post_type = 'product' AND post_title = 'Votre Produit Licence';
 
 -- Mettre à jour les métadonnées associées
-UPDATE wp_postmeta SET post_id = 2933 WHERE post_id = 'ancien_id_affiliation';
+UPDATE wp_postmeta SET post_id = 4823 WHERE post_id = 'ancien_id_affiliation';
 UPDATE wp_postmeta SET post_id = 2934 WHERE post_id = 'ancien_id_licence';
 ```
 
@@ -127,7 +127,7 @@ UPDATE wp_postmeta SET post_id = 2934 WHERE post_id = 'ancien_id_licence';
 Vous pouvez définir l'ID du produit d'affiliation via une option WordPress :
 ```php
 // Dans votre functions.php ou via un plugin
-update_option('ufsc_affiliation_product_id', 2933);
+update_option('ufsc_affiliation_product_id', 4823);
 ```
 
 = Test de la configuration =
@@ -135,7 +135,7 @@ update_option('ufsc_affiliation_product_id', 2933);
 **Vérifier les liens d'achat d'affiliation**
 1. Accéder à une page contenant le shortcode `[ufsc_formulaire_affiliation]`
 2. Remplir le formulaire d'affiliation
-3. Vérifier que le bouton d'achat redirige vers `/produit/pack-affiliation-club-ufsc/` (ou l'URL de votre produit ID 2933)
+3. Vérifier que le bouton d'achat redirige vers `/produit/pack-affiliation-club-ufsc/` (ou l'URL de votre produit ID 4823)
 4. Vérifier que le produit se trouve bien dans le panier avec les métadonnées du club
 
 **Vérifier les liens d'achat de licence**
@@ -152,7 +152,7 @@ update_option('ufsc_affiliation_product_id', 2933);
 = Dépannage =
 
 **Erreur : Produit non trouvé**
-- Vérifier que les produits avec les IDs 2933 et 2934 existent dans WooCommerce
+- Vérifier que les produits avec les IDs 4823 et 2934 existent dans WooCommerce
 - Vérifier que les produits sont publiés et non en brouillon
 
 **Les boutons ne redirigent pas correctement**
@@ -194,7 +194,7 @@ Ce guide détaille comment créer et configurer les pages WordPress pour offrir 
 * Shortcode : `[ufsc_formulaire_affiliation]`
 * Description : Formulaire complet d'affiliation avec upload de documents et intégration WooCommerce
 * Accès : Utilisateurs connectés sans club existant
-* Comportement : Après soumission, redirige automatiquement vers le panier WooCommerce avec le produit d'affiliation (ID 2933)
+* Comportement : Après soumission, redirige automatiquement vers le panier WooCommerce avec le produit d'affiliation (ID 4823)
 
 **Page de création de club**
 * Nom suggéré : "Créer un Club"
@@ -281,12 +281,12 @@ Rendez-vous dans la section "UFSC Clubs" de votre administration WordPress et su
 
 = Comment configurer WooCommerce pour le plugin ? =
 
-Le plugin nécessite deux produits WooCommerce spécifiques avec les IDs 2933 (affiliation) et 2934 (licences). Consultez la section "Configuration WooCommerce" pour les instructions détaillées de configuration et de test.
+Le plugin nécessite deux produits WooCommerce spécifiques avec les IDs 4823 (affiliation) et 2934 (licences). Consultez la section "Configuration WooCommerce" pour les instructions détaillées de configuration et de test.
 
 = Les achats ne fonctionnent pas, que faire ? =
 
 Vérifiez que :
-1. Les produits WooCommerce avec les IDs 2933 et 2934 existent et sont publiés
+1. Les produits WooCommerce avec les IDs 4823 et 2934 existent et sont publiés
 2. Les permaliens sont à jour (Réglages > Permaliens > Enregistrer)
 3. WooCommerce est correctement configuré avec les pages panier et commande
 

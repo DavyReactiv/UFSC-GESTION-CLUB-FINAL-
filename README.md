@@ -156,7 +156,7 @@ Pour l'achat de licences et affiliations en ligne :
 
 #### Configuration des produits
 1. **Créez les produits WooCommerce** :
-   - Produit "Affiliation Club UFSC" - ID recommandé : 2933
+   - Produit "Affiliation Club UFSC" - ID recommandé : 4823
    - Produit "Licence UFSC" - ID recommandé : 2934
 
 2. **Configuration via les réglages** :
@@ -168,14 +168,14 @@ Pour l'achat de licences et affiliations en ligne :
    ```php
    // Dans wp-config.php ou functions.php de votre thème
    add_action('init', function() {
-       update_option('ufsc_wc_affiliation_product_id', 2933);
+       update_option('ufsc_wc_affiliation_product_id', 4823);
        update_option('ufsc_wc_license_product_ids', '2934');
    });
    ```
 
 #### Mapping des produits WooCommerce
 Le plugin détecte automatiquement les achats via :
-- **ID Affiliation** : `ufsc_wc_affiliation_product_id` (fallback: 2933)
+- **ID Affiliation** : `ufsc_wc_affiliation_product_id` (fallback: 4823)
 - **ID Licence(s)** : `ufsc_wc_license_product_ids` (fallback: 2934)
 
 Les options peuvent être configurées via :
@@ -471,7 +471,7 @@ $upload_dir = wp_upload_dir();
 
 ### Version 1.2.0 (Janvier 2025)
 - ✅ **Page de réglages graphique** : Interface moderne pour lier les pages clés (espace club, licences, affiliation, attestations) et les produits WooCommerce
-- ✅ **Sélection graphique des IDs produits** : Choix visuel des produits WooCommerce (Affiliation ID 2933, Licence ID 2934)
+- ✅ **Sélection graphique des IDs produits** : Choix visuel des produits WooCommerce (Affiliation ID 4823, Licence ID 2934)
 - ✅ **Workflow de licences amélioré** : Processus brouillon > paiement WooCommerce > validation admin
 - ✅ **Design harmonisé** : Accessibilité, responsive et sécurité accrue sur l'administration et le front-end
 - ✅ **Gestion des documents via médiathèque** : Intégration native WordPress pour les documents clubs
