@@ -27,6 +27,7 @@ function ufsc_ajax_save_draft(){
     $nom    = isset($_POST['nom'])    ? sanitize_text_field( wp_unslash($_POST['nom']) )    : '';
     $prenom = isset($_POST['prenom']) ? sanitize_text_field( wp_unslash($_POST['prenom']) ) : '';
     $email  = isset($_POST['email'])  ? sanitize_email(       wp_unslash($_POST['email']) )  : '';
+    $role   = isset($_POST['role'])   ? sanitize_text_field( wp_unslash($_POST['role']) )   : '';
 
     if ( $nom === '' || $prenom === '' || $email === '' ) {
         wp_send_json_error( array('message' => __('Nom, prénom et email sont requis.', 'plugin-ufsc-gestion-club-13072025')) );
@@ -42,6 +43,7 @@ function ufsc_ajax_save_draft(){
         $updated = $wpdb->update(
             $table,
             array(
+                'role'           => $role,
                 'nom'            => $nom,
                 'prenom'         => $prenom,
                 'email'          => $email,
@@ -62,15 +64,18 @@ function ufsc_ajax_save_draft(){
         }
     } else {
         // Create draft
-        $inserted = $wpdb->insert($table, array('club_id'=>$club_id,
-                'role' => $role,
-                'nom'            => $nom,
-                'prenom'         => $prenom,
-                'email'          => $email,
-                'statut'         => 'brouillon',
-                'date_creation'  => $now,
+        $inserted = $wpdb->insert(
+            $table,
+            array(
+                'club_id'       => $club_id,
+                'role'          => $role,
+                'nom'           => $nom,
+                'prenom'        => $prenom,
+                'email'         => $email,
+                'statut'        => 'brouillon',
+                'date_creation' => $now,
             ),
-            array('%d','%s','%s','%s','%s','%s')
+            array('%d','%s','%s','%s','%s','%s','%s')
         );
         if ( $inserted ) {
             $new_id = (int) $wpdb->insert_id;
