@@ -183,6 +183,15 @@
     color: var(--ufsc-info);
 }
 
+/* Login required message wrapper */
+.ufsc-login-required {
+    margin: var(--ufsc-space-lg) 0;
+}
+
+.ufsc-login-required .ufsc-button-group {
+    margin-top: var(--ufsc-space-md);
+}
+
 /* ==========================================================================
    Forms
    ========================================================================== */

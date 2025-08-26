@@ -25,7 +25,7 @@ function ufsc_test_frontend_fixes()
     echo "<h2>🧪 Test - Correctifs Frontend UFSC</h2>";
     
     $tests_passed = 0;
-    $total_tests = 6;
+    $total_tests = 7;
     $errors = [];
     
     try {
@@ -151,7 +151,72 @@ function ufsc_test_frontend_fixes()
             echo "<p>$error</p>";
             $errors[] = $error;
         }
-        
+
+        // Test 7: Ensure guests see login prompt on club dashboard
+        echo "<h3>Test 7: Message de connexion pour le dashboard</h3>";
+
+        if (!function_exists('shortcode_atts')) {
+            function shortcode_atts($pairs, $atts, $shortcode = '') { return array_merge($pairs, $atts); }
+        }
+        if (!function_exists('is_user_logged_in')) {
+            function is_user_logged_in() { return false; }
+        }
+        if (!function_exists('ufsc_get_user_club')) {
+            function ufsc_get_user_club() { return false; }
+        }
+        if (!function_exists('wp_login_url')) {
+            function wp_login_url($url = '') { return $url; }
+        }
+        if (!function_exists('wp_registration_url')) {
+            function wp_registration_url() { return '#'; }
+        }
+        if (!function_exists('wp_create_nonce')) {
+            function wp_create_nonce($action = '') { return 'nonce'; }
+        }
+        if (!function_exists('get_permalink')) {
+            function get_permalink() { return '#'; }
+        }
+        if (!function_exists('add_action')) {
+            function add_action($hook, $func) {}
+        }
+        if (!function_exists('add_shortcode')) {
+            function add_shortcode($tag, $func) {}
+        }
+        if (!function_exists('get_option')) {
+            function get_option($name, $default = false) { return $default; }
+        }
+        if (!function_exists('esc_url')) {
+            function esc_url($url = '') { return $url; }
+        }
+        if (!function_exists('esc_attr')) {
+            function esc_attr($text) { return $text; }
+        }
+        if (!function_exists('esc_html__')) {
+            function esc_html__($text, $domain = null) { return $text; }
+        }
+        if (!function_exists('esc_html')) {
+            function esc_html($text) { return $text; }
+        }
+        if (!defined('UFSC_PLUGIN_PATH')) {
+            define('UFSC_PLUGIN_PATH', dirname(__DIR__, 2) . '/');
+        }
+        if (!defined('UFSC_PLUGIN_URL')) {
+            define('UFSC_PLUGIN_URL', '');
+        }
+        if (!function_exists('ufsc_club_dashboard_content')) {
+            require_once dirname(__DIR__) . '/shortcodes-front.php';
+        }
+
+        $output = ufsc_club_dashboard_content();
+        if (strpos($output, 'Veuillez vous connecter pour créer votre club.') !== false) {
+            echo "<p>✅ Le message de connexion est affiché pour les invités.</p>";
+            $tests_passed++;
+        } else {
+            $error = "❌ Le message de connexion pour les invités n'est pas affiché.";
+            echo "<p>$error</p>";
+            $errors[] = $error;
+        }
+
     } catch (Exception $e) {
         $errors[] = "Exception: " . $e->getMessage();
         echo "<p>❌ Exception: " . esc_html($e->getMessage()) . "</p>";
