@@ -203,6 +203,34 @@ class UFSC_Club_Dashboard
     }
 
     /**
+     * Check if the current user has a failed affiliation payment
+     *
+     * @return bool True if a failed affiliation order exists
+     */
+    private function has_failed_affiliation_payment()
+    {
+        if (!function_exists('wc_get_orders')) {
+            return false;
+        }
+
+        $orders = wc_get_orders([
+            'limit' => 5,
+            'status' => ['failed', 'cancelled'],
+            'customer_id' => $this->user_id
+        ]);
+
+        foreach ($orders as $order) {
+            foreach ($order->get_items() as $item) {
+                if ((int) $item->get_product_id() === ufsc_get_affiliation_product_id()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Render the complete dashboard
      *
      * @param array $atts Shortcode attributes
@@ -217,8 +245,16 @@ class UFSC_Club_Dashboard
             return $this->render_error($access_check);
         }
 
+        // Display affiliation button if club is inactive or has failed payment
+        $affiliation_prompt = '';
+        if ($this->club && (!ufsc_is_club_active($this->club) || $this->has_failed_affiliation_payment())) {
+            $affiliation_prompt = '<div class="ufsc-affiliation-action">' .
+                ufsc_generate_affiliation_button(['product_id' => 4823]) .
+                '</div>';
+        }
+
         // Determine current section
-        $this->current_section = isset($_GET['section']) ? 
+        $this->current_section = isset($_GET['section']) ?
             sanitize_text_field($_GET['section']) : 'home';
 
         // Validate section exists
@@ -233,7 +269,8 @@ class UFSC_Club_Dashboard
         }
 
         // Build dashboard output
-        $output = '<div class="ufsc-club-dashboard ufsc-container">';
+        $output = $affiliation_prompt;
+        $output .= '<div class="ufsc-club-dashboard ufsc-container">';
         
         // Header
         $output .= $this->render_header();
