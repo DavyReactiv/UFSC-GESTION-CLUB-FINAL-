@@ -22,14 +22,16 @@ function ufsc_ajouter_licencie_shortcode($atts)
     $access_check = ufsc_check_frontend_access('licence');
     
     if (!$access_check['allowed']) {
-        return $access_check['error_message'];
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+            . $access_check['error_message'] . '</div></div></div>';
     }
     
     $club = $access_check['club'];
 
     // CORRECTION: Use standardized status checking
     if (!ufsc_is_club_active($club)) {
-        return ufsc_render_club_status_alert($club, 'licence');
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">'
+            . ufsc_render_club_status_alert($club, 'licence') . '</div></div></div>';
     }
 
     // Enqueue AJAX script and styles
@@ -46,17 +48,18 @@ function ufsc_render_ajax_licensee_form($club)
     ob_start();
     ?>
     <div class="ufsc-container">
-        <h2 class="ufsc-section-title">Ajouter un licencié</h2>
-        
-        <!-- Quota information -->
-        <?php echo ufsc_render_quota_information($club); ?>
-        
-        <div class="ufsc-card">
-            <div class="ufsc-card-header">
-                <h3>Informations du licencié</h3>
-                <p>Les informations saisies seront ajoutées au panier pour finaliser l'achat de la licence.</p>
+        <div class="ufsc-grid">
+            <div class="ufsc-card">
+                <h2 class="ufsc-section-title">Ajouter un licencié</h2>
+                <?php echo ufsc_render_quota_information($club); ?>
             </div>
-            <div class="ufsc-card-body">
+
+            <div class="ufsc-card">
+                <div class="ufsc-card-header">
+                    <h3>Informations du licencié</h3>
+                    <p>Les informations saisies seront ajoutées au panier pour finaliser l'achat de la licence.</p>
+                </div>
+                <div class="ufsc-card-body">
                 <form id="ufsc-add-licencie-form" class="ufsc-form">
                     
                     <div class="ufsc-form-row ufsc-form-group">
@@ -131,6 +134,7 @@ function ufsc_render_ajax_licensee_form($club)
                         </p>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>
@@ -196,7 +200,7 @@ function ufsc_enqueue_add_licencie_assets()
     // Localize script with AJAX data
     wp_localize_script('ufsc-add-licencie', 'ufscAjax', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
-        'addLicencieNonce' => wp_create_nonce('ufsc_add_licencie_nonce')
+        'addLicencieNonce' => ufsc_create_nonce('ufsc_add_licencie_nonce')
     ]);
     
     // Enqueue frontend styles if available

@@ -276,7 +276,7 @@ function ufsc_render_dashboard_statistics($club) {
                         <div class="ufsc-stat-bar">
                             <div class="ufsc-stat-label"><?php echo esc_html($age_group); ?></div>
                             <div class="ufsc-bar-container">
-                                <div class="ufsc-bar-fill" style="width: <?php echo $percentage; %>%"></div>
+                                <div class="ufsc-bar-fill" style="width: <?php echo $percentage; ?>%"></div>
                             </div>
                             <div class="ufsc-stat-value"><?php echo $count; ?> (<?php echo $percentage; ?>%)</div>
                         </div>
@@ -296,7 +296,7 @@ function ufsc_render_dashboard_statistics($club) {
                         <div class="ufsc-stat-bar">
                             <div class="ufsc-stat-label"><?php echo $type_label; ?></div>
                             <div class="ufsc-bar-container">
-                                <div class="ufsc-bar-fill" style="width: <?php echo $percentage; %>%"></div>
+                                <div class="ufsc-bar-fill" style="width: <?php echo $percentage; ?>%"></div>
                             </div>
                             <div class="ufsc-stat-value"><?php echo $count; ?> (<?php echo $percentage; ?>%)</div>
                         </div>
@@ -428,7 +428,7 @@ function ufsc_enqueue_dashboard_mvp_assets() {
         // Localize script for AJAX
         wp_localize_script('ufsc-club-logo', 'ufscLogoUpload', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'setLogoNonce' => wp_create_nonce('ufsc_set_club_logo_nonce'),
+            'setLogoNonce' => ufsc_create_nonce('ufsc_set_club_logo_nonce'),
             'maxSizeMB' => 2
         ]);
     }

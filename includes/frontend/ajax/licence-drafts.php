@@ -9,6 +9,9 @@ if ( ! defined('ABSPATH') ) exit;
  * Optionally accepts: licence_id (to update)
  */
 function ufsc_ajax_save_draft(){
+    if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
+        wp_send_json_error( array('message' => __('Jeton invalide.', 'plugin-ufsc-gestion-club-13072025')) );
+    }
     if ( ! is_user_logged_in() ) {
         wp_send_json_error( array('message' => __('Connexion requise.', 'plugin-ufsc-gestion-club-13072025')) );
     }
@@ -98,6 +101,9 @@ add_action('wp_ajax_nopriv_ufsc_save_licence_draft', 'ufsc_ajax_save_draft');
  * Delete a draft (only if belongs to current user's club)
  */
 function ufsc_ajax_delete_draft(){
+    if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
+        wp_send_json_error( array('message' => __('Jeton invalide.', 'plugin-ufsc-gestion-club-13072025')) );
+    }
     if ( ! is_user_logged_in() ) {
         wp_send_json_error( array('message' => __('Connexion requise.', 'plugin-ufsc-gestion-club-13072025')) );
     }

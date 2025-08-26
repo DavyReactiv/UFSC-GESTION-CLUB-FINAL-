@@ -13,15 +13,65 @@ function ufsc_render_club_list_page() {
         UFSC_GESTION_CLUB_VERSION
     );
     wp_enqueue_style(
+
         'ufsc-admin-licence-table-style',
         UFSC_PLUGIN_URL . 'assets/css/admin-licence-table.css',
+
+        'datatables-buttons-css',
+        'https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css',
+        [],
+        '2.4.2'
+    );
+    wp_enqueue_style(
+        'datatables-responsive-css',
+        'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css',
+        [],
+        '2.5.0'
+    );
+    
+    wp_enqueue_script(
+        'datatables-js',
+        'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js',
+        [],
+        '1.13.6',
+        true
+    );
+    wp_enqueue_script(
+        'datatables-buttons-js',
+        'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js',
+        ['datatables-js'],
+        '2.4.2',
+        true
+    );
+    wp_enqueue_script(
+        'datatables-buttons-html5-js',
+        'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js',
+        ['datatables-buttons-js'],
+        '2.4.2',
+        true
+    );
+    wp_enqueue_script(
+        'datatables-responsive-js',
+        'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js',
+        ['datatables-js'],
+        '2.5.0',
+        true
+    );
+    wp_enqueue_script(
+        'jszip-js',
+        'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+
         [],
         UFSC_GESTION_CLUB_VERSION
     );
     wp_enqueue_script(
         'ufsc-admin-script',
         UFSC_PLUGIN_URL . 'assets/js/admin.js',
+
         ['jquery'],
+
+        ['ufsc-datatables-config'],
+
         UFSC_GESTION_CLUB_VERSION,
         true
     );

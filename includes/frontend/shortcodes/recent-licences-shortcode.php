@@ -46,14 +46,15 @@ function ufsc_recent_licences_shortcode($atts = array()) {
     // Get club manager instance
     $club_manager = UFSC_Club_Manager::get_instance();
     if (!$club_manager) {
-        return '<div class="ufsc-alert ufsc-alert-error"><p>' . __('Erreur : impossible de charger les données.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error"><p>'
+            . __('Erreur : impossible de charger les données.', 'plugin-ufsc-gestion-club-13072025') . '</p></div></div></div></div>';
     }
     
     // Get licences for the club
     $licences = $club_manager->get_licences_by_club($club->id);
     
     if (empty($licences)) {
-        return ufsc_render_no_licences_message();
+        return '<div class="ufsc-container"><div class="ufsc-grid">' . ufsc_render_no_licences_message() . '</div></div>';
     }
     
     // Sort licences by creation date (most recent first)
@@ -70,7 +71,8 @@ function ufsc_recent_licences_shortcode($atts = array()) {
     }
     
     // Render the widget
-    return ufsc_render_recent_licences_widget($licences, $atts);
+    return '<div class="ufsc-container"><div class="ufsc-grid">'
+        . ufsc_render_recent_licences_widget($licences, $atts) . '</div></div>';
 }
 
 /**

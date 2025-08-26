@@ -30,11 +30,11 @@ function ufscx_resolve_club_id($user_id = 0){
 if (!function_exists('ufscx_licences_direct_shortcode')) {
 function ufscx_licences_direct_shortcode($atts){
     if (!is_user_logged_in()){
-        return '<div class="ufsc-alert ufsc-alert-error">Vous devez être connecté.</div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error">Vous devez être connecté.</div></div></div></div>';
     }
     $club_id = ufscx_resolve_club_id();
     if (!$club_id){
-        return '<div class="ufsc-alert ufsc-alert-error">Club introuvable pour ce compte.</div>';
+        return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error">Club introuvable pour ce compte.</div></div></div></div>';
     }
     global $wpdb;
     $club_name = $wpdb->get_var(
@@ -52,7 +52,7 @@ function ufscx_licences_direct_shortcode($atts){
     wp_enqueue_script('ufscx-licences-direct', plugins_url('../../../assets/js/ufsc-licenses-direct.js', __FILE__), ['jquery'], '1.0', true);
     wp_localize_script('ufscx-licences-direct', 'UFSCX_AJAX', [
         'ajax' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('ufscx_licences'),
+        'nonce' => ufsc_create_nonce('ufscx_licences'),
     ]);
 
     // Fetch data
@@ -68,7 +68,7 @@ function ufscx_licences_direct_shortcode($atts){
     }
 
     ob_start(); ?>
-    <div class="ufscx-licences">
+    <div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufscx-licences">
       <div class="ufscx-header">
         <a class="ufscx-btn ufscx-btn-primary" href="<?php echo esc_url($a['add_url']); ?>">+ Ajouter un licencié</a>
         <?php if ($a['enable_csv']==='yes'): ?>
@@ -123,7 +123,7 @@ function ufscx_licences_direct_shortcode($atts){
       </table>
 
       <script type="application/json" id="ufscx-data"><?php echo wp_json_encode($licences); ?></script>
-    </div>
+    </div></div></div>
     <?php
     return ob_get_clean();
 }
