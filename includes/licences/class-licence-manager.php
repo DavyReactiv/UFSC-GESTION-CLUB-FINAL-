@@ -296,13 +296,15 @@ class UFSC_Licence_Manager
      */
     public function get_licences($filters = [])
     {
+        if (!isset($filters['club_id']) || intval($filters['club_id']) <= 0) {
+            return [];
+        }
+
         $where = ['1=1'];
         $params = [];
 
-        if (!empty($filters['club_id'])) {
-            $where[] = 'l.club_id = %d';
-            $params[] = intval($filters['club_id']);
-        }
+        $where[] = 'l.club_id = %d';
+        $params[] = intval($filters['club_id']);
 
         if (!empty($filters['search'])) {
             $where[] = '(l.nom LIKE %s OR l.prenom LIKE %s OR l.email LIKE %s)';
