@@ -40,13 +40,41 @@ function ufsc__resolve_club_id($atts){
         if (is_array($club) && !empty($club['id'])) return (int) $club['id'];
     }
 
-    // 4) fallback: mapping table
+    // 4) fallback: mapping table (validated)
+    //    Only used if the association is explicitly confirmed to avoid exposing unrelated clubs.
     if (is_user_logged_in()){
         $user_id = get_current_user_id();
         global $wpdb;
         $map = $wpdb->prefix.'ufsc_user_clubs';
-        $club_id = (int) $wpdb->get_var($wpdb->prepare("SELECT club_id FROM {$map} WHERE user_id=%d ORDER BY id DESC LIMIT 1", $user_id));
-        if ($club_id) return $club_id;
+        $club_id = (int) $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT club_id FROM {$map} WHERE user_id=%d ORDER BY id DESC LIMIT 1",
+                $user_id
+            )
+        );
+        if ($club_id){
+            $is_valid = false;
+            // Verify access using helper if available
+            if (function_exists('ufsc_verify_club_access')){
+                $is_valid = ufsc_verify_club_access($club_id);
+            }
+            // Fallback manual check: ensure the user is explicitly associated via responsable_id
+            if (!$is_valid){
+                $club_table = $wpdb->prefix.'ufsc_clubs';
+                $responsable_id = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT responsable_id FROM {$club_table} WHERE id=%d",
+                        $club_id
+                    )
+                );
+                if ($responsable_id && $responsable_id === (int) $user_id){
+                    $is_valid = true;
+                }
+            }
+            if ($is_valid){
+                return $club_id;
+            }
+        }
     }
 
     return 0;
