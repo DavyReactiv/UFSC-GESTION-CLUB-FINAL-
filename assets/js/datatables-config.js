@@ -151,6 +151,7 @@ jQuery(document).ready(function($) {
                 processing: true,
                 pageLength: 25,
                 stateSave: true,
+                scrollX: true,
                 
                 // Traduction en français
                 language: {
@@ -222,7 +223,8 @@ jQuery(document).ready(function($) {
                 $(tableId).DataTable({
                     language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' },
                     responsive: true,
-                    pageLength: 25
+                    pageLength: 25,
+                    scrollX: true
                 });
                 console.log('✅ Initialisation basique réussie pour', context);
             } catch (basicError) {
