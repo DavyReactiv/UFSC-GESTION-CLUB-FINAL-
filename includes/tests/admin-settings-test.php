@@ -25,11 +25,11 @@ function test_ufsc_admin_settings() {
     }
     
     // Test 2: Test default option values
-    $affiliation_id = get_option('ufsc_wc_affiliation_product_id', 'not_set');
-    if ($affiliation_id === 'not_set' || $affiliation_id === 2933) {
+    $affiliation_id = (int) get_option('ufsc_wc_affiliation_product_id', 0);
+    if ($affiliation_id === 2933) {
         $results['default_affiliation'] = 'PASS - Default affiliation product ID is correct';
     } else {
-        $results['default_affiliation'] = 'FAIL - Default affiliation product ID incorrect: ' . $affiliation_id;
+        $results['default_affiliation'] = 'FAIL - Default affiliation product ID incorrect: ' . var_export($affiliation_id, true);
     }
     
     $license_ids = get_option('ufsc_wc_license_product_ids', 'not_set');
@@ -39,15 +39,15 @@ function test_ufsc_admin_settings() {
         $results['default_license'] = 'FAIL - Default license product IDs incorrect: ' . $license_ids;
     }
     
-    $auto_create = get_option('ufsc_auto_create_user', 'not_set');
-    if ($auto_create === 'not_set' || $auto_create === false) {
+    $auto_create = (bool) get_option('ufsc_auto_create_user', false);
+    if ($auto_create === false) {
         $results['default_auto_create'] = 'PASS - Default auto create user setting is correct';
     } else {
         $results['default_auto_create'] = 'FAIL - Default auto create user setting incorrect: ' . var_export($auto_create, true);
     }
     
-    $require_login = get_option('ufsc_require_login_shortcodes', 'not_set');
-    if ($require_login === 'not_set' || $require_login === true) {
+    $require_login = (bool) get_option('ufsc_require_login_shortcodes', true);
+    if ($require_login === true) {
         $results['default_require_login'] = 'PASS - Default require login setting is correct';
     } else {
         $results['default_require_login'] = 'FAIL - Default require login setting incorrect: ' . var_export($require_login, true);
