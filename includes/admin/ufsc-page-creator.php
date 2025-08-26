@@ -155,3 +155,22 @@ add_action('admin_init', 'ufsc_admin_init_page_check');
 if (defined('UFSC_PLUGIN_MAIN_FILE')) {
     register_activation_hook(UFSC_PLUGIN_MAIN_FILE, 'ufsc_ensure_frontend_pages');
 }
+
+/**
+ * Retrieve the URL of the automatically created "Connexion Club" page.
+ *
+ * This helper ensures other components can easily link to the login page
+ * created by this module.
+ *
+ * @return string|false The URL of the login page or false if it doesn't exist.
+ * @since 1.3.0
+ */
+function ufsc_get_login_page_url() {
+    $page_id = (int) get_option('ufsc_login_page_id', 0);
+
+    if ($page_id && get_post_status($page_id) === 'publish') {
+        return get_permalink($page_id);
+    }
+
+    return false;
+}

@@ -1046,3 +1046,57 @@ function ufsc_get_asset(string $file): array {
         'version' => file_exists($path) ? filemtime($path) : null,
     ];
 }
+
+/**
+ * Append a "Connexion Club" link to navigation menus for guests.
+ *
+ * The login page is automatically created by the plugin. This filter makes
+ * the link visible in public navigation while keeping it hidden for logged-in
+ * users to avoid confusion.
+ *
+ * @param string $items Existing HTML list items.
+ * @param object $args  Menu arguments (unused).
+ * @return string Modified menu items.
+ */
+function ufsc_add_login_link_to_menus($items, $args) {
+    // Only show to visitors.
+    if (is_user_logged_in()) {
+        return $items;
+    }
+
+    // Get URL of login page created during setup.
+    $login_url = function_exists('ufsc_get_login_page_url') ? ufsc_get_login_page_url() : false;
+
+    if (!$login_url) {
+        return $items;
+    }
+
+    $items .= '<li class="menu-item ufsc-login-menu-item"><a href="' . esc_url($login_url) . '">' . esc_html__('Connexion Club', 'plugin-ufsc-gestion-club-13072025') . '</a></li>';
+
+    return $items;
+}
+add_filter('wp_nav_menu_items', 'ufsc_add_login_link_to_menus', 10, 2);
+
+/**
+ * Shortcode to render a link to the "Connexion Club" page for guests.
+ *
+ * Usage: [ufsc_login_link]
+ *
+ * @return string HTML link or empty string when user is logged in or page
+ *                does not exist.
+ */
+function ufsc_login_link_shortcode() {
+    if (is_user_logged_in()) {
+        return '';
+    }
+
+    $login_url = function_exists('ufsc_get_login_page_url') ? ufsc_get_login_page_url() : false;
+
+    if (!$login_url) {
+        return '';
+    }
+
+    return '<a class="ufsc-login-link" href="' . esc_url($login_url) . '">' . esc_html__('Connexion Club', 'plugin-ufsc-gestion-club-13072025') . '</a>';
+}
+add_shortcode('ufsc_login_link', 'ufsc_login_link_shortcode');
+
