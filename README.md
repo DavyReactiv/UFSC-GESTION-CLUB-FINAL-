@@ -73,6 +73,8 @@ Le plugin utilise des pages WordPress dédiées pour l'interface frontend. Ces p
 
 Les pages sont créées automatiquement avec des permaliens optimisés. Vous pouvez les personnaliser dans `Pages > Toutes les pages`.
 
+> ℹ️ Si aucune page "Formulaire Club" n'est configurée, le bouton "Créer un club" du tableau de bord redirige automatiquement vers la page d'affiliation.
+
 ### Shortcodes disponibles
 
 #### Navigation et interface (v1.3.0)
