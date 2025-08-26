@@ -5,5 +5,5 @@ add_action('admin_enqueue_scripts',function(){
     wp_localize_script('ufsc-admin-profix','UFSC_ADMIN',array('ajaxUrl'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('ufsc_admin_licence_action')));
     wp_enqueue_script('ufsc-admin-profix');
     wp_enqueue_style('ufsc-admin-ui',plugins_url('../../assets/css/ufsc-admin-ui.css',__FILE__),[], '1.0.0');
-    wp_enqueue_script('ufsc-admin-ui',plugins_url('../../assets/js/ufsc-admin-ui.js',__FILE__),['jquery'],'1.0.0',true);
+    wp_enqueue_script('ufsc-admin-ui',plugins_url('../../assets/js/ufsc-admin-ui.js',__FILE__),[], '1.0.0',true);
 },20);
