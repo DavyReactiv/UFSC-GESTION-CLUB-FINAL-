@@ -10,13 +10,36 @@
 
   function fmtDate(s){ if(!s||s=='0000-00-00') return ''; return s; }
 
+  function normalizeStatus(s){
+    s = (s||'').toLowerCase().trim();
+    const map = {
+      'draft':'brouillon',
+      'brouillon':'brouillon',
+      'pending':'en_attente',
+      'en_attente':'en_attente',
+      'en attente':'en_attente',
+      'validated':'validee',
+      'validee':'validee',
+      'validée':'validee',
+      'active':'validee',
+      'refused':'refusee',
+      'refusee':'refusee',
+      'refusée':'refusee',
+      'in_cart':'in_cart',
+      'cart':'in_cart',
+      'pending_payment':'pending_payment',
+      'awaiting_payment':'pending_payment'
+    };
+    return map[s] || s;
+  }
+
   function render(){
     let rows = data.slice();
     const term = (q.value||'').toLowerCase();
     if(term){
       rows = rows.filter(r=>[r.nom,r.prenom,r.email,r.ville].some(v=>(v||'').toLowerCase().includes(term)));
     }
-    if(st.value) rows = rows.filter(r=>(r.statut||'').toLowerCase()==st.value.toLowerCase());
+    if(st.value) rows = rows.filter(r=>normalizeStatus(r.statut)==normalizeStatus(st.value));
     if(cat.value) rows = rows.filter(r=>(r.categorie||'')==cat.value);
     if(qt.value) rows = rows.filter(r=>(r.quota||'')==qt.value);
 
@@ -30,7 +53,9 @@
 
     const per = parseInt(pp.value||25,10);
     rows = rows.slice(0, per); // simple paginate (first page)
-    tbody.innerHTML = rows.map(r=>`
+    tbody.innerHTML = rows.map(r=>{
+      const status = normalizeStatus(r.statut);
+      return `
       <tr class="ufscx-row">
         <td>${r.id}</td>
         <td>${r.nom||''}</td>
@@ -41,8 +66,9 @@
         <td>${r.ville||''}</td>
         <td>${r.categorie||''}</td>
         <td>${r.quota||''}</td>
-        <td><span class="ufscx-pill">${r.statut||''}</span></td>
+        <td><span class="ufscx-pill">${status}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
+
         <td>${(()=>{
           const status = (r.statut||'').toLowerCase();
           const isFinal = ['validee','refusee','expiree'].includes(status);
@@ -66,12 +92,34 @@
           } else {
             buttons.push(viewBtn);
             if(!isFinal) buttons.push(quotaBtn);
+
+
+        <td>
+          <button class="ufscx-btn${['validee','refusee','expiree'].includes(status)?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>
+          ${['validee','refusee','expiree'].includes(status)?'':`<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`}
+        </td>
+
+        <td>${(()=>{
+          if(status==='brouillon'){
+            return `
+              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>
+              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>
+              <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>
+              <button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>
+            `;
+          }
+          if(status==='in_cart'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`;
+          }
+          if(status==='pending_payment'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`;
+
           }
           return buttons.join(' ');
         })()}</td>
 
       </tr>
-    `).join('');
+    `;}).join('');
   }
 
   $all('th.sort').forEach(th=>{
