@@ -2316,6 +2316,10 @@ function ufsc_run_migrations() {
     if (!$col) {
         $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT 0");
     }
+    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'payment_status'));
+    if (!$col) {
+        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+    }
 
     // Ensure columns for clubs logo
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_total'));

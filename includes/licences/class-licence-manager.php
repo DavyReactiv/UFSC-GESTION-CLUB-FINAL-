@@ -64,6 +64,7 @@ class UFSC_Licence_Manager
             'region'                     => sanitize_text_field($data['region']),
             'statut'                     => !empty($data['statut']) ? sanitize_text_field($data['statut']) : 'en_attente',
             'is_included'                => !empty($data['is_included']) ? 1 : 0,
+            'payment_status'             => sanitize_text_field($data['payment_status'] ?? 'pending'),
             'date_inscription'          => current_time('mysql')
         ];
 
@@ -211,7 +212,7 @@ class UFSC_Licence_Manager
         }
 
         if ('validee' === $status) {
-            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe'];
+            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe', 'payment_status'];
             $data = array_intersect_key($data, array_flip($allowed_fields));
 
             $update = [];
@@ -224,6 +225,9 @@ class UFSC_Licence_Manager
             }
             if (isset($data['tel_fixe'])) {
                 $update['tel_fixe'] = sanitize_text_field($data['tel_fixe']);
+            }
+            if (isset($data['payment_status'])) {
+                $update['payment_status'] = $this->normalize_payment_status($data['payment_status']);
             }
 
             // Short-circuit if nothing to update
@@ -263,6 +267,9 @@ class UFSC_Licence_Manager
                 'region'                     => sanitize_text_field($data['region']),
                 'is_included'                => !empty($data['is_included']) ? 1 : 0,
             ];
+            if (isset($data['payment_status'])) {
+                $update['payment_status'] = $this->normalize_payment_status($data['payment_status']);
+            }
         }
 
         if (isset($data['club_id'])) {
@@ -365,6 +372,22 @@ class UFSC_Licence_Manager
         } else {
             return $this->wpdb->get_results($query);
         }
+    }
+
+    /**
+     * Normalize payment status values
+     *
+     * @param string $status Payment status
+     * @return string Normalized status
+     */
+    private function normalize_payment_status($status)
+    {
+        $status = sanitize_text_field($status);
+        if ('completed' === $status) {
+            $status = 'paid';
+        }
+        $allowed = ['pending', 'paid', 'failed', 'refunded', 'included'];
+        return in_array($status, $allowed, true) ? $status : 'pending';
     }
 
     /**
