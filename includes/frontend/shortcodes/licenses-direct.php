@@ -46,6 +46,59 @@ function ufscx_licences_direct_shortcode($atts){
         'enable_csv' => 'yes'
     ], $atts, 'ufsc_licences_direct');
 
+    // View single licence details if requested
+    $view_id = isset($_GET['view_licence']) ? (int) $_GET['view_licence'] : 0;
+    if ($view_id) {
+        if (!class_exists('UFSC_Licence_Manager')) {
+            require_once plugin_dir_path(__FILE__) . '../../licences/class-licence-manager.php';
+        }
+        if (!function_exists('ufsc_get_license_status_badge')) {
+            require_once plugin_dir_path(__FILE__) . '../../helpers/helpers-licence-status.php';
+        }
+        $manager = UFSC_Licence_Manager::get_instance();
+        $licence = $manager->get_licence_by_id($view_id);
+        if (!$licence || (int) $licence->club_id !== $club_id) {
+            return '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card"><div class="ufsc-alert ufsc-alert-error">Licence introuvable.</div></div></div></div>';
+        }
+
+        // Determine category, quota and date fields
+        $categorie = !empty($licence->categorie)
+            ? $licence->categorie
+            : ((isset($licence->competition) && (int) $licence->competition === 1) ? 'Compétiteur' : 'Loisir');
+        $quota = !empty($licence->is_included) ? 'Oui' : 'Non';
+        $date_licence = '';
+        if (!empty($licence->date_modification)) {
+            $date_licence = $licence->date_modification;
+        } elseif (!empty($licence->date_creation)) {
+            $date_licence = $licence->date_creation;
+        } elseif (!empty($licence->date_inscription)) {
+            $date_licence = $licence->date_inscription;
+        }
+
+        // Minimal style for detail view
+        wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');
+        wp_enqueue_style('ufscx-licences-direct');
+
+        ob_start();
+        ?>
+        <div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufscx-licence-detail">
+            <h2>Licence #<?php echo esc_html($licence->id); ?></h2>
+            <p><strong>Nom :</strong> <?php echo esc_html($licence->nom); ?></p>
+            <p><strong>Prénom :</strong> <?php echo esc_html($licence->prenom); ?></p>
+            <p><strong>Email :</strong> <?php echo esc_html($licence->email); ?></p>
+            <p><strong>Sexe :</strong> <?php echo esc_html($licence->sexe); ?></p>
+            <p><strong>Date de naissance :</strong> <?php echo esc_html($licence->date_naissance); ?></p>
+            <p><strong>Ville :</strong> <?php echo esc_html($licence->ville); ?></p>
+            <p><strong>Catégorie :</strong> <?php echo esc_html($categorie); ?></p>
+            <p><strong>Quota :</strong> <?php echo esc_html($quota); ?></p>
+            <p><strong>Statut :</strong> <?php echo ufsc_get_license_status_badge($licence->statut, isset($licence->payment_status) ? $licence->payment_status : ''); ?></p>
+            <p><strong>Date licence :</strong> <?php echo esc_html($date_licence); ?></p>
+            <a class="ufscx-btn ufscx-btn-soft" href="<?php echo esc_url(remove_query_arg('view_licence')); ?>">Retour</a>
+        </div></div></div>
+        <?php
+        return ob_get_clean();
+    }
+
     // Enqueue assets minimal
     wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');
     wp_enqueue_style('ufscx-licences-direct');
