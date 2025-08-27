@@ -4,7 +4,7 @@ Tags: club, management, affiliation, license, ufsc
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 8.2
-Stable tag: 1.2.0
+Stable tag: 20.8.2
 License: GPLv2 or later
 License URI: LICENSE
 

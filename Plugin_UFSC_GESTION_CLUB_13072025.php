@@ -1,11 +1,11 @@
 <?php
-define('UFSC_PLUGIN_VERSION','20.8.1');
+define('UFSC_PLUGIN_VERSION','20.8.2');
 if (!defined('UFSC_ENABLE_DIAG_ENDPOINT')) define('UFSC_ENABLE_DIAG_ENDPOINT', false);
 
 /**
  * Plugin Name: UFSC - Gestion de Club
  * Description: Plugin de gestion des affiliations et licences pour les clubs UFSC.
- * Version: 20.8.1
+ * Version: 20.8.2
  * Author: Studio Reactiv
  * Author URI: https://studioreactiv.fr
  * License: GPL v2 or later
