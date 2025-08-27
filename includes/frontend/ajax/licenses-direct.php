@@ -11,6 +11,9 @@ function ufscx_toggle_quota(){
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
     $row = $wpdb->get_row($wpdb->prepare("SELECT id, club_id, is_included FROM $t WHERE id=%d", $id));
     if (!$row) wp_send_json_error(['message'=>esc_html__('Licence introuvable', 'ufsc-domain')]);
+    if (!current_user_can('edit_post', $id)) {
+        wp_send_json_error(['message' => __('Unauthorized', 'ufsc-domain')], 403);
+    }
     $club_id = ufscx_resolve_club_id();
     if (!$club_id || (int)$row->club_id !== (int)$club_id){
         wp_send_json_error(['message'=>esc_html__('Non autorisé', 'ufsc-domain')],403);
@@ -28,6 +31,9 @@ function ufscx_delete_draft(){
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
     $row = $wpdb->get_row($wpdb->prepare("SELECT id, club_id, statut FROM $t WHERE id=%d", $id));
     if (!$row) wp_send_json_error(['message'=>esc_html__('Licence introuvable', 'ufsc-domain')]);
+    if (!current_user_can('edit_post', $id)) {
+        wp_send_json_error(['message' => __('Unauthorized', 'ufsc-domain')], 403);
+    }
     $club_id = ufscx_resolve_club_id();
     if (!$club_id || (int)$row->club_id !== (int)$club_id){
         wp_send_json_error(['message'=>esc_html__('Non autorisé', 'ufsc-domain')],403);
