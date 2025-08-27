@@ -37,12 +37,6 @@ class UFSC_Fix_Assets {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'ajaxurl' => admin_url('admin-ajax.php'),
             'frontNonce' => wp_create_nonce('ufsc_front_nonce'),
-            'nonces' => [
-                'add_licence_to_cart' => wp_create_nonce('ufsc_add_licence_to_cart'),
-                'add_to_cart'         => wp_create_nonce('ufsc_add_to_cart'),
-                'delete_draft'        => wp_create_nonce('ufsc_delete_licence_draft'),
-                'include_quota'       => wp_create_nonce('ufsc_include_quota'),
-            ],
             'i18n' => [
                 'saving' => __('Enregistrement…','plugin-ufsc-gestion-club-13072025'),
                 'saved'  => __('Brouillon enregistré.','plugin-ufsc-gestion-club-13072025'),
