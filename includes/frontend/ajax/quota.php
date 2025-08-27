@@ -3,9 +3,7 @@ if (!defined('ABSPATH')) exit;
 
 add_action('wp_ajax_ufsc_include_quota', 'ufsc_ajax_include_quota');
 function ufsc_ajax_include_quota(){
-    if ( ! check_ajax_referer('ufsc_front_nonce', '_ajax_nonce', false) ) {
-        wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
-    }
+    check_ajax_referer('ufsc_front_nonce');
     if (!is_user_logged_in() || !current_user_can('read')) {
         wp_send_json_error(esc_html__('Non connecté', 'ufsc-domain'), 401);
     }

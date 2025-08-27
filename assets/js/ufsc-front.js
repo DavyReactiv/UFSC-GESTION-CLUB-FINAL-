@@ -129,7 +129,11 @@
         action: 'ufsc_add_to_cart',
         licence_id: id,
         club_id: club,
+
         _ajax_nonce: nonce
+
+        _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
+
       }).done(function(res){
         if(res && res.success){
           var msg = (UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.';
