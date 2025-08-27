@@ -116,8 +116,8 @@ function ufsc_render_affiliation_form($args = [])
     }
     
     // Club information section
-    $output .= '<div class="ufsc-form-section">
-        <h4>Informations du club</h4>
+    $output .= '<fieldset class="ufsc-form-section">
+        <legend>Informations du club</legend>
         <div class="ufsc-form-field">
             <label for="nom">Nom du club *</label>
             <input type="text" id="nom" name="nom" required maxlength="200" value="' . ($existing_club ? esc_attr($existing_club->nom) : '') . '">
@@ -175,11 +175,11 @@ function ufsc_render_affiliation_form($args = [])
         </div>';
     }
     
-    $output .= '</div>';
+    $output .= '</fieldset>';
     
     // Contact information section
-    $output .= '<div class="ufsc-form-section">
-        <h4>Contact</h4>
+    $output .= '<fieldset class="ufsc-form-section">
+        <legend>Contact</legend>
         <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="email">Email *</label>
@@ -201,11 +201,11 @@ function ufsc_render_affiliation_form($args = [])
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
         </div>
-    </div>';
+    </fieldset>';
     
     // Additional information section
-    $output .= '<div class="ufsc-form-section">
-        <h4>Informations complémentaires</h4>
+    $output .= '<fieldset class="ufsc-form-section">
+        <legend>Informations complémentaires</legend>
         <div class="ufsc-form-grid">
             <div class="ufsc-form-field">
                 <label for="siret">SIRET</label>
@@ -227,10 +227,11 @@ function ufsc_render_affiliation_form($args = [])
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
         </div>
-    </div>';
+    </fieldset>';
     
     // Terms and conditions
-    $output .= '<div class="ufsc-form-section">
+    $output .= '<fieldset class="ufsc-form-section">
+        <legend>Conditions et consentements</legend>
         <div class="ufsc-form-field">
             <label for="accept_terms">J\'accepte les <a href="#" target="_blank">conditions générales</a> et le <a href="#" target="_blank">règlement intérieur</a> de l\'UFSC *</label>
             <input type="checkbox" id="accept_terms" name="accept_terms" required>
@@ -244,7 +245,7 @@ function ufsc_render_affiliation_form($args = [])
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
         </div>
-    </div>';
+    </fieldset>';
     
     // Form actions
     $output .= '<div class="ufsc-form-actions">

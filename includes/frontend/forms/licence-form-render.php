@@ -67,8 +67,8 @@ function ufsc_render_licence_form($args = array()){
         <input type="hidden" name="licence_id" value="<?php echo esc_attr($prefill['id']); ?>">
       <?php endif; ?>
 
-      <div class="ufsc-form-section">
-        <h4>Informations personnelles</h4>
+      <fieldset class="ufsc-form-section">
+        <legend>Informations personnelles</legend>
         <div class="ufsc-form-grid">
           <div class="ufsc-form-field">
             <label for="nom">Nom *</label>
@@ -109,10 +109,10 @@ function ufsc_render_licence_form($args = array()){
           <p class="ufsc-form-hint"></p>
           <span class="ufsc-form-error"></span>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="ufsc-form-section">
-        <h4>Coordonnées</h4>
+      <fieldset class="ufsc-form-section">
+        <legend>Coordonnées</legend>
         <div class="ufsc-form-field">
           <label for="adresse">Adresse</label>
           <input type="text" id="adresse" name="adresse" maxlength="200" value="<?php echo $v('adresse'); ?>">
@@ -153,10 +153,10 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="ufsc-form-section">
-        <h4>Rôle & type</h4>
+      <fieldset class="ufsc-form-section">
+        <legend>Rôle & type</legend>
         <div class="ufsc-form-grid">
           <div class="ufsc-form-field">
             <label for="fonction">Fonction</label>
@@ -192,10 +192,10 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
       </div>
-      </div>
+      </fieldset>
 
-      <div class="ufsc-form-section">
-        <h4>Autorisations et communications</h4>
+      <fieldset class="ufsc-form-section">
+        <legend>Autorisations et communications</legend>
         <div class="ufsc-form-grid">
           <div class="ufsc-form-field">
             <label for="diffusion_image">Consentement diffusion image</label>
@@ -228,10 +228,10 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="ufsc-form-section">
-        <h4>Déclarations et assurances</h4>
+      <fieldset class="ufsc-form-section">
+        <legend>Déclarations et assurances</legend>
         <div class="ufsc-form-grid">
           <div class="ufsc-form-field">
             <label for="honorabilite">Déclaration d'honorabilité</label>
@@ -252,16 +252,17 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="ufsc-form-section">
+      <fieldset class="ufsc-form-section">
+        <legend>Règlements</legend>
         <div class="ufsc-form-field">
           <label for="ufsc_rules_ack">J'ai pris connaissance des règlements — <a href="https://ufsc-france.fr/ufsc-reglements-sportifs-techniques-interieur/" target="_blank" rel="noopener">Lire les règlements</a></label>
           <input type="checkbox" id="ufsc_rules_ack" name="ufsc_rules_ack" value="1" required>
           <p class="ufsc-form-hint"></p>
           <span class="ufsc-form-error"></span>
         </div>
-      </div>
+      </fieldset>
 
       <div class="ufsc-form-actions">
         <button type="button" id="ufsc-save-draft" class="ufsc-btn ufsc-btn-secondary">💾 Enregistrer brouillon</button>
