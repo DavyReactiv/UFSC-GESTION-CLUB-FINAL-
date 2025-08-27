@@ -19,7 +19,7 @@ class UFSC_GestionClub_Core
     {
         // 🌍 Chargement de la traduction
         load_plugin_textdomain(
-            'plugin-ufsc-gestion-club-13072025',
+            'ufsc-domain',
             false,
             plugin_basename(dirname(__DIR__, 2)) . '/languages'
         );

@@ -18,20 +18,20 @@ function ufsc_handle_add_licencie_to_cart() {
     try {
         // Verify nonce
         if (!ufsc_check_ajax_nonce('ufsc_add_licencie_nonce', 'nonce', false)) {
-            wp_send_json_error(['message' => 'Erreur de sécurité. Veuillez recharger la page.']);
+            wp_send_json_error(['message' => esc_html__('Erreur de sécurité. Veuillez recharger la page.', 'ufsc-domain')]);
             return;
         }
 
         // Check if user is logged in
         if (!is_user_logged_in()) {
-            wp_send_json_error(['message' => 'Vous devez être connecté pour ajouter un licencié.']);
+            wp_send_json_error(['message' => esc_html__('Vous devez être connecté pour ajouter un licencié.', 'ufsc-domain')]);
             return;
         }
 
         // Get user's club
         $access_check = ufsc_check_frontend_access('licence');
         if (!$access_check['allowed']) {
-            wp_send_json_error(['message' => 'Vous n\'êtes pas autorisé à effectuer cette action.']);
+            wp_send_json_error(['message' => esc_html__('Vous n\'êtes pas autorisé à effectuer cette action.', 'ufsc-domain')]);
             return;
         }
 
@@ -39,7 +39,7 @@ function ufsc_handle_add_licencie_to_cart() {
 
         // Check club status
         if (!ufsc_is_club_active($club)) {
-            wp_send_json_error(['message' => 'Votre club doit être validé pour ajouter des licenciés.']);
+            wp_send_json_error(['message' => esc_html__('Votre club doit être validé pour ajouter des licenciés.', 'ufsc-domain')]);
             return;
         }
 
@@ -52,7 +52,7 @@ function ufsc_handle_add_licencie_to_cart() {
         }
         
         if (!$licence_product_id) {
-            wp_send_json_error(['message' => 'Produit licence non configuré. Contactez l\'administrateur.']);
+            wp_send_json_error(['message' => esc_html__('Produit licence non configuré. Contactez l\'administrateur.', 'ufsc-domain')]);
             return;
         }
 
@@ -61,7 +61,7 @@ function ufsc_handle_add_licencie_to_cart() {
         $quota_usage = ufsc_get_quota_usage($club->id);
         
         if ($quota_total > 0 && $quota_usage >= $quota_total) {
-            wp_send_json_error(['message' => 'Quota de licences épuisé pour votre club.']);
+            wp_send_json_error(['message' => esc_html__('Quota de licences épuisé pour votre club.', 'ufsc-domain')]);
             return;
         }
 
@@ -81,7 +81,7 @@ function ufsc_handle_add_licencie_to_cart() {
 
         // Validate required fields
         if (empty($nom) || empty($prenom) || empty($date_naissance) || empty($sexe) || empty($email) || empty($adresse) || empty($code_postal) || empty($ville)) {
-            wp_send_json_error(['message' => 'Veuillez remplir tous les champs obligatoires.']);
+            wp_send_json_error(['message' => esc_html__('Veuillez remplir tous les champs obligatoires.', 'ufsc-domain')]);
             return;
         }
 
@@ -100,8 +100,8 @@ function ufsc_handle_add_licencie_to_cart() {
             $duplicate_id = $licence_manager->check_duplicate_licence($duplicate_check_data);
             if ($duplicate_id) {
                 wp_send_json_error([
-                    'message' => 'Licencié déjà enregistré',
-                    'details' => 'Une licence existe déjà pour ' . $prenom . ' ' . $nom . ' (né(e) le ' . $date_naissance . ') dans ce club.'
+                    'message' => esc_html__('Licencié déjà enregistré', 'ufsc-domain'),
+                    'details' => sprintf(esc_html__('Une licence existe déjà pour %1$s %2$s (né(e) le %3$s) dans ce club.', 'ufsc-domain'), $prenom, $nom, $date_naissance)
                 ], 409);
                 return;
             }
@@ -109,14 +109,14 @@ function ufsc_handle_add_licencie_to_cart() {
 
         // Validate email format
         if (!is_email($email)) {
-            wp_send_json_error(['message' => 'Format d\'email invalide.']);
+            wp_send_json_error(['message' => esc_html__('Format d\'email invalide.', 'ufsc-domain')]);
             return;
         }
 
         // Validate date format
         $date_check = DateTime::createFromFormat('Y-m-d', $date_naissance);
         if (!$date_check || $date_check->format('Y-m-d') !== $date_naissance) {
-            wp_send_json_error(['message' => 'Format de date invalide.']);
+            wp_send_json_error(['message' => esc_html__('Format de date invalide.', 'ufsc-domain')]);
             return;
         }
 
@@ -148,7 +148,7 @@ function ufsc_handle_add_licencie_to_cart() {
         $unique_key = ufsc_generate_licence_key($cart_item_data['ufsc_licence_data']);
 
         if (ufsc_cart_contains_licence($unique_key)) {
-            wp_send_json_error(['message' => 'Ce licencié est déjà présent dans votre panier.']);
+            wp_send_json_error(['message' => esc_html__('Ce licencié est déjà présent dans votre panier.', 'ufsc-domain')]);
             return;
         }
 
@@ -161,13 +161,13 @@ function ufsc_handle_add_licencie_to_cart() {
             $cart_count = WC()->cart->get_cart_contents_count();
             
             wp_send_json_success([
-                'message' => 'Licencié ajouté au panier avec succès.',
+                'message' => esc_html__('Licencié ajouté au panier avec succès.', 'ufsc-domain'),
                 'cart_count' => $cart_count,
                 'cart_url' => wc_get_cart_url(),
                 'checkout_url' => wc_get_checkout_url()
             ]);
         } else {
-            wp_send_json_error(['message' => 'Erreur lors de l\'ajout au panier.']);
+            wp_send_json_error(['message' => esc_html__('Erreur lors de l\'ajout au panier.', 'ufsc-domain')]);
         }
         
     } catch (Exception $e) {
@@ -176,7 +176,7 @@ function ufsc_handle_add_licencie_to_cart() {
             error_log('UFSC Licence Add Error: ' . $e->getMessage());
         }
         
-        wp_send_json_error(['message' => 'Une erreur inattendue s\'est produite. Veuillez réessayer.']);
+        wp_send_json_error(['message' => esc_html__('Une erreur inattendue s\'est produite. Veuillez réessayer.', 'ufsc-domain')]);
     }
 }
 

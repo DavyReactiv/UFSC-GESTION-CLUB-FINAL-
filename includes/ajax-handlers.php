@@ -20,21 +20,21 @@ function ufsc_handle_attestation_upload() {
     // Security checks
     if (!check_ajax_referer('ufsc_attestation_nonce', '_ajax_nonce', false)) {
         wp_send_json_error([
-            'message' => __('Security check failed.', 'plugin-ufsc-gestion-club-13072025')
+            'message' => esc_html__('Security check failed.', 'ufsc-domain')
         ], 403);
     }
     
     // Check if user is logged in
     if (!is_user_logged_in()) {
         wp_send_json_error([
-            'message' => __('You must be logged in to upload an attestation.', 'plugin-ufsc-gestion-club-13072025')
+            'message' => esc_html__('You must be logged in to upload an attestation.', 'ufsc-domain')
         ], 401);
     }
     
     // Check user capabilities - allow club managers and admins
     if (!current_user_can('manage_ufsc') && !current_user_can('edit_posts')) {
         wp_send_json_error([
-            'message' => __('Unauthorized access.', 'plugin-ufsc-gestion-club-13072025')
+            'message' => esc_html__('Unauthorized access.', 'ufsc-domain')
         ], 403);
     }
     
@@ -42,7 +42,7 @@ function ufsc_handle_attestation_upload() {
     $type = isset($_POST['type']) ? sanitize_text_field(wp_unslash($_POST['type'])) : '';
     if (!in_array($type, ['club', 'license'], true)) {
         wp_send_json_error([
-            'message' => __('Invalid attestation type.', 'plugin-ufsc-gestion-club-13072025')
+            'message' => esc_html__('Invalid attestation type.', 'ufsc-domain')
         ], 400);
     }
     
@@ -63,23 +63,23 @@ if ($type === 'license' && $licence_id) {
         }
     }
     if (!ufsc_user_can_manage_licence($user_id, $licence_id)) {
-        wp_send_json_error(['message' => __('Unauthorized resource.', 'plugin-ufsc-gestion-club-13072025')], 403);
+        wp_send_json_error(['message' => esc_html__('Unauthorized resource.', 'ufsc-domain')], 403);
     }
 }
 // Check if file was uploaded
     if (!isset($_FILES['attestation_file']) || $_FILES['attestation_file']['error'] !== UPLOAD_ERR_OK) {
         $upload_errors = [
-            UPLOAD_ERR_INI_SIZE => 'Le fichier dépasse la taille maximale autorisée.',
-            UPLOAD_ERR_FORM_SIZE => 'Le fichier dépasse la taille maximale du formulaire.',
-            UPLOAD_ERR_PARTIAL => 'Le fichier n\'a été que partiellement téléchargé.',
-            UPLOAD_ERR_NO_FILE => 'Aucun fichier n\'a été téléchargé.',
-            UPLOAD_ERR_NO_TMP_DIR => 'Répertoire temporaire manquant.',
-            UPLOAD_ERR_CANT_WRITE => 'Échec de l\'écriture du fichier sur le disque.',
-            UPLOAD_ERR_EXTENSION => 'Une extension PHP a arrêté le téléchargement.'
+            UPLOAD_ERR_INI_SIZE   => esc_html__('Le fichier dépasse la taille maximale autorisée.', 'ufsc-domain'),
+            UPLOAD_ERR_FORM_SIZE  => esc_html__('Le fichier dépasse la taille maximale du formulaire.', 'ufsc-domain'),
+            UPLOAD_ERR_PARTIAL    => esc_html__('Le fichier n\'a été que partiellement téléchargé.', 'ufsc-domain'),
+            UPLOAD_ERR_NO_FILE    => esc_html__('Aucun fichier n\'a été téléchargé.', 'ufsc-domain'),
+            UPLOAD_ERR_NO_TMP_DIR => esc_html__('Répertoire temporaire manquant.', 'ufsc-domain'),
+            UPLOAD_ERR_CANT_WRITE => esc_html__('Échec de l\'écriture du fichier sur le disque.', 'ufsc-domain'),
+            UPLOAD_ERR_EXTENSION  => esc_html__('Une extension PHP a arrêté le téléchargement.', 'ufsc-domain')
         ];
         
         $error_code = $_FILES['attestation_file']['error'] ?? UPLOAD_ERR_NO_FILE;
-        $error_message = $upload_errors[$error_code] ?? 'Erreur inconnue lors du téléchargement.';
+        $error_message = $upload_errors[$error_code] ?? esc_html__('Erreur inconnue lors du téléchargement.', 'ufsc-domain');
         
         wp_send_json_error([
             'message' => $error_message
@@ -92,7 +92,7 @@ if ($type === 'license' && $licence_id) {
     $file_info = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);
     if ($file_info['ext'] !== 'pdf' || $file_info['type'] !== 'application/pdf') {
         wp_send_json_error([
-            'message' => 'Seuls les fichiers PDF sont autorisés.'
+            'message' => esc_html__('Seuls les fichiers PDF sont autorisés.', 'ufsc-domain')
         ], 400);
     }
     
@@ -100,7 +100,7 @@ if ($type === 'license' && $licence_id) {
     $max_size = 5 * 1024 * 1024; // 5MB in bytes
     if ($file['size'] > $max_size) {
         wp_send_json_error([
-            'message' => 'Le fichier est trop volumineux. Taille maximale autorisée : 5MB.'
+            'message' => esc_html__('Le fichier est trop volumineux. Taille maximale autorisée : 5MB.', 'ufsc-domain')
         ], 400);
     }
     
@@ -137,7 +137,7 @@ remove_filter('wp_handle_upload_prefilter', $ufsc_upload_prefilter_cb);
     
     if (isset($uploaded_file['error'])) {
         wp_send_json_error([
-            'message' => 'Erreur lors du téléchargement : ' . $uploaded_file['error']
+            'message' => sprintf(esc_html__('Erreur lors du téléchargement : %s', 'ufsc-domain'), $uploaded_file['error'])
         ], 500);
     }
     
@@ -178,7 +178,7 @@ remove_filter('wp_handle_upload_prefilter', $ufsc_upload_prefilter_cb);
     do_action('ufsc_attestation_uploaded', $user_id, $type, $uploaded_file);
     
     wp_send_json_success([
-        'message' => 'Attestation téléchargée avec succès !',
+        'message' => esc_html__('Attestation téléchargée avec succès !', 'ufsc-domain'),
         'type' => $type,
         'url' => $uploaded_file['url'],
         'uploaded_at' => $timestamp
@@ -196,26 +196,26 @@ function ufsc_validate_attestation_file($file) {
     
     // Check if file exists
     if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
-        $errors->add('no_file', 'Aucun fichier téléchargé.');
+        $errors->add('no_file', esc_html__('Aucun fichier téléchargé.', 'ufsc-domain'));
         return $errors;
     }
     
     // Check file size
     $max_size = 5 * 1024 * 1024; // 5MB
     if ($file['size'] > $max_size) {
-        $errors->add('file_too_large', 'Fichier trop volumineux (max 5MB).');
+        $errors->add('file_too_large', esc_html__('Fichier trop volumineux (max 5MB).', 'ufsc-domain'));
     }
     
     // Check file type
     $file_info = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);
     if ($file_info['ext'] !== 'pdf' || $file_info['type'] !== 'application/pdf') {
-        $errors->add('invalid_type', 'Seuls les fichiers PDF sont autorisés.');
+        $errors->add('invalid_type', esc_html__('Seuls les fichiers PDF sont autorisés.', 'ufsc-domain'));
     }
     
     // Check for malicious content (basic check)
     $file_content = file_get_contents($file['tmp_name'], false, null, 0, 1024);
     if (strpos($file_content, '%PDF') !== 0) {
-        $errors->add('invalid_pdf', 'Le fichier ne semble pas être un PDF valide.');
+        $errors->add('invalid_pdf', esc_html__('Le fichier ne semble pas être un PDF valide.', 'ufsc-domain'));
     }
     
     if ($errors->has_errors()) {
@@ -289,14 +289,14 @@ function ufsc_ajax_check_licence_duplicate() {
     // Security check
     if (!check_ajax_referer('ufsc_licence_duplicate_nonce', '_ajax_nonce', false)) {
         wp_send_json_error([
-            'message' => 'Échec de vérification de sécurité.'
+            'message' => esc_html__('Échec de vérification de sécurité.', 'ufsc-domain')
         ], 403);
     }
     
     // Check if user is logged in
     if (!is_user_logged_in()) {
         wp_send_json_error([
-            'message' => 'Vous devez être connecté.'
+            'message' => esc_html__('Vous devez être connecté.', 'ufsc-domain')
         ], 401);
     }
     
@@ -309,7 +309,7 @@ function ufsc_ajax_check_licence_duplicate() {
     // Validate required fields
     if (empty($nom) || empty($prenom) || empty($date_naissance) || empty($club_id)) {
         wp_send_json_error([
-            'message' => 'Champs obligatoires manquants.'
+            'message' => esc_html__('Champs obligatoires manquants.', 'ufsc-domain')
         ], 400);
     }
     
@@ -327,13 +327,18 @@ function ufsc_ajax_check_licence_duplicate() {
     if ($duplicate_id) {
         wp_send_json_error([
             'is_duplicate' => true,
-            'message' => "Une licence existe déjà pour {$prenom} {$nom} né(e) le " . date('d/m/Y', strtotime($date_naissance)) . ".",
+            'message' => sprintf(
+                esc_html__('Une licence existe déjà pour %1$s %2$s né(e) le %3$s.', 'ufsc-domain'),
+                $prenom,
+                $nom,
+                date('d/m/Y', strtotime($date_naissance))
+            ),
             'duplicate_id' => $duplicate_id
         ], 409);
     } else {
         wp_send_json_success([
             'is_duplicate' => false,
-            'message' => 'Aucun doublon détecté.'
+            'message' => esc_html__('Aucun doublon détecté.', 'ufsc-domain')
         ]);
     }
 }

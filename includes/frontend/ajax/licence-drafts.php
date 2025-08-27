@@ -10,10 +10,10 @@ if ( ! defined('ABSPATH') ) exit;
  */
 function ufsc_ajax_save_draft(){
     if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
-        wp_send_json_error( array('message' => __('Jeton invalide.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Jeton invalide.', 'ufsc-domain')) );
     }
     if ( ! is_user_logged_in() ) {
-        wp_send_json_error( array('message' => __('Connexion requise.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) );
     }
 
     global $wpdb;
@@ -23,7 +23,7 @@ function ufsc_ajax_save_draft(){
     $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
     $club_id = ($club && isset($club->id)) ? (int) $club->id : 0;
     if ( ! $club_id ) {
-        wp_send_json_error( array('message' => __('Club introuvable pour cet utilisateur.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Club introuvable pour cet utilisateur.', 'ufsc-domain')) );
     }
 
     // Sanitize minimal fields (others can exister mais on ne les impose pas ici)
@@ -33,7 +33,7 @@ function ufsc_ajax_save_draft(){
     $role   = isset($_POST['role'])   ? sanitize_text_field( wp_unslash($_POST['role']) )   : '';
 
     if ( $nom === '' || $prenom === '' || $email === '' ) {
-        wp_send_json_error( array('message' => __('Nom, prénom et email sont requis.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Nom, prénom et email sont requis.', 'ufsc-domain')) );
     }
 
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
@@ -69,7 +69,7 @@ function ufsc_ajax_save_draft(){
         if ( $updated !== false ) {
             wp_send_json_success( array('licence_id' => $licence_id) );
         } else {
-            wp_send_json_error( array('message' => __('Échec de mise à jour du brouillon.', 'plugin-ufsc-gestion-club-13072025')) );
+            wp_send_json_error( array('message' => esc_html__('Échec de mise à jour du brouillon.', 'ufsc-domain')) );
         }
     } else {
         // Create draft
@@ -90,7 +90,7 @@ function ufsc_ajax_save_draft(){
             $new_id = (int) $wpdb->insert_id;
             wp_send_json_success( array('licence_id' => $new_id) );
         } else {
-            wp_send_json_error( array('message' => __('Échec de création du brouillon.', 'plugin-ufsc-gestion-club-13072025')) );
+            wp_send_json_error( array('message' => esc_html__('Échec de création du brouillon.', 'ufsc-domain')) );
         }
     }
 }
@@ -102,14 +102,14 @@ add_action('wp_ajax_nopriv_ufsc_save_licence_draft', 'ufsc_ajax_save_draft');
  */
 function ufsc_ajax_delete_draft(){
     if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
-        wp_send_json_error( array('message' => __('Jeton invalide.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Jeton invalide.', 'ufsc-domain')) );
     }
     if ( ! is_user_logged_in() ) {
-        wp_send_json_error( array('message' => __('Connexion requise.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) );
     }
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     if ( ! $licence_id ) {
-        wp_send_json_error( array('message' => __('Licence introuvable.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Licence introuvable.', 'ufsc-domain')) );
     }
 
     global $wpdb;
@@ -119,14 +119,14 @@ function ufsc_ajax_delete_draft(){
     $club_id = ($club && isset($club->id)) ? (int) $club->id : 0;
 
     if ( ! $club_id ) {
-        wp_send_json_error( array('message' => __('Club introuvable.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Club introuvable.', 'ufsc-domain')) );
     }
 
     $deleted = $wpdb->delete( $table, array('id' => $licence_id, 'club_id' => $club_id), array('%d','%d') );
     if ( $deleted ) {
         wp_send_json_success();
     } else {
-        wp_send_json_error( array('message' => __('Suppression impossible.', 'plugin-ufsc-gestion-club-13072025')) );
+        wp_send_json_error( array('message' => esc_html__('Suppression impossible.', 'ufsc-domain')) );
     }
 }
 add_action('wp_ajax_ufsc_delete_licence_draft','ufsc_ajax_delete_draft');
