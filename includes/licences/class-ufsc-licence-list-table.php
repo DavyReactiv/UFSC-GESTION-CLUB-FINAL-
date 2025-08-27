@@ -14,6 +14,7 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
      * @var int
      */
     protected $club_id = 0;
+    private $external_data = null;
 
     public function __construct( $club_id = 0 ) {
         $this->club_id = (int) $club_id;
@@ -71,8 +72,66 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         ];
     }
 
+
     protected function column_cb( $item ) {
         return sprintf( '<input type="checkbox" name="licence_ids[]" value="%d" />', $item['id'] );
+
+        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
+            $view_url = wp_nonce_url(
+                admin_url( 'admin.php?page=ufsc_view_licence&id=' . $item['id'] ),
+                'ufsc_view_licence_' . $item['id']
+            );
+            $actions['view'] = sprintf(
+                '<a href="%s" title="%s"><span class="dashicons dashicons-visibility"></span></a>',
+                esc_url( $view_url ),
+                esc_attr__( 'Voir la licence', 'plugin-ufsc-gestion-club-13072025' )
+            );
+        }
+
+        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
+            $edit_url = wp_nonce_url(
+                admin_url( 'admin.php?page=ufsc-modifier-licence&licence_id=' . $item['id'] ),
+                'ufsc_edit_licence_' . $item['id']
+            );
+            $actions['edit'] = sprintf(
+                '<a href="%s" title="%s"><span class="dashicons dashicons-edit"></span></a>',
+                esc_url( $edit_url ),
+                esc_attr__( 'Modifier la licence', 'plugin-ufsc-gestion-club-13072025' )
+            );
+
+            $validate_url = wp_nonce_url(
+                admin_url( 'admin-post.php?action=ufsc_validate_licence&licence_id=' . $item['id'] ),
+                'ufsc_validate_licence_' . $item['id']
+            );
+            $actions['validate'] = sprintf(
+                '<a href="%s" title="%s" onclick="return confirm(\'%s\');"><span class="dashicons dashicons-yes-alt"></span></a>',
+                esc_url( $validate_url ),
+                esc_attr__( 'Valider la licence', 'plugin-ufsc-gestion-club-13072025' ),
+                esc_attr__( 'Confirmer la validation ?', 'plugin-ufsc-gestion-club-13072025' )
+            );
+
+            $delete_url = wp_nonce_url(
+                admin_url( 'admin-post.php?action=ufsc_delete_licence&licence_id=' . $item['id'] ),
+                'ufsc_delete_licence_' . $item['id']
+            );
+            $actions['delete'] = sprintf(
+                '<a href="%s" title="%s" onclick="return confirm(\'%s\');"><span class="dashicons dashicons-trash"></span></a>',
+                esc_url( $delete_url ),
+                esc_attr__( 'Supprimer la licence', 'plugin-ufsc-gestion-club-13072025' ),
+                esc_attr__( 'Supprimer définitivement ?', 'plugin-ufsc-gestion-club-13072025' )
+            );
+
+            $reassign_nonce = wp_create_nonce( 'ufsc_reassign_licence_' . $item['id'] );
+            $actions['reassign'] = sprintf(
+                '<a href="#" class="ufsc-reassign-licence" data-id="%d" data-nonce="%s" title="%s"><span class="dashicons dashicons-randomize"></span></a>',
+                $item['id'],
+                esc_attr( $reassign_nonce ),
+                esc_attr__( 'Réaffecter la licence à un autre club', 'plugin-ufsc-gestion-club-13072025' )
+            );
+        }
+
+        return sprintf( '%1$s %2$s', esc_html( $item['nom'] ), $this->row_actions( $actions ) );
+
     }
 
     protected function column_default( $item, $column_name ) {
@@ -148,10 +207,34 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         return implode( ' | ', $actions );
     }
 
+
     /**
      * Retrieve items to display.
      */
+
+    public function set_external_data($data, $total_items, $per_page) {
+        $this->external_data = [
+            'items'       => array_map('get_object_vars', $data),
+            'total_items' => (int) $total_items,
+            'per_page'    => (int) $per_page,
+        ];
+    }
+
+
     public function prepare_items() {
+        if ($this->external_data) {
+            $this->items = $this->external_data['items'];
+            $total_items = $this->external_data['total_items'];
+            $per_page    = $this->external_data['per_page'];
+            $total_pages = (int) ceil($total_items / $per_page);
+            $this->set_pagination_args([
+                'total_items' => $total_items,
+                'per_page'    => $per_page,
+                'total_pages' => $total_pages,
+            ]);
+            return;
+        }
+
         global $wpdb;
 
         $per_page = isset( $_REQUEST['per_page'] ) ? (int) $_REQUEST['per_page'] : 20;
@@ -211,8 +294,13 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
             $params[] = $like;
         }
 
-        $orderby = ! empty( $_REQUEST['orderby'] ) ? sanitize_sql_orderby( $_REQUEST['orderby'] ) : 'date_inscription';
-        $order   = ! empty( $_REQUEST['order'] ) && 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
+        $allowed_orderby = [ 'id', 'nom', 'date_inscription' ];
+        $orderby         = isset( $_REQUEST['orderby'] ) ? sanitize_key( $_REQUEST['orderby'] ) : 'date_inscription';
+        if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+            $orderby = 'date_inscription';
+        }
+
+        $order = ! empty( $_REQUEST['order'] ) && 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
 
         $count_sql   = "SELECT COUNT(*) FROM {$table} LEFT JOIN {$clubs_table} ON l.club_id = c.id {$where}";
         $total_items = empty( $params ) ? (int) $wpdb->get_var( $count_sql ) : (int) $wpdb->get_var( $wpdb->prepare( $count_sql, ...$params ) );
