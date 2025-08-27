@@ -3,8 +3,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-global $wpdb;
-
 if (!function_exists('ufscx_resolve_club_id')) {
     require_once dirname(__DIR__) . '/shortcodes/licenses-direct.php';
 }
@@ -14,42 +12,16 @@ if (!$club_id) {
     return;
 }
 
-$table = $wpdb->prefix . 'ufsc_licences';
-$search = isset($_GET['search_licence']) ? sanitize_text_field($_GET['search_licence']) : '';
+require_once dirname(__DIR__, 2) . '/licences/class-licence-filters.php';
 
-// Possible licence statuses:
-// - brouillon : licence en cours de création
-// - en_attente : en attente de validation
-// - validee : licence validée
-// - refusee : licence refusée
-// - expiree : licence expirée
-$status_param = isset($_GET['statut']) ? wp_unslash($_GET['statut']) : [];
-if (!is_array($status_param)) {
-    $status_param = array_filter(array_map('trim', explode(',', $status_param)));
+$filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
+if (empty($filters['statuses'])) {
+    // By default only show validated licences or those without a status
+    $filters['statuses'] = ['validee', ''];
 }
-$statuses = array_map('sanitize_text_field', $status_param);
-
-if (!empty($statuses)) {
-    $placeholders = implode(', ', array_fill(0, count($statuses), '%s'));
-    $where = "club_id = %d AND statut IN ($placeholders)";
-    $params = array_merge([$club_id], $statuses);
-} else {
-    // Legacy behaviour: only validated licences or without status
-    $where = "club_id = %d AND (statut = 'validee' OR statut IS NULL)";
-    $params = [$club_id];
-}
-
-if ($search !== '') {
-    $where .= " AND (nom LIKE %s OR prenom LIKE %s)";
-    $like = '%' . $wpdb->esc_like($search) . '%';
-    $params[] = $like;
-    $params[] = $like;
-}
-
-$licences = $wpdb->get_results($wpdb->prepare(
-    "SELECT * FROM $table WHERE $where ORDER BY id DESC",
-    ...$params
-));
+$license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
+$licences = $license_data['data'];
+$search = $filters['search_global'];
 ?>
 
 <form method="get" class="ufsc-search-form ufsc-mb-20">
@@ -102,6 +74,23 @@ $licences = $wpdb->get_results($wpdb->prepare(
             <?php endforeach;; ?>
         </tbody>
     </table>
+    <?php
+    $total_pages = (int) ceil($license_data['total_items'] / $license_data['per_page']);
+    if ($total_pages > 1) {
+        echo '<div class="tablenav"><div class="tablenav-pages">' .
+            paginate_links([
+                'base' => add_query_arg('paged', '%#%'),
+                'format' => '',
+                'current' => $license_data['current_page'],
+                'total' => $total_pages,
+                'add_args' => array_filter([
+                    'search_licence' => $search,
+                    'statut' => $filters['statuses'],
+                ]),
+            ]) .
+            '</div></div>';
+    }
+    ?>
 <?php else:; ?>
     <p>Aucune licence trouvée pour ce club.</p>
 <?php endif;; ?>
