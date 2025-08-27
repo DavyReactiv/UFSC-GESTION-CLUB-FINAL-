@@ -47,6 +47,14 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
     'infos_partenaires' => 'infos_partenaires',
     'licence_delegataire' => 'licence_delegataire',
     'numero_licence_delegataire' => 'numero_licence_delegataire',
+    'reduction_benevole' => 'reduction_benevole',
+    'reduction_postier' => 'reduction_postier',
+    'identifiant_laposte' => 'identifiant_laposte',
+    'fonction_publique' => 'fonction_publique',
+    'assurance_dommage_corporel' => 'assurance_dommage_corporel',
+    'assurance_assistance' => 'assurance_assistance',
+    'note' => 'note',
+    'is_included' => 'is_included',
   );
 
   $data = array('club_id' => (int)$club_id);
@@ -58,9 +66,9 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
   }
 
   // Booleans
-  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire');
+  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire','reduction_benevole','reduction_postier','fonction_publique','assurance_dommage_corporel','assurance_assistance');
   foreach ($bools as $k){
-    if (isset($_POST[$k])) $data[$k] = !empty($_POST[$k]) ? 1 : 0;
+    $data[$k] = !empty($_POST[$k]) ? 1 : 0;
   }
 
   // Merge extras
