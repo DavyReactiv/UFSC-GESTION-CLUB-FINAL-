@@ -26,61 +26,35 @@ wp_enqueue_style(
 $list_table = new UFSC_Licence_List_Table($club_id);
 $list_table->prepare_items();
 
-// Enqueue DataTables CSS and JS
-wp_enqueue_style(
-    'datatables-css',
-    'https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css',
-    [],
-    '1.13.6'
-);
-wp_enqueue_style(
-    'datatables-buttons-css',
-    'https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css',
-    [],
-    '2.4.2'
-);
-wp_enqueue_style(
-    'datatables-responsive-css',
-    'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css',
-    [],
-    '2.5.0'
-);
+// Enqueue DataTables CSS and JS with local fallback
+$dt_base_url  = UFSC_PLUGIN_URL . 'assets/datatables/';
+$dt_base_path = dirname(__DIR__, 2) . '/assets/datatables/';
 
-wp_enqueue_script(
-    'datatables-js',
-    'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js',
-    [],
-    '1.13.6',
-    true
-);
-wp_enqueue_script(
-    'datatables-buttons-js',
-    'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js',
-    ['datatables-js'],
-    '2.4.2',
-    true
-);
-wp_enqueue_script(
-    'datatables-buttons-html5-js',
-    'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js',
-    ['datatables-buttons-js'],
-    '2.4.2',
-    true
-);
-wp_enqueue_script(
-    'datatables-responsive-js',
-    'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js',
-    ['datatables-js'],
-    '2.5.0',
-    true
-);
-wp_enqueue_script(
-    'jszip-js',
-    'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
-    [],
-    '3.10.1',
-    true
-);
+$dt_styles = [
+    'datatables-css'            => ['css/jquery.dataTables.min.css', 'https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css', '1.13.6'],
+    'datatables-buttons-css'    => ['css/buttons.dataTables.min.css', 'https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css', '2.4.2'],
+    'datatables-responsive-css' => ['css/responsive.dataTables.min.css', 'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css', '2.5.0'],
+];
+
+foreach ($dt_styles as $handle => $data) {
+    [$rel_path, $cdn, $ver] = $data;
+    $src = file_exists($dt_base_path . $rel_path) ? $dt_base_url . $rel_path : $cdn;
+    wp_enqueue_style($handle, $src, [], $ver);
+}
+
+$dt_scripts = [
+    'datatables-js'               => ['js/jquery.dataTables.min.js', 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', [], '1.13.6'],
+    'datatables-buttons-js'       => ['js/dataTables.buttons.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js', ['datatables-js'], '2.4.2'],
+    'datatables-buttons-html5-js' => ['js/buttons.html5.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js', ['datatables-buttons-js'], '2.4.2'],
+    'datatables-responsive-js'    => ['js/dataTables.responsive.min.js', 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js', ['datatables-js'], '2.5.0'],
+    'jszip-js'                    => ['js/jszip.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', [], '3.10.1'],
+];
+
+foreach ($dt_scripts as $handle => $data) {
+    [$rel_path, $cdn, $deps, $ver] = $data;
+    $src = file_exists($dt_base_path . $rel_path) ? $dt_base_url . $rel_path : $cdn;
+    wp_enqueue_script($handle, $src, $deps, $ver, true);
+}
 
 wp_enqueue_script(
     'ufsc-datatables-config',
