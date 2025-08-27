@@ -7,9 +7,13 @@ if (!current_user_can('ufsc_manage_own')) {
     wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
 }
 
+
 if ( ! class_exists( 'UFSC_Licence_Repository' ) ) {
     require_once UFSC_PLUGIN_PATH . 'includes/repository/class-licence-repository.php';
 }
+
+require_once UFSC_PLUGIN_PATH . 'includes/repository/class-licence-repository.php';
+
 require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 $repo       = new UFSC_Licence_Repository();
