@@ -209,27 +209,32 @@ $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslas
                             </td>
                             <td>
                                 <div class="ufsc-actions">
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_view_club&id=' . $club->id)); ?>" 
-                                       class="button button-small" title="Voir les détails">
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_view_club&id=' . $club->id)); ?>"
+                                       class="button button-small" title="Voir les détails"
+                                       aria-label="<?php printf(esc_attr__('Voir les détails du club %s', 'plugin-ufsc-gestion-club-13072025'), esc_html($club->nom)); ?>">
                                         👁️ Voir
                                     </a>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_view_club&id=' . $club->id . '&edit=1')); ?>" 
-                                       class="button button-small button-primary" title="Modifier le club">
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_view_club&id=' . $club->id . '&edit=1')); ?>"
+                                       class="button button-small button-primary" title="Modifier le club"
+                                       aria-label="<?php printf(esc_attr__('Modifier le club %s', 'plugin-ufsc-gestion-club-13072025'), esc_html($club->nom)); ?>">
                                         ✏️ Modifier
                                     </a>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_voir_licences&club_id=' . $club->id)); ?>" 
-                                       class="button button-small button-secondary" title="Voir les licences">
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_voir_licences&club_id=' . $club->id)); ?>"
+                                       class="button button-small button-secondary" title="Voir les licences"
+                                       aria-label="<?php printf(esc_attr__('Voir les licences du club %s', 'plugin-ufsc-gestion-club-13072025'), esc_html($club->nom)); ?>">
                                         👥 Licences
                                     </a>
-                                    <button type="button" 
-                                            class="button button-small button-link-delete" 
+                                    <button type="button"
+                                            class="button button-small button-link-delete"
                                             onclick="deleteClub(<?php echo esc_attr($club->id); ?>, '<?php echo esc_js($club->nom); ?>')"
-                                            title="Supprimer le club">
+                                            title="Supprimer le club"
+                                            aria-label="<?php printf(esc_attr__('Supprimer le club %s', 'plugin-ufsc-gestion-club-13072025'), esc_html($club->nom)); ?>">
                                         🗑️ Supprimer
                                     </button>
                                     <?php if ($can_validate && $club->statut !== 'Actif'): ?>
                                         <br>
-                                        <button type="button" class="button button-primary button-small" onclick="validateClub(<?php echo esc_attr($club->id); ?>)" style="margin-top: 5px;">
+                                        <button type="button" class="button button-primary button-small" onclick="validateClub(<?php echo esc_attr($club->id); ?>)" style="margin-top: 5px;"
+                                                aria-label="<?php printf(esc_attr__('Valider le club %s', 'plugin-ufsc-gestion-club-13072025'), esc_html($club->nom)); ?>">
                                             ✅ Valider le club
                                         </button>
                                     <?php endif; ?>
@@ -551,6 +556,11 @@ function deleteClub(clubId, clubName) {
     padding: 4px 8px;
     height: auto;
     line-height: 1.2;
+}
+
+.ufsc-actions .button:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
 }
 
 .button-link-delete {

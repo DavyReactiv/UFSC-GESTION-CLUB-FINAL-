@@ -30,8 +30,10 @@ add_action('init', function(){
             <td><?php echo $is_draft?'<span class="ufsc-badge ufsc-badge--pending">Brouillon</span>':'<span class="ufsc-badge ufsc-badge--ok">Validée</span>'; ?></td>
             <td>
             <?php if($is_draft): ?>
-              <button class="button ufsc-pay-licence" data-licence-id="<?php echo (int)$r->id; ?>"><?php _e('Envoyer au paiement','plugin-ufsc-gestion-club-13072025'); ?></button>
-              <button class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$r->id; ?>"><?php _e('Supprimer brouillon','plugin-ufsc-gestion-club-13072025'); ?></button>
+                <button class="button ufsc-pay-licence" data-licence-id="<?php echo (int)$r->id; ?>"
+                        aria-label="<?php printf(esc_attr__('Envoyer la licence %d au paiement', 'plugin-ufsc-gestion-club-13072025'), (int)$r->id); ?>"><?php _e('Envoyer au paiement','plugin-ufsc-gestion-club-13072025'); ?></button>
+                <button class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$r->id; ?>"
+                        aria-label="<?php printf(esc_attr__('Supprimer le brouillon de la licence %d', 'plugin-ufsc-gestion-club-13072025'), (int)$r->id); ?>"><?php _e('Supprimer brouillon','plugin-ufsc-gestion-club-13072025'); ?></button>
             <?php else: ?>
               <span style="opacity:.65">—</span>
             <?php endif; ?>
