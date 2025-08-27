@@ -20,6 +20,31 @@
     white-space: nowrap;
 }
 
+.ufsc-subbadge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    margin-left: 4px;
+}
+
+.ufsc-subbadge-warning {
+    background: #f59e0b;
+    color: #fff;
+}
+
+.ufsc-subbadge-error {
+    background: #ef4444;
+    color: #fff;
+}
+
+.ufsc-subbadge-info {
+    background: #3b82f6;
+    color: #fff;
+}
+
 .badge-pink {
     background: linear-gradient(135deg, #e91e63, #f06292);
     box-shadow: 0 2px 4px rgba(233, 30, 99, 0.3);

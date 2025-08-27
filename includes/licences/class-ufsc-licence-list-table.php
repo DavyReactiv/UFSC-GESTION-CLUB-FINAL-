@@ -161,7 +161,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
             case 'quota':
                 return $item['quota'] ? __( 'Oui', 'plugin-ufsc-gestion-club-13072025' ) : __( 'Non', 'plugin-ufsc-gestion-club-13072025' );
             case 'statut':
-                return $this->render_status_badge( $item['statut'] );
+                return $this->render_status_badge( $item['statut'], $item['payment_status'] ?? '' );
             case 'date_licence':
                 return esc_html( mysql2date( get_option( 'date_format' ), $item['date_licence'] ) );
             default:
@@ -321,7 +321,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
 
         $offset = ( $current_page - 1 ) * $per_page;
 
-        $select_sql = "SELECT l.id, l.nom, l.prenom, l.email, l.sexe, l.date_naissance, c.nom AS club, l.categorie, l.is_included AS quota, l.statut, l.date_inscription AS date_licence
+        $select_sql = "SELECT l.id, l.nom, l.prenom, l.email, l.sexe, l.date_naissance, c.nom AS club, l.categorie, l.is_included AS quota, l.statut, l.payment_status, l.date_inscription AS date_licence
                         FROM {$table}
                         LEFT JOIN {$clubs_table} ON l.club_id = c.id
                         {$where}
@@ -406,31 +406,8 @@ class UFSC_Licence_List_Table extends WP_List_Table {
     /**
      * Render a visual badge for the status.
      */
-    private function render_status_badge( $status ) {
-        $status = strtolower( $status );
-        $class  = 'ufsc-badge ufsc-badge--pending';
-        $label  = ucfirst( $status );
-
-
-
-        if ( in_array( $status, ['validee', 'validée', 'active', 'actif'], true ) ) {
-            $class = 'ufsc-badge ufsc-badge--ok';
-            $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( in_array( $status, ['refusee', 'refusée', 'inactif'], true ) ) {
-            $class = 'ufsc-badge ufsc-badge--err';
-            $label = __( 'Refusée', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( in_array( $status, ['en attente', 'en_attente', 'pending'], true ) ) {
-            $class = 'ufsc-badge ufsc-badge--pending';
-            $label = __( 'En attente', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( in_array( $status, ['expiree', 'expirée', 'expired'], true ) ) {
-            $class = 'ufsc-badge ufsc-badge--expired';
-            $label = __( 'Expirée', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( 'trash' === $status ) {
-            $class = 'ufsc-badge ufsc-badge-default';
-            $label = __( 'Corbeille', 'plugin-ufsc-gestion-club-13072025' );
-        }
-
-        return '<span class="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
+    private function render_status_badge( $status, $payment_status = '' ) {
+        return ufsc_get_license_status_badge( $status, $payment_status );
     }
 }
 

@@ -378,7 +378,7 @@ function ufsc_render_recent_licenses_section($club) {
                                 <td><?php echo esc_html($license->nom); ?></td>
                                 <td><?php echo esc_html($license->prenom); ?></td>
                                 <td><?php echo esc_html($license->fonction ?? 'Non renseigné'); ?></td>
-                                <td><?php echo ufsc_render_license_status_badge($license->statut); ?></td>
+                                <td><?php echo ufsc_get_license_status_badge($license->statut, $license->payment_status ?? ''); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

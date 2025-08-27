@@ -150,8 +150,9 @@ function ufsc_render_licence_item($licence) {
     
     // Status badge
     $status = isset($licence->statut) ? $licence->statut : 'draft';
+    $payment = isset($licence->payment_status) ? $licence->payment_status : '';
     $output .= '<div class="ufsc-licence-meta">';
-    $output .= ufsc_render_licence_status_badge($status);
+    $output .= ufsc_get_license_status_badge($status, $payment);
     
     // Date
     $date = '';
@@ -172,38 +173,6 @@ function ufsc_render_licence_item($licence) {
     return $output;
 }
 
-/**
- * Render licence status badge
- * 
- * @param string $status Licence status
- * @return string HTML output
- */
-function ufsc_render_licence_status_badge($status) {
-    $status_classes = array(
-        'validated' => 'ufsc-status-badge ufsc-status-validated',
-        'refused' => 'ufsc-status-badge ufsc-status-refused',
-        'pending' => 'ufsc-status-badge ufsc-status-pending',
-        'draft' => 'ufsc-status-badge ufsc-status-draft'
-    );
-    
-    $status_labels = array(
-        'validated' => __('Validée', 'plugin-ufsc-gestion-club-13072025'),
-        'refused' => __('Refusée', 'plugin-ufsc-gestion-club-13072025'),
-        'pending' => __('En attente', 'plugin-ufsc-gestion-club-13072025'),
-        'draft' => __('Brouillon', 'plugin-ufsc-gestion-club-13072025')
-    );
-    
-    // Normalize status
-    $normalized_status = strtolower($status);
-    if (!isset($status_classes[$normalized_status])) {
-        $normalized_status = 'draft';
-    }
-    
-    $class = $status_classes[$normalized_status];
-    $label = $status_labels[$normalized_status];
-    
-    return '<span class="' . esc_attr($class) . '">' . esc_html($label) . '</span>';
-}
 
 /**
  * Get licences page URL from options
