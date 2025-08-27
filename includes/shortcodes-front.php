@@ -318,51 +318,78 @@ function ufsc_render_simple_club_register_form($atts) {
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/helpers/dashboard-data.php';
 
 /**
+ * Map raw club status to label and badge class
+ *
+ * @param string $status Raw status value
+ * @return array{label:string,class:string}
+ */
+function ufsc_map_club_status($status) {
+    $status = mb_strtolower(trim($status));
+    $map = [
+        'actif' => ['label' => 'Validé', 'class' => 'ufsc-badge-success'],
+        'validé' => ['label' => 'Validé', 'class' => 'ufsc-badge-success'],
+        'affilié' => ['label' => 'Validé', 'class' => 'ufsc-badge-success'],
+        'en attente' => ['label' => 'En attente', 'class' => 'ufsc-badge-pending'],
+        'en cours de validation' => ['label' => 'En attente', 'class' => 'ufsc-badge-pending'],
+        'en cours de création' => ['label' => 'En attente', 'class' => 'ufsc-badge-pending'],
+        'refusé' => ['label' => 'Refusé', 'class' => 'ufsc-badge-error'],
+    ];
+
+    return $map[$status] ?? ['label' => ucfirst($status), 'class' => 'ufsc-badge-inactive'];
+}
+
+/**
  * Helper function to render info row
- * 
+ *
  * @param string $label Field label
  * @param string $value Field value
- * @param string $type Field type (text, email, url, address, date, status)
+ * @param string $type Field type (text, email, url, address, date, status, club-name)
  * @return string HTML output
  */
 function ufsc_render_info_row($label, $value, $type = 'text') {
     if (empty($value) && $value !== '0') {
         return '';
     }
-    
+
     $escaped_label = esc_html($label);
-    
+    $value_class = '';
+
     switch ($type) {
         case 'email':
             $escaped_value = '<a href="mailto:' . esc_attr($value) . '">' . esc_html($value) . '</a>';
             break;
-            
+
         case 'url':
             $escaped_value = '<a href="' . esc_url($value) . '" target="_blank" rel="noopener">' . esc_html($value) . '</a>';
             break;
-            
+
         case 'address':
             $escaped_value = nl2br(esc_html($value));
             break;
-            
+
         case 'date':
             $escaped_value = esc_html(date_i18n(get_option('date_format'), strtotime($value)));
             break;
-            
+
         case 'status':
-            $status_class = 'ufsc-status ufsc-status-' . esc_attr(sanitize_title($value));
-            $escaped_value = '<span class="' . $status_class . '">' . esc_html($value) . '</span>';
+            $status_info = ufsc_map_club_status($value);
+            $escaped_value = '<span class="ufsc-badge ' . esc_attr($status_info['class']) . '">' . esc_html($status_info['label']) . '</span>';
             break;
-            
+
+        case 'club-name':
+            $value_class = ' ufsc-club-name';
+            $escaped_value = esc_html(mb_strtoupper($value, 'UTF-8'));
+            break;
+
         case 'text':
         default:
             $escaped_value = esc_html($value);
             break;
     }
-    
+
     return '<div class="ufsc-info-row">
                 <span class="ufsc-info-label">' . $escaped_label . ':</span>
-                <span class="ufsc-info-value">' . $escaped_value . '</span>
+                <span class="ufsc-info-value' . $value_class . '">' . $escaped_value . '</span>
             </div>';
 }
 
@@ -399,6 +426,9 @@ function ufsc_render_club_account_form($club, $atts) {
     }
     .ufsc-club-account .ufsc-info-value {
         flex: 1;
+    }
+    .ufsc-club-account .ufsc-info-value.ufsc-club-name {
+        text-transform: uppercase;
     }
     .ufsc-club-account .ufsc-dirigeants-grid {
         display: grid;
@@ -459,6 +489,31 @@ function ufsc_render_club_account_form($club, $atts) {
         padding: 8px;
         border: 1px solid #ddd;
         border-radius: 4px;
+    }
+    .ufsc-club-account .ufsc-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .ufsc-club-account .ufsc-badge-success {
+        background: #d4edda;
+        color: #155724;
+    }
+    .ufsc-club-account .ufsc-badge-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .ufsc-club-account .ufsc-badge-error {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    .ufsc-club-account .ufsc-badge-inactive {
+        background: #e9ecef;
+        color: #6c757d;
     }
     .ufsc-club-account .ufsc-status {
         padding: 3px 8px;
@@ -538,7 +593,7 @@ function ufsc_render_club_account_form($club, $atts) {
             </div>
             <div class="ufsc-card-body">
                 <div class="ufsc-club-info-grid">
-                    <?php echo ufsc_render_info_row('Nom du club', $club->nom ?? '', 'text'); ?>
+                    <?php echo ufsc_render_info_row('Nom du club', $club->nom ?? '', 'club-name'); ?>
                     <?php echo ufsc_render_info_row('Statut', $club->statut ?? 'Non défini', 'status'); ?>
                     <?php if (!empty($club->num_affiliation)): ?>
                         <?php echo ufsc_render_info_row('Numéro d\'affiliation', $club->num_affiliation, 'text'); ?>
