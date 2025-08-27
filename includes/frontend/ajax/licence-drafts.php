@@ -130,4 +130,3 @@ function ufsc_ajax_delete_draft(){
     }
 }
 add_action('wp_ajax_ufsc_delete_licence_draft','ufsc_ajax_delete_draft');
-add_action('wp_ajax_nopriv_ufsc_delete_licence_draft','ufsc_ajax_delete_draft');

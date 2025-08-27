@@ -55,12 +55,24 @@ function ufsc_profix_ajax_save_draft(){
 add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 function ufsc_profix_ajax_delete_draft(){
-    check_ajax_referer('ufsc_front_nonce'); global $wpdb;
-    $id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0; if(!$id) wp_send_json_error('ID manquant');
+    check_ajax_referer('ufsc_front_nonce');
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error('Connexion requise');
+    }
+    global $wpdb;
+    $id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    if ( ! $id ) wp_send_json_error('ID manquant');
+    $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
+    $club_id = ($club && isset($club->id)) ? (int) $club->id : 0;
+    if ( ! $club_id ) wp_send_json_error('Club introuvable');
     $table = $wpdb->prefix.'ufsc_licences';
-    $ok = $wpdb->update($table, ['statut'=>'trash','deleted_at'=>current_time('mysql')], ['id'=>$id], ['%s','%s'], ['%d']);
+    $licence = $wpdb->get_row($wpdb->prepare("SELECT club_id FROM $table WHERE id=%d", $id));
+    if ( ! $licence ) wp_send_json_error('Licence introuvable');
+    if ( (int) $licence->club_id !== $club_id ) {
+        wp_send_json_error('Utilisateur non autorisé');
+    }
+    $ok = $wpdb->update($table, ['statut'=>'trash','deleted_at'=>current_time('mysql')], ['id'=>$id,'club_id'=>$club_id], ['%s','%s'], ['%d','%d']);
     if ($ok!==false) { wp_send_json_success(); } else { wp_send_json_error('Suppression impossible'); }
 }
 add_action('wp_ajax_ufsc_delete_licence_draft','ufsc_profix_ajax_delete_draft');
-add_action('wp_ajax_nopriv_ufsc_delete_licence_draft','ufsc_profix_ajax_delete_draft');
 
