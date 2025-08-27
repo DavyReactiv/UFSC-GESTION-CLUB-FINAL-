@@ -70,6 +70,35 @@ $filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
 // Retrieve licence data for display
 $license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
 
+$no_license_notice = '';
+if (empty($license_data['data'])) {
+    $active_filters = $filters;
+    unset($active_filters['club_id'], $active_filters['page'], $active_filters['per_page']);
+    $active_filters = array_filter(
+        $active_filters,
+        function ($value) {
+            return $value !== '' && $value !== 0 && $value !== '0';
+        }
+    );
+
+    $filters_info = '';
+    if (!empty($active_filters)) {
+        $pairs = [];
+        foreach ($active_filters as $key => $value) {
+            $pairs[] = esc_html($key . '=' . $value);
+        }
+        $filters_info = ' ' . esc_html__('Filtres actifs:', 'plugin-ufsc-gestion-club-13072025') . ' ' . implode(', ', $pairs);
+    }
+
+    $no_license_notice = '<div class="notice notice-warning"><p>' .
+        sprintf(
+            esc_html__('Aucune licence trouvée pour ce club (ID %d).', 'plugin-ufsc-gestion-club-13072025'),
+            $club_id
+        ) .
+        $filters_info .
+        '</p></div>';
+}
+
 $list_table = new UFSC_Licence_List_Table($club_id);
 $list_table->prepare_items();
 $list_table->items = array_map('get_object_vars', $license_data['data']);
@@ -135,6 +164,8 @@ $base_url = remove_query_arg(['paged', 'export_csv'], wp_unslash($_SERVER['REQUE
 $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
 
 ?>
+
+<?php echo $no_license_notice; ?>
 
 <div class="wrap">
     <h1>Licences <?php echo $club ? '– ' . esc_html($club->nom) : ''; ?></h1>
