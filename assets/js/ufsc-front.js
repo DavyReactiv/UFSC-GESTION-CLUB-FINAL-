@@ -123,12 +123,13 @@
       var id = $b.data('licenceId') || $b.data('licence-id');
       if(!id) return;
       var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
+      var nonce = (UFSC && (UFSC.frontNonce || (UFSC.nonces && UFSC.nonces.add_to_cart))) || '';
       lock($b, 'Ajout…');
       $.post(ajaxUrl, {
         action: 'ufsc_add_to_cart',
         licence_id: id,
         club_id: club,
-        _ajax_nonce: $b.data('nonce') || (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
+        _ajax_nonce: nonce
       }).done(function(res){
         if(res && res.success){
           var msg = (UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.';
@@ -137,7 +138,16 @@
           } else {
             notifySuccess(msg);
           }
-          setTimeout(function(){ location.reload(); }, 800);
+          var $row = $b.closest('tr.ufsc-row');
+          if(res.data){
+            if(res.data.payment_badge){
+              $row.find('.ufsc-col--payment').html(res.data.payment_badge);
+            }
+            if(res.data.redirect){
+              var viewTxt = (UFSC && UFSC.i18n && UFSC.i18n.view_cart) || 'Voir panier';
+              $row.find('.ufsc-col--actions').html('<a class="button" href="'+res.data.redirect+'">'+viewTxt+'</a>');
+            }
+          }
         } else {
           notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
         }
