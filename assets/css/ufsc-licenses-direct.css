@@ -1,6 +1,7 @@
 
 .ufscx-header{display:flex;gap:10px;align-items:center;margin:10px 0}
 .ufscx-btn{border:1px solid var(--ufsc-border,#e5e7eb);padding:.5rem .8rem;border-radius:8px;background:#fff;cursor:pointer}
+.ufscx-btn:focus{outline:2px solid var(--ufsc-navy,#1b1f3b);outline-offset:2px}
 .ufscx-btn-primary{background:var(--ufsc-navy,#1b1f3b);color:#fff;border-color:var(--ufsc-navy,#1b1f3b)}
 .ufscx-btn-soft{background:var(--ufsc-navy-100,#eef1ff);color:var(--ufsc-navy,#1b1f3b)}
 .ufscx-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin:10px 0}

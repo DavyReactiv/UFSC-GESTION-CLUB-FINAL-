@@ -377,7 +377,7 @@ function ufsc_license_list_shortcode($atts)
             
             if ($atts['show_actions'] === 'yes') {
                 $output .= '<div class="ufsc-license-actions">
-                    <button class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" onclick="ufscViewLicense(' . $license->id . ')">Voir</button>';
+                    <button class="ufsc-btn ufsc-btn-sm ufsc-btn-outline" onclick="ufscViewLicense(' . $license->id . ')" aria-label="Voir la licence de ' . esc_attr($license->prenom . ' ' . $license->nom) . '">Voir</button>';
                 
                 if ($license->statut === 'validated') {
                     $output .= '<a href="#" class="ufsc-btn ufsc-btn-sm ufsc-btn-primary" onclick="ufscDownloadAttestation(' . $license->id . ')">Attestation</a>';

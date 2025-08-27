@@ -56,28 +56,28 @@
     tbody.innerHTML = rows.map(r=>{
       const status = normalizeStatus(r.statut);
       const isFinal = ['validee','refusee','expiree'].includes(status);
-      const viewBtn = `<button class="ufscx-btn${isFinal?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}">Voir</button>`;
-      const quotaBtn = `<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`;
+      const viewBtn = `<button class="ufscx-btn${isFinal?'':' ufscx-btn-soft'}" data-a="view" data-id="${r.id}" aria-label="Voir la licence ${r.id}">Voir</button>`;
+      const quotaBtn = `<button class="ufscx-btn" data-a="toggleq" data-id="${r.id}" aria-label="${r.quota==='Oui'?'Retirer la licence du quota':'Inclure la licence au quota'}">${r.quota==='Oui'?'Retirer du quota':'Inclure au quota'}</button>`;
 
       const actionBtns = (()=> {
-        if(isFinal) {
-          return `<button class="ufscx-btn ufscx-btn-soft" disabled title="Licence finalisée - modification impossible">Modifier</button>`;
-        }
-        if(status==='brouillon'){
-          return `
-            <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>
-            <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}">Supprimer</button>
-            <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}">Envoyer au paiement</button>
-          `;
-        }
-        if(status==='in_cart'){
-          return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}">Voir panier</button>`;
-        }
-        if(status==='pending_payment'){
-          return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}">Voir commande</button>`;
-        }
-        // Default: allow edition for non-final statuses
-        return `<button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}">Modifier</button>`;
+          if(isFinal) {
+            return `<button class="ufscx-btn ufscx-btn-soft" disabled title="Licence finalisée - modification impossible" aria-label="Modifier (désactivé)">Modifier</button>`;
+          }
+          if(status==='brouillon'){
+            return `
+              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}" aria-label="Modifier la licence ${r.id}">Modifier</button>
+              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}" aria-label="Supprimer la licence ${r.id}">Supprimer</button>
+              <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}" aria-label="Envoyer la licence ${r.id} au paiement">Envoyer au paiement</button>
+            `;
+          }
+          if(status==='in_cart'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}" aria-label="Voir le panier de la licence ${r.id}">Voir panier</button>`;
+          }
+          if(status==='pending_payment'){
+            return `<button class="ufscx-btn ufscx-btn-soft" data-a="vieworder" data-id="${r.id}" aria-label="Voir la commande de la licence ${r.id}">Voir commande</button>`;
+          }
+          // Default: allow edition for non-final statuses
+          return `<button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}" aria-label="Modifier la licence ${r.id}">Modifier</button>`;
       })();
 
       return `
