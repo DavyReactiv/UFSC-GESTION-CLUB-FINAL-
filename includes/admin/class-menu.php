@@ -16,6 +16,11 @@ require_once plugin_dir_path(__FILE__) . 'class-dashboard.php';
 // Include UFSC CSV Export helper
 require_once plugin_dir_path(__FILE__) . '../helpers/class-ufsc-csv-export.php';
 
+// Capability used for managing UFSC licences
+if (!defined('UFSC_MANAGE_LICENSES_CAP')) {
+    define('UFSC_MANAGE_LICENSES_CAP', apply_filters('manage_ufsc_licenses', 'manage_options'));
+}
+
 /**
  * Menu Class
  */
@@ -37,10 +42,19 @@ class UFSC_Menu
     public function enqueue_admin_scripts($hook)
     {
         $licence_pages = [
-            'ufsc_page_ufsc-licences',
-            'ufsc_page_ufsc-edit-club',
-            'plugin-ufsc-gestion-club-13072025_page_ufsc-licences'
+            'toplevel_page_ufsc_licenses_admin',
+            'ufsc_licenses_admin_page_ufsc_licenses_admin',
         ];
+
+
+        if (in_array($hook, $licence_pages) || strpos($hook, 'ufsc_licenses_admin') !== false || strpos($hook, 'ufsc_license_add_admin') !== false) {
+            wp_enqueue_script(
+                'ufsc-licence-actions',
+                UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
+                ['jquery'],
+                UFSC_PLUGIN_VERSION,
+                true
+            );
 
         // Load assets only on licence management screens
         if (!in_array($hook, $licence_pages, true)) {
@@ -55,6 +69,7 @@ class UFSC_Menu
             UFSC_PLUGIN_VERSION,
             true
         );
+
 
 
             // Localize script with nonces and AJAX URL
@@ -129,65 +144,46 @@ class UFSC_Menu
      */
     public function register_menus()
     {
-        // 🏠 MENU PRINCIPAL
+        // Main menu linking to licences list
         add_menu_page(
-            'UFSC – Gestion des clubs et licences',
+            __('Licences UFSC', 'plugin-ufsc-gestion-club-13072025'),
             'UFSC',
-            'manage_ufsc',
-            'plugin-ufsc-gestion-club-13072025',
-            array($this, 'render_dashboard_page'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc_licenses_admin',
+            array($this, 'render_liste_licences_page'),
             'dashicons-groups',
             25
         );
 
-        // 🏢 CLUBS
+        // Submenu: all licences
         add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Ajouter un nouveau club affilié',
-            'Ajouter un club',
-            'manage_ufsc',
-            'ufsc-ajouter-club',
-            array($this, 'render_ajouter_club_page')
-        );
-
-        add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Liste des clubs affiliés enregistrés',
-            'Clubs affiliés',
-            'manage_ufsc',
-            'ufsc-liste-clubs',
-            array($this, 'render_liste_clubs_page')
-        );
-
-        // Add hidden submenu page for editing clubs
-        add_submenu_page(
-            null, // Parent slug (null makes it hidden from menu)
-            'Modifier un club',
-            'Modifier un club',
-            'manage_ufsc',
-            'ufsc_edit_club',
-            array($this, 'render_edit_club_page')
-        );
-
-        // Add hidden submenu page for viewing club details
-        add_submenu_page(
-            null,
-            'Détails du club',
-            'Détails du club',
-            'manage_ufsc',
-            'ufsc_view_club',
-            array($this, 'render_view_club_page')
-        );
-
-        // 🧾 LICENCES
-        add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Liste de toutes les licences enregistrées',
-            'Licences',
-            'manage_ufsc',
-            'ufsc-liste-licences',
+            'ufsc_licenses_admin',
+            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc_licenses_admin',
             array($this, 'render_liste_licences_page')
         );
+
+
+        // Submenu: add licence
+        add_submenu_page(
+            'ufsc_licenses_admin',
+            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc_license_add_admin',
+            array($this, 'render_ajouter_licence_page')
+        );
+
+        // Hidden submenu: edit licence
+        add_submenu_page(
+            null,
+            __('Modifier une licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('Modifier une licence', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc-modifier-licence',
+            array($this, 'render_modifier_licence_page')
 
         // Add / edit licence submenu
         add_submenu_page(
@@ -197,55 +193,27 @@ class UFSC_Menu
             'manage_ufsc_licenses',
             'ufsc_license_add_admin',
             array($this, 'render_licence_add_admin_page')
+
         );
 
-        // Add hidden submenu page for viewing license details
+        // Hidden submenu: view licence details
         add_submenu_page(
             null,
-            'Détails de la licence',
-            'Détails de la licence',
-            'manage_ufsc',
+            __('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
             'ufsc_view_licence',
             array($this, 'render_view_licence_page')
         );
 
-        // Add hidden submenu page for viewing club licences
+        // Hidden submenu: licences by club
         add_submenu_page(
             null,
-            'Licences du club',
-            'Licences du club',
-            'manage_ufsc',
+            __('Licences du club', 'plugin-ufsc-gestion-club-13072025'),
+            __('Licences du club', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
             'ufsc_voir_licences',
             array($this, 'render_voir_licences_page')
-        );
-
-        // 📤 EXPORTS
-        add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Exporter la liste des clubs (CSV)',
-            'Export clubs',
-            'manage_ufsc',
-            'ufsc-export-clubs',
-            array($this, 'render_export_clubs_page')
-        );
-
-        add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Exporter la liste des licences (CSV)',
-            'Export licences',
-            'manage_ufsc',
-            'ufsc-export-licences',
-            array($this, 'render_export_licences_page')
-        );
-
-        // ⚙️ PARAMÈTRES
-        add_submenu_page(
-            'plugin-ufsc-gestion-club-13072025',
-            'Configuration & options du plugin UFSC',
-            'Paramètres',
-            'manage_ufsc',
-            'ufsc-settings',
-            array($this, 'render_settings_page')
         );
     }
 
@@ -3474,7 +3442,7 @@ class UFSC_Menu
             return;
         }
 
-        if (!current_user_can('ufsc_manage_licences')) {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
             wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
         }
 
@@ -3513,7 +3481,7 @@ class UFSC_Menu
         // Check if user wants to delete the license
         if (isset($_POST['delete_licence']) && wp_verify_nonce(wp_unslash($_POST['delete_licence_nonce'] ?? ''), 'delete_licence_' . $licence_id)) {
             if ($licence_manager->delete_licence($licence_id)) {
-                $redirect_url = $club ? admin_url('admin.php?page=ufsc_voir_licences&club_id=' . $club->id . '&deleted=1') : admin_url('admin.php?page=ufsc-liste-licences&deleted=1');
+                $redirect_url = $club ? admin_url('admin.php?page=ufsc_voir_licences&club_id=' . $club->id . '&deleted=1') : admin_url('admin.php?page=ufsc_licenses_admin&deleted=1');
                 wp_redirect($redirect_url);
                 exit;
             } else {
@@ -3531,7 +3499,7 @@ class UFSC_Menu
                     ← Retour aux licences du club
                 </a>
                 <?php else: ?>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-liste-licences')); ?>" class="button">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_licenses_admin')); ?>" class="button">
                     ← Retour à la liste des licences
                 </a>
                 <?php endif; ?>
