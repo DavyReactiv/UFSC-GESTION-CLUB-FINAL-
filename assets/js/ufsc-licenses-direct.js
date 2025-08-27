@@ -144,8 +144,8 @@
       return;
     }
     if(act==='edit'){
-      // Use canonical query param for edition (replaces legacy ?edit_licence=)
-      window.location.href = '?licence_id='+id;
+      // Redirect to the edit page using the canonical licence_id parameter
+      window.location.href = '?licence_id=' + encodeURIComponent(id);
       return;
     }
 
@@ -196,13 +196,6 @@
       a.href = URL.createObjectURL(blob); a.download='licences.csv'; a.click();
     });
   }
-
-  tbody.addEventListener('click',e=>{
-    const btn = e.target.closest('button[data-a="view"]');
-    if(!btn) return;
-    const id = btn.getAttribute('data-id');
-    if(id) window.location.href = `?view_licence=${id}`;
-  });
 
   render();
 })();
