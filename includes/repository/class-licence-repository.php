@@ -19,8 +19,19 @@ class UFSC_Licence_Repository
 
     public function insert(array $data): int
     {
+        // ensure versioning fields exist
+        $data['version']    = $data['version'] ?? 1;
+        $data['updated_at'] = $data['updated_at'] ?? current_time('mysql');
+
         $this->wpdb->insert($this->table, $data);
-        return (int) $this->wpdb->insert_id;
+        $id = (int) $this->wpdb->insert_id;
+
+        // prime cache
+        if ($id > 0) {
+            wp_cache_set($id, (object) array_merge(['id' => $id], $data), 'ufsc_licences');
+        }
+
+        return $id;
     }
 
     public function get_status(int $id): ?string
@@ -40,8 +51,32 @@ class UFSC_Licence_Repository
             return false;
         }
 
-        $result = $this->wpdb->update($this->table, $data, ['id' => $id], null, ['%d']);
-        return $result !== false;
+        $current = $this->get_by_id($id);
+        if (!$current) {
+            return false;
+        }
+
+        $current_version   = (int) ($current->version ?? 0);
+        $data['version']    = $current_version + 1;
+        $data['updated_at'] = current_time('mysql');
+
+        $this->wpdb->query('START TRANSACTION');
+        $result = $this->wpdb->update(
+            $this->table,
+            $data,
+            ['id' => $id, 'version' => $current_version],
+            null,
+            ['%d', '%d']
+        );
+
+        if ($result === false || $result === 0) {
+            $this->wpdb->query('ROLLBACK');
+            return false;
+        }
+
+        $this->wpdb->query('COMMIT');
+        wp_cache_delete($id, 'ufsc_licences');
+        return true;
     }
 
     public function delete(int $id): bool
@@ -50,8 +85,16 @@ class UFSC_Licence_Repository
             return false;
         }
 
+        $this->wpdb->query('START TRANSACTION');
         $result = $this->wpdb->delete($this->table, ['id' => $id], ['%d']);
-        return $result !== false;
+        if ($result === false) {
+            $this->wpdb->query('ROLLBACK');
+            return false;
+        }
+
+        $this->wpdb->query('COMMIT');
+        wp_cache_delete($id, 'ufsc_licences');
+        return true;
     }
 
     public function get_by_id(int $id): ?object
@@ -59,10 +102,71 @@ class UFSC_Licence_Repository
         if ($id <= 0) {
             return null;
         }
+        $cached = wp_cache_get($id, 'ufsc_licences');
+        if (false !== $cached) {
+            return $cached;
+        }
 
-        return $this->wpdb->get_row(
+        $licence = $this->wpdb->get_row(
             $this->wpdb->prepare("SELECT * FROM {$this->table} WHERE id = %d", $id)
         );
+        if ($licence) {
+            wp_cache_set($id, $licence, 'ufsc_licences');
+        }
+        return $licence;
+    }
+
+    /**
+     * Update the status of a licence with optimistic locking and logging.
+     *
+     * @return object|null Refreshed licence entity or null on failure
+     */
+    public function update_status(int $id, string $status, string $reason = '', string $changed_by = ''): ?object
+    {
+        if ($id <= 0) {
+            return null;
+        }
+
+        $current = $this->get_by_id($id);
+        if (!$current) {
+            return null;
+        }
+
+        $current_version = (int) ($current->version ?? 0);
+        $data = [
+            'statut'     => $status,
+            'version'    => $current_version + 1,
+            'updated_at' => current_time('mysql'),
+        ];
+
+        $this->wpdb->query('START TRANSACTION');
+        $result = $this->wpdb->update(
+            $this->table,
+            $data,
+            ['id' => $id, 'version' => $current_version],
+            ['%s', '%d', '%s'],
+            ['%d', '%d']
+        );
+
+        if ($result === false || $result === 0) {
+            $this->wpdb->query('ROLLBACK');
+            return null;
+        }
+
+        // Log the status change
+        $log_data = [
+            'licence_id' => $id,
+            'new_status' => $status,
+            'reason'     => $reason,
+            'changed_by' => $changed_by,
+            'timestamp'  => current_time('mysql'),
+        ];
+        update_option('ufsc_licence_status_log_' . $id . '_' . time(), $log_data);
+
+        $this->wpdb->query('COMMIT');
+        wp_cache_delete($id, 'ufsc_licences');
+
+        return $this->get_by_id($id);
     }
 
     public function find_duplicate(array $data): int|false

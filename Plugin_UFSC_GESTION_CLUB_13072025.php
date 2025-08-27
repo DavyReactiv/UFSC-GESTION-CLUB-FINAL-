@@ -422,35 +422,21 @@ function ufsc_handle_change_licence_status() {
         wp_send_json_error(__('Invalid status.', 'plugin-ufsc-gestion-club-13072025'));
     }
 
-    global $wpdb;
-    $licences_table = $wpdb->prefix . 'ufsc_licences';
+    if (!class_exists('UFSC_Licence_Repository')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/repository/class-licence-repository.php';
+    }
 
-    // Update license status
-    $result = $wpdb->update(
-        $licences_table,
-        ['statut' => $new_status],
-        ['id' => $licence_id],
-        ['%s'],
-        ['%d']
-    );
+    $user = wp_get_current_user();
+    $repo = new UFSC_Licence_Repository();
+    $updated = $repo->update_status($licence_id, $new_status, $reason, $user->display_name);
 
-    if ($result !== false) {
-        // Log the status change for audit purposes
-        $user = wp_get_current_user();
-        $log_data = [
-            'licence_id' => $licence_id,
-            'new_status' => $new_status,
-            'reason' => $reason,
-            'changed_by' => $user->display_name,
-            'timestamp' => current_time('mysql')
-        ];
-
-        // Store audit log
-        update_option('ufsc_licence_status_log_' . $licence_id . '_' . time(), $log_data);
-
-        wp_send_json_success('Statut mis à jour avec succès.');
+    if ($updated) {
+        wp_send_json_success([
+            'message' => __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+            'licence' => $updated,
+        ]);
     } else {
-        wp_send_json_error('Échec de la mise à jour du statut.');
+        wp_send_json_error(__('Échec de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'));
     }
 }
 
