@@ -49,30 +49,10 @@ jQuery(document).ready(function($) {
                 console.log('Table club détectée:', headerColCount, 'colonnes');
                 
                 // Configuration spécifique pour la vue club (13 colonnes avec checkbox)
-                const exportColumns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // Exclut checkbox (0) et Actions (12)
+                const exportColumns = [1,2,3,4,5,6,7,8,9,10,11]; // Exclut checkbox (0) et actions (12)
                 const columnDefs = [
-                    // Colonne de sélection (checkbox)
-                    { targets: 0, orderable: false, searchable: false },
-                    // ID
-                    { targets: 1 },
-                    // Nom et prénom
-                    { targets: [2, 3] },
-                    // Sexe
-                    { targets: 4 },
-                    // Date de naissance
-                    { targets: 5 },
-                    // Email
-                    { targets: 6 },
-                    // Ville et région
-                    { targets: [7, 8] },
-                    // Club
-                    { targets: 9 },
-                    // Statut (nouvelle colonne)
-                    { targets: 10 },
-                    // Compétition
-                    { targets: 11 },
-                    // Actions
-                    { targets: 12, orderable: false, searchable: false }
+                    { targets: 0, orderable: false, searchable: false }, // checkbox
+                    { targets: 12, orderable: false, searchable: false } // actions
                 ];
                 
                 initializeDataTable(tableId, exportColumns, columnDefs, true, 'Club');
@@ -104,28 +84,9 @@ jQuery(document).ready(function($) {
                 console.log('Table globale détectée:', headerColCount, 'colonnes');
                 
                 // Configuration spécifique pour la vue globale (13 colonnes sans checkbox)
-                const exportColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // Exclut seulement Actions (12)
+                const exportColumns = [0,1,2,3,4,5,6,7,8,9,10,11]; // Exclut seulement actions (12)
                 const columnDefs = [
-                    // ID
-                    { targets: 0 },
-                    // Nom et prénom
-                    { targets: [1, 2] },
-                    // Sexe
-                    { targets: 3 },
-                    // Date de naissance
-                    { targets: 4 },
-                    // Email
-                    { targets: 5 },
-                    // Ville et région
-                    { targets: [6, 7] },
-                    // Club
-                    { targets: 8 },
-                    // Compétition et Inclus
-                    { targets: [9, 10] },
-                    // Date d'inscription
-                    { targets: 11 },
-                    // Actions
-                    { targets: 12, orderable: false, searchable: false }
+                    { targets: 12, orderable: false, searchable: false } // actions
                 ];
                 
                 initializeDataTable(tableId, exportColumns, columnDefs, false, 'Global');
