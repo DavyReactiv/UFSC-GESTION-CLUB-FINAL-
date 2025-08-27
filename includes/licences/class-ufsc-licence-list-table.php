@@ -159,7 +159,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
             case 'categorie':
                 return esc_html( $item['categorie'] );
             case 'quota':
-                return $item['quota'] ? __( 'Oui', 'plugin-ufsc-gestion-club-13072025' ) : __( 'Non', 'plugin-ufsc-gestion-club-13072025' );
+                return !empty( $item['quota'] ) ? __( 'Oui', 'plugin-ufsc-gestion-club-13072025' ) : __( 'Non', 'plugin-ufsc-gestion-club-13072025' );
             case 'statut':
                 return $this->render_status_badge( $item['statut'], $item['payment_status'] ?? '' );
             case 'date_licence':
@@ -229,7 +229,11 @@ class UFSC_Licence_List_Table extends WP_List_Table {
     public function set_external_data($data, $total_items, $per_page) {
         $items = array_map(
             static function ($item) {
-                return is_object($item) ? get_object_vars($item) : $item;
+                $item = is_object($item) ? get_object_vars($item) : $item;
+                if (isset($item['is_included']) && !isset($item['quota'])) {
+                    $item['quota'] = $item['is_included'];
+                }
+                return $item;
             },
             $data
         );
