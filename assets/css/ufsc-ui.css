@@ -1,0 +1,98 @@
+/* UFSC UI Components */
+:root {
+  --ufsc-ink:#1a1a1a; --ufsc-muted:#5a5f73; --ufsc-bg:#f6f8fb;
+  --ufsc-card:#fff; --ufsc-brand:#1f2251; --ufsc-accent:#cc0000;
+  --ufsc-radius:14px; --ufsc-gap:16px; --ufsc-line:#e9edf5;
+}
+
+.ufsc-ui {
+  color: var(--ufsc-ink);
+  background: var(--ufsc-bg);
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.ufsc-ui .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.ufsc-ui .btn-sm {
+  height: 34px;
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+}
+
+.ufsc-ui .btn-primary { background: var(--ufsc-brand); color: #fff; }
+.ufsc-ui .btn-secondary { background: var(--ufsc-card); color: var(--ufsc-brand); border-color: var(--ufsc-brand); }
+.ufsc-ui .btn-ghost { background: transparent; color: var(--ufsc-brand); }
+.ufsc-ui .btn-danger { background: var(--ufsc-accent); color: #fff; }
+
+.ufsc-ui .btn:focus-visible {
+  outline: 2px solid var(--ufsc-brand);
+  outline-offset: 2px;
+}
+
+.ufsc-ui .badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--ufsc-line);
+  color: var(--ufsc-ink);
+}
+.ufsc-ui .badge-success { background: #198754; color: #fff; }
+.ufsc-ui .badge-warning { background: #ffc107; color: var(--ufsc-ink); }
+.ufsc-ui .badge-danger { background: var(--ufsc-accent); color: #fff; }
+
+.ufsc-ui table { width: 100%; border-collapse: collapse; }
+.ufsc-ui thead { position: sticky; top: 0; background: var(--ufsc-card); z-index: 1; }
+.ufsc-ui tbody tr:nth-child(even) { background: var(--ufsc-bg); }
+.ufsc-ui th, .ufsc-ui td { padding: 8px; border-bottom: 1px solid var(--ufsc-line); text-align: left; }
+
+.ufsc-ui input,
+.ufsc-ui select,
+.ufsc-ui textarea {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--ufsc-line);
+  border-radius: 10px;
+  background: var(--ufsc-card);
+  color: var(--ufsc-ink);
+}
+.ufsc-ui textarea {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  height: auto;
+  min-height: 44px;
+}
+.ufsc-ui input:focus,
+.ufsc-ui select:focus,
+.ufsc-ui textarea:focus {
+  outline: 2px solid var(--ufsc-brand);
+  outline-offset: 2px;
+}
+
+.ufsc-auto-2cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ufsc-gap);
+}
+@media (min-width: 992px) {
+  .ufsc-auto-2cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ufsc-full { width: 100%; }
+.ufsc-hide-empty:empty { display: none; }
+.ufsc-hidden { display: none !important; }
