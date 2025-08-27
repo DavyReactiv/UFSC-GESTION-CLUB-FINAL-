@@ -130,7 +130,7 @@ if (empty($license_data['data'])) {
         '</p></div>';
 }
 
-$list_table = new UFSC_Licenses_List_Table($club_id);
+$list_table = new UFSC_Licence_List_Table($club_id);
 $list_table->set_external_data($license_data['data'], $license_data['total'], $license_data['per_page']);
 $list_table->prepare_items();
 
