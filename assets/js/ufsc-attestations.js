@@ -227,7 +227,9 @@
         // Prepare form data
         const formData = new FormData();
         formData.append('action', 'ufsc_attach_existing_club_attestation');
-        formData.append('club_id', clubId);
+        if (ufscAttestations.can_manage && clubId) {
+            formData.append('club_id', clubId);
+        }
         formData.append('type', type);
         formData.append('attachment_id', attachmentId);
         formData.append('nonce', ufscAttestations.uploadClubNonce);
@@ -268,7 +270,9 @@
         // Prepare form data
         const formData = new FormData();
         formData.append('action', 'ufsc_upload_club_attestation');
-        formData.append('club_id', clubId);
+        if (ufscAttestations.can_manage && clubId) {
+            formData.append('club_id', clubId);
+        }
         formData.append('type', type);
         formData.append('file', file);
         formData.append('nonce', ufscAttestations.uploadClubNonce);
@@ -308,7 +312,9 @@
         // Prepare form data
         const formData = new FormData();
         formData.append('action', 'ufsc_delete_club_attestation');
-        formData.append('club_id', clubId);
+        if (ufscAttestations.can_manage && clubId) {
+            formData.append('club_id', clubId);
+        }
         formData.append('type', type);
         formData.append('nonce', ufscAttestations.deleteClubNonce);
         

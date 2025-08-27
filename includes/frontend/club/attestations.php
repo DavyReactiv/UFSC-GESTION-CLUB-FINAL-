@@ -269,7 +269,9 @@ function ufsc_render_custom_attestation_requests($club)
 
     $output .= '<form method="post" class="ufsc-custom-attestation-form">';
     $output .= wp_nonce_field('ufsc_request_custom_attestation', 'ufsc_custom_attestation_nonce', true, false);
-    $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    if (current_user_can('ufsc_manage')) {
+        $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    }
 
     $output .= '<div class="ufsc-form-row">';
     $output .= '<label for="attestation_type">Type d\'attestation demandée :</label>';
@@ -333,12 +335,15 @@ function ufsc_render_custom_attestation_requests($club)
  */
 function ufsc_get_attestation_download_url($attestation_type, $club_id)
 {
-    return add_query_arg([
+    $args = [
         'action' => 'ufsc_download_attestation',
         'type' => $attestation_type,
-        'club_id' => $club_id,
         'nonce' => wp_create_nonce('ufsc_attestation_' . $attestation_type . '_' . $club_id)
-    ], admin_url('admin-ajax.php'));
+    ];
+    if (current_user_can('ufsc_manage')) {
+        $args['club_id'] = $club_id;
+    }
+    return add_query_arg($args, admin_url('admin-ajax.php'));
 }
 
 /**
@@ -367,11 +372,14 @@ function ufsc_get_attestation_email_url($attestation_type, $club)
  */
 function ufsc_get_bulk_attestation_url($club_id)
 {
-    return add_query_arg([
+    $args = [
         'action' => 'ufsc_download_bulk_attestations',
-        'club_id' => $club_id,
         'nonce' => wp_create_nonce('ufsc_bulk_attestations_' . $club_id)
-    ], admin_url('admin-ajax.php'));
+    ];
+    if (current_user_can('ufsc_manage')) {
+        $args['club_id'] = $club_id;
+    }
+    return add_query_arg($args, admin_url('admin-ajax.php'));
 }
 
 /**
@@ -383,12 +391,15 @@ function ufsc_get_bulk_attestation_url($club_id)
  */
 function ufsc_get_licence_attestation_url($licence_id, $club_id)
 {
-    return add_query_arg([
+    $args = [
         'action' => 'ufsc_download_licence_attestation',
         'licence_id' => $licence_id,
-        'club_id' => $club_id,
         'nonce' => wp_create_nonce('ufsc_licence_attestation_' . $licence_id . '_' . $club_id)
-    ], admin_url('admin-ajax.php'));
+    ];
+    if (current_user_can('ufsc_manage')) {
+        $args['club_id'] = $club_id;
+    }
+    return add_query_arg($args, admin_url('admin-ajax.php'));
 }
 
 /**
