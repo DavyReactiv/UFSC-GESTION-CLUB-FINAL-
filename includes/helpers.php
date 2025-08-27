@@ -97,10 +97,36 @@ function ufsc_get_user_club($user_id = null)
     if (!$user_id) {
         return null;
     }
-    
+
     global $wpdb;
     $table_name = $wpdb->prefix . 'ufsc_clubs';
-    
+    // Try to get club ID from user meta first
+    $club_id = (int) get_user_meta($user_id, 'ufsc_club_id', true);
+
+    if ($club_id) {
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$table_name} WHERE id = %d",
+                $club_id
+            )
+        );
+    }
+
+    // Fallback to legacy meta key
+    $legacy_club_id = (int) get_user_meta($user_id, 'club_id', true);
+    if ($legacy_club_id) {
+        // Soft migration to new meta key
+        update_user_meta($user_id, 'ufsc_club_id', $legacy_club_id);
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$table_name} WHERE id = %d",
+                $legacy_club_id
+            )
+        );
+    }
+
+    // Final fallback: search by responsable_id
     return $wpdb->get_row(
         $wpdb->prepare(
             "SELECT * FROM {$table_name} WHERE responsable_id = %d",
@@ -606,6 +632,15 @@ function ufsc_check_frontend_access($context = 'general')
     $club = ufsc_get_user_club($user_id);
     
     if (!$club) {
+        // Allow managers to bypass club check
+        if (function_exists('ufsc_safe_current_user_can') && ufsc_safe_current_user_can('ufsc_manage', $user_id)) {
+            return [
+                'allowed' => true,
+                'error_message' => '',
+                'club' => null
+            ];
+        }
+
         // Use the shared function to prevent duplicate messages, but with safe fallback
         $shortcodes_file = plugin_dir_path(__FILE__) . 'shortcodes.php';
         if (file_exists($shortcodes_file)) {
