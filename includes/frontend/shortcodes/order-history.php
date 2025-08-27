@@ -46,6 +46,7 @@ function ufsc_order_history_shortcode($atts = array()) {
         $output .= '<th>' . esc_html__("Commande", 'plugin-ufsc-gestion-club-13072025') . '</th>';
         $output .= '<th>' . esc_html__("Date", 'plugin-ufsc-gestion-club-13072025') . '</th>';
         $output .= '<th>' . esc_html__("Statut", 'plugin-ufsc-gestion-club-13072025') . '</th>';
+        $output .= '<th>' . esc_html__("Produit / Type / Licencié", 'plugin-ufsc-gestion-club-13072025') . '</th>';
         $output .= '<th>' . esc_html__("Total", 'plugin-ufsc-gestion-club-13072025') . '</th>';
         $output .= '</tr></thead><tbody>';
 
@@ -58,10 +59,35 @@ function ufsc_order_history_shortcode($atts = array()) {
             $status      = wc_get_order_status_name($order->get_status());
             $total       = $order->get_formatted_order_total();
 
+            $produits  = array();
+            $types     = array();
+            $licencies = array();
+
+            foreach ($order->get_items() as $item) {
+                $product = $item->get_product();
+                if ($product) {
+                    $produits[] = $product->get_name();
+                    $types[]    = implode(', ', wp_get_post_terms($product->get_id(), 'product_cat', array('fields' => 'names')));
+                }
+
+                $licencie = trim($item->get_meta('ufsc_licencie_prenom') . ' ' . $item->get_meta('ufsc_licencie_nom'));
+                if ($licencie) {
+                    $licencies[] = $licencie;
+                }
+            }
+
             $output .= '<tr>';
             $output .= '<td><a href="' . esc_url($order_url) . '">#' . esc_html($order_id) . '</a></td>';
             $output .= '<td>' . esc_html($date_display) . '</td>';
             $output .= '<td>' . esc_html($status) . '</td>';
+            $output .= '<td>' . esc_html(implode(', ', $produits));
+            if (!empty($types)) {
+                $output .= '<br><small>' . esc_html(implode(', ', $types)) . '</small>';
+            }
+            if (!empty($licencies)) {
+                $output .= '<br><small>' . esc_html(implode(', ', $licencies)) . '</small>';
+            }
+            $output .= '</td>';
             $output .= '<td>' . wp_kses_post($total) . '</td>';
             $output .= '</tr>';
         }
