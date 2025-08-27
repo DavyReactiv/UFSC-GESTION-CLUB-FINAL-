@@ -3,7 +3,7 @@
  * 
  * Ce fichier configure les tableaux DataTables utilisés dans le plugin,
  * avec deux contextes distincts pour la table des licences:
- * - licenses-table-club: Vue par club avec checkbox de sélection (15 colonnes)
+ * - licenses-table-club: Vue par club avec checkbox de sélection (13 colonnes)
  * - licenses-table-global: Vue globale sans checkbox (13 colonnes)
  * 
  * @version 1.4.0
@@ -26,14 +26,14 @@ jQuery(document).ready(function($) {
     initializeGlobalLicensesTable();
     
     /**
-     * Configuration pour la table des licences du club (15 colonnes avec checkbox)
+     * Configuration pour la table des licences du club (13 colonnes avec checkbox)
      * Utilisée dans includes/licences/admin-licence-list.php
      */
     function initializeClubLicensesTable() {
         const tableId = '#licenses-table-club';
         
         if ($(tableId).length > 0) {
-            console.log('🏠 Initialisation table club (15 colonnes avec checkbox)');
+            console.log('🏠 Initialisation table club (13 colonnes avec checkbox)');
             
             // Vérifier si DataTables est déjà initialisé
             if ($.fn.DataTable.isDataTable(tableId)) {
@@ -48,8 +48,8 @@ jQuery(document).ready(function($) {
                 
                 console.log('Table club détectée:', headerColCount, 'colonnes');
                 
-                // Configuration spécifique pour la vue club (15 colonnes avec checkbox)
-                const exportColumns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; // Exclut checkbox (0) et Actions (14)
+                // Configuration spécifique pour la vue club (13 colonnes avec checkbox)
+                const exportColumns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // Exclut checkbox (0) et Actions (12)
                 const columnDefs = [
                     // Colonne de sélection (checkbox)
                     { targets: 0, orderable: false, searchable: false },
@@ -69,12 +69,10 @@ jQuery(document).ready(function($) {
                     { targets: 9 },
                     // Statut (nouvelle colonne)
                     { targets: 10 },
-                    // Compétition et Inclus
-                    { targets: [11, 12] },
-                    // Date d'inscription
-                    { targets: 13 },
+                    // Compétition
+                    { targets: 11 },
                     // Actions
-                    { targets: 14, orderable: false, searchable: false }
+                    { targets: 12, orderable: false, searchable: false }
                 ];
                 
                 initializeDataTable(tableId, exportColumns, columnDefs, true, 'Club');
@@ -265,7 +263,7 @@ jQuery(document).ready(function($) {
             
             // Messages d'aide selon le contexte
             if (tableId === 'licenses-table-club') {
-                console.log('Configuration attendue: 15 colonnes avec checkbox (vue club)');
+                console.log('Configuration attendue: 13 colonnes avec checkbox (vue club)');
             } else if (tableId === 'licenses-table-global') {
                 console.log('Configuration attendue: 13 colonnes sans checkbox (vue globale)');
             } else {
