@@ -8,6 +8,7 @@ if (!current_user_can('ufsc_manage_own')) {
 }
 
 require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-repository.php';
+require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 $repo       = new UFSC_Licence_Repository();
 $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
@@ -22,6 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_a
         'date_naissance'             => sanitize_text_field($_POST['date_naissance'] ?? ''),
         'categorie'                  => sanitize_text_field($_POST['categorie'] ?? ''),
         'club_id'                    => intval($_POST['club_id'] ?? 0),
+
+        'adresse'                    => sanitize_text_field($_POST['adresse'] ?? ''),
+        'code_postal'                => sanitize_text_field($_POST['code_postal'] ?? ''),
+        'ville'                      => sanitize_text_field($_POST['ville'] ?? ''),
+        'region'                     => sanitize_text_field($_POST['region'] ?? ''),
+        'tel_mobile'                 => sanitize_text_field($_POST['tel_mobile'] ?? ''),
+        'tel_fixe'                   => sanitize_text_field($_POST['tel_fixe'] ?? ''),
+        'honorabilite'               => !empty($_POST['honorabilite']) ? 1 : 0,
+        'assurance_dommage_corporel' => !empty($_POST['assurance_dommage_corporel']) ? 1 : 0,
+        'assurance_assistance'       => !empty($_POST['assurance_assistance']) ? 1 : 0,
+    ];
+
+    $errors = ufsc_validate_licence_data($data);
+
         'sexe'                       => sanitize_text_field($_POST['sexe'] ?? ''),
         'adresse'                    => sanitize_text_field($_POST['adresse'] ?? ''),
         'suite_adresse'              => sanitize_text_field($_POST['suite_adresse'] ?? ''),

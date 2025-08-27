@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 
 // ✅ Chargement du dépôt de licences
 require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
+require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 global $wpdb;
 $licence_id = isset($_GET['licence_id']) ? intval(wp_unslash($_GET['licence_id'])) : 0;
@@ -92,19 +93,24 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
             $data[$field] = $current_licence->$field;
         }
     }
+    $errors = ufsc_validate_licence_data($data, $is_validated);
 
-    $success = $repo->update($licence_id, $data);
+    if (empty($errors)) {
+        $success = $repo->update($licence_id, $data);
 
-    if ($success) {
-        echo '<div class="notice notice-success"><p>✅ Licence modifiée avec succès.</p></div>';
-        // Reload the licence data to show updated values
-        $current_licence = $repo->get($licence_id);
-        $club = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
-            $current_licence->club_id
-        ));
+        if ($success) {
+            echo '<div class="notice notice-success"><p>✅ Licence modifiée avec succès.</p></div>';
+            // Reload the licence data to show updated values
+            $current_licence = $repo->get($licence_id);
+            $club = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
+                $current_licence->club_id
+            ));
+        } else {
+            echo '<div class="notice notice-error"><p>❌ Erreur lors de la modification de la licence.</p></div>';
+        }
     } else {
-        echo '<div class="notice notice-error"><p>❌ Erreur lors de la modification de la licence.</p></div>';
+        echo '<div class="notice notice-error"><p>' . implode('<br>', array_map('esc_html', $errors)) . '</p></div>';
     }
 }
 
