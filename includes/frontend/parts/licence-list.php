@@ -51,7 +51,7 @@ $search = $filters['search_global'];
                     <td><?php echo esc_html($l->date_naissance); ?></td>
                     <td><?php echo esc_html($l->email); ?></td>
                     <td><?php echo $l->is_included ? '✅' : '💰'; ?></td>
-                    <td><?php echo esc_html($l->statut ?? 'N/A'); ?></td>
+                    <td><?php echo ufsc_get_license_status_badge($l->statut, $l->payment_status ?? ''); ?></td>
                     <td>
                         <?php 
                         $attestation_url = $l->attestation_url ?? null;

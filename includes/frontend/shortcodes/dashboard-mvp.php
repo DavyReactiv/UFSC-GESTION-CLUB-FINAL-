@@ -385,7 +385,7 @@ function ufsc_render_recent_licenses_section($club) {
             $output .= '<td>' . esc_html($license->nom) . '</td>';
             $output .= '<td>' . esc_html($license->prenom) . '</td>';
             $output .= '<td>' . esc_html($license->fonction ?? 'Non renseigné') . '</td>';
-            $output .= '<td>' . ufsc_render_license_status_badge($license->statut) . '</td>';
+            $output .= '<td>' . ufsc_get_license_status_badge($license->statut, $license->payment_status ?? '') . '</td>';
             $output .= '</tr>';
         }
         

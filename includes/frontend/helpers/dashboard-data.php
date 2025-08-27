@@ -273,23 +273,8 @@ function ufsc_render_club_status_badge($status) {
 /**
  * Render license status badge
  */
-function ufsc_render_license_status_badge($status) {
-    switch (strtolower($status)) {
-        case 'validee':
-        case 'active':
-            return '<span class="ufsc-badge ufsc-badge-success">Validée</span>';
-        case 'en attente':
-        case 'pending':
-            return '<span class="ufsc-badge ufsc-badge-pending">En attente</span>';
-        case 'expiree':
-        case 'expired':
-            return '<span class="ufsc-badge ufsc-badge-warning">Expirée</span>';
-        case 'refusee':
-        case 'refused':
-            return '<span class="ufsc-badge ufsc-badge-error">Refusée</span>';
-        default:
-            return '<span class="ufsc-badge ufsc-badge-inactive">' . ucfirst($status) . '</span>';
-    }
+function ufsc_render_license_status_badge($status, $payment_status = '') {
+    return ufsc_get_license_status_badge($status, $payment_status);
 }
 
 /**

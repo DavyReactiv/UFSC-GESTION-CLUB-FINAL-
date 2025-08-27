@@ -144,12 +144,7 @@ function ufsc_render_club_licences_list($club){
                 <span class="ufsc-badge ufsc-badge-role ufsc-role-<?php echo esc_attr($role); ?>"><?php echo esc_html($roles_allowed[$role] ?? $role); ?></span>
               </td>
               <td class="ufsc-col--status" data-label="<?php esc_attr_e('Statut','plugin-ufsc-gestion-club-13072025'); ?>">
-                <?php 
-                  $cls = 'ufsc-badge--warn';
-                  if ($stat==='validee') $cls='ufsc-badge--ok';
-                  if ($stat==='refusee') $cls='ufsc-badge--err';
-                ?>
-                <span class="ufsc-badge <?php echo esc_attr($cls); ?>"><?php echo esc_html(ucfirst($stat)); ?></span>
+                <?php echo ufsc_get_license_status_badge($stat, $r->payment_status ?? ''); ?>
               </td>
               <td class="ufsc-col--email" data-label="<?php esc_attr_e('Email','plugin-ufsc-gestion-club-13072025'); ?>">
                 <?php if(!empty($r->email)): ?><a href="mailto:<?php echo esc_attr($r->email); ?>"><?php echo esc_html($r->email); ?></a><?php endif; ?>
