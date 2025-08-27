@@ -27,6 +27,8 @@ class UFSC_Licence_Filters
             'search_email' => '',
             'search_ville' => '',
             'search_telephone' => '',
+            'search_global' => '',
+            'statuses' => [],
             'date_naissance_from' => '',
             'date_naissance_to' => '',
             'date_inscription_from' => '',
@@ -46,6 +48,13 @@ class UFSC_Licence_Filters
         $params['search_email'] = isset($_GET['search_email']) ? sanitize_email(wp_unslash($_GET['search_email'])) : '';
         $params['search_ville'] = isset($_GET['search_ville']) ? sanitize_text_field(wp_unslash($_GET['search_ville'])) : '';
         $params['search_telephone'] = isset($_GET['search_telephone']) ? sanitize_text_field(wp_unslash($_GET['search_telephone'])) : '';
+        $params['search_global'] = isset($_GET['search_licence']) ? sanitize_text_field(wp_unslash($_GET['search_licence'])) : '';
+
+        $status_param = isset($_GET['statut']) ? wp_unslash($_GET['statut']) : [];
+        if (!is_array($status_param)) {
+            $status_param = array_filter(array_map('trim', explode(',', $status_param)));
+        }
+        $params['statuses'] = array_map('sanitize_text_field', $status_param);
         $params['date_naissance_from'] = isset($_GET['date_naissance_from']) ? sanitize_text_field(wp_unslash($_GET['date_naissance_from'])) : '';
         $params['date_naissance_to'] = isset($_GET['date_naissance_to']) ? sanitize_text_field(wp_unslash($_GET['date_naissance_to'])) : '';
         $params['date_inscription_from'] = isset($_GET['date_inscription_from']) ? sanitize_text_field(wp_unslash($_GET['date_inscription_from'])) : '';
@@ -88,7 +97,14 @@ class UFSC_Licence_Filters
             $where[] = 'l.region = %s';
             $params[] = $filters['region'];
         }
-        
+
+        if ($filters['search_global'] !== '') {
+            $where[] = '(l.nom LIKE %s OR l.prenom LIKE %s)';
+            $like = '%' . $filters['search_global'] . '%';
+            $params[] = $like;
+            $params[] = $like;
+        }
+
         if ($filters['search'] !== '') {
             $where[] = 'l.nom LIKE %s';
             $params[] = '%' . $filters['search'] . '%';
@@ -113,6 +129,24 @@ class UFSC_Licence_Filters
             $where[] = '(l.tel_fixe LIKE %s OR l.tel_mobile LIKE %s)';
             $params[] = '%' . $filters['search_telephone'] . '%';
             $params[] = '%' . $filters['search_telephone'] . '%';
+        }
+
+        if (!empty($filters['statuses'])) {
+            $statuses = $filters['statuses'];
+            $clauses = [];
+            $null_index = array_search('', $statuses, true);
+            if ($null_index !== false) {
+                unset($statuses[$null_index]);
+                $clauses[] = 'l.statut IS NULL';
+            }
+            if (!empty($statuses)) {
+                $placeholders = implode(', ', array_fill(0, count($statuses), '%s'));
+                $clauses[] = "l.statut IN ($placeholders)";
+                $params = array_merge($params, $statuses);
+            }
+            if (!empty($clauses)) {
+                $where[] = '(' . implode(' OR ', $clauses) . ')';
+            }
         }
         
         if ($filters['date_naissance_from'] !== '') {
