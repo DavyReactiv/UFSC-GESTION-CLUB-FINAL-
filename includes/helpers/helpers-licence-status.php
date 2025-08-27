@@ -252,8 +252,25 @@ function ufsc_register_license_status_hooks()
 ufsc_register_license_status_hooks();
 
 /**
+ * Get payment status badge HTML
+ *
+ * @param string $payment_status Payment status
+ * @return string HTML badge
+ */
+function ufsc_get_payment_badge($payment_status)
+{
+    $is_paid = in_array($payment_status, ['paid', 'completed'], true);
+    $class   = $is_paid ? 'ufsc-badge-paid' : 'ufsc-badge-unpaid';
+    $label   = $is_paid
+        ? __('Payée', 'plugin-ufsc-gestion-club-13072025')
+        : __('Non payée', 'plugin-ufsc-gestion-club-13072025');
+
+    return '<span class="ufsc-badge ' . esc_attr($class) . '">' . esc_html($label) . '</span>';
+}
+
+/**
  * Get license status badge HTML
- * 
+ *
  * @param string $status License status
  * @param string $payment_status Payment status (optional)
  * @return string HTML badge

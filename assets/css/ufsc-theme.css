@@ -219,6 +219,14 @@ html {
   background-color: var(--ufsc-warning);
 }
 
+.ufsc-badge-paid {
+  background-color: var(--ufsc-success);
+}
+
+.ufsc-badge-unpaid {
+  background-color: var(--ufsc-warning);
+}
+
 .ufsc-badge-featured {
   background-color: var(--ufsc-red);
 }
