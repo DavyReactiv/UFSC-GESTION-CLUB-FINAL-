@@ -5,7 +5,10 @@ if (!defined('ABSPATH')) {
 
 global $wpdb;
 
-$club_id = get_user_meta(get_current_user_id(), 'ufsc_club_id', true);
+if (!function_exists('ufscx_resolve_club_id')) {
+    require_once dirname(__DIR__) . '/shortcodes/licenses-direct.php';
+}
+$club_id = ufscx_resolve_club_id();
 if (!$club_id) {
     echo '<p>🔒 Accès refusé. Club introuvable.</p>';
     return;
