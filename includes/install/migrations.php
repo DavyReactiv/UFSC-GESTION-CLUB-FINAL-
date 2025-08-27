@@ -27,7 +27,11 @@ function ufsc_run_migrations() {
     // Add payment_status column if missing
     $col_pay = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$licences_table} LIKE %s", 'payment_status'));
     if (!$col_pay) {
+
+        $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending' AFTER order_id");
+
         $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+
     }
 
     // Add helpful indexes
