@@ -341,10 +341,8 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
             </div>
             
             <!-- Informations générales -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
-                    <i class="dashicons dashicons-groups"></i> Informations générales
-                </div>
+            <fieldset class="ufsc-form-section">
+                <legend><i class="dashicons dashicons-groups"></i> Informations générales</legend>
                 <div class="ufsc-form-section-description">
                     <p>Renseignez les informations de base de votre club ou association, incluant l'adresse de correspondance officielle.</p>
                 </div>
@@ -425,13 +423,11 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
 
             <!-- Section Photo/Logo et informations complémentaires -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
-                    <i class="dashicons dashicons-format-image"></i> Logo et Présence Web
-                </div>
+            <fieldset class="ufsc-form-section">
+                <legend><i class="dashicons dashicons-format-image"></i> Logo et Présence Web</legend>
                 <div class="ufsc-form-section-description">
                     <p>Personnalisez l'identité visuelle de votre club et renseignez vos canaux de communication.</p>
                 </div>
@@ -474,13 +470,11 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
 
             <!-- Section Informations légales et financières -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
-                    <i class="dashicons dashicons-admin-page"></i> Informations Légales et Financières
-                </div>
+            <fieldset class="ufsc-form-section">
+                <legend><i class="dashicons dashicons-admin-page"></i> Informations Légales et Financières</legend>
                 <div class="ufsc-form-section-description">
                     <p>Informations juridiques et bancaires nécessaires pour les clubs et associations.</p>
                 </div>
@@ -509,14 +503,12 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
 
             <!-- Section Administration (seulement en backend) -->
             <?php if (!$is_frontend): ?>
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
-                    <i class="dashicons dashicons-admin-tools"></i> Administration
-                </div>
+            <fieldset class="ufsc-form-section">
+                <legend><i class="dashicons dashicons-admin-tools"></i> Administration</legend>
                 <div class="ufsc-form-section-body">
                     <div class="ufsc-form-row">
                         <label for="statut">Statut du club</label>
@@ -586,36 +578,36 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
             <?php endif; ?>
                     
                     <?php if ($is_frontend && $is_affiliation && !$is_edit): ?>
                     <!-- Frontend User Association for Affiliation -->
                     <div class="ufsc-form-row">
-                        <label>Utilisateur WordPress pour gérer le club</label>
+                        <span class="ufsc-group-label">Utilisateur WordPress pour gérer le club</span>
                         <div>
                             <div class="ufsc-user-association-options">
                                 <div class="ufsc-radio-group">
-                                    <label class="ufsc-radio-option">
-                                        <input type="radio" name="user_association_type" value="current" checked>
-                                        <span>Utiliser mon compte actuel</span>
+                                    <div class="ufsc-radio-option">
+                                        <input type="radio" id="user_association_type_current" name="user_association_type" value="current" checked>
+                                        <label for="user_association_type_current">Utiliser mon compte actuel</label>
                                         <?php if (is_user_logged_in()): ?>
                                             <?php $current_user = wp_get_current_user(); ?>
                                             <div class="ufsc-form-hint">
                                                 Compte: <?php echo esc_html($current_user->display_name . ' (' . $current_user->user_login . ')'); ?>
                                             </div>
                                         <?php endif; ?>
-                                    </label>
-                                    
-                                    <label class="ufsc-radio-option">
-                                        <input type="radio" name="user_association_type" value="create">
-                                        <span>Créer un nouveau compte utilisateur</span>
-                                    </label>
-                                    
-                                    <label class="ufsc-radio-option">
-                                        <input type="radio" name="user_association_type" value="existing">
-                                        <span>Associer un compte existant</span>
-                                    </label>
+                                    </div>
+
+                                    <div class="ufsc-radio-option">
+                                        <input type="radio" id="user_association_type_create" name="user_association_type" value="create">
+                                        <label for="user_association_type_create">Créer un nouveau compte utilisateur</label>
+                                    </div>
+
+                                    <div class="ufsc-radio-option">
+                                        <input type="radio" id="user_association_type_existing" name="user_association_type" value="existing">
+                                        <label for="user_association_type_existing">Associer un compte existant</label>
+                                    </div>
                                 </div>
                                 
                                 <!-- Create new user fields -->
@@ -672,10 +664,8 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
             </div>
             
             <!-- Informations légales -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
-                    <i class="dashicons dashicons-clipboard"></i> Informations légales
-                </div>
+            <fieldset class="ufsc-form-section">
+                <legend><i class="dashicons dashicons-clipboard"></i> Informations légales</legend>
                 <div class="ufsc-form-section-description">
                     <p>Informations administratives et légales de votre structure.</p>
                 </div>
@@ -722,14 +712,14 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
             
             <!-- Dirigeants -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
+            <fieldset class="ufsc-form-section">
+                <legend>
                     <i class="dashicons dashicons-businessperson"></i> Dirigeants
                     <span class="ufsc-badge ufsc-badge-featured">Champs obligatoires</span>
-                </div>
+                </legend>
                 <div class="ufsc-form-section-description">
                     <p>Informations des dirigeants du club. Ces personnes recevront automatiquement une licence dirigeant lors de l'affiliation.</p>
                 </div>
@@ -786,16 +776,16 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-            </div>
+            </fieldset>
             
             <!-- Documents administratifs -->
-            <div class="ufsc-form-section">
-                <div class="ufsc-form-section-header">
+            <fieldset class="ufsc-form-section">
+                <legend>
                     <i class="dashicons dashicons-media-document"></i> Documents administratifs
                     <?php if ($is_affiliation): ?>
                     <span class="ufsc-badge ufsc-badge-featured">Obligatoire pour l'affiliation</span>
                     <?php endif; ?>
-                </div>
+                </legend>
                 <div class="ufsc-form-section-description">
                     <p>Téléchargez les documents administratifs requis pour votre club.</p>
                     <p><strong>Formats acceptés :</strong> PDF, JPG, PNG. <strong>Taille max :</strong> 5 Mo par document.</p>
@@ -818,7 +808,7 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                         </div>
                     <?php endforeach; ?>
                 </div>
-            </div>
+            </fieldset>
             
             <!-- Bouton de soumission -->
             <div class="ufsc-form-row" style="justify-content: flex-end; margin-top: 30px;">
