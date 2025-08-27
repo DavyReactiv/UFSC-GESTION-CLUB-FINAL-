@@ -375,7 +375,9 @@ function ufsc_render_invoice_management($club)
     $output .= '<p>Besoin d\'une facture spécifique ou d\'un duplicata ?</p>';
     $output .= '<form method="post" class="ufsc-invoice-form">';
     $output .= wp_nonce_field('ufsc_request_invoice', 'ufsc_invoice_nonce', true, false);
-    $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    if (current_user_can('ufsc_manage')) {
+        $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    }
 
     $output .= '<div class="ufsc-form-row">';
     $output .= '<label for="invoice_type">Type de facture :</label>';

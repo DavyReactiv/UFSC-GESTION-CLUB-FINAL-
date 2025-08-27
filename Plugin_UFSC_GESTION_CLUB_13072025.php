@@ -298,7 +298,8 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
             'uploadClubNonce' => wp_create_nonce('ufsc_upload_club_attestation'),
             'deleteClubNonce' => wp_create_nonce('ufsc_delete_club_attestation'),
             'uploadLicenceNonce' => wp_create_nonce('ufsc_upload_licence_attestation'),
-            'deleteLicenceNonce' => wp_create_nonce('ufsc_delete_licence_attestation')
+            'deleteLicenceNonce' => wp_create_nonce('ufsc_delete_licence_attestation'),
+            'can_manage' => current_user_can('ufsc_manage')
         ]);
     }
 
@@ -692,7 +693,7 @@ function ufsc_handle_get_club_data() {
         return;
     }
 
-    $club_id = isset($_POST['club_id']) ? absint($_POST['club_id']) : 0;
+    $club_id = ufscsn_resolve_club_id_sanitized();
     if (!$club_id) {
         wp_send_json_error(['message' => 'Invalid club ID']);
         return;
@@ -782,6 +783,7 @@ function ufsc_gestion_club_enqueue_scripts()
     wp_localize_script('ufsc-frontend-script', 'ufsc_frontend_config', [
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('ufsc_frontend_nonce'),
+        'can_manage' => current_user_can('ufsc_manage'),
         'messages' => [
             'loading' => __('Chargement...', 'plugin-ufsc-gestion-club-13072025'),
             'success' => __('Opération réussie', 'plugin-ufsc-gestion-club-13072025'),

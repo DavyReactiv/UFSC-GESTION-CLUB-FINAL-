@@ -10,6 +10,16 @@ $clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER
 // Get current values if editing
 $current_licence = isset($current_licence) ? $current_licence : null;
 $current_club_id = $current_licence ? $current_licence->club_id : (isset($_GET['club_id']) ? intval($_GET['club_id']) : 0);
+if (!current_user_can('ufsc_manage')) {
+    $current_club_id = (int) get_user_meta(get_current_user_id(), 'ufsc_club_id', true);
+}
+$current_club_name = '';
+foreach ($clubs as $club_tmp) {
+    if ((int) $club_tmp->id === (int) $current_club_id) {
+        $current_club_name = $club_tmp->nom;
+        break;
+    }
+}
 $is_validated = $current_licence && $current_licence->statut === 'validee';
 
 // Load regions helper
@@ -31,17 +41,21 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
             <!-- Club Selection -->
             <div class="ufsc-form-field">
                 <label for="club_id" class="required"><?php _e('Club', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                <select name="club_id" id="club_id" required <?php echo ($current_licence && !is_admin()) ? 'disabled' : ''; ?>>
-                    <option value=""><?php _e('Sélectionner un club', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-                    <?php foreach ($clubs as $club): ?>
-                        <option value="<?php echo esc_attr($club->id); ?>" <?php selected($current_club_id, $club->id); ?>>
-                            <?php echo esc_html($club->nom); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <?php if ($current_licence && !is_admin()): ?>
-                    <input type="hidden" name="club_id" value="<?php echo esc_attr($current_licence->club_id); ?>">
-                    <span class="help-text"><?php _e('Le club ne peut pas être modifié après création', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                <?php if (current_user_can('ufsc_manage')): ?>
+                    <select name="club_id" id="club_id" required <?php echo ($current_licence && !is_admin()) ? 'disabled' : ''; ?>>
+                        <option value=""><?php _e('Sélectionner un club', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+                        <?php foreach ($clubs as $club): ?>
+                            <option value="<?php echo esc_attr($club->id); ?>" <?php selected($current_club_id, $club->id); ?>>
+                                <?php echo esc_html($club->nom); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if ($current_licence && !is_admin()): ?>
+                        <input type="hidden" name="club_id" value="<?php echo esc_attr($current_licence->club_id); ?>">
+                        <span class="help-text"><?php _e('Le club ne peut pas être modifié après création', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <span><?php echo esc_html($current_club_name); ?></span>
                 <?php endif; ?>
             </div>
             

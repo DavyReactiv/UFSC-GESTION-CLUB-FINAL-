@@ -5,8 +5,17 @@ if (!defined('ABSPATH')) {
 
 if (!function_exists('ufscsn_resolve_club_id_sanitized')) {
     function ufscsn_resolve_club_id_sanitized(): int {
-        $source = $_REQUEST['club_id'] ?? 0;
-        return $source ? absint(wp_unslash($source)) : 0;
+        $user_id = get_current_user_id();
+        if (!$user_id) {
+            return 0;
+        }
+
+        if (current_user_can('ufsc_manage') && isset($_REQUEST['club_id'])) {
+            return absint(wp_unslash($_REQUEST['club_id']));
+        }
+
+        $club_id = get_user_meta($user_id, 'ufsc_club_id', true);
+        return $club_id ? absint($club_id) : 0;
     }
 }
 

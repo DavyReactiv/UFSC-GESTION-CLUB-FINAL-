@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
         config: {
             ajaxUrl: ufsc_frontend_config?.ajax_url || '/wp-admin/admin-ajax.php',
             nonce: ufsc_frontend_config?.nonce || '',
+            canManage: ufsc_frontend_config?.can_manage || false,
             refreshInterval: 30000, // 30 seconds
             retryAttempts: 3,
             retryDelay: 1000
@@ -230,11 +231,10 @@ jQuery(document).ready(function ($) {
             $.ajax({
                 url: self.config.ajaxUrl,
                 type: 'POST',
-                data: {
+                data: Object.assign({
                     action: 'ufsc_get_club_data',
-                    club_id: clubId,
                     nonce: self.config.nonce
-                },
+                }, self.config.canManage && clubId ? { club_id: clubId } : {}),
                 success: function(response) {
                     if (response.success) {
                         self.updateUIWithFreshData(response.data.club_data);
@@ -541,7 +541,10 @@ jQuery(document).ready(function ($) {
         var $btn = jQuery(this);
         var licenceId = parseInt($btn.data('licence-id'), 10);
         var clubId = parseInt($btn.data('club-id'), 10) || 0;
-        var data = { action: 'ufsc_get_licence_pay_url', nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : ''), licence_id: licenceId, club_id: clubId };
+        var data = { action: 'ufsc_get_licence_pay_url', nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : ''), licence_id: licenceId };
+        if (ufsc_frontend_config && ufsc_frontend_config.can_manage && clubId) {
+            data.club_id = clubId;
+        }
         jQuery.post((window.ufsc_frontend_config ? ufsc_frontend_config.ajax_url : '/wp-admin/admin-ajax.php'), data)
             .done(function(resp){
                 if (resp && resp.success && resp.data && resp.data.url) {

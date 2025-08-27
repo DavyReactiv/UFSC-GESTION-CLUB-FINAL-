@@ -55,12 +55,16 @@ function ufsc_render_licence_form($args = array()){
       <?php echo ufsc_nonce_field('ufsc_add_licence_nonce'); ?>
       <?php echo ufsc_nonce_field('ufsc_add_licence_to_cart', '_ufsc_licence_nonce'); ?>
       <input type="hidden" name="action" value="ufsc_submit_licence">
+      <?php if (current_user_can('ufsc_manage')): ?>
       <input type="hidden" name="club_id" value="<?php echo esc_attr($club->id); ?>">
+      <?php endif; ?>
 
       <?php wp_nonce_field('ufsc_add_licence_nonce', 'ufsc_nonce'); ?>
       <?php wp_nonce_field('ufsc_add_licence_to_cart', '_ufsc_licence_nonce'); ?>
         <input type="hidden" name="action" value="ufsc_submit_licence">
+        <?php if (current_user_can('ufsc_manage')): ?>
         <input type="hidden" name="club_id" value="<?php echo esc_attr($club->id); ?>">
+        <?php endif; ?>
 
       <input type="hidden" name="context" value="<?php echo esc_attr($args['context']); ?>">
       <?php if (!empty($prefill['id'])): ?>

@@ -281,11 +281,11 @@ function ufsc_handle_contact_update($club)
         return '<div class="ufsc-alert ufsc-alert-error">Permission refusée.</div>';
     }
 
-    $club_id = intval($_POST['club_id']);
+    $club_id = ufscsn_resolve_club_id_sanitized();
     $field_name = sanitize_text_field($_POST['field_name']);
 
     // Verify club ownership
-    if ($club_id !== $club->id || !ufsc_verify_club_access($club_id)) {
+    if ($club_id !== (int) $club->id || !ufsc_verify_club_access($club_id)) {
         return '<div class="ufsc-alert ufsc-alert-error">Accès refusé.</div>';
     }
 
@@ -325,7 +325,9 @@ function ufsc_render_contact_edit_form($club)
     $output .= '<form method="post" class="ufsc-inline-form">';
     $output .= wp_nonce_field('ufsc_update_contact', 'ufsc_contact_nonce', true, false);
     $output .= '<input type="hidden" name="ufsc_update_contact_submit" value="1">';
-    $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    if (current_user_can('ufsc_manage')) {
+        $output .= '<input type="hidden" name="club_id" value="' . esc_attr($club->id) . '">';
+    }
     $output .= '<input type="hidden" id="ufsc-edit-field-name" name="field_name" value="">';
 
     // Email field
@@ -505,19 +507,17 @@ function ufsc_render_quick_downloads($club)
     $downloads = [
         [
             'label' => 'Attestation d\'affiliation',
-            'url' => add_query_arg([
+            'url' => add_query_arg(array_merge([
                 'action' => 'attestation_affiliation',
-                'club_id' => $club->id,
                 'nonce' => wp_create_nonce('ufsc_attestation_' . $club->id)
-            ])
+            ], current_user_can('ufsc_manage') ? ['club_id' => $club->id] : []))
         ],
         [
             'label' => 'Attestation d\'assurance',
-            'url' => add_query_arg([
-                'action' => 'attestation_assurance', 
-                'club_id' => $club->id,
+            'url' => add_query_arg(array_merge([
+                'action' => 'attestation_assurance',
                 'nonce' => wp_create_nonce('ufsc_attestation_' . $club->id)
-            ])
+            ], current_user_can('ufsc_manage') ? ['club_id' => $club->id] : []))
         ]
     ];
 
