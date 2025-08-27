@@ -122,7 +122,7 @@
       return;
     }
     if(act==='edit'){
-      window.location.href = '?edit_licence='+id;
+      window.location.href = '?licence_id='+id;
       return;
     }
 
