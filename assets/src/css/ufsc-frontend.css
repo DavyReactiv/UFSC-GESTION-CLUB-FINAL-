@@ -1240,7 +1240,7 @@
     font-size: var(--ufsc-font-size-sm);
 }
 
-/* License list components */
+/* Licence list components */
 .ufsc-license-list-container {
     background: var(--ufsc-bg-white);
     border: 1px solid var(--ufsc-border-light);
@@ -1248,7 +1248,7 @@
     overflow: hidden;
 }
 
-.ufsc-license-filters {
+.ufsc-licence-filters {
     padding: var(--ufsc-space-lg);
     background: var(--ufsc-bg-light);
     border-bottom: 1px solid var(--ufsc-border-light);

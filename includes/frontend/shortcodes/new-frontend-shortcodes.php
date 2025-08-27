@@ -330,7 +330,7 @@ function ufsc_license_list_shortcode($atts)
         $current_status = $_GET['license_status'] ?? 'all';
         $current_search = $_GET['license_search'] ?? '';
         
-        $output .= '<form method="get" class="ufsc-license-filters">
+        $output .= '<form method="get" class="ufsc-licence-filters">
             <div class="ufsc-filter-row">
                 <div class="ufsc-filter-field">
                     <label for="license_search">Rechercher:</label>
