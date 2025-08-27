@@ -2387,3 +2387,135 @@ if (defined('UFSC_PLUGIN_PATH')) { $ov = UFSC_PLUGIN_PATH.'includes/overrides/cl
 
 // UFSC profix overrides loader
 if ( defined('ABSPATH') ) { require_once __DIR__ . '/includes/overrides_profix/_loader.php'; }
+
+/**
+ * Handle licence deletion.
+ */
+function ufsc_admin_post_delete_licence() {
+    if ( ! current_user_can('manage_ufsc_licences') ) {
+        wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
+    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+    if ( ! $licence_id ) {
+        wp_die(__('ID de licence invalide.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
+    check_admin_referer('ufsc_delete_licence_' . $licence_id);
+
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+    $manager = UFSC_Licence_Manager::get_instance();
+    $success = $manager->delete_licence($licence_id);
+
+    $message  = $success ? 'deleted' : 'delete_error';
+    $redirect = add_query_arg([
+        'page'       => 'ufsc-liste-licences',
+        'message'    => $message,
+        'licence_id' => $licence_id,
+    ], admin_url('admin.php'));
+
+    wp_safe_redirect($redirect);
+    exit;
+}
+add_action('admin_post_ufsc_delete_licence', 'ufsc_admin_post_delete_licence');
+
+/**
+ * Handle licence reassignment.
+ */
+function ufsc_admin_post_reassign_licence() {
+    if ( ! current_user_can('manage_ufsc_licences') ) {
+        wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
+    $licence_id  = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+    $new_club_id = isset($_GET['new_club_id']) ? absint($_GET['new_club_id']) : 0;
+
+    if ( ! $licence_id || ! $new_club_id ) {
+        wp_die(__('Paramètres invalides.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
+    check_admin_referer('ufsc_reassign_licence_' . $licence_id);
+
+    global $wpdb;
+    $table   = $wpdb->prefix . 'ufsc_licences';
+    $updated = $wpdb->update(
+        $table,
+        ['club_id' => $new_club_id],
+        ['id' => $licence_id],
+        ['%d'],
+        ['%d']
+    );
+
+    $message  = $updated !== false ? 'reassigned' : 'reassign_error';
+    $redirect = add_query_arg([
+        'page'       => 'ufsc-liste-licences',
+        'message'    => $message,
+        'licence_id' => $licence_id,
+    ], admin_url('admin.php'));
+
+    wp_safe_redirect($redirect);
+    exit;
+}
+add_action('admin_post_ufsc_reassign_licence', 'ufsc_admin_post_reassign_licence');
+
+/**
+ * Display admin notices for licence actions.
+ */
+function ufsc_licence_actions_admin_notices() {
+    if ( ! isset($_GET['message']) ) {
+        return;
+    }
+
+    $message    = sanitize_text_field($_GET['message']);
+    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+
+    switch ( $message ) {
+        case 'deleted':
+            echo '<div class="notice notice-success is-dismissible"><p>' .
+                sprintf(__('Licence #%d supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'), $licence_id) .
+                '</p></div>';
+            break;
+        case 'reassigned':
+            echo '<div class="notice notice-success is-dismissible"><p>' .
+                sprintf(__('Licence #%d réaffectée avec succès.', 'plugin-ufsc-gestion-club-13072025'), $licence_id) .
+                '</p></div>';
+            break;
+        case 'delete_error':
+            echo '<div class="notice notice-error is-dismissible"><p>' .
+                __('Erreur lors de la suppression de la licence.', 'plugin-ufsc-gestion-club-13072025') .
+                '</p></div>';
+            break;
+        case 'reassign_error':
+            echo '<div class="notice notice-error is-dismissible"><p>' .
+                __('Erreur lors de la réaffectation de la licence.', 'plugin-ufsc-gestion-club-13072025') .
+                '</p></div>';
+            break;
+    }
+}
+add_action('admin_notices', 'ufsc_licence_actions_admin_notices');
+
+/**
+ * Inline script for reassign action.
+ */
+function ufsc_reassign_licence_inline_script() {
+    if ( ! isset($_GET['page']) || 'ufsc-liste-licences' !== $_GET['page'] ) {
+        return;
+    }
+    ?>
+    <script>
+    document.addEventListener('click',function(e){
+        var link=e.target.closest('.ufsc-reassign-licence');
+        if(!link){return;}
+        e.preventDefault();
+        var id=link.getAttribute('data-id');
+        var nonce=link.getAttribute('data-nonce');
+        var newClub=prompt('<?php echo esc_js(__('ID du nouveau club ?', 'plugin-ufsc-gestion-club-13072025')); ?>');
+        if(!newClub){return;}
+        if(!confirm('<?php echo esc_js(__('Confirmer la réaffectation ?', 'plugin-ufsc-gestion-club-13072025')); ?>')){return;}
+        var url='<?php echo admin_url('admin-post.php'); ?>?action=ufsc_reassign_licence&licence_id='+id+'&new_club_id='+encodeURIComponent(newClub)+'&_wpnonce='+nonce;
+        window.location.href=url;
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer', 'ufsc_reassign_licence_inline_script');

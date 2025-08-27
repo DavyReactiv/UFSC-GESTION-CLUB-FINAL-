@@ -59,6 +59,36 @@ class UFSC_Licence_List_Table extends WP_List_Table {
                 esc_url( $edit_url ),
                 esc_attr__( 'Modifier la licence', 'plugin-ufsc-gestion-club-13072025' )
             );
+
+            $validate_url = wp_nonce_url(
+                admin_url( 'admin-post.php?action=ufsc_validate_licence&licence_id=' . $item['id'] ),
+                'ufsc_validate_licence_' . $item['id']
+            );
+            $actions['validate'] = sprintf(
+                '<a href="%s" title="%s" onclick="return confirm(\'%s\');"><span class="dashicons dashicons-yes-alt"></span></a>',
+                esc_url( $validate_url ),
+                esc_attr__( 'Valider la licence', 'plugin-ufsc-gestion-club-13072025' ),
+                esc_attr__( 'Confirmer la validation ?', 'plugin-ufsc-gestion-club-13072025' )
+            );
+
+            $delete_url = wp_nonce_url(
+                admin_url( 'admin-post.php?action=ufsc_delete_licence&licence_id=' . $item['id'] ),
+                'ufsc_delete_licence_' . $item['id']
+            );
+            $actions['delete'] = sprintf(
+                '<a href="%s" title="%s" onclick="return confirm(\'%s\');"><span class="dashicons dashicons-trash"></span></a>',
+                esc_url( $delete_url ),
+                esc_attr__( 'Supprimer la licence', 'plugin-ufsc-gestion-club-13072025' ),
+                esc_attr__( 'Supprimer définitivement ?', 'plugin-ufsc-gestion-club-13072025' )
+            );
+
+            $reassign_nonce = wp_create_nonce( 'ufsc_reassign_licence_' . $item['id'] );
+            $actions['reassign'] = sprintf(
+                '<a href="#" class="ufsc-reassign-licence" data-id="%d" data-nonce="%s" title="%s"><span class="dashicons dashicons-randomize"></span></a>',
+                $item['id'],
+                esc_attr( $reassign_nonce ),
+                esc_attr__( 'Réaffecter la licence à un autre club', 'plugin-ufsc-gestion-club-13072025' )
+            );
         }
 
         return sprintf( '%1$s %2$s', esc_html( $item['nom'] ), $this->row_actions( $actions ) );
