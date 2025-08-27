@@ -325,11 +325,11 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
 <?php if ($is_validated): ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var allowed = ['email', 'tel_mobile', 'tel_fixe'];
-    document.querySelectorAll('.ufsc-licence-form input, .ufsc-licence-form select, .ufsc-licence-form textarea').forEach(function (el) {
+    const allowed = ['email', 'tel_mobile', 'tel_fixe'];
+    document.querySelectorAll('.ufsc-licence-form input:not([type="hidden"]), .ufsc-licence-form select, .ufsc-licence-form textarea').forEach(function (el) {
         if (!allowed.includes(el.id)) {
-            el.setAttribute('readonly', 'readonly');
-            el.setAttribute('disabled', 'disabled');
+            el.readOnly = true;
+            el.disabled = true;
         }
     });
 });

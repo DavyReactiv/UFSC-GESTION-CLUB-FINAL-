@@ -79,7 +79,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 
     if ($is_validated) {
         $locked_fields = [
-            'nom', 'prenom', 'sexe', 'date_naissance', 'adresse', 'suite_adresse',
+            'club_id', 'nom', 'prenom', 'sexe', 'date_naissance', 'adresse', 'suite_adresse',
             'code_postal', 'ville', 'region', 'profession', 'identifiant_laposte',
             'reduction_benevole', 'reduction_postier', 'fonction_publique',
             'competition', 'licence_delegataire', 'numero_licence_delegataire',
