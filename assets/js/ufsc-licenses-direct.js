@@ -93,8 +93,7 @@
         <td>${r.quota||''}</td>
         <td><span class="ufscx-pill">${status}</span></td>
         <td>${fmtDate(r.date_licence)}</td>
-        <td>${viewBtn} ${isFinal?'':quotaBtn}</td>
-        <td>${actionBtns}</td>
+        <td class="ufscx-actions">${viewBtn} ${isFinal ? '' : quotaBtn} ${actionBtns}</td>
       </tr>
       `;
     }).join('');
