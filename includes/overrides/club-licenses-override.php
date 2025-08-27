@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) exit;
 
 /**
  * Robust override for the club licences page.
- * Works with tables: wp_ufsc_licences OR wp_ufsc_licenses
+ * Works with table: wp_ufsc_licences
  * Resolves club_id via ufsc_get_user_club(), mapping table fallback, or shortcode/GET override.
  */
 function ufsc_register_club_licences_override(){
@@ -17,13 +17,7 @@ add_action('init', 'ufsc_register_club_licences_override', 9999);
 
 function ufsc__detect_licence_table(){
     global $wpdb;
-    $candidates = array($wpdb->prefix.'ufsc_licences', $wpdb->prefix.'ufsc_licenses');
-    foreach ($candidates as $t){
-        $exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $t));
-        if ($exists === $t) return $t;
-    }
-    // fallback to the first name
-    return $candidates[0];
+    return $wpdb->prefix . 'ufsc_licences';
 }
 
 if (!function_exists('ufsc__resolve_club_id')) {
