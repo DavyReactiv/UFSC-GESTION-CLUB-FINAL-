@@ -55,10 +55,10 @@ foreach ($dt_styles as $handle => $data) {
 }
 
 $dt_scripts = [
-    'datatables-js'               => ['js/jquery.dataTables.min.js', 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', [], '1.13.6'],
-    'datatables-buttons-js'       => ['js/dataTables.buttons.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js', ['datatables-js'], '2.4.2'],
-    'datatables-buttons-html5-js' => ['js/buttons.html5.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js', ['datatables-buttons-js'], '2.4.2'],
-    'datatables-responsive-js'    => ['js/dataTables.responsive.min.js', 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js', ['datatables-js'], '2.5.0'],
+    'datatables-js'               => ['js/jquery.dataTables.min.js', 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js', ['jquery'], '1.13.6'],
+    'datatables-buttons-js'       => ['js/dataTables.buttons.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js', ['jquery', 'datatables-js'], '2.4.2'],
+    'datatables-buttons-html5-js' => ['js/buttons.html5.min.js', 'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js', ['jquery', 'datatables-buttons-js'], '2.4.2'],
+    'datatables-responsive-js'    => ['js/dataTables.responsive.min.js', 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js', ['jquery', 'datatables-js'], '2.5.0'],
     'jszip-js'                    => ['js/jszip.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', [], '3.10.1'],
 ];
 
