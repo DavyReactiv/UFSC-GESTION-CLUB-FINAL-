@@ -33,7 +33,16 @@ function ufsc_profix_ajax_add_to_cart() {
     } else {
         $redirect = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/panier/');
     }
-    wp_send_json_success(['redirect' => $redirect]);
+
+    $payment_badge = '';
+    if (function_exists('ufsc_get_payment_badge')) {
+        $payment_badge = ufsc_get_payment_badge('pending');
+    }
+
+    wp_send_json_success([
+        'redirect'      => $redirect,
+        'payment_badge' => $payment_badge,
+    ]);
 }
 add_action('wp_ajax_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
