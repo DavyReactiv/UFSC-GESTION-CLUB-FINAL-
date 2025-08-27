@@ -12,7 +12,7 @@ function ufsc_admin_health_page(){
     echo '</table><p><a class="button button-primary" href="'.esc_url(admin_url('admin.php?page=ufsc-pack-exports')).'">Réglages & Exports</a></p></div>';
 }
 add_action('admin_menu', function(){
-    add_submenu_page('ufsc', 'Santé du module', 'Santé du module', 'manage_options', 'ufsc-health', 'ufsc_admin_health_page');
+    add_submenu_page('ufsc_licenses_admin', 'Santé du module', 'Santé du module', 'manage_options', 'ufsc-health', 'ufsc_admin_health_page');
 });
 add_action('admin_notices', function(){
     if (!current_user_can('manage_options')) return;
