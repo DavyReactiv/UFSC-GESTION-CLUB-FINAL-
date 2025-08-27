@@ -3,20 +3,18 @@ import { resolve } from 'path';
 
 export default defineConfig({
   build: {
-    manifest: true,
-    outDir: 'assets/build',
+    outDir: 'assets/dist',
     emptyOutDir: false,
     assetsDir: '',
     rollupOptions: {
       input: {
-        'ufsc-frontend.js': resolve(__dirname, 'assets/src/js/ufsc-frontend.js'),
-        'ufsc-frontend.css': resolve(__dirname, 'assets/src/css/ufsc-frontend.css'),
-        'ufsc-forms.css': resolve(__dirname, 'assets/src/css/ufsc-forms.css')
+        admin: resolve(__dirname, 'assets/src/js/admin.js'),
+        'admin.css': resolve(__dirname, 'assets/src/css/admin.css')
       },
       output: {
-        entryFileNames: '[name]-[hash].js',
-        assetFileNames: '[name]-[hash][extname]',
-        format: 'iife'
+        entryFileNames: '[name].js',
+        assetFileNames: '[name][extname]',
+        format: 'es'
       }
     }
   }

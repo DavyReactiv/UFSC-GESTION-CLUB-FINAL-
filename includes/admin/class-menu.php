@@ -48,38 +48,26 @@ class UFSC_Menu
             return;
         }
 
-        // Styles
+        // Bundled admin assets
         wp_enqueue_style(
-            'ufsc-admin-licences',
-            UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
-            [],
-            UFSC_PLUGIN_VERSION
-        );
-        wp_enqueue_style(
-            'ufsc-admin-ui',
-            UFSC_PLUGIN_URL . 'assets/css/ufsc-ui-admin.css',
+            'ufsc-admin',
+            UFSC_PLUGIN_URL . 'assets/dist/admin.css',
             [],
             UFSC_PLUGIN_VERSION
         );
 
-        // Scripts
         wp_enqueue_script(
-            'ufsc-admin-ui',
-            UFSC_PLUGIN_URL . 'assets/js/ufsc-admin-ui.js',
-            [],
-            UFSC_PLUGIN_VERSION,
-            true
-        );
-        wp_enqueue_script(
-            'ufsc-licence-actions',
-            UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
+            'ufsc-admin',
+            UFSC_PLUGIN_URL . 'assets/dist/admin.js',
             ['jquery'],
             UFSC_PLUGIN_VERSION,
             true
         );
 
-        // Localize licence actions script.
-        wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
+        wp_script_add_data('ufsc-admin', 'type', 'module');
+
+        // Localize bundled script.
+        wp_localize_script('ufsc-admin', 'ufscLicenceConfig', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonces' => [
                 'delete_licence'        => wp_create_nonce('ufsc_delete_licence'),
