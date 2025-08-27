@@ -49,8 +49,8 @@ function ufsc_update_dirigeant_handler()
         'delegataire'              => isset($_POST['delegataire']) ? 1 : 0,
         'numero_licence_delegataire' => sanitize_text_field(wp_unslash($_POST['numero_licence_delegataire'])),
         'note'                     => sanitize_textarea_field(wp_unslash($_POST['note'])),
-        'assurance_dom'            => isset($_POST['assurance_dom']) ? 1 : 0,
-        'assistance'               => isset($_POST['assistance']) ? 1 : 0,
+        'assurance_dommage_corporel' => isset($_POST['assurance_dommage_corporel']) ? 1 : 0,
+        'assurance_assistance'       => isset($_POST['assurance_assistance']) ? 1 : 0,
     ];
 
     // 💾 Mise à jour base de données
