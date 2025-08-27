@@ -227,8 +227,15 @@ class UFSC_Licence_List_Table extends WP_List_Table {
      */
 
     public function set_external_data($data, $total_items, $per_page) {
+        $items = array_map(
+            static function ($item) {
+                return is_object($item) ? get_object_vars($item) : $item;
+            },
+            $data
+        );
+
         $this->external_data = [
-            'items'       => array_map('get_object_vars', $data),
+            'items'       => $items,
             'total_items' => (int) $total_items,
             'per_page'    => (int) $per_page,
         ];
