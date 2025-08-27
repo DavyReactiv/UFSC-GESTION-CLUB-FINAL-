@@ -153,7 +153,11 @@ require_once UFSC_PLUGIN_PATH . 'includes/frontend/dashboard/overview.php';
 // New WooCommerce integration class (consolidated)
 if (file_exists(UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php')) {
     require_once UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php';
-require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php';
+}
+
+// Load cart item role metadata handling
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php';
 }
 
 // New WooCommerce e-commerce features
