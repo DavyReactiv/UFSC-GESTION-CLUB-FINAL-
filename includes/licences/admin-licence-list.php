@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 require_once plugin_dir_path(__FILE__) . 'class-ufsc-licence-list-table.php';
 require_once plugin_dir_path(__FILE__) . '../helpers.php';
 require_once plugin_dir_path(__FILE__) . '../helpers/helpers-licence-status.php';
+require_once plugin_dir_path(__FILE__) . 'class-ufsc-licenses-repository.php';
 
 global $wpdb;
 
@@ -29,6 +30,10 @@ wp_enqueue_style(
     [],
     UFSC_PLUGIN_VERSION
 );
+
+
+$list_table = new UFSC_Licenses_List_Table($club_id);
+$list_table->prepare_items();
 
 // Enqueue DataTables CSS and JS with local fallback
 $dt_base_url  = UFSC_PLUGIN_URL . 'assets/datatables/';
@@ -71,8 +76,9 @@ wp_enqueue_script(
 // Get filter parameters with club_id override, allowing precomputed filters
 $filters = isset($filters) ? $filters : UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
 
-// Retrieve licence data for display
-$license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
+// Retrieve licence data via repository
+$repo = new UFSC_Licenses_Repository();
+$license_data = $repo->get_list($filters);
 
 $no_license_notice = '';
 if (empty($license_data['data'])) {
@@ -104,12 +110,8 @@ if (empty($license_data['data'])) {
 }
 
 $list_table = new UFSC_Licence_List_Table($club_id);
+$list_table->set_external_data($license_data['data'], $license_data['total_items'], $license_data['per_page']);
 $list_table->prepare_items();
-$list_table->items = array_map('get_object_vars', $license_data['data']);
-$list_table->set_pagination_args([
-    'total_items' => $license_data['total_items'],
-    'per_page'    => $license_data['per_page'],
-]);
 
 // 📤 Export CSV
 if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . $club_id)) {
@@ -167,9 +169,8 @@ if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . 
 $base_url = remove_query_arg(['paged', 'export_csv'], wp_unslash($_SERVER['REQUEST_URI']));
 $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
 
-?>
 
-<?php echo $no_license_notice; ?>
+?>
 
 <div class="wrap ufsc-ui">
     <h1>Licences <?php echo $club ? '– ' . esc_html($club->nom) : ''; ?></h1>

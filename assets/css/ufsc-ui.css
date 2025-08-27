@@ -1,0 +1,111 @@
+
+/* UFSC generic UI styles */
+
+/* Action buttons container */
+.ufsc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 90px; /* 120px recommended */
+}
+.ufsc-actions:empty {
+  display: none;
+}
+
+/* Tables */
+.ufsc-table th,
+.ufsc-table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+}
+.ufsc-table tbody tr:nth-child(odd) {
+  background: #f9f9f9;
+}
+.ufsc-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+/* Status badges */
+.ufsc-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+.ufsc-badge--ok { background: #2e7d32; }
+.ufsc-badge--warn { background: #f57c00; }
+.ufsc-badge--err { background: #d32f2f; }
+.ufsc-badge--pending { background: #616161; }
+.ufsc-badge--expired { background: #5d4037; }
+
+/* Text ellipsis */
+.ufsc-text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+/* UFSC generic form UI */
+.ufsc-auto-2cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ufsc-gap);
+}
+@media (min-width: 992px) {
+  .ufsc-auto-2cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ufsc-full {
+  grid-column: 1 / -1;
+}
+
+.ufsc-auto-2cols input[type="text"],
+.ufsc-auto-2cols input[type="email"],
+.ufsc-auto-2cols input[type="password"],
+.ufsc-auto-2cols input[type="date"],
+.ufsc-auto-2cols input[type="tel"],
+.ufsc-auto-2cols select,
+.ufsc-auto-2cols textarea {
+  height: 44px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0 12px;
+}
+.ufsc-auto-2cols textarea {
+  height: auto;
+  padding: 12px;
+}
+
+.ufsc-auto-2cols input:focus,
+.ufsc-auto-2cols select:focus,
+.ufsc-auto-2cols textarea:focus {
+  outline: 2px solid var(--ufsc-accent);
+  outline-offset: 2px;
+}
+
+.ufsc-auto-2cols label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ufsc-auto-2cols [required]::after {
+  content: "*";
+  margin-left: 4px;
+  color: var(--ufsc-accent);
+}
+
+.ufsc-auto-2cols .ufsc-form-error,
+.ufsc-auto-2cols .ufsc-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.875rem;
+  color: var(--ufsc-danger, #d00);
+
+}

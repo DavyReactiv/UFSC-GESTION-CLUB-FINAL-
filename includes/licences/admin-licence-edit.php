@@ -1,10 +1,11 @@
 <?php
+
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// ✅ Chargement du gestionnaire de licences
-require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+// ✅ Chargement du dépôt de licences
+require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
 
 global $wpdb;
 $licence_id = isset($_GET['licence_id']) ? intval(wp_unslash($_GET['licence_id'])) : 0;
@@ -22,8 +23,8 @@ if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']),
     wp_die(__('Action non autorisée.', 'plugin-ufsc-gestion-club-13072025'));
 }
 
-$manager = new UFSC_Licence_Manager();
-$current_licence = $manager->get_licence_by_id($licence_id);
+$repo = new UFSC_Licenses_Repository();
+$current_licence = $repo->get($licence_id);
 $is_validated = $current_licence && $current_licence->statut === 'validee';
 
 if (!$current_licence) {
@@ -92,12 +93,12 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
         }
     }
 
-    $success = $manager->update_licence($licence_id, $data);
+    $success = $repo->update($licence_id, $data);
 
     if ($success) {
         echo '<div class="notice notice-success"><p>✅ Licence modifiée avec succès.</p></div>';
         // Reload the licence data to show updated values
-        $current_licence = $manager->get_licence_by_id($licence_id);
+        $current_licence = $repo->get($licence_id);
         $club = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
             $current_licence->club_id
@@ -185,3 +186,7 @@ wp_enqueue_script(
         </div>
     </form>
 </div>
+
+// Deprecated separate edit page - reuse unified form handler.
+require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
+

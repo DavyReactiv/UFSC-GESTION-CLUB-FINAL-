@@ -11,6 +11,33 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+add_action('wp_ajax_ufsc_club_search', 'ufsc_ajax_club_search');
+function ufsc_ajax_club_search() {
+    if (!current_user_can('manage_ufsc_licenses')) {
+        wp_send_json_error('Unauthorized', 403);
+    }
+
+    global $wpdb;
+    $term = isset($_GET['term']) ? sanitize_text_field(wp_unslash($_GET['term'])) : '';
+    $results = [];
+
+    if ($term !== '') {
+        $like = '%' . $wpdb->esc_like($term) . '%';
+        $rows = $wpdb->get_results(
+            $wpdb->prepare("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs WHERE nom LIKE %s ORDER BY nom LIMIT 20", $like)
+        );
+
+        foreach ($rows as $row) {
+            $results[] = [
+                'id'    => (int) $row->id,
+                'label' => $row->nom,
+            ];
+        }
+    }
+
+    wp_send_json_success($results);
+}
+
 /**
  * AJAX handler for attestation uploads
  * Handles both club and license attestation uploads

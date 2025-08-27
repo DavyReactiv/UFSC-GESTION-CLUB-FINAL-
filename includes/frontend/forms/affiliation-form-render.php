@@ -118,30 +118,30 @@ function ufsc_render_affiliation_form($args = [])
     // Club information section
     $output .= '<fieldset class="ufsc-form-section">
         <legend>Informations du club</legend>
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
             <label for="nom">Nom du club *</label>
             <input type="text" id="nom" name="nom" required maxlength="200" value="' . ($existing_club ? esc_attr($existing_club->nom) : '') . '">
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
         </div>
-        
-        <div class="ufsc-form-field">
+
+        <div class="ufsc-form-field ufsc-full">
             <label for="description">Description du club</label>
             <textarea id="description" name="description" rows="4" maxlength="1000">' . ($existing_club ? esc_textarea($existing_club->description) : '') . '</textarea>
             <p class="ufsc-form-hint"></p>
             <span class="ufsc-form-error"></span>
         </div>
-        
-        <div class="ufsc-form-grid">
-            <div class="ufsc-form-field">
+
+        <div class="ufsc-form-grid ufsc-auto-2cols">
+            <div class="ufsc-form-field ufsc-full">
                 <label for="adresse">Adresse *</label>
                 <input type="text" id="adresse" name="adresse" required maxlength="200" value="' . ($existing_club ? esc_attr($existing_club->adresse) : '') . '">
                 <p class="ufsc-form-hint"></p>
                 <span class="ufsc-form-error"></span>
             </div>
         </div>
-        
-        <div class="ufsc-form-grid">
+
+        <div class="ufsc-form-grid ufsc-auto-2cols">
             <div class="ufsc-form-field">
                 <label for="code_postal">Code postal *</label>
                 <input type="text" id="code_postal" name="code_postal" required pattern="[0-9]{5}" maxlength="5" value="' . ($existing_club ? esc_attr($existing_club->code_postal) : '') . '">
@@ -159,7 +159,7 @@ function ufsc_render_affiliation_form($args = [])
     // Region selection
     if (!empty($regions)) {
         $selected_region = $existing_club ? $existing_club->region : '';
-        $output .= '<div class="ufsc-form-field">
+        $output .= '<div class="ufsc-form-field ufsc-full">
             <label for="region">Région UFSC *</label>
             <select id="region" name="region" required>
                 <option value="">Sélectionner une région...</option>';
@@ -180,7 +180,7 @@ function ufsc_render_affiliation_form($args = [])
     // Contact information section
     $output .= '<fieldset class="ufsc-form-section">
         <legend>Contact</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
             <div class="ufsc-form-field">
                 <label for="email">Email *</label>
                 <input type="email" id="email" name="email" required maxlength="150" value="' . ($existing_club ? esc_attr($existing_club->email) : '') . '">
@@ -194,8 +194,8 @@ function ufsc_render_affiliation_form($args = [])
                 <span class="ufsc-form-error"></span>
             </div>
         </div>
-        
-        <div class="ufsc-form-field">
+
+        <div class="ufsc-form-field ufsc-full">
             <label for="site_web">Site web</label>
             <input type="url" id="site_web" name="site_web" maxlength="200" placeholder="https://" value="' . ($existing_club ? esc_attr($existing_club->site_web) : '') . '">
             <p class="ufsc-form-hint"></p>
@@ -206,7 +206,7 @@ function ufsc_render_affiliation_form($args = [])
     // Additional information section
     $output .= '<fieldset class="ufsc-form-section">
         <legend>Informations complémentaires</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
             <div class="ufsc-form-field">
                 <label for="siret">SIRET</label>
                 <input type="text" id="siret" name="siret" maxlength="14" pattern="[0-9]{14}" value="' . ($existing_club ? esc_attr($existing_club->siret) : '') . '">
@@ -221,7 +221,7 @@ function ufsc_render_affiliation_form($args = [])
             </div>
         </div>
         
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
             <label for="activites">Activités pratiquées</label>
             <textarea id="activites" name="activites" rows="3" maxlength="500" placeholder="Décrivez les activités sportives proposées par votre club...">' . ($existing_club ? esc_textarea($existing_club->activites) : '') . '</textarea>
             <p class="ufsc-form-hint"></p>
