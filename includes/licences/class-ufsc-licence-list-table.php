@@ -37,7 +37,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
     protected function column_nom( $item ) {
         $actions = [];
 
-        if ( current_user_can( 'ufsc_manage_licences' ) ) {
+        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
             $view_url = wp_nonce_url(
                 admin_url( 'admin.php?page=ufsc_view_licence&id=' . $item['id'] ),
                 'ufsc_view_licence_' . $item['id']
@@ -49,7 +49,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
             );
         }
 
-        if ( current_user_can( 'ufsc_manage_licences' ) ) {
+        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
             $edit_url = wp_nonce_url(
                 admin_url( 'admin.php?page=ufsc-modifier-licence&licence_id=' . $item['id'] ),
                 'ufsc_edit_licence_' . $item['id']

@@ -76,6 +76,8 @@ class UFSC_Menu
                 'nonces' => [
                     'delete_licence' => wp_create_nonce('ufsc_delete_licence'),
                     'change_licence_status' => wp_create_nonce('ufsc_change_licence_status'),
+                    'validate_licence' => wp_create_nonce('ufsc_validate_licence'),
+                    'restore_licence' => wp_create_nonce('ufsc_restore_licence'),
                 ],
                 'messages' => [
                     'confirmDelete' => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
