@@ -230,6 +230,9 @@ class UFSC_Licence_List_Table extends WP_List_Table {
         $items = array_map(
             static function ($item) {
                 $item = is_object($item) ? get_object_vars($item) : $item;
+                if (isset($item['date_inscription']) && !isset($item['date_licence'])) {
+                    $item['date_licence'] = $item['date_inscription'];
+                }
                 if (isset($item['is_included']) && !isset($item['quota'])) {
                     $item['quota'] = $item['is_included'];
                 }
