@@ -32,7 +32,7 @@ function ufsc_render_licence_form($args = array()){
     $prefill = array();
     if (!empty($_GET['licence_id'])){
         global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
-        $lic_id = absint($_GET['licence_id']);
+        $lic_id = absint( wp_unslash( $_GET['licence_id'] ) );
         $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$t} WHERE id=%d AND club_id=%d", $lic_id, (int)$club->id), ARRAY_A);
         if ($row) $prefill = $row;
     }

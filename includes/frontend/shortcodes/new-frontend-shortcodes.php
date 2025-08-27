@@ -291,7 +291,7 @@ function ufsc_license_list_shortcode($atts)
 
     $club = $access_check['club'];
     $per_page = intval($atts['per_page']);
-    $current_page = isset($_GET['license_page']) ? max(1, intval($_GET['license_page'])) : 1;
+    $current_page = isset($_GET['license_page']) ? max(1, intval( wp_unslash( $_GET['license_page'] ) )) : 1;
 
     // Get license manager
     require_once plugin_dir_path(dirname(__FILE__)) . '../licences/class-licence-manager.php';
@@ -305,13 +305,13 @@ function ufsc_license_list_shortcode($atts)
     }
     
     if (!empty($_GET['license_search'])) {
-        $filters['search'] = sanitize_text_field($_GET['license_search']);
+        $filters['search'] = sanitize_text_field( wp_unslash( $_GET['license_search'] ) );
     } elseif (!empty($atts['search'])) {
         $filters['search'] = $atts['search'];
     }
 
     if (!empty($_GET['license_status']) && $_GET['license_status'] !== 'all') {
-        $filters['statut'] = sanitize_text_field($_GET['license_status']);
+        $filters['statut'] = sanitize_text_field( wp_unslash( $_GET['license_status'] ) );
     }
 
     // Get licenses with pagination

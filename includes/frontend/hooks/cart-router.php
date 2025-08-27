@@ -9,7 +9,7 @@ add_action('template_redirect', function(){
     if (empty($_GET['ufsc_pay_licence'])) return;
     if (!is_user_logged_in()) { wp_safe_redirect( wp_login_url( wc_get_checkout_url() ) ); exit; }
 
-    $licence_id = absint($_GET['ufsc_pay_licence']);
+    $licence_id = absint( wp_unslash( $_GET['ufsc_pay_licence'] ) );
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
     // Récupère la licence et le club
     $lic = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$t} WHERE id=%d", $licence_id));

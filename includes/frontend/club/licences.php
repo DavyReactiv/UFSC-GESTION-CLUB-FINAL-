@@ -59,8 +59,8 @@ function ufsc_render_club_licences_list($club){
     $club_id = (int)$club->id;
 
     // Filtres basiques GET
-    $per_page = max(10, absint($_GET['pp'] ?? 10));
-    $page     = max(1, absint($_GET['p'] ?? 1));
+    $per_page = max(10, absint( wp_unslash( $_GET['pp'] ?? 10 ) ));
+    $page     = max(1, absint( wp_unslash( $_GET['p'] ?? 1 ) ));
     $offset   = ($page - 1) * $per_page;
     $statut   = isset($_GET['statut']) ? sanitize_key($_GET['statut']) : '';
     $s        = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : '';

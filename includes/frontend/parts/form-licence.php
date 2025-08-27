@@ -9,7 +9,7 @@ $clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER
 
 // Get current values if editing
 $current_licence = isset($current_licence) ? $current_licence : null;
-$current_club_id = $current_licence ? $current_licence->club_id : (isset($_GET['club_id']) ? intval($_GET['club_id']) : 0);
+$current_club_id = $current_licence ? $current_licence->club_id : (isset($_GET['club_id']) ? intval( wp_unslash( $_GET['club_id'] ) ) : 0);
 if (!current_user_can('ufsc_manage')) {
     $current_club_id = (int) get_user_meta(get_current_user_id(), 'ufsc_club_id', true);
 }

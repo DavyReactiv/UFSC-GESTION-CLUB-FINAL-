@@ -56,9 +56,9 @@ class UFSC_Document_Manager
             return;
         }
 
-        $club_id = isset($_GET['club_id']) ? intval($_GET['club_id']) : 0;
-        $doc_type = isset($_GET['doc_type']) ? sanitize_text_field($_GET['doc_type']) : '';
-        $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field($_GET['_wpnonce']) : '';
+        $club_id = isset($_GET['club_id']) ? intval( wp_unslash( $_GET['club_id'] ) ) : 0;
+        $doc_type = isset($_GET['doc_type']) ? sanitize_text_field( wp_unslash( $_GET['doc_type'] ) ) : '';
+        $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
 
         // Verify nonce
         if (!wp_verify_nonce($nonce, 'ufsc_download_doc_' . $club_id . '_' . $doc_type)) {
