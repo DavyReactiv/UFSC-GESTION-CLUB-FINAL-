@@ -620,6 +620,21 @@ function ufsc_handle_save_club_ajax() {
 
     try {
         if ($is_edit) {
+            // Only allow club update if the user can manage all clubs or owns this club
+            if (!current_user_can('ufsc_manage') && !ufsc_verify_club_access($club_id)) {
+                ufsc_log_operation('club_save_error', [
+                    'error'    => 'unauthorized_update_attempt',
+                    'club_id'  => $club_id,
+                    'user_id'  => get_current_user_id()
+                ]);
+
+                wp_send_json_error([
+                    'message'    => __('Accès non autorisé.', 'plugin-ufsc-gestion-club-13072025'),
+                    'error_code' => 'UNAUTHORIZED'
+                ]);
+                return;
+            }
+
             $result = $club_manager->update_club($club_id, $club_data);
             $operation = 'update';
         } else {
