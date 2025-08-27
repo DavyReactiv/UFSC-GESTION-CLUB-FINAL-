@@ -13,7 +13,14 @@ if (!defined('ABSPATH')) {
 
 add_action('wp_ajax_ufsc_club_search', 'ufsc_ajax_club_search');
 function ufsc_ajax_club_search() {
+
     if (!current_user_can('ufsc_manage_own')) {
+
+    if (!check_ajax_referer('ufsc_club_search', 'nonce', false)) {
+        wp_send_json_error('Invalid nonce', 403);
+    }
+    if (!current_user_can('manage_ufsc_licenses')) {
+
         wp_send_json_error('Unauthorized', 403);
     }
 

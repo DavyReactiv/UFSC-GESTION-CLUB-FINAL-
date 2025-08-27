@@ -33,35 +33,43 @@ class UFSC_Menu
     {
         add_action('admin_menu', array($this, 'register_menus'));
         add_action('admin_init', array($this, 'register_settings'));
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        // Enqueue admin assets only when needed.
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'), 10, 0);
     }
 
     /**
-     * Enqueue admin scripts and styles
+     * Enqueue admin scripts and styles for UFSC screens.
      */
-    public function enqueue_admin_scripts($hook)
+    public function enqueue_admin_scripts()
     {
-        $licence_pages = [
-            'toplevel_page_ufsc_licenses_admin',
-            'ufsc_licenses_admin_page_ufsc_licenses_admin',
-        ];
+        $screen = get_current_screen();
 
-
-        if (in_array($hook, $licence_pages) || strpos($hook, 'ufsc_licenses_admin') !== false || strpos($hook, 'ufsc_license_add_admin') !== false) {
-            wp_enqueue_script(
-                'ufsc-licence-actions',
-                UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
-                ['jquery'],
-                UFSC_PLUGIN_VERSION,
-                true
-            );
-
-        // Load assets only on licence management screens
-        if (!in_array($hook, $licence_pages, true)) {
+        if (!$screen || strpos($screen->id, 'ufsc') === false) {
             return;
         }
 
-        // Licence actions script
+        // Styles
+        wp_enqueue_style(
+            'ufsc-admin-licences',
+            UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
+            [],
+            UFSC_PLUGIN_VERSION
+        );
+        wp_enqueue_style(
+            'ufsc-admin-ui',
+            UFSC_PLUGIN_URL . 'assets/css/ufsc-ui-admin.css',
+            [],
+            UFSC_PLUGIN_VERSION
+        );
+
+        // Scripts
+        wp_enqueue_script(
+            'ufsc-admin-ui',
+            UFSC_PLUGIN_URL . 'assets/js/ufsc-admin-ui.js',
+            [],
+            UFSC_PLUGIN_VERSION,
+            true
+        );
         wp_enqueue_script(
             'ufsc-licence-actions',
             UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
@@ -70,73 +78,23 @@ class UFSC_Menu
             true
         );
 
-
-
-            // Localize script with nonces and AJAX URL
-            
-        // Enqueue enhanced admin UI styles/scripts for UFSC screens
-        wp_enqueue_style('ufsc-admin-ui', plugins_url('../../assets/css/ufsc-admin-ui.css', __FILE__), [], '1.0.0');
-        wp_enqueue_script('ufsc-admin-ui', plugins_url('../../assets/js/ufsc-admin-ui.js', __FILE__), [], '1.0.0', true);
-    
-            wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonces' => [
-                    'delete_licence' => wp_create_nonce('ufsc_delete_licence'),
-                    'change_licence_status' => wp_create_nonce('ufsc_change_licence_status'),
-                    'validate_licence' => wp_create_nonce('ufsc_validate_licence'),
-                    'restore_licence' => wp_create_nonce('ufsc_restore_licence'),
-                ],
-                'messages' => [
-                    'confirmDelete' => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
-                    'deleteSuccess' => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                    'deleteError' => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
-                    'statusUpdateSuccess' => __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                    'statusUpdateError' => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
-                ]
-            ]);
-        }
-
-        // Licence table styles
-        wp_enqueue_style(
-            'ufsc-admin-licences',
-            UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
-            [],
-            UFSC_PLUGIN_VERSION
-        );
-
-        // Scoped admin UI enhancements
-        wp_register_style(
-            'ufsc-admin-ui',
-            UFSC_PLUGIN_URL . 'assets/css/ufsc-ui-admin.css',
-            [],
-            UFSC_PLUGIN_VERSION
-        );
-        wp_register_script(
-            'ufsc-admin-ui',
-            UFSC_PLUGIN_URL . 'assets/js/ufsc-admin-ui.js',
-            [],
-            UFSC_PLUGIN_VERSION,
-            true
-        );
-        wp_enqueue_style('ufsc-admin-ui');
-        wp_enqueue_script('ufsc-admin-ui');
-
-        // Localize script with nonces and AJAX URL
+        // Localize licence actions script.
         wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonces' => [
-                'delete_licence' => wp_create_nonce('ufsc_delete_licence'),
+                'delete_licence'        => wp_create_nonce('ufsc_delete_licence'),
                 'change_licence_status' => wp_create_nonce('ufsc_change_licence_status'),
+                'validate_licence'      => wp_create_nonce('ufsc_validate_licence'),
+                'restore_licence'       => wp_create_nonce('ufsc_restore_licence'),
             ],
             'messages' => [
-                'confirmDelete' => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
-                'deleteSuccess' => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                'deleteError' => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
-                'statusUpdateSuccess' => __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                'statusUpdateError' => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
-            ]
+                'confirmDelete'      => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
+                'deleteSuccess'      => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+                'deleteError'        => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
+                'statusUpdateSuccess'=> __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+                'statusUpdateError'  => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
+            ],
         ]);
-
     }
 
     /**
@@ -144,81 +102,66 @@ class UFSC_Menu
      */
     public function register_menus()
     {
-        // Main menu linking to licences list
         add_menu_page(
-            __('Licences UFSC', 'plugin-ufsc-gestion-club-13072025'),
-            'UFSC',
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_licenses_admin',
-            array($this, 'render_liste_licences_page'),
+            __('UFSC', 'plugin-ufsc-gestion-club-13072025'),
+            __('UFSC', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-dashboard',
+            array($this, 'render_dashboard_page'),
             'dashicons-groups',
             25
         );
 
-        // Submenu: all licences
+        // Dashboard
         add_submenu_page(
-            'ufsc_licenses_admin',
-            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
-            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_licenses_admin',
-            array($this, 'render_liste_licences_page')
-        );
-
-
-        // Submenu: add licence
-        add_submenu_page(
-            'ufsc_licenses_admin',
-            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
-            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_license_add_admin',
-            array($this, 'render_ajouter_licence_page')
-        );
-
-        // Submenu: dashboard
-        add_submenu_page(
-            'ufsc_licenses_admin',
+            'ufsc-dashboard',
             __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
             __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_dashboard',
+            'manage_ufsc',
+            'ufsc-dashboard',
             array($this, 'render_dashboard_page')
         );
 
-        // Submenu: club list
+        // Clubs
         add_submenu_page(
-            'ufsc_licenses_admin',
-            __('Liste des clubs', 'plugin-ufsc-gestion-club-13072025'),
-            __('Liste des clubs', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc-liste-clubs',
+            'ufsc-dashboard',
+            __('Tous les clubs', 'plugin-ufsc-gestion-club-13072025'),
+            __('Clubs', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-clubs',
             array($this, 'render_liste_clubs_page')
         );
 
-        // Submenu: add club
         add_submenu_page(
-            'ufsc_licenses_admin',
+            'ufsc-dashboard',
             __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
             __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc-ajouter-club',
+            'manage_ufsc',
+            'ufsc-club-add',
             array($this, 'render_ajouter_club_page')
         );
 
-        // Hidden submenu: edit licence
         add_submenu_page(
-            null,
-            __('Modifier une licence', 'plugin-ufsc-gestion-club-13072025'),
-            __('Modifier une licence', 'plugin-ufsc-gestion-club-13072025'),
-            UFSC_MANAGE_LICENSES_CAP,
-            'ufsc-modifier-licence',
-            array($this, 'render_modifier_licence_page')
-
+            'ufsc-dashboard',
+            __('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025'),
+            __('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-clubs-trash',
+            array($this, 'render_clubs_trash_page')
         );
 
-        // Add / edit licence submenu
         add_submenu_page(
+            'ufsc-dashboard',
+            __('Exporter les clubs', 'plugin-ufsc-gestion-club-13072025'),
+            __('Exporter les clubs', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-clubs-export',
+            array($this, 'render_export_clubs_page')
+        );
+
+        // Licences
+        add_submenu_page(
+
             'plugin-ufsc-gestion-club-13072025',
             'Ajouter une licence',
             'Ajouter une licence',
@@ -226,27 +169,75 @@ class UFSC_Menu
             'ufsc_license_add_admin',
             array($this, 'render_licence_add_admin_page')
 
+            'ufsc-dashboard',
+            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Licences', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc-licences',
+            array($this, 'render_liste_licences_page')
         );
 
-        // Hidden submenu: view licence details
+
         add_submenu_page(
-            null,
-            __('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'),
-            __('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'),
+            'ufsc-dashboard',
+            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
             UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_view_licence',
-            array($this, 'render_view_licence_page')
+            'ufsc-licence-add',
+            array($this, 'render_ajouter_licence_page')
         );
 
-        // Hidden submenu: licences by club
         add_submenu_page(
-            null,
-            __('Licences du club', 'plugin-ufsc-gestion-club-13072025'),
-            __('Licences du club', 'plugin-ufsc-gestion-club-13072025'),
+            'ufsc-dashboard',
+            __('Licences supprimées', 'plugin-ufsc-gestion-club-13072025'),
+            __('Licences supprimées', 'plugin-ufsc-gestion-club-13072025'),
             UFSC_MANAGE_LICENSES_CAP,
-            'ufsc_voir_licences',
-            array($this, 'render_voir_licences_page')
+            'ufsc-licences-trash',
+            array($this, 'render_licences_trash_page')
         );
+
+        add_submenu_page(
+            'ufsc-dashboard',
+            __('Exporter les licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Exporter les licences', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc-licences-export',
+            array($this, 'render_export_licences_page')
+        );
+
+        // Statistiques
+        add_submenu_page(
+            'ufsc-dashboard',
+            __('Statistiques', 'plugin-ufsc-gestion-club-13072025'),
+            __('Statistiques', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-stats',
+            array($this, 'render_stats_page')
+        );
+
+        // Settings
+        add_submenu_page(
+            'ufsc-dashboard',
+            __('Réglages', 'plugin-ufsc-gestion-club-13072025'),
+            __('Réglages', 'plugin-ufsc-gestion-club-13072025'),
+            'manage_ufsc',
+            'ufsc-settings',
+            array($this, 'render_settings_page')
+        );
+
+        // Hidden legacy slugs for backward compatibility
+        add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_dashboard', array($this, 'render_dashboard_page'));
+        add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-liste-clubs', array($this, 'render_liste_clubs_page'));
+        add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-ajouter-club', array($this, 'render_ajouter_club_page'));
+        add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_licenses_admin', array($this, 'render_liste_licences_page'));
+        add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_license_add_admin', array($this, 'render_ajouter_licence_page'));
+
+        // Hidden forms
+        add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_edit_club', array($this, 'render_edit_club_page'));
+        add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_view_club', array($this, 'render_view_club_page'));
+        add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc-modifier-licence', array($this, 'render_modifier_licence_page'));
+        add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_view_licence', array($this, 'render_view_licence_page'));
+        add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_voir_licences', array($this, 'render_voir_licences_page'));
     }
 
     /**
@@ -254,6 +245,9 @@ class UFSC_Menu
      */
     public function render_dashboard_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         $dashboard = new UFSC_Dashboard();
         $dashboard->render_dashboard();
     }
@@ -263,6 +257,9 @@ class UFSC_Menu
      */
     public function render_liste_clubs_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         // Load the advanced club list view with search, filters, and export functionality
         require_once UFSC_PLUGIN_PATH . 'includes/views/admin-club-list.php';
     }
@@ -272,6 +269,9 @@ class UFSC_Menu
      */
     public function render_ajouter_club_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         // Handle form submission
         $form_submitted = false;
         $errors = [];
@@ -893,6 +893,9 @@ class UFSC_Menu
      */
     public function render_liste_licences_page()
     {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         wp_enqueue_style(
             'ufsc-admin-licence-table-style',
             UFSC_PLUGIN_URL . 'assets/css/admin-licence-table.css',
@@ -923,10 +926,25 @@ class UFSC_Menu
     }
 
     /**
+     * Render clubs trash page
+     */
+    public function render_clubs_trash_page()
+    {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+    }
+
+    /**
      * Render export clubs page
      */
     public function render_export_clubs_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         global $wpdb;
         
         // Handle selected clubs export
@@ -1298,12 +1316,27 @@ class UFSC_Menu
     }
 
     /**
+     * Render licences trash page
+     */
+    public function render_licences_trash_page()
+    {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Licences supprimées', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+    }
+
+    /**
      * Render export licences page
      */
     public function render_export_licences_page()
     {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         global $wpdb;
-        
+
         // Enqueue the CSS and JS for enhanced filters
         wp_enqueue_style(
             'ufsc-admin-style',
@@ -1570,8 +1603,20 @@ class UFSC_Menu
             margin-top: 0;
         }
         </style>
-        
+
         <?php
+    }
+
+    /**
+     * Render statistics page
+     */
+    public function render_stats_page()
+    {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Statistiques', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
     }
 
     /**
@@ -1579,6 +1624,9 @@ class UFSC_Menu
      */
     public function render_edit_club_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
@@ -2438,6 +2486,9 @@ class UFSC_Menu
      */
     public function render_settings_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         ?>
         <div class="wrap ufsc-ui">
             <h1>
@@ -2516,6 +2567,9 @@ class UFSC_Menu
 
     public function render_ajouter_licence_page()
     {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         global $wpdb;
         
         // Load required files
@@ -2630,14 +2684,12 @@ class UFSC_Menu
      */
     public function render_modifier_licence_page()
     {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
     }
 
-    public function render_licence_add_admin_page()
-    {
-        require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
-    }
-    
     /**
      * Process license export with filters and type support
      */
@@ -2872,6 +2924,9 @@ class UFSC_Menu
      */
     public function render_view_club_page()
     {
+        if (!current_user_can('manage_ufsc')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
@@ -3769,6 +3824,9 @@ class UFSC_Menu
      */
     public function render_voir_licences_page()
     {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
         require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-filters.php';
 
         // Resolve club ID from request or current user

@@ -94,6 +94,13 @@ $action_url = admin_url('admin.php?page=ufsc_license_add_admin' . ($licence_id ?
 </div>
 
 wp_enqueue_script('jquery-ui-autocomplete');
+wp_localize_script(
+    'jquery-ui-autocomplete',
+    'ufscClubSearch',
+    [
+        'nonce' => wp_create_nonce('ufsc_club_search'),
+    ]
+);
 ?>
 <div class="wrap">
 <h1><?php echo $licence_id ? esc_html__('Modifier une licence', 'plugin-ufsc-gestion-club-13072025') : esc_html__('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
@@ -138,7 +145,7 @@ wp_enqueue_script('jquery-ui-autocomplete');
 jQuery(function($){
     $('#ufsc-club-search').autocomplete({
         source: function(request, response){
-            $.getJSON(ajaxurl, {action: 'ufsc_club_search', term: request.term}, function(res){
+            $.getJSON(ajaxurl, {action: 'ufsc_club_search', term: request.term, nonce: ufscClubSearch.nonce}, function(res){
                 if (res.success) {
                     response($.map(res.data, function(item){ return { label: item.label, value: item.label, id: item.id }; }));
                 } else {
