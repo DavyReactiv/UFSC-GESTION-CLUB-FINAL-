@@ -152,7 +152,7 @@ function ufsc_test_user_profile_enhancement()
 }
 
 // Only run tests if explicitly requested and user has admin rights
-if (isset($_GET['run_ufsc_association_test']) && current_user_can('manage_ufsc')) {
+if (isset($_GET['run_ufsc_association_test']) && current_user_can('ufsc_manage')) {
     add_action('admin_notices', function() {
         echo '<div class="notice notice-info"><div style="padding: 10px;">';
         ufsc_test_frontend_user_association();

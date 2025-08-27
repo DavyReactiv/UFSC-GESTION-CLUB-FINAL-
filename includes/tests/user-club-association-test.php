@@ -168,7 +168,7 @@ function ufsc_test_user_club_association()
 }
 
 // Run the test if we're in admin context and have proper permissions
-if (is_admin() && current_user_can('manage_ufsc')) {
+if (is_admin() && current_user_can('ufsc_manage')) {
     // Only run if specifically requested via URL parameter
     if (isset($_GET['run_user_club_test']) && $_GET['run_user_club_test'] === '1') {
         add_action('admin_notices', function() {

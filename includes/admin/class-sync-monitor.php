@@ -53,7 +53,7 @@ class UFSC_Sync_Monitor
             'ufsc_licenses_admin',
             'Synchronisation',
             'Synchronisation',
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc_sync_monitor',
             [$this, 'render_sync_monitor_page']
         );
@@ -518,7 +518,7 @@ class UFSC_Sync_Monitor
             return;
         }
         
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             wp_send_json_error('Insufficient permissions');
             return;
         }
@@ -537,7 +537,7 @@ class UFSC_Sync_Monitor
             return;
         }
         
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             wp_send_json_error(['message' => 'Insufficient permissions']);
             return;
         }

@@ -94,7 +94,7 @@ function test_ufsc_admin_settings() {
  * Display test results
  */
 function display_ufsc_admin_settings_test_results() {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
     
@@ -129,7 +129,7 @@ if (WP_DEBUG && is_admin()) {
     
     // Add a test link for admins
     add_action('admin_bar_menu', function($wp_admin_bar) {
-        if (current_user_can('manage_ufsc')) {
+        if (current_user_can('ufsc_manage')) {
             $wp_admin_bar->add_node([
                 'id' => 'ufsc_test_admin_settings',
                 'title' => 'Test UFSC Admin Settings',

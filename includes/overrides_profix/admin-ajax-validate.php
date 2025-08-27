@@ -9,7 +9,7 @@ function ufsc__maybe_check_nonce(){
     return true;
 }
 
-function ufsc__can_manage(){ return current_user_can('manage_ufsc_licenses')||current_user_can('manage_options')||current_user_can('edit_posts'); }
+function ufsc__can_manage(){ return current_user_can('ufsc_manage_own')||current_user_can('manage_options')||current_user_can('edit_posts'); }
 function ufsc__licences_table_and_status_col(){ global $wpdb; $t=$wpdb->prefix.'ufsc_licences'; $col=$wpdb->get_var($wpdb->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s AND COLUMN_NAME IN ('statut','status') LIMIT 1",$t)); if(!$col)$col='statut'; return array($t,$col); }
 function ufsc__set_status_fallback($id,$st){ global $wpdb; list($t,$c)=ufsc__licences_table_and_status_col(); $ok=$wpdb->update($t, array($c=>$st), array('id'=>(int)$id), array('%s'), array('%d')); return ($ok!==false); }
 function ufsc__set_status($id,$st,&$why=''){ if(!class_exists('UFSC_Licence_Manager')){ $f=dirname(__DIR__).'/licences/class-licence-manager.php'; if(file_exists($f)) require_once $f; }

@@ -265,7 +265,7 @@ class UFSC_Database_Schema_Test
 if (defined('WP_DEBUG') && WP_DEBUG) {
     add_action('wp_loaded', function() {
         // Check user capabilities only after WordPress is fully loaded
-        if (isset($_GET['run_ufsc_schema_tests']) && ufsc_safe_current_user_can('manage_ufsc')) {
+        if (isset($_GET['run_ufsc_schema_tests']) && ufsc_safe_current_user_can('ufsc_manage')) {
             // Trigger table creation first
             if (isset($_GET['create_tables'])) {
                 UFSC_Database_Schema_Test::trigger_table_creation();

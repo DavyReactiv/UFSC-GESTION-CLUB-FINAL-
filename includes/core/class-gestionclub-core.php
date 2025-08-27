@@ -50,7 +50,7 @@ class UFSC_GestionClub_Core
         add_menu_page(
             __('UFSC Clubs', 'plugin-ufsc-gestion-club-13072025'),
             __('UFSC Clubs', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-dashboard',
             [self::class, 'render_admin_page'],
             'dashicons-groups',
@@ -62,7 +62,7 @@ class UFSC_GestionClub_Core
             'ufsc-dashboard',
             __('Clubs affiliés', 'plugin-ufsc-gestion-club-13072025'),
             __('Clubs affiliés', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-clubs',
             [self::class, 'render_club_list_page']
         );
@@ -72,7 +72,7 @@ class UFSC_GestionClub_Core
             'ufsc-dashboard',
             __('Nouvelle Affiliation', 'plugin-ufsc-gestion-club-13072025'),
             __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-ajouter-club',
             [self::class, 'render_add_club_page']
         );
@@ -84,7 +84,7 @@ class UFSC_GestionClub_Core
             'ufsc-dashboard',
             __('Paramètres', 'plugin-ufsc-gestion-club-13072025'),
             __('Paramètres', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-settings',
             [self::class, 'render_settings_page']
         );

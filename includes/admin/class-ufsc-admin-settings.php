@@ -39,7 +39,7 @@ class UFSC_Admin_Settings {
         $this->hook_suffix = add_options_page(
             __('Paramètres UFSC', 'plugin-ufsc-gestion-club-13072025'),
             __('UFSC', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-settings',
             array($this, 'render_settings_page')
         );
@@ -260,7 +260,7 @@ class UFSC_Admin_Settings {
      * Render settings page
      */
     public function render_settings_page() {
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             wp_die(__('Vous n\'avez pas les permissions suffisantes pour accéder à cette page.'));
         }
         ?>

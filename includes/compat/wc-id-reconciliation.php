@@ -70,7 +70,7 @@ function ufsc_reconcile_wc_product_ids() {
     // Show admin notice if corrections were made
     if (!empty($corrections_made)) {
         add_action('admin_notices', function() use ($corrections_made) {
-            if (current_user_can('manage_ufsc')) {
+            if (current_user_can('ufsc_manage')) {
                 echo '<div class="notice notice-info is-dismissible">';
                 echo '<p><strong>Plugin UFSC:</strong> Configuration des produits WooCommerce automatiquement synchronisée :</p>';
                 echo '<ul>';

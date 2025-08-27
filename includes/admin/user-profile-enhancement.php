@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 function ufsc_init_user_profile_hooks()
 {
     // Only add hooks if user has admin capabilities
-    if (current_user_can('manage_ufsc')) {
+    if (current_user_can('ufsc_manage')) {
         add_action('show_user_profile', 'ufsc_add_club_field_to_user_profile');
         add_action('edit_user_profile', 'ufsc_add_club_field_to_user_profile');
         add_action('personal_options_update', 'ufsc_save_user_club_association');
@@ -32,7 +32,7 @@ function ufsc_init_user_profile_hooks()
 function ufsc_add_club_field_to_user_profile($user)
 {
     // Only show for admins
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
 
@@ -93,7 +93,7 @@ function ufsc_add_club_field_to_user_profile($user)
 function ufsc_save_user_club_association($user_id)
 {
     // Security checks
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
 

@@ -90,7 +90,7 @@ class UFSC_Document_Manager
     private function can_access_document($club_id, $doc_type)
     {
         // Admin always has access
-        if (current_user_can('manage_ufsc')) {
+        if (current_user_can('ufsc_manage')) {
             return true;
         }
 
@@ -263,7 +263,7 @@ class UFSC_Document_Manager
     public function validate_club()
     {
         // Check permissions
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             wp_send_json_error('Accès non autorisé.');
         }
 

@@ -18,7 +18,7 @@ class UFSC_Pack_Exports_Admin {
             'ufsc_licenses_admin', // register under UFSC menu
             __('Réglages Packs & Exports', 'plugin-ufsc-gestion-club-13072025'),
             __('Réglages & Exports', 'plugin-ufsc-gestion-club-13072025'),
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-pack-exports',
             array($this, 'render_page')
         );
@@ -53,7 +53,7 @@ class UFSC_Pack_Exports_Admin {
     }
 
     public function export_controls() {
-        if (!current_user_can('manage_ufsc')) return;
+        if (!current_user_can('ufsc_manage')) return;
         $nonce = wp_create_nonce('ufsc_export_csv');
         ?>
         <h4><?php esc_html_e('Clubs', 'plugin-ufsc-gestion-club-13072025'); ?></h4>
@@ -108,7 +108,7 @@ class UFSC_Pack_Exports_Admin {
     }
 
     public function render_page() {
-        if (!current_user_can('manage_ufsc')) wp_die(__('Unauthorized', 'plugin-ufsc-gestion-club-13072025'));
+        if (!current_user_can('ufsc_manage')) wp_die(__('Unauthorized', 'plugin-ufsc-gestion-club-13072025'));
         ?>
         <div class="wrap ufsc-ui">
             <h1><?php esc_html_e('Réglages Packs & Exports', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
@@ -142,7 +142,7 @@ class UFSC_Pack_Exports_Admin {
     }
 
     public function export_clubs_csv() {
-        if (!current_user_can('manage_ufsc')) wp_die('Forbidden');
+        if (!current_user_can('ufsc_manage')) wp_die('Forbidden');
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (!wp_verify_nonce($nonce, 'ufsc_export_csv')) wp_die('Bad nonce');
         $fields = isset($_POST['fields']) ? array_map('sanitize_key', (array) $_POST['fields']) : array();
@@ -157,7 +157,7 @@ class UFSC_Pack_Exports_Admin {
     }
 
     public function export_licences_csv() {
-        if (!current_user_can('manage_ufsc')) wp_die('Forbidden');
+        if (!current_user_can('ufsc_manage')) wp_die('Forbidden');
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (!wp_verify_nonce($nonce, 'ufsc_export_csv')) wp_die('Bad nonce');
         $fields = isset($_POST['fields']) ? array_map('sanitize_key', (array) $_POST['fields']) : array();

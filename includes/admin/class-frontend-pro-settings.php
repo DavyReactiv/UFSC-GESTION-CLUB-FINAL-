@@ -27,7 +27,7 @@ class UFSC_Frontend_Pro_Settings {
             'ufsc-gestion-club',
             'Frontend Pro',
             'Frontend Pro',
-            'manage_ufsc',
+            'ufsc_manage',
             'ufsc-frontend-pro',
             [__CLASS__, 'settings_page']
         );

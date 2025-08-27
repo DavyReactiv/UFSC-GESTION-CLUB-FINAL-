@@ -113,7 +113,7 @@ function ufsc_validate_database_schema() {
  * Display validation results
  */
 function ufsc_display_validation_results() {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_die('Access denied');
     }
     

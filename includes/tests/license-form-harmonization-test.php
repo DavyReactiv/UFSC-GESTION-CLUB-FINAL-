@@ -202,7 +202,7 @@ function ufsc_test_license_form_harmonization() {
 }
 
 // Add test to admin menu if running in admin context
-if (is_admin() && current_user_can('manage_ufsc')) {
+if (is_admin() && current_user_can('ufsc_manage')) {
     add_action('admin_menu', function() {
         add_submenu_page(
             'ufsc-gestion-club',
