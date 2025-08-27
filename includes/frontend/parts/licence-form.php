@@ -230,6 +230,7 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
         
         <div class="ufsc-card-body">
             <form method="post" class="ufsc-form ufsc-licence-form">
+                <div id="ufsc-form-status" class="ufsc-form-status" role="status" aria-live="polite"></div>
                 <?php wp_nonce_field('ufsc_add_licence_front', 'ufsc_add_licence_front_nonce'); ?>
                 
                 <div class="ufsc-form-section">
@@ -263,10 +264,6 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
                             <label for="date_naissance">Date de naissance <span class="ufsc-form-required">*</span></label>
                             <input type="date" name="date_naissance" id="date_naissance" required class="ufsc-form-input"
                                    value="<?php echo isset($_POST['date_naissance']) ? esc_attr($_POST['date_naissance']) : ''; ?>">
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="ufsc-form-section">
                     <h4 class="ufsc-form-section-title">Contact</h4>
                     
@@ -553,3 +550,36 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.ufsc-licence-form');
+    if (!form) return;
+    const statusEl = document.getElementById('ufsc-form-status');
+    const controls = form.querySelectorAll('input, select, textarea, button');
+    const setState = (state, message = '') => {
+        form.dataset.state = state;
+        if (statusEl) statusEl.textContent = message;
+        if (state === 'loading' || state === 'disabled') {
+            controls.forEach(el => el.setAttribute('disabled', 'disabled'));
+        } else {
+            controls.forEach(el => el.removeAttribute('disabled'));
+        }
+    };
+    const quotaExceeded = document.querySelector('.ufsc-quota-message.ufsc-quota-exceeded');
+    if (quotaExceeded) {
+        setState('disabled', quotaExceeded.textContent.trim());
+        return;
+    }
+    form.addEventListener('submit', function () {
+        setState('loading', 'Envoi en cours...');
+    });
+    const success = document.querySelector('.ufsc-alert-success');
+    const error = document.querySelector('.ufsc-alert-error');
+    if (success) {
+        setState('success', success.querySelector('p')?.textContent.trim() || '');
+    }
+    if (error) {
+        setState('error', error.querySelector('p')?.textContent.trim() || '');
+    }
+});
+</script>

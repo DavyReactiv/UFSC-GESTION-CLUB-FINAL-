@@ -4,11 +4,19 @@
 
 /* Palette et variables globales */
 :root {
-  --ufsc-color-primary: #2e2d54;
-  --ufsc-color-accent: #d40000;
-  --ufsc-color-bg-light: #f5f5f5;
+  /* Design tokens */
+  --ufsc-bg: #f5f5f5;
+  --ufsc-surface: #ffffff;
+  --ufsc-ink: #333333;
+  --ufsc-brand: #2e2d54;
+  --ufsc-brand-accent: #d40000;
+
+  /* Couleurs dérivées */
+  --ufsc-color-primary: var(--ufsc-brand);
+  --ufsc-color-accent: var(--ufsc-brand-accent);
+  --ufsc-color-bg-light: var(--ufsc-bg);
   --ufsc-color-border: #e0e0e0;
-  --ufsc-color-text: #333333;
+  --ufsc-color-text: var(--ufsc-ink);
   --ufsc-color-muted: #666666;
   --ufsc-color-success: #46b450;
   --ufsc-color-warning: #ffb900;
@@ -16,12 +24,13 @@
   --ufsc-transition: all 0.3s ease;
   --ufsc-font-size-base: clamp(1rem, 0.5vw + 1rem, 1.125rem);
   --ufsc-spacing-base: 1rem;
+
   /* Variables héritées pour compatibilité */
-  --ufsc-navy: var(--ufsc-color-primary);
-  --ufsc-red: var(--ufsc-color-accent);
-  --ufsc-light-gray: var(--ufsc-color-bg-light);
+  --ufsc-navy: var(--ufsc-brand);
+  --ufsc-red: var(--ufsc-brand-accent);
+  --ufsc-light-gray: var(--ufsc-bg);
   --ufsc-border: var(--ufsc-color-border);
-  --ufsc-text: var(--ufsc-color-text);
+  --ufsc-text: var(--ufsc-ink);
   --ufsc-success: var(--ufsc-color-success);
   --ufsc-warning: var(--ufsc-color-warning);
 }
@@ -52,11 +61,12 @@ html {
 }
 
 .ufsc-card {
-  background: #fff;
+  background: var(--ufsc-surface);
   border-radius: 8px;
   box-shadow: var(--ufsc-shadow);
   margin-bottom: 25px;
   overflow: hidden;
+  color: var(--ufsc-text);
 }
 
 .ufsc-card-header {
@@ -172,15 +182,20 @@ html {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
+  background: var(--ufsc-surface);
+  color: var(--ufsc-text);
 }
 
-.ufsc-table th {
+.ufsc-table thead th {
   background: var(--ufsc-navy);
-  color: white;
+  color: var(--ufsc-surface);
   padding: 12px;
   text-align: left;
   font-weight: 600;
   font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .ufsc-table td {
@@ -189,12 +204,43 @@ html {
   font-size: 14px;
 }
 
-.ufsc-table tr:hover {
+.ufsc-table tbody tr:nth-child(odd) {
+  background-color: var(--ufsc-surface);
+}
+
+.ufsc-table tbody tr:nth-child(even) {
   background-color: var(--ufsc-light-gray);
 }
 
-.ufsc-table tr:nth-child(even) {
-  background-color: #fafafa;
+.ufsc-table tbody tr:hover {
+  background-color: var(--ufsc-color-bg-light);
+  transition: background-color 0.3s ease;
+}
+
+.ufsc-table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.ufsc-table-responsive::before,
+.ufsc-table-responsive::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ufsc-table-responsive::before {
+  left: 0;
+  background: linear-gradient(to right, var(--ufsc-surface), rgba(255,255,255,0));
+}
+
+.ufsc-table-responsive::after {
+  right: 0;
+  background: linear-gradient(to left, var(--ufsc-surface), rgba(255,255,255,0));
 }
 
 /* ===== BADGES ===== */

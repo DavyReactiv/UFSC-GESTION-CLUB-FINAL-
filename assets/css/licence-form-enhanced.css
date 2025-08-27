@@ -73,6 +73,29 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    font-size: clamp(1rem, 0.25vw + 1rem, 1.125rem);
+    line-height: 1.5;
+}
+
+.ufsc-form-status {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.ufsc-licence-form[data-state="loading"] .ufsc-form-status {
+    color: var(--ufsc-navy);
+}
+
+.ufsc-licence-form[data-state="success"] .ufsc-form-status {
+    color: var(--ufsc-success);
+}
+
+.ufsc-licence-form[data-state="error"] .ufsc-form-status {
+    color: var(--ufsc-red);
+}
+
+.ufsc-licence-form[data-state="disabled"] .ufsc-form-status {
+    color: var(--ufsc-border);
 }
 
 .ufsc-form-section {
@@ -101,14 +124,26 @@
 /* Grid Layouts */
 .ufsc-form-grid-2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .ufsc-form-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .ufsc-form-grid-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .ufsc-form-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 /* Form Fields */
@@ -120,8 +155,8 @@
 
 .ufsc-form-field label {
     font-weight: 600;
-    color: #333;
-    font-size: 14px;
+    color: #111827;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 5px;
@@ -136,9 +171,10 @@
 .ufsc-form-select,
 .ufsc-form-textarea {
     padding: 12px 16px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid #9ca3af;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 1rem;
+    min-height: 44px;
     transition: all 0.2s ease;
     background: white;
 }
@@ -149,6 +185,13 @@
     outline: none;
     border-color: var(--ufsc-navy);
     box-shadow: 0 0 0 3px rgba(52, 73, 137, 0.1);
+}
+
+.ufsc-form-input:focus-visible,
+.ufsc-form-select:focus-visible,
+.ufsc-form-textarea:focus-visible {
+    outline: 2px solid var(--ufsc-navy);
+    outline-offset: 2px;
 }
 
 .ufsc-form-input:invalid,
