@@ -74,7 +74,8 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
 
 
     protected function column_cb( $item ) {
-        return sprintf( '<input type="checkbox" name="licence_ids[]" value="%d" />', $item['id'] );
+        $checkbox = sprintf( '<input type="checkbox" name="licence_ids[]" value="%d" />', $item['id'] );
+        $actions  = [];
 
         if ( current_user_can( 'manage_ufsc_licenses' ) ) {
             $view_url = wp_nonce_url(
@@ -131,9 +132,10 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         }
 
 
-        $nom = esc_html( $item['nom'] );
+        $nom       = esc_html( $item['nom'] );
         $name_html = '<span class="ufsc-text-ellipsis" title="' . esc_attr( $item['nom'] ) . '">' . $nom . '</span>';
-        return sprintf( '%1$s %2$s', $name_html, $this->row_actions( $actions ) );
+
+        return sprintf( '%1$s %2$s %3$s', $checkbox, $name_html, $this->row_actions( $actions ) );
     }
 
     protected function column_prenom( $item ) {
@@ -410,6 +412,17 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         $label  = ucfirst( $status );
 
 
+
+        if ( in_array( $status, [ 'validee', 'validée', 'active', 'actif' ], true ) ) {
+            $class = 'ufsc-badge ufsc-badge-success';
+            $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
+        } elseif ( in_array( $status, [ 'refusee', 'refusée', 'inactif' ], true ) ) {
+            $class = 'ufsc-badge ufsc-badge-error';
+            $label = __( 'Refusée', 'plugin-ufsc-gestion-club-13072025' );
+        } elseif ( in_array( $status, [ 'en attente', 'en_attente', 'pending' ], true ) ) {
+            $class = 'ufsc-badge ufsc-badge-warning';
+            $label = __( 'En attente', 'plugin-ufsc-gestion-club-13072025' );
+
         if ( in_array( $status, ['validee', 'validée', 'active', 'actif'], true ) ) {
             $class = 'ufsc-badge ufsc-badge--ok';
             $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
@@ -422,6 +435,7 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         } elseif ( in_array( $status, ['expiree', 'expirée', 'expired'], true ) ) {
             $class = 'ufsc-badge ufsc-badge--expired';
             $label = __( 'Expirée', 'plugin-ufsc-gestion-club-13072025' );
+
         } elseif ( 'trash' === $status ) {
             $class = 'ufsc-badge ufsc-badge-default';
             $label = __( 'Corbeille', 'plugin-ufsc-gestion-club-13072025' );
