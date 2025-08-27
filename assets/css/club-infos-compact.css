@@ -8,6 +8,21 @@
 .ufsc-card .ufsc-card-body th, .ufsc-card .ufsc-card-body td { font-size: 13px; line-height: 1.25; padding: 6px 8px; }
 .ufsc-card .ufsc-card-body th { white-space: nowrap; color: #6b7280; font-weight: 600; }
 
+/* Profil du club en grille responsive */
+.ufsc-profile-grid.ufsc-grid-table {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 6px 12px;
+}
+.ufsc-profile-grid.ufsc-grid-table tr {
+  display: contents;
+}
+@media (max-width: 600px) {
+  .ufsc-profile-grid.ufsc-grid-table {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Grille fluide pour documents */
 .ufsc-docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
 .ufsc-doc-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; }
