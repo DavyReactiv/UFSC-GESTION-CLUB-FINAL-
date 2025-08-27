@@ -97,9 +97,6 @@
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_add_licence_to_cart'});
     payload.push({name:'_ajax_nonce', value:(UFSC && UFSC.frontNonce) || ''});
-    if (window.UFSC && UFSC.nonces && UFSC.nonces.add_licence_to_cart) {
-      payload.push({name:'_ufsc_licence_nonce', value:UFSC.nonces.add_licence_to_cart});
-    }
 
     $.post(ajaxUrl, payload).done(function(res){
       if(res && res.success){
@@ -122,19 +119,14 @@
       var $b = $(this);
       var id = $b.data('licenceId') || $b.data('licence-id');
       if(!id) return;
-      var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
-      var nonce = (UFSC && (UFSC.frontNonce || (UFSC.nonces && UFSC.nonces.add_to_cart))) || '';
-      lock($b, 'Ajout…');
-      $.post(ajaxUrl, {
-        action: 'ufsc_add_to_cart',
-        licence_id: id,
-        club_id: club,
-
-        _ajax_nonce: nonce
-
-        _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
-
-      }).done(function(res){
+        var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
+        lock($b, 'Ajout…');
+        $.post(ajaxUrl, {
+          action: 'ufsc_add_to_cart',
+          licence_id: id,
+          club_id: club,
+          _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
+        }).done(function(res){
         if(res && res.success){
           var msg = (UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.';
           if (typeof ufscToast === 'function') {
