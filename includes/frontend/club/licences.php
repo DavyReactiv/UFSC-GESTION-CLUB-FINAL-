@@ -34,7 +34,7 @@ function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url,
       <a class="button button-secondary" title="<?php esc_attr_e('Modifier','plugin-ufsc-gestion-club-13072025'); ?>" href="<?php echo esc_url($edit_url); ?>"><?php _e('Modifier','plugin-ufsc-gestion-club-13072025'); ?></a>
       <?php if ($statut === 'brouillon'): ?>
         <button type="button" class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$id; ?>"><?php _e('Supprimer','plugin-ufsc-gestion-club-13072025'); ?></button>
-        <?php if (!in_array($payment_status, ['paid','completed'], true)): ?>
+        <?php if (!ufsc_is_payment_paid($payment_status)): ?>
         <button type="button" class="button button-primary ufsc-add-to-cart"
           data-licence-id="<?php echo (int)$id; ?>"
           data-nonce="<?php echo esc_attr($nonce); ?>"><?php _e('Envoyer au panier','plugin-ufsc-gestion-club-13072025'); ?></button>

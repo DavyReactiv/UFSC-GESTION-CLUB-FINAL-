@@ -257,15 +257,20 @@ ufsc_register_license_status_hooks();
  * @param string $payment_status Payment status
  * @return string HTML badge
  */
+function ufsc_is_payment_paid($payment_status)
+{
+    return in_array($payment_status, ['paid', 'completed'], true);
+}
+
 function ufsc_get_payment_badge($payment_status)
 {
-    $is_paid = in_array($payment_status, ['paid', 'completed'], true);
+    $is_paid = ufsc_is_payment_paid($payment_status);
     $class   = $is_paid ? 'ufsc-badge-paid' : 'ufsc-badge-unpaid';
     $label   = $is_paid
-        ? __('Payée', 'plugin-ufsc-gestion-club-13072025')
-        : __('Non payée', 'plugin-ufsc-gestion-club-13072025');
+        ? esc_html__('Payée', 'plugin-ufsc-gestion-club-13072025')
+        : esc_html__('Non payée', 'plugin-ufsc-gestion-club-13072025');
 
-    return '<span class="ufsc-badge ' . esc_attr($class) . '">' . esc_html($label) . '</span>';
+    return '<span class="ufsc-badge ' . esc_attr($class) . '">' . $label . '</span>';
 }
 
 /**
