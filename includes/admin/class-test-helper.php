@@ -50,7 +50,7 @@ class UFSC_Test_Helper
     public function test_document_system()
     {
         // Check permissions
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             wp_send_json_error('Accès non autorisé.');
         }
 
@@ -223,7 +223,7 @@ class UFSC_Test_Helper
      */
     public function create_test_club()
     {
-        if (!current_user_can('manage_ufsc')) {
+        if (!current_user_can('ufsc_manage')) {
             return false;
         }
 

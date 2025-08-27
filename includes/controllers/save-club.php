@@ -47,7 +47,7 @@ function ufsc_handle_club_submission()
     }
 
     // WordPress user association handling
-    if (is_admin() && current_user_can('manage_ufsc')) {
+    if (is_admin() && current_user_can('ufsc_manage')) {
         // Admin - handle direct responsable_id assignment
         $responsable_id = isset($_POST['responsable_id']) ? intval(wp_unslash($_POST['responsable_id'])) : 0;
         

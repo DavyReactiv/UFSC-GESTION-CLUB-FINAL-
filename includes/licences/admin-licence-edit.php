@@ -15,7 +15,7 @@ if (!$licence_id) {
     return;
 }
 
-if (!current_user_can('ufsc_manage_licences')) {
+if (!current_user_can('ufsc_manage_own')) {
     wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
 }
 

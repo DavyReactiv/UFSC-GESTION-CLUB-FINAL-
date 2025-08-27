@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 }
 
 function ufsc_run_sync_tests() {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return 'Permission denied';
     }
 
@@ -50,7 +50,7 @@ function ufsc_run_sync_tests() {
 
 // Add a admin notice to show test results when on admin pages
 add_action('admin_notices', function() {
-    if (isset($_GET['ufsc_run_tests']) && current_user_can('manage_ufsc')) {
+    if (isset($_GET['ufsc_run_tests']) && current_user_can('ufsc_manage')) {
         $results = ufsc_run_sync_tests();
         echo '<div class="notice notice-info"><p><strong>UFSC Sync Test Results:</strong></p>';
         echo '<pre>' . print_r($results, true) . '</pre></div>';

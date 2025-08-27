@@ -32,7 +32,7 @@ function ufsc_uninstall_cleanup() {
     global $wpdb;
     
     // Security: Only proceed if user has manage_options capability
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
     

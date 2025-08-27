@@ -214,7 +214,7 @@ class UFSC_Director_Fields_Test
 if (defined('WP_DEBUG') && WP_DEBUG) {
     add_action('wp_loaded', function() {
         // Check user capabilities only after WordPress is fully loaded
-        if (isset($_GET['run_ufsc_director_tests']) && ufsc_safe_current_user_can('manage_ufsc')) {
+        if (isset($_GET['run_ufsc_director_tests']) && ufsc_safe_current_user_can('ufsc_manage')) {
             $results = UFSC_Director_Fields_Test::run_tests();
             UFSC_Director_Fields_Test::display_results($results);
             exit;

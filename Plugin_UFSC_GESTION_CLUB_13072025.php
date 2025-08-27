@@ -36,15 +36,29 @@ if (!function_exists('ufsc_add_caps_on_activate')) {
     function ufsc_add_caps_on_activate() {
         $role = get_role('administrator');
         if ($role) {
-
-            foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licences','manage_ufsc_licenses'] as $cap) {
-
+            foreach (['ufsc_manage', 'ufsc_manage_own'] as $cap) {
                 $role->add_cap($cap);
             }
         }
     }
 }
 register_activation_hook(__FILE__, 'ufsc_add_caps_on_activate');
+// Map legacy capabilities to new ones for backward compatibility
+add_filter('user_has_cap', 'ufsc_map_legacy_caps', 10, 3);
+function ufsc_map_legacy_caps($allcaps, $caps, $args) {
+    $map = [
+        'manage_ufsc'          => 'ufsc_manage',
+        'manage_ufsc_clubs'    => 'ufsc_manage_own',
+        'manage_ufsc_licenses' => 'ufsc_manage_own',
+        'manage_ufsc_licences' => 'ufsc_manage_own',
+    ];
+    foreach ($map as $old => $new) {
+        if (isset($allcaps[$new])) {
+            $allcaps[$old] = $allcaps[$new];
+        }
+    }
+    return $allcaps;
+}
 define('UFSC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('UFSC_PLUGIN_MAIN_FILE', __FILE__);
 if (!defined('UFSC_LICENCE_PRODUCT_ID')) {
@@ -314,7 +328,7 @@ function ufsc_handle_delete_club() {
     }
     
     // Check permissions
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
         return;
     }
@@ -349,7 +363,7 @@ function ufsc_handle_delete_licence() {
     // Verify nonce first
     check_ajax_referer('ufsc_delete_licence', 'nonce');
 
-    if (!current_user_can('manage_ufsc_licenses')) {
+    if (!current_user_can('ufsc_manage_own')) {
         wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
 
@@ -375,7 +389,7 @@ add_action('wp_ajax_ufsc_restore_licence', 'ufsc_handle_restore_licence');
 function ufsc_handle_restore_licence() {
     check_ajax_referer('ufsc_restore_licence', 'nonce');
 
-    if (!current_user_can('manage_ufsc_licenses')) {
+    if (!current_user_can('ufsc_manage_own')) {
         wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
 
@@ -402,7 +416,7 @@ function ufsc_handle_change_licence_status() {
     // Verify nonce first
     check_ajax_referer('ufsc_change_licence_status', 'nonce');
 
-    if (!current_user_can('manage_ufsc_licenses')) {
+    if (!current_user_can('ufsc_manage_own')) {
         wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
 
@@ -463,7 +477,7 @@ if (!function_exists('ufsc_handle_validate_licence')) {
             wp_send_json_error(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'), 403);
         }
 
-        if (!current_user_can('manage_ufsc_licenses')) {
+        if (!current_user_can('ufsc_manage_own')) {
             wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
         }
         
@@ -522,7 +536,7 @@ function ufsc_handle_reject_licence() {
         wp_send_json_error(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
 
-    if (!current_user_can('manage_ufsc_licenses')) {
+    if (!current_user_can('ufsc_manage_own')) {
         wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
 
@@ -715,7 +729,7 @@ function ufsc_handle_get_club_data() {
 add_action('wp_ajax_ufsc_get_clubs_list', 'ufsc_handle_get_clubs_list');
 function ufsc_handle_get_clubs_list() {
     // Check permissions
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_send_json_error(['message' => 'Insufficient permissions']);
         return;
     }
@@ -1186,7 +1200,7 @@ register_deactivation_hook(__FILE__, 'ufsc_gestion_club_deactivate');
  */
 function ufsc_show_debug_info()
 {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
 
@@ -1307,7 +1321,7 @@ function ufsc_validate_club_data($post_data) {
         }
 
         // Admin fields (if user has permission)
-        if (current_user_can('manage_ufsc')) {
+        if (current_user_can('ufsc_manage')) {
             if (isset($post_data['statut'])) {
                 $clean_data['statut'] = sanitize_text_field($post_data['statut']);
             }
@@ -1414,7 +1428,7 @@ function ufsc_handle_club_file_uploads($club_id, $files) {
 function ufsc_handle_licence_attestation_admin_download() {
     // Check permissions
 
-    if (!current_user_can('manage_ufsc_licenses')) {
+    if (!current_user_can('ufsc_manage_own')) {
 
         wp_die('Permissions insuffisantes', 'Erreur', ['response' => 403]);
     }
@@ -1575,7 +1589,7 @@ function ufsc_handle_upload_club_attestation() {
     check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
 
     // Check permissions
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
 
@@ -1706,7 +1720,7 @@ function ufsc_handle_delete_club_attestation() {
     check_ajax_referer('ufsc_delete_club_attestation', 'nonce');
 
     // Check permissions
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
 
@@ -1732,7 +1746,7 @@ function ufsc_handle_attach_existing_club_attestation() {
     check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
 
     // Check permissions
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
 
@@ -1950,7 +1964,7 @@ function ufsc_handle_licence_attestation_download() {
 
     // Check if user can access this license (club owner or admin)
 
-    if (!current_user_can('manage_ufsc_licenses') && !ufsc_verify_club_access($licence->club_id)) {
+    if (!current_user_can('ufsc_manage_own') && !ufsc_verify_club_access($licence->club_id)) {
 
         wp_die('Accès refusé à cette licence', 'Erreur', ['response' => 403]);
     }
@@ -2085,7 +2099,7 @@ function ufsc_handle_save_licence_draft(){
 
     // Verify that the current user has rights on the target club
 
-    if (!current_user_can('manage_ufsc_licenses') && !ufsc_verify_club_access($club_id)) {
+    if (!current_user_can('ufsc_manage_own') && !ufsc_verify_club_access($club_id)) {
 
         wp_send_json_error([
             'message' => __('Vous n\'avez pas les droits nécessaires pour ce club.','plugin-ufsc-gestion-club-13072025')
@@ -2286,7 +2300,7 @@ add_action('admin_init', function (){
     $role = get_role('administrator');
     if ($role) {
 
-        foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licences','manage_ufsc_licenses'] as $cap) {
+        foreach (['ufsc_manage', 'ufsc_manage_own'] as $cap) {
 
             if (!$role->has_cap($cap)) { $role->add_cap($cap); }
         }
@@ -2534,7 +2548,7 @@ if ( defined('ABSPATH') ) { require_once __DIR__ . '/includes/overrides_profix/_
  */
 function ufsc_admin_post_delete_licence() {
 
-    if ( ! current_user_can('manage_ufsc_licenses') ) {
+    if ( ! current_user_can('ufsc_manage_own') ) {
 
         wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
     }
@@ -2567,7 +2581,7 @@ add_action('admin_post_ufsc_delete_licence', 'ufsc_admin_post_delete_licence');
  */
 function ufsc_admin_post_reassign_licence() {
 
-    if ( ! current_user_can('manage_ufsc_licenses') ) {
+    if ( ! current_user_can('ufsc_manage_own') ) {
 
         wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
     }

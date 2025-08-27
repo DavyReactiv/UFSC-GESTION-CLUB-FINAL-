@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (!current_user_can('manage_ufsc_licenses')) {
+if (!current_user_can('ufsc_manage_own')) {
     wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
 }
 
@@ -64,7 +64,7 @@ function ufsc_get_club_name($club_id) {
 
 $action_url = admin_url('admin.php?page=ufsc_license_add_admin' . ($licence_id ? '&licence_id=' . $licence_id : ''));
 
-
+?>
 <div class="wrap ufsc-ui">
     <h1><?php echo esc_html("Ajouter une licence" . ($club && $club_id ? " pour le club « {$club->nom} »" : "")); ?></h1>
 

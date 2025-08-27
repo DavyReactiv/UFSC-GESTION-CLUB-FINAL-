@@ -221,7 +221,7 @@ class UFSC_License_Validation_Test
 // Run tests if accessed directly (in debug mode)
 if (WP_DEBUG && isset($_GET['test']) && $_GET['test'] === 'license_validation') {
     add_action('wp_loaded', function() {
-        if (current_user_can('manage_ufsc')) {
+        if (current_user_can('ufsc_manage')) {
             $test = new UFSC_License_Validation_Test();
             $test->run_tests();
         }

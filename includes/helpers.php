@@ -394,7 +394,7 @@ function ufsc_generate_safe_navigation_button($page_type, $button_text, $button_
     }
     
     // Page not available - show disabled button or error
-    if ($show_error || current_user_can('manage_ufsc')) {
+    if ($show_error || current_user_can('ufsc_manage')) {
         $error_msg = $show_error ? '<p><small class="ufsc-error-text">' . esc_html($page_info['error']) . '</small></p>' : '';
         return '<button class="' . esc_attr($button_class) . ' ufsc-btn-disabled" disabled title="' . esc_attr($page_info['error']) . '">' 
                . esc_html($button_text) . ' (indisponible)</button>' . $error_msg;
@@ -671,7 +671,7 @@ function ufsc_get_frontend_page_alert($page_type)
     $alert_html .= '<p><strong>⚠️ Configuration requise :</strong> ';
     $alert_html .= 'La page ' . esc_html($page_name) . ' n\'est pas configurée. ';
     
-    if (current_user_can('manage_ufsc')) {
+    if (current_user_can('ufsc_manage')) {
         $settings_url = admin_url('admin.php?page=ufsc-settings');
         $alert_html .= '<a href="' . esc_url($settings_url) . '">Configurer maintenant</a>';
     } else {
@@ -710,7 +710,7 @@ add_shortcode('ufsc_page_alert', 'ufsc_page_alert_shortcode');
  */
 function ufsc_admin_page_configuration_notices()
 {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
 

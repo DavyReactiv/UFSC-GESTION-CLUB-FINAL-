@@ -77,7 +77,7 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         $checkbox = sprintf( '<input type="checkbox" name="licence_ids[]" value="%d" />', $item['id'] );
         $actions  = [];
 
-        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
+        if ( current_user_can( 'ufsc_manage_own' ) ) {
             $view_url = wp_nonce_url(
                 admin_url( 'admin.php?page=ufsc_view_licence&id=' . $item['id'] ),
                 'ufsc_view_licence_' . $item['id']
@@ -89,7 +89,7 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
             );
         }
 
-        if ( current_user_can( 'manage_ufsc_licenses' ) ) {
+        if ( current_user_can( 'ufsc_manage_own' ) ) {
             $edit_url = wp_nonce_url(
                 admin_url( 'admin.php?page=ufsc-modifier-licence&licence_id=' . $item['id'] ),
                 'ufsc_edit_licence_' . $item['id']

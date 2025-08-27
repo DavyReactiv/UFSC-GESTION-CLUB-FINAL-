@@ -18,7 +18,7 @@ require_once plugin_dir_path(__FILE__) . '../helpers/class-ufsc-csv-export.php';
 
 // Capability used for managing UFSC licences
 if (!defined('UFSC_MANAGE_LICENSES_CAP')) {
-    define('UFSC_MANAGE_LICENSES_CAP', apply_filters('manage_ufsc_licenses', 'manage_options'));
+    define('UFSC_MANAGE_LICENSES_CAP', apply_filters('ufsc_manage_own_cap', 'ufsc_manage_own'));
 }
 
 /**
@@ -222,7 +222,7 @@ class UFSC_Menu
             'plugin-ufsc-gestion-club-13072025',
             'Ajouter une licence',
             'Ajouter une licence',
-            'manage_ufsc_licenses',
+            UFSC_MANAGE_LICENSES_CAP,
             'ufsc_license_add_admin',
             array($this, 'render_licence_add_admin_page')
 

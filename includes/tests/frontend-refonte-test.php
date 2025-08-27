@@ -110,7 +110,7 @@ function ufsc_test_frontend_refonte_components() {
  * Display test results in admin
  */
 function ufsc_display_test_results() {
-    if (!current_user_can('manage_ufsc')) {
+    if (!current_user_can('ufsc_manage')) {
         return;
     }
     
