@@ -16,12 +16,38 @@ $errors     = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_admin_action', 'ufsc_license_admin_nonce')) {
     $data = [
-        'nom'            => sanitize_text_field($_POST['nom'] ?? ''),
-        'prenom'         => sanitize_text_field($_POST['prenom'] ?? ''),
-        'email'          => sanitize_email($_POST['email'] ?? ''),
-        'date_naissance' => sanitize_text_field($_POST['date_naissance'] ?? ''),
-        'categorie'      => sanitize_text_field($_POST['categorie'] ?? ''),
-        'club_id'        => intval($_POST['club_id'] ?? 0),
+        'nom'                        => sanitize_text_field($_POST['nom'] ?? ''),
+        'prenom'                     => sanitize_text_field($_POST['prenom'] ?? ''),
+        'email'                      => sanitize_email($_POST['email'] ?? ''),
+        'date_naissance'             => sanitize_text_field($_POST['date_naissance'] ?? ''),
+        'categorie'                  => sanitize_text_field($_POST['categorie'] ?? ''),
+        'club_id'                    => intval($_POST['club_id'] ?? 0),
+        'sexe'                       => sanitize_text_field($_POST['sexe'] ?? ''),
+        'adresse'                    => sanitize_text_field($_POST['adresse'] ?? ''),
+        'suite_adresse'              => sanitize_text_field($_POST['suite_adresse'] ?? ''),
+        'code_postal'                => sanitize_text_field($_POST['code_postal'] ?? ''),
+        'ville'                      => sanitize_text_field($_POST['ville'] ?? ''),
+        'tel_fixe'                   => sanitize_text_field($_POST['tel_fixe'] ?? ''),
+        'tel_mobile'                 => sanitize_text_field($_POST['tel_mobile'] ?? ''),
+        'region'                     => sanitize_text_field($_POST['region'] ?? ''),
+        'profession'                 => sanitize_text_field($_POST['profession'] ?? ''),
+        'identifiant_laposte'        => sanitize_text_field($_POST['identifiant_laposte'] ?? ''),
+        'reduction_benevole'         => !empty($_POST['reduction_benevole']) ? 1 : 0,
+        'reduction_postier'          => !empty($_POST['reduction_postier']) ? 1 : 0,
+        'fonction_publique'          => !empty($_POST['fonction_publique']) ? 1 : 0,
+        'competition'                => !empty($_POST['competition']) ? 1 : 0,
+        'licence_delegataire'        => !empty($_POST['licence_delegataire']) ? 1 : 0,
+        'numero_licence_delegataire' => sanitize_text_field($_POST['numero_licence_delegataire'] ?? ''),
+        'diffusion_image'            => !empty($_POST['diffusion_image']) ? 1 : 0,
+        'infos_fsasptt'              => !empty($_POST['infos_fsasptt']) ? 1 : 0,
+        'infos_asptt'                => !empty($_POST['infos_asptt']) ? 1 : 0,
+        'infos_cr'                   => !empty($_POST['infos_cr']) ? 1 : 0,
+        'infos_partenaires'          => !empty($_POST['infos_partenaires']) ? 1 : 0,
+        'honorabilite'               => !empty($_POST['honorabilite']) ? 1 : 0,
+        'assurance_dommage_corporel' => !empty($_POST['assurance_dommage_corporel']) ? 1 : 0,
+        'assurance_assistance'       => !empty($_POST['assurance_assistance']) ? 1 : 0,
+        'note'                       => sanitize_textarea_field($_POST['note'] ?? ''),
+        'is_included'                => !empty($_POST['is_included']) ? 1 : 0,
     ];
 
     if (empty($data['nom'])) {
@@ -41,6 +67,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_a
     }
     if (empty($data['club_id'])) {
         $errors[] = __('Le club est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['sexe'])) {
+        $errors[] = __('Le sexe est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['adresse'])) {
+        $errors[] = __('L\'adresse est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['code_postal']) || !preg_match('/^\d{5}$/', $data['code_postal'])) {
+        $errors[] = __('Un code postal valide est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['ville'])) {
+        $errors[] = __('La ville est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['tel_mobile'])) {
+        $errors[] = __('Le téléphone mobile est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
+    }
+    if (empty($data['region'])) {
+        $errors[] = __('La région est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
     }
 
     if (empty($errors)) {
