@@ -196,6 +196,7 @@ $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
 <div class="wrap ufsc-ui">
     <h1>Licences <?php echo $club ? '– ' . esc_html($club->nom) : ''; ?></h1>
     <form method="get">
+        <?php echo $no_license_notice; ?>
         <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']); ?>" />
         <?php if ($club_id) : ?>
             <input type="hidden" name="club_id" value="<?php echo esc_attr($club_id); ?>" />
