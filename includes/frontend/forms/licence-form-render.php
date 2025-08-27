@@ -69,7 +69,7 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Informations personnelles</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="nom">Nom *</label>
             <input type="text" id="nom" name="nom" required maxlength="100" value="<?php echo $v('nom'); ?>">
@@ -84,7 +84,7 @@ function ufsc_render_licence_form($args = array()){
           </div>
         </div>
 
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="date_naissance">Date de naissance *</label>
             <input type="date" id="date_naissance" name="date_naissance" required value="<?php echo $v('date_naissance'); ?>">
@@ -103,7 +103,7 @@ function ufsc_render_licence_form($args = array()){
           </div>
         </div>
 
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
           <label for="email">Email *</label>
           <input type="email" id="email" name="email" required maxlength="150" value="<?php echo $v('email'); ?>">
           <p class="ufsc-form-hint"></p>
@@ -113,13 +113,13 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Coordonnées</legend>
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
           <label for="adresse">Adresse</label>
           <input type="text" id="adresse" name="adresse" maxlength="200" value="<?php echo $v('adresse'); ?>">
           <p class="ufsc-form-hint"></p>
           <span class="ufsc-form-error"></span>
         </div>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="suite_adresse">Complément d'adresse</label>
             <input type="text" id="suite_adresse" name="suite_adresse" maxlength="200" value="<?php echo $v('suite_adresse'); ?>">
@@ -133,13 +133,13 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
         </div>
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
           <label for="ville">Ville</label>
           <input type="text" id="ville" name="ville" maxlength="120" value="<?php echo $v('ville'); ?>">
           <p class="ufsc-form-hint"></p>
           <span class="ufsc-form-error"></span>
         </div>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="tel_mobile">Téléphone</label>
             <input type="text" id="tel_mobile" name="tel_mobile" maxlength="25" value="<?php echo $v('tel_mobile'); ?>">
@@ -157,7 +157,7 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Rôle & type</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="fonction">Fonction</label>
             <select id="fonction" name="fonction">
@@ -178,7 +178,7 @@ function ufsc_render_licence_form($args = array()){
             <span class="ufsc-form-error"></span>
           </div>
         </div>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="licence_delegataire">Licence délégataire</label>
             <input type="checkbox" id="licence_delegataire" name="licence_delegataire" value="1"<?php echo $is_checked('licence_delegataire'); ?>>
@@ -196,7 +196,7 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Autorisations et communications</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="diffusion_image">Consentement diffusion image</label>
             <input type="checkbox" id="diffusion_image" name="diffusion_image" value="1"<?php echo $is_checked('diffusion_image'); ?>>
@@ -232,7 +232,7 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Déclarations et assurances</legend>
-        <div class="ufsc-form-grid">
+        <div class="ufsc-form-grid ufsc-auto-2cols">
           <div class="ufsc-form-field">
             <label for="honorabilite">Déclaration d'honorabilité</label>
             <input type="checkbox" id="honorabilite" name="honorabilite" value="1"<?php echo $is_checked('honorabilite'); ?>>
@@ -256,7 +256,7 @@ function ufsc_render_licence_form($args = array()){
 
       <fieldset class="ufsc-form-section">
         <legend>Règlements</legend>
-        <div class="ufsc-form-field">
+        <div class="ufsc-form-field ufsc-full">
           <label for="ufsc_rules_ack">J'ai pris connaissance des règlements — <a href="https://ufsc-france.fr/ufsc-reglements-sportifs-techniques-interieur/" target="_blank" rel="noopener">Lire les règlements</a></label>
           <input type="checkbox" id="ufsc_rules_ack" name="ufsc_rules_ack" value="1" required>
           <p class="ufsc-form-hint"></p>

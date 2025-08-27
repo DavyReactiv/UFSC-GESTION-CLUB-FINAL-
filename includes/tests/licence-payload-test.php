@@ -157,7 +157,7 @@ function ufsc_test_licence_payload_completeness() {
  * Run the test and output results
  */
 function ufsc_run_licence_payload_test() {
-    if (!current_user_can('manage_ufsc_licences')) {
+    if (!current_user_can('manage_ufsc_licenses')) {
         return;
     }
     

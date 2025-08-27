@@ -1,3 +1,4 @@
+
 /* UFSC generic UI styles */
 
 /* Action buttons container */
@@ -48,4 +49,63 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+/* UFSC generic form UI */
+.ufsc-auto-2cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ufsc-gap);
+}
+@media (min-width: 992px) {
+  .ufsc-auto-2cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ufsc-full {
+  grid-column: 1 / -1;
+}
+
+.ufsc-auto-2cols input[type="text"],
+.ufsc-auto-2cols input[type="email"],
+.ufsc-auto-2cols input[type="password"],
+.ufsc-auto-2cols input[type="date"],
+.ufsc-auto-2cols input[type="tel"],
+.ufsc-auto-2cols select,
+.ufsc-auto-2cols textarea {
+  height: 44px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0 12px;
+}
+.ufsc-auto-2cols textarea {
+  height: auto;
+  padding: 12px;
+}
+
+.ufsc-auto-2cols input:focus,
+.ufsc-auto-2cols select:focus,
+.ufsc-auto-2cols textarea:focus {
+  outline: 2px solid var(--ufsc-accent);
+  outline-offset: 2px;
+}
+
+.ufsc-auto-2cols label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ufsc-auto-2cols [required]::after {
+  content: "*";
+  margin-left: 4px;
+  color: var(--ufsc-accent);
+}
+
+.ufsc-auto-2cols .ufsc-form-error,
+.ufsc-auto-2cols .ufsc-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.875rem;
+  color: var(--ufsc-danger, #d00);
+
 }
