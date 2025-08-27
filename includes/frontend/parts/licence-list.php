@@ -17,8 +17,27 @@ if (!$club_id) {
 $table = $wpdb->prefix . 'ufsc_licences';
 $search = isset($_GET['search_licence']) ? sanitize_text_field($_GET['search_licence']) : '';
 
-$where = "club_id = %d AND (statut = 'validee' OR statut IS NULL)";
-$params = [$club_id];
+// Possible licence statuses:
+// - brouillon : licence en cours de création
+// - en_attente : en attente de validation
+// - validee : licence validée
+// - refusee : licence refusée
+// - expiree : licence expirée
+$status_param = isset($_GET['statut']) ? wp_unslash($_GET['statut']) : [];
+if (!is_array($status_param)) {
+    $status_param = array_filter(array_map('trim', explode(',', $status_param)));
+}
+$statuses = array_map('sanitize_text_field', $status_param);
+
+if (!empty($statuses)) {
+    $placeholders = implode(', ', array_fill(0, count($statuses), '%s'));
+    $where = "club_id = %d AND statut IN ($placeholders)";
+    $params = array_merge([$club_id], $statuses);
+} else {
+    // Legacy behaviour: only validated licences or without status
+    $where = "club_id = %d AND (statut = 'validee' OR statut IS NULL)";
+    $params = [$club_id];
+}
 
 if ($search !== '') {
     $where .= " AND (nom LIKE %s OR prenom LIKE %s)";
