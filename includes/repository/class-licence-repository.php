@@ -262,11 +262,21 @@ class UFSC_Licence_Repository
         $offset           = ((int) $args['page'] - 1) * (int) $args['per_page'];
         $params_with_limit = array_merge($params, [(int) $args['per_page'], (int) $offset]);
 
-        $list_sql   = "SELECT l.*, l.is_included AS quota, c.nom AS club FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause} ORDER BY l.date_inscription DESC LIMIT %d OFFSET %d";
+        $list_sql   = "SELECT l.*, l.is_included AS quota, c.nom AS club, l.date_inscription AS date_licence FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause} ORDER BY l.date_inscription DESC LIMIT %d OFFSET %d";
         $list_query = empty($params)
             ? $this->wpdb->prepare($list_sql, (int) $args['per_page'], (int) $offset)
             : $this->wpdb->prepare($list_sql, ...$params_with_limit);
         $items      = $this->wpdb->get_results($list_query, ARRAY_A);
+
+        $items = array_map(
+            static function (array $item): array {
+                if (!isset($item['date_licence']) && isset($item['date_inscription'])) {
+                    $item['date_licence'] = $item['date_inscription'];
+                }
+                return $item;
+            },
+            $items
+        );
 
         return [
             'items'    => $items,

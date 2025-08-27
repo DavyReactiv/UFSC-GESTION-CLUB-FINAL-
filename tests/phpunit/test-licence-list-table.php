@@ -74,6 +74,7 @@ class Test_Licence_List_Table extends WP_UnitTestCase {
         $table->prepare_items();
 
         $this->assertGreaterThanOrEqual( 2, count( $table->items ), 'Expected unfiltered items' );
+        $this->assertArrayHasKey( 'date_licence', $table->items[0], 'Missing date_licence field' );
     }
 
     /**
@@ -92,8 +93,26 @@ class Test_Licence_List_Table extends WP_UnitTestCase {
 
         $this->assertCount( 1, $table->items );
         $this->assertEquals( 'Smith', $table->items[0]['nom'] );
+        $this->assertArrayHasKey( 'date_licence', $table->items[0], 'Missing date_licence field' );
 
         unset( $_REQUEST['s'] );
+    }
+
+    /**
+     * Ensure repository search returns date_licence key
+     */
+    public function test_repository_search_includes_date_licence() {
+        if ( ! class_exists( 'UFSC_Licence_Repository' ) ) {
+            require_once dirname( __DIR__, 2 ) . '/includes/repository/class-licence-repository.php';
+        }
+
+        $this->seed_data();
+
+        $repo   = new UFSC_Licence_Repository();
+        $result = $repo->search( [] );
+
+        $this->assertNotEmpty( $result['items'] );
+        $this->assertArrayHasKey( 'date_licence', $result['items'][0] );
     }
 }
 
