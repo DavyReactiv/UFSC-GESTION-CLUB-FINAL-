@@ -32,9 +32,6 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
         // Check user capabilities
 
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-
-        if (!current_user_can('manage_ufsc_licenses')) {
-
             wp_die(
                 __('Accès refusé. Vous n\'avez pas les permissions nécessaires.', 'plugin-ufsc-gestion-club-13072025'),
                 __('Erreur de permission', 'plugin-ufsc-gestion-club-13072025'),
@@ -134,9 +131,6 @@ function ufsc_handle_bulk_validate_licences() {
     // Check user capabilities
 
     if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-
-    if (!current_user_can('manage_ufsc_licenses')) {
-
         wp_die(
             __('Accès refusé. Vous n\'avez pas les permissions nécessaires.', 'plugin-ufsc-gestion-club-13072025'),
             __('Erreur de permission', 'plugin-ufsc-gestion-club-13072025'),
