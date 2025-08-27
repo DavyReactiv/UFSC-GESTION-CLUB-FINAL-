@@ -95,5 +95,34 @@ class Test_Licence_List_Table extends WP_UnitTestCase {
 
         unset( $_REQUEST['s'] );
     }
+
+    /**
+     * Ensure set_external_data populates date_licence when missing
+     */
+    public function test_set_external_data_defaults_date_licence() {
+        if ( ! class_exists( 'UFSC_Licence_List_Table' ) ) {
+            $this->markTestSkipped( 'List table class not available' );
+        }
+
+        $table = new UFSC_Licence_List_Table();
+        $date  = '2024-01-01 00:00:00';
+
+        $data = [
+            (object) [
+                'id'               => 1,
+                'nom'              => 'Doe',
+                'prenom'           => 'John',
+                'email'            => 'john@example.com',
+                'statut'           => 'validee',
+                'date_inscription' => $date,
+            ],
+        ];
+
+        $table->set_external_data( $data, 1, 20 );
+        $table->prepare_items();
+
+        $this->assertArrayHasKey( 'date_licence', $table->items[0] );
+        $this->assertEquals( $date, $table->items[0]['date_licence'] );
+    }
 }
 
