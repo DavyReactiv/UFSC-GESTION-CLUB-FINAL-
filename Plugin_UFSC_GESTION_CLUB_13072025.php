@@ -2144,6 +2144,92 @@ function ufsc_get_licence_pay_url() {
     wp_send_json_success(['url'=>$url]);
 }
 
+// === Frontend: include a licence via quota ===
+add_action('wp_ajax_ufsc_include_quota', 'ufsc_handle_include_quota');
+function ufsc_handle_include_quota(){
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error(['message'=>__('Veuillez vous connecter.','plugin-ufsc-gestion-club-13072025')], 401);
+    }
+    $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+    if ( ! wp_verify_nonce($nonce, 'ufsc_include_quota') && ! wp_verify_nonce($nonce, 'ufsc_front_nonce') ) {
+        wp_send_json_error(['message'=>__('Jeton invalide.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+    $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    if ( ! $licence_id ) {
+        wp_send_json_error(['message'=>__('Licence manquante.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+    $manager = new UFSC_Licence_Manager();
+    $licence = $manager->get_licence_by_id($licence_id);
+    if ( ! $licence ) {
+        wp_send_json_error(['message'=>__('Licence introuvable.','plugin-ufsc-gestion-club-13072025')], 404);
+    }
+    $club_id = (int) $licence->club_id;
+    if ( ! ufsc_verify_club_access($club_id) ) {
+        wp_send_json_error(['message'=>__('Accès non autorisé.','plugin-ufsc-gestion-club-13072025')], 403);
+    }
+    if ( function_exists('ufsc_has_included_quota') && ! ufsc_has_included_quota($club_id) ) {
+        wp_send_json_error(['message'=>__('Quota atteint.','plugin-ufsc-gestion-club-13072025')]);
+    }
+    global $wpdb; $t = $wpdb->prefix . 'ufsc_licences';
+    $ok = $wpdb->update($t, [
+        'statut'        => 'validee',
+        'billing_source'=> 'quota',
+        'is_included'   => 1,
+        'date_modification' => current_time('mysql')
+    ], ['id'=>$licence_id], ['%s','%s','%d','%s'], ['%d']);
+    if ( $ok !== false ) {
+        if ( function_exists('ufsc__log_status_change') ) {
+            ufsc__log_status_change($licence_id, 'validee', get_current_user_id());
+        }
+        wp_send_json_success();
+    }
+    wp_send_json_error(['message'=>__('Échec inclusion quota.','plugin-ufsc-gestion-club-13072025')]);
+}
+
+// === Frontend: add existing licence to WooCommerce cart ===
+add_action('wp_ajax_ufsc_add_to_cart', 'ufsc_handle_add_to_cart');
+function ufsc_handle_add_to_cart(){
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error(['message'=>__('Veuillez vous connecter.','plugin-ufsc-gestion-club-13072025')], 401);
+    }
+    if ( ! class_exists('WC') ) {
+        wp_send_json_error(['message'=>__('WooCommerce requis.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+    $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+    if ( ! wp_verify_nonce($nonce, 'ufsc_add_to_cart') && ! wp_verify_nonce($nonce, 'ufsc_front_nonce') ) {
+        wp_send_json_error(['message'=>__('Jeton invalide.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+    $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    if ( ! $licence_id ) {
+        wp_send_json_error(['message'=>__('Licence manquante.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+    $manager = new UFSC_Licence_Manager();
+    $licence = $manager->get_licence_by_id($licence_id);
+    if ( ! $licence ) {
+        wp_send_json_error(['message'=>__('Licence introuvable.','plugin-ufsc-gestion-club-13072025')], 404);
+    }
+    $club_id = (int) $licence->club_id;
+    if ( ! ufsc_verify_club_access($club_id) ) {
+        wp_send_json_error(['message'=>__('Accès non autorisé.','plugin-ufsc-gestion-club-13072025')], 403);
+    }
+    $product_id = function_exists('ufsc_get_licence_product_id_safe') ? ufsc_get_licence_product_id_safe() : ufsc_get_licence_product_id();
+    if ( ! $product_id ) {
+        wp_send_json_error(['message'=>__('Produit licence introuvable.','plugin-ufsc-gestion-club-13072025')], 500);
+    }
+    $cart_item_data = [
+        'ufsc_existing_licence' => $licence_id,
+        'ufsc_club_id'          => $club_id,
+        'ufsc_product_type'     => 'licence',
+    ];
+    $added = WC()->cart->add_to_cart($product_id, 1, 0, [], $cart_item_data);
+    if ( $added ) {
+        $redirect = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/');
+        wp_send_json_success(['redirect' => $redirect]);
+    }
+    wp_send_json_error(['message'=>__('Ajout au panier impossible.','plugin-ufsc-gestion-club-13072025')]);
+}
 
 // Ensure caps exist even if plugin was updated without reactivation
 add_action('admin_init', function (){
@@ -2364,7 +2450,6 @@ add_action('woocommerce_order_status_changed', function($order_id, $from, $to, $
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/cart-router.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/quota.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
 require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';

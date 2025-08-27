@@ -32,7 +32,15 @@ class UFSC_Fix_Assets {
         $deps = ['jquery'];
         wp_enqueue_script('ufsc-front-fixes', plugins_url('assets/js/ufsc-front.js', dirname(__FILE__)), $deps, '20.3', true);
         wp_localize_script('ufsc-front-fixes','UFSC', [
+            // Provide ajax endpoints for scripts
             'ajaxUrl' => admin_url('admin-ajax.php'),
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonces' => [
+                'add_licence_to_cart' => wp_create_nonce('ufsc_add_licence_to_cart'),
+                'add_to_cart'         => wp_create_nonce('ufsc_add_to_cart'),
+                'delete_draft'        => wp_create_nonce('ufsc_delete_licence_draft'),
+                'include_quota'       => wp_create_nonce('ufsc_include_quota'),
+            ],
             'i18n' => [
                 'saving' => __('Enregistrement…','plugin-ufsc-gestion-club-13072025'),
                 'saved'  => __('Brouillon enregistré.','plugin-ufsc-gestion-club-13072025'),
