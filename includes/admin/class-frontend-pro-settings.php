@@ -81,7 +81,7 @@ class UFSC_Frontend_Pro_Settings {
         $accessibility = get_option('ufsc_frontend_pro_accessibility', true);
         ?>
         
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-appearance" style="font-size: 1.3em; margin-right: 8px;"></span>
                 UFSC Frontend Professionnel

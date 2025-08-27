@@ -28,6 +28,7 @@ class UFSC_Fix_Assets {
         wp_enqueue_script('datatables', 'https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js', ['jquery'], '1.13.8', true);
 
         wp_enqueue_style('ufsc-front-fixes', plugins_url('assets/css/ufsc-front.css', dirname(__FILE__)), [], '20.3');
+        wp_enqueue_style('ufsc-ui', plugins_url('assets/css/ufsc-ui.css', dirname(__FILE__)), [], '1.0');
         // JS
         $deps = ['jquery'];
         wp_enqueue_script('ufsc-front-fixes', plugins_url('assets/js/ufsc-front.js', dirname(__FILE__)), $deps, '20.3', true);

@@ -5,7 +5,7 @@ function ufsc_admin_health_page(){
     $pid1 = absint(get_option('ufsc_wc_individual_licence_product_id', 0));
     $pids_csv = get_option('ufsc_wc_license_product_ids', '');
     $pid = $pid1 ?: (int) (array_filter(array_map('absint', array_map('trim', explode(',', $pids_csv))))[0] ?? 0);
-    echo '<div class="wrap"><h1>UFSC — Santé du module</h1><table class="widefat striped">';
+    echo '<div class="wrap ufsc-ui"><h1>UFSC — Santé du module</h1><table class="widefat striped">';
     echo '<tr><th>WooCommerce</th><td>'.(class_exists('WooCommerce')?'OK':'Manquant').'</td></tr>';
     echo '<tr><th>Produit Licence</th><td>'.($pid?('OK (#'.$pid.')'):'Manquant').'</td></tr>';
     echo '<tr><th>CRON</th><td>'.(wp_next_scheduled('ufsc_daily_cron')?'OK':'Non planifié').'</td></tr>';

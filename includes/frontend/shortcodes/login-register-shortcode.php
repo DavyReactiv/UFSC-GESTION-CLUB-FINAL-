@@ -123,32 +123,32 @@ function ufsc_render_logged_in_message() {
 function ufsc_render_registration_form() {
     $output = '<div class="ufsc-card">';
     $output .= '<h3>' . __('Inscription', 'plugin-ufsc-gestion-club-13072025') . '</h3>';
-    $output .= '<form method="post" class="ufsc-form" id="ufsc-register-form">';
+    $output .= '<form method="post" class="ufsc-form ufsc-auto-2cols" id="ufsc-register-form">';
     
     // Nonce field for security
     $output .= wp_nonce_field('ufsc_register_nonce', 'ufsc_register_nonce', true, false);
     
     // Email field
-    $output .= '<div class="ufsc-form-row">';
+    $output .= '<div class="ufsc-form-row ufsc-full">';
     $output .= '<label for="ufsc_register_email">' . __('Email', 'plugin-ufsc-gestion-club-13072025') . ' <span class="required">*</span></label>';
     $output .= '<input type="email" id="ufsc_register_email" name="ufsc_register_email" required value="' . esc_attr(isset($_POST['ufsc_register_email']) ? $_POST['ufsc_register_email'] : '') . '">';
     $output .= '</div>';
     
     // Password field
-    $output .= '<div class="ufsc-form-row">';
+    $output .= '<div class="ufsc-form-row ufsc-full">';
     $output .= '<label for="ufsc_register_password">' . __('Mot de passe', 'plugin-ufsc-gestion-club-13072025') . ' <span class="required">*</span></label>';
     $output .= '<input type="password" id="ufsc_register_password" name="ufsc_register_password" required minlength="8">';
     $output .= '<small class="description">' . __('Minimum 8 caractères', 'plugin-ufsc-gestion-club-13072025') . '</small>';
     $output .= '</div>';
     
     // Password confirmation field
-    $output .= '<div class="ufsc-form-row">';
+    $output .= '<div class="ufsc-form-row ufsc-full">';
     $output .= '<label for="ufsc_register_password_confirm">' . __('Confirmer le mot de passe', 'plugin-ufsc-gestion-club-13072025') . ' <span class="required">*</span></label>';
     $output .= '<input type="password" id="ufsc_register_password_confirm" name="ufsc_register_password_confirm" required minlength="8">';
     $output .= '</div>';
     
     // Submit button
-    $output .= '<div class="ufsc-form-row">';
+    $output .= '<div class="ufsc-form-row ufsc-full">';
     $output .= '<button type="submit" name="ufsc_register_submit" class="ufsc-btn ufsc-btn-primary">';
     $output .= __('S\'inscrire', 'plugin-ufsc-gestion-club-13072025');
     $output .= '</button>';

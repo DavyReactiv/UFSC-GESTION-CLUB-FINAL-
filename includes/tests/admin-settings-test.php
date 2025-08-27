@@ -98,7 +98,7 @@ function display_ufsc_admin_settings_test_results() {
         return;
     }
     
-    echo '<div class="wrap">';
+    echo '<div class="wrap ufsc-ui">';
     echo '<h2>UFSC Admin Settings - Test Results</h2>';
     
     $results = test_ufsc_admin_settings();

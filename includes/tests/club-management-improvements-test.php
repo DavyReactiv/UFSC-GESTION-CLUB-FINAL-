@@ -264,7 +264,7 @@ function ufsc_test_license_form_enhancements()
 // Only run tests if explicitly called in admin
 if (is_admin() && isset($_GET['ufsc_test']) && $_GET['ufsc_test'] === 'club_improvements') {
     add_action('admin_notices', function() {
-        echo '<div class="wrap">';
+        echo '<div class="wrap ufsc-ui">';
         ufsc_test_club_management_improvements();
         ufsc_test_document_upload_scenarios();
         ufsc_test_license_form_enhancements();

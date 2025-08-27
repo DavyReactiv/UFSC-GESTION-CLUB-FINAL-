@@ -9,7 +9,7 @@ function ufsc__maybe_check_nonce(){
     return true;
 }
 
-function ufsc__can_manage(){ return current_user_can('manage_ufsc_licences')||current_user_can('manage_options')||current_user_can('edit_posts'); }
+function ufsc__can_manage(){ return current_user_can('manage_ufsc_licenses')||current_user_can('manage_options')||current_user_can('edit_posts'); }
 function ufsc__licences_table_and_status_col(){ global $wpdb; $t=$wpdb->prefix.'ufsc_licences'; $col=$wpdb->get_var($wpdb->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s AND COLUMN_NAME IN ('statut','status') LIMIT 1",$t)); if(!$col)$col='statut'; return array($t,$col); }
 function ufsc__set_status_fallback($id,$st){ global $wpdb; list($t,$c)=ufsc__licences_table_and_status_col(); $ok=$wpdb->update($t, array($c=>$st), array('id'=>(int)$id), array('%s'), array('%d')); return ($ok!==false); }
 function ufsc__set_status($id,$st,&$why=''){ if(!class_exists('UFSC_Licence_Manager')){ $f=dirname(__DIR__).'/licences/class-licence-manager.php'; if(file_exists($f)) require_once $f; }
@@ -29,9 +29,9 @@ add_action('wp_ajax_ufsc_delete_licence', function(){
 	$ok = $wpdb->update($table, ['statut'=>'trash','deleted_at'=>current_time('mysql')], ['id'=>$id], ['%s','%s'], ['%d']);
 	if ($ok!==false){ ufsc__log_status_change($id,'trash',get_current_user_id()); wp_send_json_success(); } else { wp_send_json_error('Failed to delete licence.'); }
 });
-add_action('admin_post_ufsc_validate_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc-licences'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'validated':'error:'.$why,$ref)); exit; });
-add_action('admin_post_ufsc_reject_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc-licences'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'rejected':'error:'.$why,$ref)); exit; });
-add_action('admin_post_ufsc_delete_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc-licences'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'deleted':'error',$ref)); exit; });
+add_action('admin_post_ufsc_validate_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc_licenses_admin'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'validated':'error:'.$why,$ref)); exit; });
+add_action('admin_post_ufsc_reject_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc_licenses_admin'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'rejected':'error:'.$why,$ref)); exit; });
+add_action('admin_post_ufsc_delete_licence',function(){ if(!ufsc__can_manage()) wp_die('Not allowed'); $ref=wp_get_referer()?:admin_url('admin.php?page=ufsc_licenses_admin'); wp_safe_redirect(add_query_arg('ufsc_msg',$ok?'deleted':'error',$ref)); exit; });
 
 /** Log status change */
 function ufsc__log_status_change($licence_id, $new_status, $user_id = 0){
