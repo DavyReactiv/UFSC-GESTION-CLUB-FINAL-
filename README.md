@@ -503,7 +503,7 @@ $upload_dir = wp_upload_dir();
 
 ### Support technique
 
-- **Documentation** : Consultez ce README et les guides intégrés
+- **Documentation** : Consultez ce README, les guides intégrés, et le [Guide de style](assets/docs/style-guide.md)
 - **Logs** : Activez le debug pour diagnostiquer les problèmes
 - **Tests** : Le plugin inclut des tests automatiques (mode debug)
 

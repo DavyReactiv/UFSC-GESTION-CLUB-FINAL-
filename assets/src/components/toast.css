@@ -1,0 +1,21 @@
+.ufsc-toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+.ufsc-toast {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--ufsc-color-primary);
+  color: #fff;
+  box-shadow: var(--ufsc-shadow);
+}
+
+.ufsc-toast--success { background: var(--ufsc-color-success); }
+.ufsc-toast--error { background: var(--ufsc-color-accent); }
+.ufsc-toast--warning { background: var(--ufsc-color-warning); }

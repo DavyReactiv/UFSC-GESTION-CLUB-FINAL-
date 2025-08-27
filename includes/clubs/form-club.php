@@ -865,27 +865,19 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                 </div>
             </fieldset>
             
-            <!-- Bouton de soumission -->
-            <div class="ufsc-form-row" style="justify-content: flex-end; margin-top: 30px;">
-                <div></div>
-                <div>
-                    <button type="submit" class="ufsc-btn ufsc-btn-red" name="ufsc_save_club_submit">
-                        <?php
-                            if ($is_affiliation) {
-                                echo $is_edit ? 'Mettre à jour et continuer' : 'Valider et procéder au paiement';
-                            } else {
-                                echo $is_edit ? 'Mettre à jour le club' : 'Créer le club';
-                            }
- ?>
-                    </button>
-                    
-                    <?php if ($is_frontend): ?>
-                    <div class="ufsc-form-hint" style="margin-top:10px; text-align:center;">
-                        En soumettant ce formulaire, vous acceptez que les données saisies soient utilisées pour la gestion de votre club.
-                    </div>
-                    <?php endif; ?>
-                </div>
+            <!-- Barre d'actions finale -->
+            <div class="ufsc-form-action-bar">
+                <a href="#" class="ufsc-btn ufsc-btn-ghost" onclick="history.back();return false;">Annuler</a>
+                <button type="submit" name="ufsc_club_action" value="draft" class="ufsc-btn ufsc-btn-secondary">Enregistrer brouillon</button>
+                <button type="submit" name="ufsc_club_action" value="validate" class="ufsc-btn ufsc-btn-secondary">Valider</button>
+                <button type="submit" name="ufsc_club_action" value="pay" class="ufsc-btn ufsc-btn-red">Envoyer pour paiement</button>
             </div>
+
+            <?php if ($is_frontend): ?>
+            <div class="ufsc-form-hint" style="margin-top:10px; text-align:center;">
+                En soumettant ce formulaire, vous acceptez que les données saisies soient utilisées pour la gestion de votre club.
+            </div>
+            <?php endif; ?>
         </form>
     </div>
     <?php

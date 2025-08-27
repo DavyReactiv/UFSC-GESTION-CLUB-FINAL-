@@ -1,0 +1,44 @@
+.ufsc-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.ufsc-badge--brouillon {
+  background: var(--ufsc-color-bg-light);
+  color: var(--ufsc-color-muted);
+  border-color: var(--ufsc-color-border);
+}
+
+.ufsc-badge--en-attente {
+  background: var(--ufsc-color-warning);
+  color: #fff;
+}
+
+.ufsc-badge--validee {
+  background: var(--ufsc-color-success);
+  color: #fff;
+}
+
+.ufsc-badge--refusee {
+  background: var(--ufsc-color-accent);
+  color: #fff;
+}
+
+.ufsc-badge--expiree {
+  background: var(--ufsc-color-border);
+  color: var(--ufsc-color-text);
+}
+
+.ufsc-badge--affilie {
+  background: var(--ufsc-color-success);
+  color: #fff;
+}
+
+.ufsc-badge--suspendu {
+  background: var(--ufsc-color-accent);
+  color: #fff;
+}
