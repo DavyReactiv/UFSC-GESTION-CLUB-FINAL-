@@ -127,7 +127,9 @@ $file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
 if (file_exists($file)) {
     require_once $file;
 } else {
-    error_log('UFSC Gestion Club: missing file ' . $file);
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('UFSC Gestion Club: missing file ' . $file);
+    }
 }
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-form-shortcode.php';
 require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/affiliation-form-shortcode.php';
@@ -1879,7 +1881,7 @@ function ufsc_handle_upload_licence_attestation() {
     
     // Delete old file if it exists
     if ($old_file_path && file_exists($old_file_path)) {
-        if (!unlink($old_file_path)) {
+        if (!unlink($old_file_path) && defined('WP_DEBUG') && WP_DEBUG) {
             error_log("UFSC: Failed to delete old license attestation file: {$old_file_path}");
         }
     }
@@ -1911,7 +1913,7 @@ function ufsc_handle_delete_licence_attestation() {
         $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', $licence->attestation_url);
         
         if (file_exists($file_path)) {
-            if (!unlink($file_path)) {
+            if (!unlink($file_path) && defined('WP_DEBUG') && WP_DEBUG) {
                 error_log("UFSC: Failed to delete license attestation file: {$file_path}");
             }
         }

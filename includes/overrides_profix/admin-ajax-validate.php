@@ -18,8 +18,16 @@ function ufsc__set_status($id,$st,&$why=''){ if(!class_exists('UFSC_Licence_Mana
   if(!$ok&&$st==='refusée')$ok=$mgr->update_licence_status($id,'refusee'); if(!$ok&&$st==='refusee')$ok=$mgr->update_licence_status($id,'refusée');
   if($ok) return true; $why='manager_returned_false'; } catch(Throwable $e){ $why='manager_exception: '.$e->getMessage(); } } else { $why='manager_missing'; }
  $ok=ufsc__set_status_fallback($id,$st); if(!$ok&&$st==='validée')$ok=ufsc__set_status_fallback($id,'validee'); if(!$ok&&$st==='validee')$ok=ufsc__set_status_fallback($id,'validée'); if(!$ok&&$st==='refusée')$ok=ufsc__set_status_fallback($id,'refusee'); if(!$ok&&$st==='refusee')$ok=ufsc__set_status_fallback($id,'refusée'); if(!$ok and empty($why))$why='fallback_update_failed'; return $ok; }
-add_action('wp_ajax_ufsc_validate_licence',function(){ if(!ufsc__can_manage()) wp_send_json_error('Not allowed',403); $why=''; $ok=ufsc__set_status($id,'validée',$why); if($ok) wp_send_json_success(); else wp_send_json_error('Failed to validate licence. (' . $why . ')'); });
-add_action('wp_ajax_ufsc_reject_licence',function(){ if(!ufsc__can_manage()) wp_send_json_error('Not allowed',403); $why=''; $ok=ufsc__set_status($id,'refusée',$why); if($ok) wp_send_json_success(); else wp_send_json_error('Failed to reject licence. (' . $why . ')'); });
+add_action('wp_ajax_ufsc_validate_licence',function(){
+    if(!ufsc__can_manage()) wp_send_json_error('Not allowed',403);
+    ufsc__maybe_check_nonce();
+    $why=''; $ok=ufsc__set_status($id,'validée',$why); if($ok) wp_send_json_success(); else wp_send_json_error('Failed to validate licence. (' . $why . ')');
+});
+add_action('wp_ajax_ufsc_reject_licence',function(){
+    if(!ufsc__can_manage()) wp_send_json_error('Not allowed',403);
+    ufsc__maybe_check_nonce();
+    $why=''; $ok=ufsc__set_status($id,'refusée',$why); if($ok) wp_send_json_success(); else wp_send_json_error('Failed to reject licence. (' . $why . ')');
+});
 add_action('wp_ajax_ufsc_delete_licence', function(){
 	if (!current_user_can('manage_options') && !current_user_can('edit_posts')) wp_send_json_error('Not allowed',403);
 	ufsc__maybe_check_nonce(); global $wpdb;

@@ -366,7 +366,9 @@ function ufsc_process_licence_order($order_id)
                     // Attach existing licence ID to line item instead of creating new one
                     $item->add_meta_data('ufsc_licence_id', $duplicate_id, true);
                     $item->save_meta_data();
-                    error_log("UFSC: Duplicate licence detected for order {$order_id}, attached existing licence ID {$duplicate_id}");
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log("UFSC: Duplicate licence detected for order {$order_id}, attached existing licence ID {$duplicate_id}");
+                    }
                     continue; // Skip creation, use existing licence
                 }
 
@@ -382,7 +384,9 @@ function ufsc_process_licence_order($order_id)
                     // Send notifications for pending status
                     ufsc_send_licence_notifications($licence_data, $club, $order_id, $status_text);
                     
-                    error_log("UFSC: License {$licence_id} created for order {$order_id} with status {$licence_data['statut']}");
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log("UFSC: License {$licence_id} created for order {$order_id} with status {$licence_data['statut']}");
+                    }
                 }
             }
         }
@@ -505,14 +509,18 @@ function ufsc_process_licence_order_enhanced($order_id) {
 
             // Validate required data
             if (empty($licence_data['prenom']) || empty($licence_data['nom']) || empty($licence_data['club_id'])) {
-                error_log("UFSC: Incomplete license data for order {$order_id}, item {$item->get_id()}");
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("UFSC: Incomplete license data for order {$order_id}, item {$item->get_id()}");
+                }
                 continue;
             }
 
             // Get club and check quota
             $club = $club_manager->get_club($licence_data['club_id']);
             if (!$club) {
-                error_log("UFSC: Club not found for order {$order_id}, club_id {$licence_data['club_id']}");
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("UFSC: Club not found for order {$order_id}, club_id {$licence_data['club_id']}");
+                }
                 continue;
             }
 
@@ -537,7 +545,9 @@ function ufsc_process_licence_order_enhanced($order_id) {
                 // Attach existing licence ID to line item instead of creating new one
                 $item->add_meta_data('ufsc_licence_id', $duplicate_id, true);
                 $item->save_meta_data();
-                error_log("UFSC: Duplicate licence detected for order {$order_id}, attached existing licence ID {$duplicate_id}");
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("UFSC: Duplicate licence detected for order {$order_id}, attached existing licence ID {$duplicate_id}");
+                }
                 continue; // Skip creation, use existing licence
             }
 
@@ -551,9 +561,13 @@ function ufsc_process_licence_order_enhanced($order_id) {
                 // Send notifications
                 ufsc_send_licence_notifications($licence_data, $club, $order_id, $status_text);
                 
-                error_log("UFSC: License {$licence_id} created for order {$order_id} with status {$licence_data['statut']}");
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("UFSC: License {$licence_id} created for order {$order_id} with status {$licence_data['statut']}");
+                }
             } else {
-                error_log("UFSC: Failed to create license for order {$order_id}");
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("UFSC: Failed to create license for order {$order_id}");
+                }
             }
         }
     }
@@ -578,7 +592,9 @@ function ufsc_handle_order_cancellation($order_id) {
         if ($licence_id) {
             // Update license status to revoked
             $club_manager->update_licence_status($licence_id, 'revoked');
-            error_log("UFSC: License {$licence_id} revoked due to order {$order_id} cancellation");
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("UFSC: License {$licence_id} revoked due to order {$order_id} cancellation");
+            }
         }
     }
 }

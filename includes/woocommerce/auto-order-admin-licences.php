@@ -127,7 +127,9 @@ class UFSC_Auto_Order_Admin_Licences {
         ));
         
         if (is_wp_error($order)) {
-            error_log('UFSC: Error creating order for licence ' . $licence->id . ': ' . $order->get_error_message());
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('UFSC: Error creating order for licence ' . $licence->id . ': ' . $order->get_error_message());
+            }
             return;
         }
         
@@ -173,7 +175,9 @@ class UFSC_Auto_Order_Admin_Licences {
         $order->save();
         
         // Log the creation
-        error_log('UFSC: Auto-created order ' . $order->get_id() . ' for licence ' . $licence->id);
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('UFSC: Auto-created order ' . $order->get_id() . ' for licence ' . $licence->id);
+        }
     }
     
     /**

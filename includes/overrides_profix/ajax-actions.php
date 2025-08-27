@@ -1,7 +1,13 @@
 <?php
 if (!defined('ABSPATH')) exit;
 function ufsc_profix_ajax_add_to_cart() {
-    check_ajax_referer('ufsc_front_nonce');
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+        wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
+    }
+    if (is_user_logged_in() && !current_user_can('read')) {
+        wp_send_json_error(esc_html__('Non autorisé', 'ufsc-domain'), 403);
+    }
 
     if (!class_exists('WC')) {
         wp_send_json_error(esc_html__('WooCommerce requis', 'ufsc-domain'), 400);
@@ -32,9 +38,11 @@ add_action('wp_ajax_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 
 function ufsc_profix_ajax_save_draft() {
-    check_ajax_referer('ufsc_front_nonce');
-
-    if (!is_user_logged_in()) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+        wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
+    }
+    if (!is_user_logged_in() || !current_user_can('read')) {
         wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     }
     global $wpdb;
@@ -102,9 +110,11 @@ function ufsc_profix_ajax_save_draft() {
 add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 function ufsc_profix_ajax_delete_draft() {
-    check_ajax_referer('ufsc_front_nonce');
-
-    if (!is_user_logged_in()) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+        wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
+    }
+    if (!is_user_logged_in() || !current_user_can('read')) {
         wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     }
 
