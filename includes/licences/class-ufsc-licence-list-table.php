@@ -146,10 +146,6 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
     protected function column_email( $item ) {
         $email = esc_html( $item['email'] );
         return '<span class="ufsc-text-ellipsis" title="' . esc_attr( $item['email'] ) . '">' . $email . '</span>';
-
-        return sprintf( '%1$s %2$s', esc_html( $item['nom'] ), $this->row_actions( $actions ) );
-
-
     }
 
     protected function column_default( $item, $column_name ) {
@@ -416,6 +412,7 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         $label  = ucfirst( $status );
 
 
+
         if ( in_array( $status, [ 'validee', 'validée', 'active', 'actif' ], true ) ) {
             $class = 'ufsc-badge ufsc-badge-success';
             $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
@@ -425,10 +422,23 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         } elseif ( in_array( $status, [ 'en attente', 'en_attente', 'pending' ], true ) ) {
             $class = 'ufsc-badge ufsc-badge-warning';
             $label = __( 'En attente', 'plugin-ufsc-gestion-club-13072025' );
+
+        if ( in_array( $status, ['validee', 'validée', 'active', 'actif'], true ) ) {
+            $class = 'ufsc-badge ufsc-badge--ok';
+            $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
+        } elseif ( in_array( $status, ['refusee', 'refusée', 'inactif'], true ) ) {
+            $class = 'ufsc-badge ufsc-badge--err';
+            $label = __( 'Refusée', 'plugin-ufsc-gestion-club-13072025' );
+        } elseif ( in_array( $status, ['en attente', 'en_attente', 'pending'], true ) ) {
+            $class = 'ufsc-badge ufsc-badge--pending';
+            $label = __( 'En attente', 'plugin-ufsc-gestion-club-13072025' );
+        } elseif ( in_array( $status, ['expiree', 'expirée', 'expired'], true ) ) {
+            $class = 'ufsc-badge ufsc-badge--expired';
+            $label = __( 'Expirée', 'plugin-ufsc-gestion-club-13072025' );
+
         } elseif ( 'trash' === $status ) {
             $class = 'ufsc-badge ufsc-badge-default';
             $label = __( 'Corbeille', 'plugin-ufsc-gestion-club-13072025' );
-
         }
 
         return '<span class="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
