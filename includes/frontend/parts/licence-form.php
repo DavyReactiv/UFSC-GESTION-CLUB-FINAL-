@@ -230,7 +230,7 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
         
         <div class="ufsc-card-body">
             <form method="post" class="ufsc-form ufsc-licence-form">
-                <div id="ufsc-form-status" class="ufsc-form-status" role="status" aria-live="polite"></div>
+                <div id="ufsc-form-status" class="ufsc-form-status" role="status" aria-live="polite" aria-atomic="true"></div>
                 <?php wp_nonce_field('ufsc_add_licence_front', 'ufsc_add_licence_front_nonce'); ?>
                 
                 <div class="ufsc-form-section">
@@ -558,13 +558,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const controls = form.querySelectorAll('input, select, textarea, button');
     const setState = (state, message = '') => {
         form.dataset.state = state;
-        if (statusEl) statusEl.textContent = message;
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.setAttribute('data-state', state);
+            statusEl.setAttribute('aria-live', state === 'error' ? 'assertive' : 'polite');
+        }
         if (state === 'loading' || state === 'disabled') {
             controls.forEach(el => el.setAttribute('disabled', 'disabled'));
         } else {
             controls.forEach(el => el.removeAttribute('disabled'));
         }
     };
+    setState('idle');
     const quotaExceeded = document.querySelector('.ufsc-quota-message.ufsc-quota-exceeded');
     if (quotaExceeded) {
         setState('disabled', quotaExceeded.textContent.trim());

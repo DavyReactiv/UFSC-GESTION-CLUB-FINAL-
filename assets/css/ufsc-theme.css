@@ -5,18 +5,25 @@
 /* Palette et variables globales */
 :root {
   /* Design tokens */
-  --ufsc-bg: #f5f5f5;
-  --ufsc-surface: #ffffff;
-  --ufsc-ink: #333333;
-  --ufsc-brand: #2e2d54;
-  --ufsc-brand-accent: #d40000;
+  --ufsc-color-bg: #f5f5f5;
+  --ufsc-color-surface: #ffffff;
+  --ufsc-color-ink: #333333;
+  --ufsc-color-brand: #2e2d54;
+  --ufsc-color-brand-accent: #d40000;
+
+  /* Legacy aliases */
+  --ufsc-bg: var(--ufsc-color-bg);
+  --ufsc-surface: var(--ufsc-color-surface);
+  --ufsc-ink: var(--ufsc-color-ink);
+  --ufsc-brand: var(--ufsc-color-brand);
+  --ufsc-brand-accent: var(--ufsc-color-brand-accent);
 
   /* Couleurs dérivées */
-  --ufsc-color-primary: var(--ufsc-brand);
-  --ufsc-color-accent: var(--ufsc-brand-accent);
-  --ufsc-color-bg-light: var(--ufsc-bg);
+  --ufsc-color-primary: var(--ufsc-color-brand);
+  --ufsc-color-accent: var(--ufsc-color-brand-accent);
+  --ufsc-color-bg-light: var(--ufsc-color-bg);
   --ufsc-color-border: #e0e0e0;
-  --ufsc-color-text: var(--ufsc-ink);
+  --ufsc-color-text: var(--ufsc-color-ink);
   --ufsc-color-muted: #666666;
   --ufsc-color-success: #46b450;
   --ufsc-color-warning: #ffb900;
@@ -26,11 +33,11 @@
   --ufsc-spacing-base: 1rem;
 
   /* Variables héritées pour compatibilité */
-  --ufsc-navy: var(--ufsc-brand);
-  --ufsc-red: var(--ufsc-brand-accent);
-  --ufsc-light-gray: var(--ufsc-bg);
+  --ufsc-navy: var(--ufsc-color-brand);
+  --ufsc-red: var(--ufsc-color-brand-accent);
+  --ufsc-light-gray: var(--ufsc-color-bg);
   --ufsc-border: var(--ufsc-color-border);
-  --ufsc-text: var(--ufsc-ink);
+  --ufsc-text: var(--ufsc-color-ink);
   --ufsc-success: var(--ufsc-color-success);
   --ufsc-warning: var(--ufsc-color-warning);
 }
@@ -220,6 +227,7 @@ html {
 .ufsc-table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
   position: relative;
 }
 
