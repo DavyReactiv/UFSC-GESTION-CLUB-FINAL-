@@ -460,7 +460,7 @@ add_action('wp_ajax_ufsc_validate_licence', 'ufsc_handle_validate_licence');
 if (!function_exists('ufsc_handle_validate_licence')) {
     function ufsc_handle_validate_licence() {
         // Verify nonce first
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ufsc_validate_licence')) {
+        if (!check_ajax_referer('ufsc_validate_licence', 'nonce', false)) {
             wp_send_json_error(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'), 403);
         }
 
