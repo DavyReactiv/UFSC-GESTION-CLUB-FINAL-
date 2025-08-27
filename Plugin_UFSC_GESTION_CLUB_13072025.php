@@ -1290,11 +1290,11 @@ function ufsc_validate_club_data($post_data) {
         foreach ($basic_fields as $field) {
             if (isset($post_data[$field])) {
                 if ($field === 'email') {
-                    $clean_data[$field] = sanitize_email($post_data[$field]);
+                    $clean_data[$field] = sanitize_email(wp_unslash($post_data[$field]));
                 } elseif ($field === 'adresse') {
-                    $clean_data[$field] = sanitize_textarea_field($post_data[$field]);
+                    $clean_data[$field] = sanitize_textarea_field(wp_unslash($post_data[$field]));
                 } else {
-                    $clean_data[$field] = sanitize_text_field($post_data[$field]);
+                    $clean_data[$field] = sanitize_text_field(wp_unslash($post_data[$field]));
                 }
             }
         }
@@ -1302,19 +1302,19 @@ function ufsc_validate_club_data($post_data) {
         // Dirigeants data
         $all_roles = ['president', 'secretaire', 'tresorier', 'entraineur'];
         foreach ($all_roles as $role) {
-            $clean_data["{$role}_nom"] = sanitize_text_field($post_data["{$role}_nom"] ?? '');
-            $clean_data["{$role}_prenom"] = sanitize_text_field($post_data["{$role}_prenom"] ?? '');
-            $clean_data["{$role}_email"] = sanitize_email($post_data["{$role}_email"] ?? '');
-            $clean_data["{$role}_tel"] = sanitize_text_field($post_data["{$role}_tel"] ?? '');
+            $clean_data["{$role}_nom"] = sanitize_text_field(wp_unslash($post_data["{$role}_nom"] ?? ''));
+            $clean_data["{$role}_prenom"] = sanitize_text_field(wp_unslash($post_data["{$role}_prenom"] ?? ''));
+            $clean_data["{$role}_email"] = sanitize_email(wp_unslash($post_data["{$role}_email"] ?? ''));
+            $clean_data["{$role}_tel"] = sanitize_text_field(wp_unslash($post_data["{$role}_tel"] ?? ''));
         }
 
         // Admin fields (if user has permission)
         if (current_user_can('ufsc_manage')) {
             if (isset($post_data['statut'])) {
-                $clean_data['statut'] = sanitize_text_field($post_data['statut']);
+                $clean_data['statut'] = sanitize_text_field(wp_unslash($post_data['statut']));
             }
             if (isset($post_data['num_affiliation'])) {
-                $clean_data['num_affiliation'] = sanitize_text_field($post_data['num_affiliation']);
+                $clean_data['num_affiliation'] = sanitize_text_field(wp_unslash($post_data['num_affiliation']));
             }
             if (isset($post_data['quota_licences'])) {
                 $clean_data['quota_licences'] = intval($post_data['quota_licences']);
