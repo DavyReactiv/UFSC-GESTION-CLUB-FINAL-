@@ -176,6 +176,36 @@ class UFSC_Menu
             array($this, 'render_ajouter_licence_page')
         );
 
+        // Submenu: dashboard
+        add_submenu_page(
+            'ufsc_licenses_admin',
+            __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
+            __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc_dashboard',
+            array($this, 'render_dashboard_page')
+        );
+
+        // Submenu: club list
+        add_submenu_page(
+            'ufsc_licenses_admin',
+            __('Liste des clubs', 'plugin-ufsc-gestion-club-13072025'),
+            __('Liste des clubs', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc-liste-clubs',
+            array($this, 'render_liste_clubs_page')
+        );
+
+        // Submenu: add club
+        add_submenu_page(
+            'ufsc_licenses_admin',
+            __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
+            __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
+            UFSC_MANAGE_LICENSES_CAP,
+            'ufsc-ajouter-club',
+            array($this, 'render_ajouter_club_page')
+        );
+
         // Hidden submenu: edit licence
         add_submenu_page(
             null,
