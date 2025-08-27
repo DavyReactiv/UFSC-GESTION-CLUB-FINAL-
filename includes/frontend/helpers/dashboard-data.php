@@ -161,7 +161,11 @@ function ufsc_get_quota_pack_info($club_id) {
     $inclus_used = 0;
     $bureau_used = 0;
     $bureau_note = '';
-    
+
+    if (!function_exists('remove_accents')) {
+        require_once ABSPATH . WPINC . '/formatting.php';
+    }
+
     foreach ($licences as $licence) {
         // Count included licenses (assuming is_included field or using total count)
         if (!empty($licence->is_included) && $licence->is_included == 1) {
@@ -171,11 +175,9 @@ function ufsc_get_quota_pack_info($club_id) {
         // Count board members (if role field exists)
         if (!empty($licence->fonction) || !empty($licence->role)) {
             $role = $licence->fonction ?? $licence->role ?? '';
-            $role_lower = strtolower($role);
-            
-            if (strpos($role_lower, 'président') !== false || 
-                strpos($role_lower, 'secrétaire') !== false || 
-                strpos($role_lower, 'trésorier') !== false) {
+            $role_clean = strtolower(remove_accents($role));
+
+            if (in_array($role_clean, ['president', 'secretaire', 'tresorier'], true)) {
                 $bureau_used++;
             }
         }
