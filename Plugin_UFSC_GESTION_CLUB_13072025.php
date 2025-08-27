@@ -823,10 +823,16 @@ function ufsc_enqueue_form_enhancements()
         wp_enqueue_script(
             'ufsc-form-enhancements-script',
             UFSC_PLUGIN_URL . 'assets/js/form-enhancements.js',
+
             ['jquery', 'ufsc-frontend-script'],
             UFSC_PLUGIN_VERSION,
+
+            ['ufsc-frontend-script'],
+            UFSC_GESTION_CLUB_VERSION,
+
             true
         );
+        wp_script_add_data('ufsc-form-enhancements-script', 'type', 'module');
         
         // Localize script with configuration
         wp_localize_script('ufsc-form-enhancements-script', 'ufsc_form_config', [
