@@ -8,6 +8,28 @@
   const exportBtn = $('#ufscx-export');
   let sortKey='id', sortDir='desc';
 
+  const notyf = window.ufscNotyf || (typeof Notyf !== 'undefined' ? new Notyf() : null);
+  if (notyf) {
+    window.ufscNotyf = notyf;
+  }
+  let liveRegion = document.getElementById('ufsc-live-region');
+  if (!liveRegion) {
+    liveRegion = document.createElement('div');
+    liveRegion.id = 'ufsc-live-region';
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.className = 'ufsc-sr-only';
+    document.body.appendChild(liveRegion);
+  }
+  function notifySuccess(msg){
+    liveRegion.textContent = msg;
+    if(notyf){ notyf.success(msg); } else { console.log(msg); }
+  }
+  function notifyError(msg){
+    liveRegion.textContent = msg;
+    if(notyf){ notyf.error(msg); } else { console.error(msg); }
+  }
+
   function fmtDate(s){ if(!s||s=='0000-00-00') return ''; return s; }
 
   function normalizeStatus(s){
@@ -154,10 +176,10 @@
           }
           render();
         } else {
-          alert((res && res.data && res.data.message) || 'Erreur');
+          notifyError((res && res.data && res.data.message) || 'Erreur');
         }
       }).catch(()=>{
-        alert('Erreur');
+        notifyError('Erreur');
       }).finally(()=>{
         btn.disabled = false;
       });

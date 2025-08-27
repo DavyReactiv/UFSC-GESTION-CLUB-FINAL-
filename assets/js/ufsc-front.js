@@ -3,6 +3,29 @@
   factory(window.jQuery);
 })(function($){
   'use strict';
+
+  var notyf = window.ufscNotyf || (typeof Notyf !== 'undefined' ? new Notyf() : null);
+  if (notyf) {
+    window.ufscNotyf = notyf;
+  }
+  var liveRegion = document.getElementById('ufsc-live-region');
+  if (!liveRegion) {
+    liveRegion = document.createElement('div');
+    liveRegion.id = 'ufsc-live-region';
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.className = 'ufsc-sr-only';
+    document.body.appendChild(liveRegion);
+  }
+  function notifySuccess(msg){
+    liveRegion.textContent = msg;
+    if(notyf){ notyf.success(msg); } else { console.log(msg); }
+  }
+  function notifyError(msg){
+    liveRegion.textContent = msg;
+    if(notyf){ notyf.error(msg); } else { console.error(msg); }
+  }
+
   // Ensure legacy global ajaxurl for older scripts
   try {
     if (typeof window.ajaxurl === 'undefined') {
@@ -38,7 +61,7 @@
 
     $.post(ajaxUrl, payload).done(function(res){
       if(res && res.success){
-        alert((UFSC && UFSC.i18n && UFSC.i18n.saved) || 'Brouillon enregistré.');
+        notifySuccess((UFSC && UFSC.i18n && UFSC.i18n.saved) || 'Brouillon enregistré.');
         if(res.data && res.data.licence_id){
           if(!$form.find('input[name=\"licence_id\"]').length){
             $('<input>', {type:'hidden', name:'licence_id', value:res.data.licence_id}).appendTo($form);
@@ -47,10 +70,10 @@
           }
         }
       } else {
-        alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+        notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
       }
     }).fail(function(){
-      alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+      notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
     }).always(function(){
       unlock($btn);
     });
@@ -79,13 +102,13 @@
     $.post(ajaxUrl, payload).done(function(res){
       if(res && res.success){
         var url = (res.data && (res.data.cart_url || res.data.redirect)) || (window.wc_cart_url) || window.location.href;
-        alert((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.');
+        notifySuccess((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.');
         if(url){ window.location.href = url; }
       } else {
-        alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+        notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
       }
     }).fail(function(){
-      alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+      notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
     }).always(function(){
       unlock($btn);
     });
@@ -107,10 +130,10 @@
           var url = (res.data && res.data.redirect) || (window.wc_cart_url) || window.location.href;
           if(url){ window.location.href = url; }
         } else {
-          alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+          notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
         }
       }).fail(function(){
-        alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+        notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
       }).always(function(){
         unlock($b);
       });
@@ -128,8 +151,8 @@
         nonce:(UFSC && UFSC.nonces && UFSC.nonces.delete_draft) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
-        else { alert((res && res.data && res.data.message) || 'Suppression impossible.'); }
-      }).fail(function(){ alert('Erreur de suppression.'); });
+        else { notifyError((res && res.data && res.data.message) || 'Suppression impossible.'); }
+      }).fail(function(){ notifyError('Erreur de suppression.'); });
     });
 
     // Include licence in quota
@@ -145,9 +168,9 @@
         nonce:(UFSC && UFSC.nonces && UFSC.nonces.include_quota) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
-        else { alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur'); }
+        else { notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur'); }
       }).fail(function(){
-        alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+        notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
       }).always(function(){
         unlock($b);
       });
