@@ -169,7 +169,7 @@ function ufscx_licences_direct_shortcode($atts){
             <th data-k="quota" class="sort">Quota</th>
             <th data-k="statut" class="sort">Statut</th>
             <th data-k="date_licence" class="sort">Date Licence</th>
-            <th>Actions</th>
+              <th class="ufscx-actions">Actions</th>
           </tr>
         </thead>
         <tbody></tbody>
