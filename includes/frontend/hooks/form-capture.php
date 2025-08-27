@@ -13,7 +13,7 @@ add_action('template_redirect', function(){
     if (empty($_POST['action']) || $_POST['action'] !== 'ufsc_submit_licence') return;
 
     if (!ufsc_check_admin_nonce('ufsc_add_licence_nonce', 'ufsc_nonce', false)){
-        wp_die(__('Jeton de sécurité invalide.','plugin-ufsc-gestion-club-13072025'));
+        wp_die( __( 'Jeton de sécurité invalide.', 'plugin-ufsc-gestion-club-13072025' ), '', [ 'response' => 403 ] );
     }
     if (!is_user_logged_in()){ wp_safe_redirect( wp_login_url( get_permalink() ) ); exit; }
 
