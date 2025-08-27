@@ -413,16 +413,6 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
 
 
 
-        if ( in_array( $status, [ 'validee', 'validée', 'active', 'actif' ], true ) ) {
-            $class = 'ufsc-badge ufsc-badge-success';
-            $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( in_array( $status, [ 'refusee', 'refusée', 'inactif' ], true ) ) {
-            $class = 'ufsc-badge ufsc-badge-error';
-            $label = __( 'Refusée', 'plugin-ufsc-gestion-club-13072025' );
-        } elseif ( in_array( $status, [ 'en attente', 'en_attente', 'pending' ], true ) ) {
-            $class = 'ufsc-badge ufsc-badge-warning';
-            $label = __( 'En attente', 'plugin-ufsc-gestion-club-13072025' );
-
         if ( in_array( $status, ['validee', 'validée', 'active', 'actif'], true ) ) {
             $class = 'ufsc-badge ufsc-badge--ok';
             $label = __( 'Validée', 'plugin-ufsc-gestion-club-13072025' );
@@ -435,7 +425,6 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         } elseif ( in_array( $status, ['expiree', 'expirée', 'expired'], true ) ) {
             $class = 'ufsc-badge ufsc-badge--expired';
             $label = __( 'Expirée', 'plugin-ufsc-gestion-club-13072025' );
-
         } elseif ( 'trash' === $status ) {
             $class = 'ufsc-badge ufsc-badge-default';
             $label = __( 'Corbeille', 'plugin-ufsc-gestion-club-13072025' );
@@ -444,4 +433,6 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
         return '<span class="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</span>';
     }
 }
+
+?>
 
