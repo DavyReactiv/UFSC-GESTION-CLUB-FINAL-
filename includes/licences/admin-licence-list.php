@@ -9,7 +9,7 @@ require_once plugin_dir_path(__FILE__) . '../helpers/helpers-licence-status.php'
 
 require_once plugin_dir_path(__FILE__) . 'class-licence-filters.php';
 
-require_once plugin_dir_path(__FILE__) . 'class-ufsc-licenses-repository.php';
+require_once plugin_dir_path(__FILE__) . '../repository/class-licence-repository.php';
 
 
 global $wpdb;
@@ -36,8 +36,7 @@ wp_enqueue_style(
 );
 
 
-$list_table = new UFSC_Licenses_List_Table($club_id);
-$list_table->prepare_items();
+// List table will be instantiated after fetching data
 
 // Enqueue DataTables CSS and JS with local fallback
 $dt_base_url  = UFSC_PLUGIN_URL . 'assets/datatables/';
@@ -81,8 +80,26 @@ wp_enqueue_script(
 $filters = isset($filters) ? $filters : UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
 
 // Retrieve licence data via repository
-$repo = new UFSC_Licenses_Repository();
-$license_data = $repo->get_list($filters);
+$repo = new UFSC_Licence_Repository();
+$search_keyword = $filters['search_global'] ?: $filters['search'];
+$result = $repo->search([
+    'club_id' => $filters['club_id'] ?: $filters['filter_club'],
+    'region'  => $filters['region'],
+    'statut'  => !empty($filters['statuses']) ? $filters['statuses'][0] : '',
+    'keyword' => $search_keyword,
+    'page'    => $filters['page'],
+    'per_page'=> $filters['per_page'],
+]);
+
+$license_data = is_wp_error($result) ? [
+    'data' => [],
+    'total' => 0,
+    'per_page' => $filters['per_page'],
+] : [
+    'data' => $result['items'],
+    'total' => $result['total'],
+    'per_page' => $result['per_page'],
+];
 
 $no_license_notice = '';
 if (empty($license_data['data'])) {
@@ -113,8 +130,8 @@ if (empty($license_data['data'])) {
         '</p></div>';
 }
 
-$list_table = new UFSC_Licence_List_Table($club_id);
-$list_table->set_external_data($license_data['data'], $license_data['total_items'], $license_data['per_page']);
+$list_table = new UFSC_Licenses_List_Table($club_id);
+$list_table->set_external_data($license_data['data'], $license_data['total'], $license_data['per_page']);
 $list_table->prepare_items();
 
 // 📤 Export CSV

@@ -84,38 +84,108 @@ class UFSC_Licence_Repository
         return $existing ? (int) $existing->id : false;
     }
 
-    public function get_all_by_filters(array $filters = []): array
+    /**
+     * Search licences with filters and pagination.
+     *
+     * @param array $args {
+     *     @type int    $club_id  Club ID filter.
+     *     @type string $region   Region filter.
+     *     @type string $statut   Status filter.
+     *     @type string $keyword  Search keyword for name, firstname or email.
+     *     @type int    $page     Page number.
+     *     @type int    $per_page Items per page.
+     * }
+     *
+     * @return WP_Error|array {
+     *     @type array $items    List of licences.
+     *     @type int   $total    Total items matching filters.
+     *     @type int   $page     Current page.
+     *     @type int   $per_page Items per page.
+     * }
+     */
+    public function search(array $args): WP_Error|array
     {
-        if (!isset($filters['club_id']) || (int) $filters['club_id'] <= 0) {
-            return [];
+        $defaults = [
+            'club_id'  => 0,
+            'region'   => '',
+            'statut'   => '',
+            'keyword'  => '',
+            'page'     => 1,
+            'per_page' => 20,
+        ];
+
+        $args = wp_parse_args($args, $defaults);
+
+        if ($args['page'] < 1 || $args['per_page'] < 1) {
+            return new WP_Error('invalid_pagination', __('Pagination parameters invalid.', 'plugin-ufsc-gestion-club-13072025'));
         }
 
-        $where = ['1=1'];
+        $where  = ['1=1'];
         $params = [];
 
-        $where[] = 'l.club_id = %d';
-        $params[] = (int) $filters['club_id'];
+        if ($args['club_id'] > 0) {
+            $where[]  = 'l.club_id = %d';
+            $params[] = (int) $args['club_id'];
+        }
 
-        if (!empty($filters['search'])) {
+        if ($args['region'] !== '') {
+            $where[]  = 'l.region = %s';
+            $params[] = $args['region'];
+        }
+
+        if ($args['statut'] !== '') {
+            $where[]  = 'l.statut = %s';
+            $params[] = $args['statut'];
+        }
+
+        if ($args['keyword'] !== '') {
+            $like = '%' . $this->wpdb->esc_like($args['keyword']) . '%';
             $where[] = '(l.nom LIKE %s OR l.prenom LIKE %s OR l.email LIKE %s)';
-            $search = '%' . sanitize_text_field($filters['search']) . '%';
-            $params[] = $search;
-            $params[] = $search;
-            $params[] = $search;
+            $params[] = $like;
+            $params[] = $like;
+            $params[] = $like;
         }
 
         $where_clause = implode(' AND ', $where);
         $clubs_table = $this->wpdb->prefix . 'ufsc_clubs';
-        $query = "SELECT l.*, c.nom as club_nom
-                  FROM {$this->table} l
-                  LEFT JOIN {$clubs_table} c ON l.club_id = c.id
-                  WHERE {$where_clause}
-                  ORDER BY l.date_inscription DESC";
 
-        if (!empty($params)) {
-            return $this->wpdb->get_results($this->wpdb->prepare($query, ...$params));
+        $count_sql = "SELECT COUNT(*) FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause}";
+        $count_query = empty($params)
+            ? $this->wpdb->prepare($count_sql)
+            : $this->wpdb->prepare($count_sql, ...$params);
+        $total = (int) $this->wpdb->get_var($count_query);
+
+        $offset = ((int) $args['page'] - 1) * (int) $args['per_page'];
+        $params_with_limit = array_merge($params, [(int) $args['per_page'], (int) $offset]);
+
+        $list_sql = "SELECT l.*, c.nom as club_nom FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause} ORDER BY l.date_inscription DESC LIMIT %d OFFSET %d";
+        $list_query = empty($params)
+            ? $this->wpdb->prepare($list_sql, (int) $args['per_page'], (int) $offset)
+            : $this->wpdb->prepare($list_sql, ...$params_with_limit);
+        $items = $this->wpdb->get_results($list_query);
+
+        return [
+            'items'    => $items,
+            'total'    => $total,
+            'page'     => (int) $args['page'],
+            'per_page' => (int) $args['per_page'],
+        ];
+    }
+
+    public function get_all_by_filters(array $filters = []): array
+    {
+        $filters = array_merge($filters, [
+            'page'     => 1,
+            'per_page' => PHP_INT_MAX,
+        ]);
+
+        $result = $this->search($filters);
+
+        if (is_wp_error($result)) {
+            return [];
         }
 
-        return $this->wpdb->get_results($query);
+        return $result['items'];
     }
 }
+
