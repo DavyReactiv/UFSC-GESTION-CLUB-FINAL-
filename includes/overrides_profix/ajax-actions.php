@@ -1,8 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 function ufsc_profix_ajax_add_to_cart() {
-    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+    if ( ! check_ajax_referer('ufsc_front_nonce', '_ajax_nonce', false) ) {
         wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
     }
     if (is_user_logged_in() && !current_user_can('read')) {
@@ -13,33 +12,36 @@ function ufsc_profix_ajax_add_to_cart() {
         wp_send_json_error(esc_html__('WooCommerce requis', 'ufsc-domain'), 400);
     }
 
-    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
-    if (!$product_id) {
-        // fallback to defined constant
-        $product_id = defined('UFSC_LICENCE_PRODUCT_ID') ? (int) UFSC_LICENCE_PRODUCT_ID : 0;
-    }
-
+    $product_id = (int) get_option('ufsc_licence_product_id', 0);
     if (!$product_id) {
         wp_send_json_error(esc_html__('product_id requis', 'ufsc-domain'));
     }
 
-    $qty   = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
-    $added = WC()->cart->add_to_cart($product_id, $qty);
+    $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    $club_id    = isset($_POST['club_id']) ? absint($_POST['club_id']) : 0;
+    $qty        = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
+    $item_data  = [
+        'licence_id' => $licence_id,
+        'club_id'    => $club_id,
+    ];
+    $added = WC()->cart->add_to_cart($product_id, $qty, 0, [], $item_data);
     if (!$added) {
         wp_send_json_error(esc_html__('Ajout au panier impossible', 'ufsc-domain'));
     }
 
-    $data = [
-        'redirect' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/panier/')
-    ];
-    wp_send_json_success($data);
+    $redirect_to_checkout = get_option('ufsc_redirect_to_checkout', 'cart') === 'checkout';
+    if ($redirect_to_checkout && function_exists('wc_get_checkout_url')) {
+        $redirect = wc_get_checkout_url();
+    } else {
+        $redirect = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/panier/');
+    }
+    wp_send_json_success(['redirect' => $redirect]);
 }
 add_action('wp_ajax_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 
 function ufsc_profix_ajax_save_draft() {
-    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+    if ( ! check_ajax_referer('ufsc_front_nonce', '_ajax_nonce', false) ) {
         wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
     }
     if (!is_user_logged_in() || !current_user_can('read')) {
@@ -110,8 +112,7 @@ function ufsc_profix_ajax_save_draft() {
 add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 function ufsc_profix_ajax_delete_draft() {
-    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_front_nonce')) {
+    if ( ! check_ajax_referer('ufsc_front_nonce', '_ajax_nonce', false) ) {
         wp_send_json_error(esc_html__('Bad nonce', 'ufsc-domain'), 403);
     }
     if (!is_user_logged_in() || !current_user_can('read')) {

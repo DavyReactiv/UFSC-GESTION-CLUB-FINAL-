@@ -35,7 +35,9 @@ function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url,
       <?php if ($statut === 'brouillon'): ?>
         <button type="button" class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$id; ?>"><?php _e('Supprimer','plugin-ufsc-gestion-club-13072025'); ?></button>
         <?php if (!in_array($payment_status, ['paid','completed'], true)): ?>
-        <button type="button" class="button button-primary ufsc-add-to-cart" data-licence-id="<?php echo (int)$id; ?>" data-nonce="<?php echo esc_attr($nonce); ?>"><?php _e('Ajouter au panier','plugin-ufsc-gestion-club-13072025'); ?></button>
+        <button type="button" class="button button-primary ufsc-add-to-cart"
+          data-licence-id="<?php echo (int)$id; ?>"
+          data-nonce="<?php echo esc_attr($nonce); ?>"><?php _e('Envoyer au panier','plugin-ufsc-gestion-club-13072025'); ?></button>
         <?php endif; ?>
         <button type="button" class="button ufsc-include-quota" data-licence-id="<?php echo (int)$id; ?>"><?php echo $is_included ? esc_html__('Retirer du quota','plugin-ufsc-gestion-club-13072025') : esc_html__('Inclure au quota','plugin-ufsc-gestion-club-13072025'); ?></button>
       <?php elseif ($statut === 'in_cart'): ?>
@@ -132,6 +134,7 @@ function ufsc_render_club_licences_list($club){
             <th class="ufsc-col--status"><?php _e('Statut','plugin-ufsc-gestion-club-13072025'); ?></th>
             <th class="ufsc-col--email"><?php _e('Email','plugin-ufsc-gestion-club-13072025'); ?></th>
             <th class="ufsc-col--date"><?php _e('Créée le','plugin-ufsc-gestion-club-13072025'); ?></th>
+            <th class="ufsc-col--payment"><?php _e('Paiement','plugin-ufsc-gestion-club-13072025'); ?></th>
             <th class="ufsc-col--actions"><?php _e('Actions','plugin-ufsc-gestion-club-13072025'); ?></th>
           </tr>
         </thead>
@@ -156,6 +159,9 @@ function ufsc_render_club_licences_list($club){
               <td class="ufsc-col--date" data-label="<?php esc_attr_e('Créée le','plugin-ufsc-gestion-club-13072025'); ?>">
                 <?php echo $r->date_creation ? esc_html( date_i18n(get_option('date_format'), strtotime($r->date_creation)) ) : '—'; ?>
               </td>
+              <td class="ufsc-col--payment" data-label="<?php esc_attr_e('Paiement','plugin-ufsc-gestion-club-13072025'); ?>">
+                <?php echo ufsc_get_payment_badge($r->payment_status ?? ''); ?>
+              </td>
               <td class="ufsc-col--actions" data-label="<?php esc_attr_e('Actions','plugin-ufsc-gestion-club-13072025'); ?>">
                 <?php
                   $edit_url = add_query_arg('licence_id', (int)$r->id, get_permalink());
@@ -166,7 +172,7 @@ function ufsc_render_club_licences_list($club){
               </td>
             </tr>
             <tr class="ufsc-row-details" data-licence-id="<?php echo (int)$r->id; ?>">
-              <td colspan="6">
+              <td colspan="7">
                 <?php
                   echo ufscsn_render_actions((int)$r->id, $stat, !empty($r->is_included), $edit_url, $cart_url, $order_id, $r->payment_status ?? '');
                 ?>

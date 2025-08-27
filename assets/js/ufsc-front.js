@@ -56,6 +56,7 @@
 
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_save_licence_draft'});
+    payload.push({name:'_ajax_nonce', value:(UFSC && UFSC.frontNonce) || ''});
 
     lock($btn, (window.UFSC && UFSC.i18n && UFSC.i18n.saving) || 'Enregistrement…');
 
@@ -95,6 +96,7 @@
 
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_add_licence_to_cart'});
+    payload.push({name:'_ajax_nonce', value:(UFSC && UFSC.frontNonce) || ''});
     if (window.UFSC && UFSC.nonces && UFSC.nonces.add_licence_to_cart) {
       payload.push({name:'_ufsc_licence_nonce', value:UFSC.nonces.add_licence_to_cart});
     }
@@ -120,20 +122,41 @@
       var $b = $(this);
       var id = $b.data('licenceId') || $b.data('licence-id');
       if(!id) return;
+      var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
       lock($b, 'Ajout…');
       $.post(ajaxUrl, {
         action: 'ufsc_add_to_cart',
         licence_id: id,
-        nonce: $b.data('nonce') || (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
+
+        _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
+
+        club_id: club,
+        _ajax_nonce: $b.data('nonce') || (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
+
       }).done(function(res){
         if(res && res.success){
-          var url = (res.data && res.data.redirect) || (window.wc_cart_url) || window.location.href;
-          if(url){ window.location.href = url; }
+          if (typeof ufscToast === 'function') {
+            ufscToast((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.', 'success');
+          } else {
+            alert((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.');
+          }
+          setTimeout(function(){ location.reload(); }, 800);
         } else {
+
           notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
         }
       }).fail(function(){
         notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+
+          var msg = (res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur';
+          if (typeof ufscToast === 'function') { ufscToast(msg, 'error'); }
+          else { alert(msg); }
+        }
+      }).fail(function(){
+        var msg = (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur';
+        if (typeof ufscToast === 'function') { ufscToast(msg, 'error'); }
+        else { alert(msg); }
+
       }).always(function(){
         unlock($b);
       });
@@ -148,7 +171,7 @@
       $.post(ajaxUrl, {
         action:'ufsc_delete_licence_draft',
         licence_id:id,
-        nonce:(UFSC && UFSC.nonces && UFSC.nonces.delete_draft) || ''
+        _ajax_nonce:(UFSC && UFSC.frontNonce) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
         else { notifyError((res && res.data && res.data.message) || 'Suppression impossible.'); }
@@ -165,7 +188,7 @@
       $.post(ajaxUrl, {
         action:'ufsc_include_quota',
         licence_id:id,
-        nonce:(UFSC && UFSC.nonces && UFSC.nonces.include_quota) || ''
+        _ajax_nonce:(UFSC && UFSC.frontNonce) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
         else { notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur'); }
