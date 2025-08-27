@@ -69,18 +69,14 @@ function ufsc_handle_set_club_logo() {
         wp_send_json_error(['message' => 'Le fichier doit être une image valide.']);
     }
 
-    global $wpdb; $table_name = $wpdb->prefix . 'ufsc_clubs';
-    // Ensure columns exist
-    $col1 = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$table_name} LIKE %s", 'logo_attachment_id'));
-    if (!$col1) { $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN logo_attachment_id BIGINT UNSIGNED NULL"); }
-    $col2 = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$table_name} LIKE %s", 'logo_url'));
-    if (!$col2) { $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN logo_url VARCHAR(255) NULL"); }
-    
-    // Also update logo_url for persistence
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'ufsc_clubs';
+
+    // Persist logo information
     $logo_url = wp_get_attachment_url($attachment_id);
     $update_data = [
         'logo_attachment_id' => $attachment_id,
-        'logo_url' => $logo_url
+        'logo_url'          => $logo_url,
     ];
     
     $result = $wpdb->update($table_name, $update_data, ['id' => $club->id], ['%d', '%s'], ['%d']);

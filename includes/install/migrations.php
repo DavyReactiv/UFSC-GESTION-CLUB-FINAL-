@@ -7,7 +7,7 @@ function ufsc_run_migrations() {
     $charset = $wpdb->get_charset_collate();
     $dbv_opt = 'ufsc_db_schema_version';
     $current = get_option($dbv_opt, '');
-    $target = '2.0.7-roles-audit';
+    $target = '2.0.8-logo-fields';
 
     // Always ensure columns/tables exist (idempotent)
     $licences_table = $wpdb->prefix . 'ufsc_licences';
@@ -38,6 +38,17 @@ function ufsc_run_migrations() {
     }
     if (!$have_idx('idx_created')) {
         $wpdb->query("ALTER TABLE {$licences_table} ADD INDEX idx_created (date_creation)");
+    }
+
+    // Ensure club logo columns exist
+    $clubs_table = $wpdb->prefix . 'ufsc_clubs';
+    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$clubs_table} LIKE %s", 'logo_attachment_id'));
+    if (!$col) {
+        $wpdb->query("ALTER TABLE {$clubs_table} ADD COLUMN logo_attachment_id BIGINT UNSIGNED NULL");
+    }
+    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$clubs_table} LIKE %s", 'logo_url'));
+    if (!$col) {
+        $wpdb->query("ALTER TABLE {$clubs_table} ADD COLUMN logo_url VARCHAR(255) NULL");
     }
 
     // Logs table
