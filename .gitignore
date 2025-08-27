@@ -45,3 +45,4 @@ vendor/
 # Backup files
 *.bak
 *.backup
+!assets/dist/
