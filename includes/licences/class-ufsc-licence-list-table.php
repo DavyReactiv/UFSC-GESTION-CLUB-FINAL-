@@ -35,19 +35,33 @@ class UFSC_Licence_List_Table extends WP_List_Table {
     }
 
     protected function column_nom( $item ) {
-        $actions = [
-            'view' => sprintf(
+        $actions = [];
+
+        if ( current_user_can( 'ufsc_manage_licences' ) ) {
+            $view_url = wp_nonce_url(
+                admin_url( 'admin.php?page=ufsc_view_licence&id=' . $item['id'] ),
+                'ufsc_view_licence_' . $item['id']
+            );
+            $actions['view'] = sprintf(
                 '<a href="%s" title="%s"><span class="dashicons dashicons-visibility"></span></a>',
-                esc_url( admin_url( 'admin.php?page=ufsc_view_licence&id=' . $item['id'] ) ),
+                esc_url( $view_url ),
                 esc_attr__( 'Voir la licence', 'plugin-ufsc-gestion-club-13072025' )
-            ),
-            'edit' => sprintf(
+            );
+        }
+
+        if ( current_user_can( 'ufsc_manage_licences' ) ) {
+            $edit_url = wp_nonce_url(
+                admin_url( 'admin.php?page=ufsc-modifier-licence&licence_id=' . $item['id'] ),
+                'ufsc_edit_licence_' . $item['id']
+            );
+            $actions['edit'] = sprintf(
                 '<a href="%s" title="%s"><span class="dashicons dashicons-edit"></span></a>',
-                esc_url( admin_url( 'admin.php?page=ufsc-modifier-licence&licence_id=' . $item['id'] ) ),
+                esc_url( $edit_url ),
                 esc_attr__( 'Modifier la licence', 'plugin-ufsc-gestion-club-13072025' )
-            ),
-        ];
-        return sprintf('%1$s %2$s', esc_html($item['nom']), $this->row_actions($actions));
+            );
+        }
+
+        return sprintf( '%1$s %2$s', esc_html( $item['nom'] ), $this->row_actions( $actions ) );
     }
 
     protected function column_default( $item, $column_name ) {
