@@ -3,8 +3,8 @@
 **Plugin WordPress professionnel pour la gestion des affiliations et licences UFSC**
 
 [![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/DavyReactiv/Plugin_UFSC_GESTION_CLUB_13072025)
-[![WordPress](https://img.shields.io/badge/WordPress-5.5+-green.svg)](https://wordpress.org)
-[![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://php.net)
+[![WordPress](https://img.shields.io/badge/WordPress-6.6+-green.svg)](https://wordpress.org)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-purple.svg)](https://php.net)
 [![License](https://img.shields.io/badge/license-GPL--2.0+-orange.svg)](LICENSE)
 
 ## 📋 Description
@@ -27,8 +27,8 @@ Plugin WordPress complet et professionnel permettant aux clubs UFSC (Union Fran�
 
 | Composant | Version minimale | Recommandée |
 |-----------|------------------|-------------|
-| WordPress | 5.5+ | 6.0+ |
-| PHP | 7.4+ | 8.1+ |
+| WordPress | 6.6+ | 6.8+ |
+| PHP | 8.2+ | 8.3+ |
 | MySQL | 5.6+ | 8.0+ |
 | WooCommerce | 4.0+ | 7.0+ (optionnel) |
 
