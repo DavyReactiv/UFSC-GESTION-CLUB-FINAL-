@@ -144,6 +144,7 @@
       return;
     }
     if(act==='edit'){
+      // Use canonical query param for edition (replaces legacy ?edit_licence=)
       window.location.href = '?licence_id='+id;
       return;
     }

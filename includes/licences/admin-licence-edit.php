@@ -9,7 +9,14 @@ require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repositor
 require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 global $wpdb;
-$licence_id = isset($_GET['licence_id']) ? intval(wp_unslash($_GET['licence_id'])) : 0;
+// Support legacy ?edit_licence= parameter while preferring ?licence_id=
+if (isset($_GET['licence_id'])) {
+    $licence_id = intval(wp_unslash($_GET['licence_id']));
+} elseif (isset($_GET['edit_licence'])) {
+    $licence_id = intval(wp_unslash($_GET['edit_licence']));
+} else {
+    $licence_id = 0;
+}
 
 if (!$licence_id) {
     echo '<div class="notice notice-error"><p>Aucune licence sélectionnée.</p></div>';
