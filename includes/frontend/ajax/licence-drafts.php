@@ -9,11 +9,12 @@ if ( ! defined('ABSPATH') ) exit;
  * Optionally accepts: licence_id (to update)
  */
 function ufsc_ajax_save_draft(){
-    if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if ( ! wp_verify_nonce( $nonce, 'ufsc_front_nonce' ) ) {
         wp_send_json_error( array('message' => esc_html__('Jeton invalide.', 'ufsc-domain')) );
     }
-    if ( ! is_user_logged_in() ) {
-        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) );
+    if ( ! is_user_logged_in() || ! current_user_can('read') ) {
+        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) ,401);
     }
 
     global $wpdb;
@@ -101,11 +102,12 @@ add_action('wp_ajax_nopriv_ufsc_save_licence_draft', 'ufsc_ajax_save_draft');
  * Delete a draft (only if belongs to current user's club)
  */
 function ufsc_ajax_delete_draft(){
-    if ( ! ufsc_check_ajax_nonce('ufsc_front_nonce', '_ajax_nonce', false) ) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if ( ! wp_verify_nonce( $nonce, 'ufsc_front_nonce' ) ) {
         wp_send_json_error( array('message' => esc_html__('Jeton invalide.', 'ufsc-domain')) );
     }
-    if ( ! is_user_logged_in() ) {
-        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) );
+    if ( ! is_user_logged_in() || ! current_user_can('read') ) {
+        wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) ,401);
     }
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     if ( ! $licence_id ) {

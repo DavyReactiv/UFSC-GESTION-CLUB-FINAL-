@@ -35,6 +35,10 @@ function ufsc_handle_add_licence_to_cart() {
         wp_send_json_error(['message'=>esc_html__('Security check failed.', 'ufsc-domain'),'code'=>'nonce_failed']);
     }
 
+    if (is_user_logged_in() && !current_user_can('read')) {
+        wp_send_json_error(['message'=>esc_html__('Unauthorized access.', 'ufsc-domain'),'code'=>'cap_failed'], 403);
+    }
+
     // Get and validate club ID
     $club_id = isset($_POST['club_id']) ? intval($_POST['club_id']) : 0;
     if (!$club_id) {

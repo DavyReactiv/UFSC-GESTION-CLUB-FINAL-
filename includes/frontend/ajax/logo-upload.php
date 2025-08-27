@@ -3,11 +3,15 @@
 if (!defined('ABSPATH')) { exit; }
 
 function ufsc_handle_set_club_logo() {
-    if (!ufsc_check_ajax_nonce('ufsc_set_club_logo_nonce', 'nonce', false)) {
+    $nonce = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_set_club_logo_nonce')) {
         wp_send_json_error(['message' => esc_html__('Erreur de sécurité. Veuillez recharger la page.', 'ufsc-domain')]);
     }
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => esc_html__('Vous devez être connecté pour modifier le logo.', 'ufsc-domain')]);
+    }
+    if (!current_user_can('read')) {
+        wp_send_json_error(['message' => esc_html__('Permissions insuffisantes.', 'ufsc-domain')], 403);
     }
     $access_check = ufsc_check_frontend_access('dashboard');
     if (!$access_check['allowed']) {

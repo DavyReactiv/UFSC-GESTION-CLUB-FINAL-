@@ -53,6 +53,9 @@ add_action('admin_notices', function() {
     if (isset($_GET['ufsc_run_tests']) && current_user_can('ufsc_manage')) {
         $results = ufsc_run_sync_tests();
         echo '<div class="notice notice-info"><p><strong>UFSC Sync Test Results:</strong></p>';
-        echo '<pre>' . print_r($results, true) . '</pre></div>';
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            echo '<pre>' . esc_html(print_r($results, true)) . '</pre>';
+        }
+        echo '</div>';
     }
 });

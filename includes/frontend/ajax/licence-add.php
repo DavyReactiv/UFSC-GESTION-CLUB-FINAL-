@@ -17,7 +17,8 @@ if (!defined('ABSPATH')) {
 function ufsc_handle_add_licencie_to_cart() {
     try {
         // Verify nonce
-        if (!ufsc_check_ajax_nonce('ufsc_add_licencie_nonce', 'nonce', false)) {
+        $nonce = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : '';
+        if (!wp_verify_nonce($nonce, 'ufsc_add_licencie_nonce')) {
             wp_send_json_error(['message' => esc_html__('Erreur de sécurité. Veuillez recharger la page.', 'ufsc-domain')]);
             return;
         }
@@ -25,6 +26,10 @@ function ufsc_handle_add_licencie_to_cart() {
         // Check if user is logged in
         if (!is_user_logged_in()) {
             wp_send_json_error(['message' => esc_html__('Vous devez être connecté pour ajouter un licencié.', 'ufsc-domain')]);
+            return;
+        }
+        if (!current_user_can('read')) {
+            wp_send_json_error(['message' => esc_html__('Vous n\'avez pas la permission.', 'ufsc-domain')], 403);
             return;
         }
 
@@ -172,7 +177,7 @@ function ufsc_handle_add_licencie_to_cart() {
         
     } catch (Exception $e) {
         // Log the error for debugging
-        if (function_exists('error_log')) {
+        if (defined('WP_DEBUG') && WP_DEBUG && function_exists('error_log')) {
             error_log('UFSC Licence Add Error: ' . $e->getMessage());
         }
         

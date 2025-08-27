@@ -19,7 +19,8 @@ function ufsc_ajax_club_search() {
         return;
     }
 
-    if (!check_ajax_referer('ufsc_club_search', 'nonce', false)) {
+    $nonce = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_club_search')) {
         wp_send_json_error('Invalid nonce', 403);
     }
     if (!current_user_can('manage_ufsc_licenses')) {
@@ -55,7 +56,8 @@ function ufsc_ajax_club_search() {
 add_action('wp_ajax_ufsc_upload_attestation', 'ufsc_handle_attestation_upload');
 function ufsc_handle_attestation_upload() {
     // Security checks
-    if (!check_ajax_referer('ufsc_attestation_nonce', '_ajax_nonce', false)) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_attestation_nonce')) {
         wp_send_json_error([
             'message' => esc_html__('Security check failed.', 'ufsc-domain')
         ], 403);
@@ -204,12 +206,14 @@ remove_filter('wp_handle_upload_prefilter', $ufsc_upload_prefilter_cb);
     update_user_meta($user_id, 'ufsc_attestations', $attestations);
     
     // Log the upload for security
-    error_log(sprintf(
-        'UFSC Attestation Upload: User %d uploaded %s attestation (file: %s)',
-        $user_id,
-        $type,
-        basename($uploaded_file['file'])
-    ));
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log(sprintf(
+            'UFSC Attestation Upload: User %d uploaded %s attestation (file: %s)',
+            $user_id,
+            $type,
+            basename($uploaded_file['file'])
+        ));
+    }
     
     // Trigger custom event for extensibility
     do_action('ufsc_attestation_uploaded', $user_id, $type, $uploaded_file);
@@ -324,7 +328,8 @@ require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/logo-upload.php';
 add_action('wp_ajax_ufsc_check_licence_duplicate', 'ufsc_ajax_check_licence_duplicate');
 function ufsc_ajax_check_licence_duplicate() {
     // Security check
-    if (!check_ajax_referer('ufsc_licence_duplicate_nonce', '_ajax_nonce', false)) {
+    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
+    if (!wp_verify_nonce($nonce, 'ufsc_licence_duplicate_nonce')) {
         wp_send_json_error([
             'message' => esc_html__('Échec de vérification de sécurité.', 'ufsc-domain')
         ], 403);
@@ -335,6 +340,11 @@ function ufsc_ajax_check_licence_duplicate() {
         wp_send_json_error([
             'message' => esc_html__('Vous devez être connecté.', 'ufsc-domain')
         ], 401);
+    }
+    if (!current_user_can('read')) {
+        wp_send_json_error([
+            'message' => esc_html__('Permissions insuffisantes.', 'ufsc-domain')
+        ], 403);
     }
     
     // Get data from POST

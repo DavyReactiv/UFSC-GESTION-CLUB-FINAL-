@@ -149,7 +149,9 @@ class UFSC_WooCommerce_Integration {
         
         if (!$club_id) {
             // Log warning if no club ID found
-            error_log('UFSC: No club ID found in affiliation order item');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('UFSC: No club ID found in affiliation order item');
+            }
             return;
         }
 
@@ -199,7 +201,9 @@ class UFSC_WooCommerce_Integration {
         $license_data = $item->get_meta('ufsc_licence_data');
 
         if (!$club_id) {
-            error_log('UFSC: No club ID found in license order item');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('UFSC: No club ID found in license order item');
+            }
             return;
         }
 
