@@ -76,7 +76,7 @@ class UFSC_Sync_Monitor
         $sync_stats = $this->get_sync_statistics();
         $system_status = $this->check_system_status();
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-update"></span>
                 Synchronisation et Diagnostic

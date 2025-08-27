@@ -94,7 +94,7 @@ if (!empty($params)) {
 $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '');
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1>Liste des clubs</h1>
 
     <div class="ufsc-filters-container">

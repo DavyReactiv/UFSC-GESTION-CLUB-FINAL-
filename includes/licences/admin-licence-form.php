@@ -64,6 +64,35 @@ function ufsc_get_club_name($club_id) {
 
 $action_url = admin_url('admin.php?page=ufsc_license_add_admin' . ($licence_id ? '&licence_id=' . $licence_id : ''));
 
+
+<div class="wrap ufsc-ui">
+    <h1><?php echo esc_html("Ajouter une licence" . ($club && $club_id ? " pour le club « {$club->nom} »" : "")); ?></h1>
+
+    <?php if ($club && $club_id): ?>
+    <div class="ufsc-quota-box">
+        <strong>Quota de licences</strong>
+        <div class="ufsc-quota-progress">
+            <div class="ufsc-quota-bar" style="width: <?php echo esc_attr($included_percent); ?>%;"></div>
+        </div>
+        <p>
+            <span class="ufsc-badge badge-green">Quota utilisé : <?php echo esc_html($quota_usage); ?>/<?php echo esc_html($quota_total); ?></span>
+            <span class="ufsc-badge badge-red">Payantes : <?php echo esc_html($payantes); ?></span><br>
+            <strong>Montant total :</strong> <?php echo number_format($montant, 2, ',', ' '); ?> €
+        </p>
+    </div>
+    <?php endif; ?>
+
+    <form method="post" action="<?php echo esc_url(admin_url("admin.php?page=ufsc-ajouter-licence" . ($club_id ? "&club_id={$club_id}" : ""))); ?>">
+        <?php wp_nonce_field('ufsc_add_licence', 'ufsc_add_licence_nonce'); ?>
+
+        <?php require UFSC_PLUGIN_PATH . 'includes/frontend/parts/form-licence.php'; ?>
+
+        <div class="ufsc-form-submit">
+            <input type="submit" class="button button-primary" value="<?php esc_attr_e('Ajouter la licence', 'plugin-ufsc-gestion-club-13072025'); ?>">
+        </div>
+    </form>
+</div>
+
 wp_enqueue_script('jquery-ui-autocomplete');
 ?>
 <div class="wrap">
@@ -123,3 +152,4 @@ jQuery(function($){
     });
 });
 </script>
+

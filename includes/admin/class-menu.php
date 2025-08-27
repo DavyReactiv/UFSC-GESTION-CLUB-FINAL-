@@ -441,7 +441,7 @@ class UFSC_Menu
         // Load regions for dropdown
         $regions = require UFSC_PLUGIN_PATH . 'data/regions.php';
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Créez une nouvelle affiliation pour un club. Remplissez le formulaire avec les informations du club à enregistrer.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -873,7 +873,7 @@ class UFSC_Menu
         $table->prepare_items();
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Liste des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Gérez toutes les licences enregistrées dans le système.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             <p>
@@ -982,7 +982,7 @@ class UFSC_Menu
         require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
         
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Export des clubs', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Exportez tous les clubs ou sélectionnez individuellement les clubs à exporter au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -1380,7 +1380,7 @@ class UFSC_Menu
         $all_clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER BY nom ASC");
         ?>
         
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Export des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Configurez les filtres de recherche et le type d\'export souhaité, puis exportez les données des licences au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -1550,7 +1550,7 @@ class UFSC_Menu
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
             return;
         }
 
@@ -1558,7 +1558,7 @@ class UFSC_Menu
         $club_manager = UFSC_Club_Manager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
             return;
         }
 
@@ -1658,7 +1658,7 @@ class UFSC_Menu
         }
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Gestion des documents', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?></h1>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-liste-clubs')); ?>" class="button">
@@ -2407,7 +2407,7 @@ class UFSC_Menu
     public function render_settings_page()
     {
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-settings" style="font-size: 1.3em; margin-right: 8px;"></span>
                 <?php echo esc_html__('Paramètres du plugin UFSC', 'plugin-ufsc-gestion-club-13072025'); ?>
@@ -2481,7 +2481,125 @@ class UFSC_Menu
     /**
      * Render ajouter licence page
      */
+
+    public function render_ajouter_licence_page()
+    {
+        global $wpdb;
+        
+        // Load required files
+        require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
+        
+        // Get all clubs for selection
+        $clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER BY nom");
+        
+        // Handle form submission
+        if (isset($_POST['submit']) && check_admin_referer('ufsc_add_licence_admin', 'ufsc_add_licence_admin_nonce')) {
+            $manager = new UFSC_Licence_Manager();
+            
+            $club_id = isset($_POST['club_id']) ? intval($_POST['club_id']) : 0;
+            if (!$club_id) {
+                echo '<div class="notice notice-error"><p>Veuillez sélectionner un club.</p></div>';
+            } else {
+                $data = [
+                    'club_id'                     => $club_id,
+                    'nom'                         => isset($_POST['nom']) ? sanitize_text_field($_POST['nom']) : '',
+                    'prenom'                      => isset($_POST['prenom']) ? sanitize_text_field($_POST['prenom']) : '',
+                    'sexe'                        => (isset($_POST['sexe']) && $_POST['sexe'] === 'F') ? 'F' : 'M',
+                    'date_naissance'             => isset($_POST['date_naissance']) ? sanitize_text_field($_POST['date_naissance']) : '',
+                    'email'                       => isset($_POST['email']) ? sanitize_email($_POST['email']) : '',
+                    'adresse'                     => isset($_POST['adresse']) ? sanitize_text_field($_POST['adresse']) : '',
+                    'suite_adresse'              => isset($_POST['suite_adresse']) ? sanitize_text_field($_POST['suite_adresse']) : '',
+                    'code_postal'                => isset($_POST['code_postal']) ? sanitize_text_field($_POST['code_postal']) : '',
+                    'ville'                      => isset($_POST['ville']) ? sanitize_text_field($_POST['ville']) : '',
+                    'tel_fixe'                   => isset($_POST['tel_fixe']) ? sanitize_text_field($_POST['tel_fixe']) : '',
+                    'tel_mobile'                 => isset($_POST['tel_mobile']) ? sanitize_text_field($_POST['tel_mobile']) : '',
+                    'reduction_benevole'         => isset($_POST['reduction_benevole']) ? intval($_POST['reduction_benevole']) : 0,
+                    'reduction_postier'          => isset($_POST['reduction_postier']) ? intval($_POST['reduction_postier']) : 0,
+                    'identifiant_laposte'        => isset($_POST['identifiant_laposte']) ? sanitize_text_field($_POST['identifiant_laposte']) : '',
+                    'profession'                 => isset($_POST['profession']) ? sanitize_text_field($_POST['profession']) : '',
+                    'fonction_publique'          => isset($_POST['fonction_publique']) ? intval($_POST['fonction_publique']) : 0,
+                    'competition'                => isset($_POST['competition']) ? intval($_POST['competition']) : 0,
+                    'licence_delegataire'        => isset($_POST['licence_delegataire']) ? intval($_POST['licence_delegataire']) : 0,
+                    'numero_licence_delegataire' => isset($_POST['numero_licence_delegataire']) ? sanitize_text_field($_POST['numero_licence_delegataire']) : '',
+                    'diffusion_image'            => isset($_POST['diffusion_image']) ? intval($_POST['diffusion_image']) : 0,
+                    'infos_fsasptt'              => isset($_POST['infos_fsasptt']) ? intval($_POST['infos_fsasptt']) : 0,
+                    'infos_asptt'                => isset($_POST['infos_asptt']) ? intval($_POST['infos_asptt']) : 0,
+                    'infos_cr'                   => isset($_POST['infos_cr']) ? intval($_POST['infos_cr']) : 0,
+                    'infos_partenaires'          => isset($_POST['infos_partenaires']) ? intval($_POST['infos_partenaires']) : 0,
+                    'honorabilite'               => isset($_POST['honorabilite']) ? intval($_POST['honorabilite']) : 0,
+                    'assurance_dommage_corporel' => isset($_POST['assurance_dommage_corporel']) ? intval($_POST['assurance_dommage_corporel']) : 0,
+                    'assurance_assistance'       => isset($_POST['assurance_assistance']) ? intval($_POST['assurance_assistance']) : 0,
+                    'note'                       => isset($_POST['note']) ? sanitize_textarea_field($_POST['note']) : '',
+                    'region'                     => isset($_POST['region']) ? sanitize_text_field($_POST['region']) : '',
+                    'is_included'                => isset($_POST['is_included']) ? 1 : 0,
+                ];
+                
+                $licence_id = $manager->add_licence($data);
+                
+                if ($licence_id) {
+                    echo '<div class="notice notice-success"><p>✅ Licence ajoutée avec succès (ID: ' . $licence_id . ').</p></div>';
+                } else {
+                    echo '<div class="notice notice-error"><p>❌ Erreur lors de l\'ajout de la licence.</p></div>';
+                }
+            }
+        }
+        
+        
+        // Enqueue the license form CSS and JS
+        wp_enqueue_style(
+            'ufsc-licence-form-style',
+            UFSC_PLUGIN_URL . 'assets/css/form-licence.css',
+            [],
+            UFSC_PLUGIN_VERSION
+        );
+
+        wp_enqueue_script(
+            'ufsc-licence-form-script',
+            UFSC_PLUGIN_URL . 'assets/js/form-licence.js',
+            ['jquery'],
+            UFSC_PLUGIN_VERSION,
+            true
+        );
+        ?>
+        <div class="wrap ufsc-ui">
+            <h1><?php echo esc_html__('Ajouter une nouvelle licence', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
+            <p><?php echo esc_html__('Créez une nouvelle licence pour un licencié. Remplissez le formulaire avec les informations du licencié.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            
+            <form method="post" action="">
+                <?php wp_nonce_field('ufsc_add_licence_admin', 'ufsc_add_licence_admin_nonce'); ?>
+                
+                <?php 
+                // Set current licence to null for new licence creation
+                $current_licence = null;
+                // Include the comprehensive licence form
+                require_once UFSC_PLUGIN_PATH . 'includes/frontend/parts/form-licence.php'; 
+                ?>
+                
+                <!-- Additional admin-specific fields -->
+                <div class="ufsc-form-section ufsc-section-admin">
+                    <h3><?php echo esc_html__('Options administratives', 'plugin-ufsc-gestion-club-13072025'); ?></h3>
+                    <div class="ufsc-checkbox-group">
+                        <div class="ufsc-checkbox-item">
+                            <input type="checkbox" name="is_included" id="is_included" value="1">
+                            <label for="is_included"><?php echo esc_html__('Cette licence est incluse dans le quota', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <?php submit_button(__('Ajouter la licence', 'plugin-ufsc-gestion-club-13072025')); ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render modifier licence page
+     */
+    public function render_modifier_licence_page()
+
     public function render_licence_add_admin_page()
+
     {
         require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
     }
@@ -2723,7 +2841,7 @@ class UFSC_Menu
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
             return;
         }
 
@@ -2734,7 +2852,7 @@ class UFSC_Menu
         $club_manager = UFSC_Club_Manager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
             return;
         }
 
@@ -2851,7 +2969,7 @@ class UFSC_Menu
             $regions = require UFSC_PLUGIN_PATH . 'data/regions.php';
         }
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <?php if ($edit_mode): ?>
                     <?php echo esc_html__('Modifier le club', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?>
@@ -3438,7 +3556,7 @@ class UFSC_Menu
         // Get license ID from URL parameter
         $licence_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$licence_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucune licence sélectionnée.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucune licence sélectionnée.</p></div></div>';
             return;
         }
 
@@ -3459,7 +3577,7 @@ class UFSC_Menu
         $licence = $licence_manager->get_licence_by_id($licence_id);
         
         if (!$licence) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Licence introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Licence introuvable.</p></div></div>';
             return;
         }
 
@@ -3490,7 +3608,7 @@ class UFSC_Menu
         }
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($licence->prenom . ' ' . $licence->nom); ?></h1>
             
             <p>

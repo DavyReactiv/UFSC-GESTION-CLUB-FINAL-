@@ -125,7 +125,7 @@ wp_enqueue_script(
 );
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1><?php echo esc_html("Modifier la licence de {$current_licence->prenom} {$current_licence->nom} (Club: {$club->nom})"); ?></h1>
 
     <!-- License Actions -->
