@@ -15,7 +15,7 @@ class UFSC_Pack_Exports_Admin {
 
     public function menu() {
         add_submenu_page(
-            'ufsc_gestion_club', // parent slug may vary; fallback to top-level plugin slug if needed
+            'ufsc_licenses_admin', // register under UFSC menu
             __('Réglages Packs & Exports', 'plugin-ufsc-gestion-club-13072025'),
             __('Réglages & Exports', 'plugin-ufsc-gestion-club-13072025'),
             'manage_ufsc',
