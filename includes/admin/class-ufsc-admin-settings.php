@@ -257,28 +257,57 @@ class UFSC_Admin_Settings {
     }
 
     /**
-     * Render settings page
+     * Render settings page with tabbed interface
      */
     public function render_settings_page() {
         if (!current_user_can('ufsc_manage')) {
             wp_die(__('Vous n\'avez pas les permissions suffisantes pour accéder à cette page.'));
         }
+
+        $tabs = array(
+            'general'     => __('Général', 'plugin-ufsc-gestion-club-13072025'),
+            'woocommerce' => __('WooCommerce', 'plugin-ufsc-gestion-club-13072025'),
+            'emails'      => __('Emails', 'plugin-ufsc-gestion-club-13072025'),
+            'export'      => __('Export CSV', 'plugin-ufsc-gestion-club-13072025'),
+            'access'      => __('Accès & Rattachement', 'plugin-ufsc-gestion-club-13072025'),
+            'advanced'    => __('Avancé', 'plugin-ufsc-gestion-club-13072025'),
+        );
+
+        $current_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'general';
+        if (!array_key_exists($current_tab, $tabs)) {
+            $current_tab = 'general';
+        }
+
         ?>
         <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-settings" style="font-size: 1.3em; margin-right: 8px;"></span>
                 <?php _e('Paramètres UFSC', 'plugin-ufsc-gestion-club-13072025'); ?>
             </h1>
-            
+
+            <h2 class="nav-tab-wrapper ufsc-tabs" role="tablist">
+                <?php foreach ($tabs as $key => $label) :
+                    $active = ($current_tab === $key) ? ' nav-tab-active' : '';
+                ?>
+                    <a href="<?php echo esc_url(add_query_arg(array('page' => 'ufsc-settings', 'tab' => $key), admin_url('options-general.php'))); ?>"
+                       class="nav-tab<?php echo $active; ?>"
+                       id="tab-<?php echo esc_attr($key); ?>"
+                       role="tab"
+                       aria-selected="<?php echo $current_tab === $key ? 'true' : 'false'; ?>">
+                        <?php echo esc_html($label); ?>
+                    </a>
+                <?php endforeach; ?>
+            </h2>
+
             <div class="ufsc-settings-container" style="max-width: 800px;">
                 <form method="post" action="options.php">
                     <?php
                     settings_fields('ufsc_settings_group');
-                    do_settings_sections('ufsc-settings');
+                    $this->render_tab_sections($current_tab);
                     submit_button(__('Sauvegarder les paramètres', 'plugin-ufsc-gestion-club-13072025'));
                     ?>
                 </form>
-                
+
                 <div class="card" style="margin-top: 20px;">
                     <h3>
                         <span class="dashicons dashicons-info" style="color: #0073aa;"></span>
@@ -288,13 +317,75 @@ class UFSC_Admin_Settings {
                         <?php _e('Ces paramètres contrôlent l\'intégration avec WooCommerce et le comportement des shortcodes frontend.', 'plugin-ufsc-gestion-club-13072025'); ?>
                     </p>
                     <p>
-                        <strong><?php _e('Version du plugin:', 'plugin-ufsc-gestion-club-13072025'); ?></strong> 
+                        <strong><?php _e('Version du plugin:', 'plugin-ufsc-gestion-club-13072025'); ?></strong>
                         <?php echo defined('UFSC_PLUGIN_VERSION') ? UFSC_PLUGIN_VERSION : '20.8.1'; ?>
                     </p>
                 </div>
             </div>
         </div>
+        <script>
+        (function() {
+            const tabs = document.querySelectorAll('.ufsc-tabs a[role="tab"]');
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const dir = e.key === 'ArrowRight' ? 1 : -1;
+                        const next = tabs[(index + dir + tabs.length) % tabs.length];
+                        window.location = next.getAttribute('href');
+                    }
+                });
+            });
+        })();
+        </script>
         <?php
+    }
+
+    /**
+     * Render settings sections for the active tab
+     *
+     * @param string $tab Current tab identifier.
+     */
+    private function render_tab_sections($tab) {
+        $map = array(
+            'general'     => array(),
+            'woocommerce' => array('ufsc_woocommerce_section'),
+            'emails'      => array(),
+            'export'      => array(),
+            'access'      => array('ufsc_frontend_section'),
+            'advanced'    => array(),
+        );
+
+        $page = 'ufsc-settings';
+
+        if (empty($map[$tab])) {
+            echo '<p>' . esc_html__('Aucun paramètre disponible pour cet onglet.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+            return;
+        }
+
+        global $wp_settings_sections, $wp_settings_fields;
+
+        foreach ($map[$tab] as $section_id) {
+            if (empty($wp_settings_sections[$page][$section_id])) {
+                continue;
+            }
+
+            $section = $wp_settings_sections[$page][$section_id];
+
+            if (!empty($section['title'])) {
+                echo '<h2>' . esc_html($section['title']) . '</h2>';
+            }
+
+            if (!empty($section['callback'])) {
+                call_user_func($section['callback'], $section);
+            }
+
+            if (!empty($wp_settings_fields[$page][$section_id])) {
+                echo '<table class="form-table" role="presentation">';
+                do_settings_fields($page, $section_id);
+                echo '</table>';
+            }
+        }
     }
 
     /**
@@ -310,10 +401,10 @@ class UFSC_Admin_Settings {
     }
 
     /**
-     * Frontend section callback
+     * Frontend/access section callback
      */
     public function frontend_section_callback() {
-        echo '<p>' . __('Configuration du comportement des shortcodes et de l\'interface frontend.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . __('Configuration de l\'accès aux shortcodes et du rattachement des utilisateurs.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
     }
 
     /**
