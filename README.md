@@ -3,13 +3,7 @@
 **Plugin WordPress professionnel pour la gestion des affiliations et licences UFSC**
 
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/DavyReactiv/Plugin_UFSC_GESTION_CLUB_13072025)
-[![WordPress](https://img.shields.io/badge/WordPress-6.6+-green.svg)](https://wordpress.org)
-[![PHP](https://img.shields.io/badge/PHP-8.2+-purple.svg)](https://php.net)
-
-[![Version](https://img.shields.io/badge/version-20.8.2-blue.svg)](https://github.com/DavyReactiv/Plugin_UFSC_GESTION_CLUB_13072025)
-[![WordPress](https://img.shields.io/badge/WordPress-5.5+-green.svg)](https://wordpress.org)
-[![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://php.net)
+[![Version](https://img.shields.io/badge/version-20.8.2-blue.svg)](https://github.com/DavyReactiv/Plugin_UFSC_GESTION_CLUB_13072025) [![WordPress](https://img.shields.io/badge/WordPress-6.6+-green.svg)](https://wordpress.org) [![PHP](https://img.shields.io/badge/PHP-8.2+-purple.svg)](https://php.net)
 
 [![License](https://img.shields.io/badge/license-GPL--2.0+-orange.svg)](LICENSE)
 
@@ -77,7 +71,6 @@ Le plugin utilise des pages WordPress dédiées pour l'interface frontend. Ces p
 | **Attestations** | `[ufsc_attestation_form]` | `/attestations-club/` | Upload d'attestations |
 | **Liste des Clubs** | `[ufsc_liste_clubs]` | `/liste-clubs/` | Liste publique des clubs |
 | **Connexion Club** | `[ufsc_login_register]` | `/connexion-club/` | Connexion et inscription |
-| **Liste des Clubs** | `[ufsc_liste_clubs]` | `/liste-clubs/` | Liste publique des clubs |
 
 Les pages sont créées automatiquement avec des permaliens optimisés. Vous pouvez les personnaliser dans `Pages > Toutes les pages`.
 
