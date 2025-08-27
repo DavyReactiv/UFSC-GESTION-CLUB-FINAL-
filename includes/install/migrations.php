@@ -7,7 +7,7 @@ function ufsc_run_migrations() {
     $charset = $wpdb->get_charset_collate();
     $dbv_opt = 'ufsc_db_schema_version';
     $current = get_option($dbv_opt, '');
-    $target = '2.0.8-logo-fields';
+    $target = '2.0.9-payment-status';
 
     // Always ensure columns/tables exist (idempotent)
     $licences_table = $wpdb->prefix . 'ufsc_licences';
@@ -24,10 +24,18 @@ function ufsc_run_migrations() {
         $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN deleted_at datetime NULL DEFAULT NULL AFTER role");
     }
 
-    // Add payment_status column if missing
-    $col_pay = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$licences_table} LIKE %s", 'payment_status'));
-    if (!$col_pay) {
-        $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending' AFTER order_id");
+    // Migration for payment_status column/index
+    if (version_compare($current, '2.0.9-payment-status', '<')) {
+        // Add payment_status column if missing
+        $col_pay = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$licences_table} LIKE %s", 'payment_status'));
+        if (!$col_pay) {
+            $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN payment_status TINYINT(1) NOT NULL DEFAULT 0 AFTER statut");
+        }
+        // Optional index on payment_status
+        $idx_pay = $wpdb->get_var($wpdb->prepare("SHOW INDEX FROM {$licences_table} WHERE Key_name = %s", 'idx_payment_status'));
+        if (!$idx_pay) {
+            $wpdb->query("ALTER TABLE {$licences_table} ADD INDEX idx_payment_status (payment_status)");
+        }
     }
 
     // Add helpful indexes

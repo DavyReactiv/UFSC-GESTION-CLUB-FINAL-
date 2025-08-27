@@ -264,10 +264,15 @@ class UFSC_Licence_List_Table extends WP_List_Table {
         $start  = isset( $_REQUEST['start_date'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['start_date'] ) ) : '';
         $end    = isset( $_REQUEST['end_date'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['end_date'] ) ) : '';
 
-        $table       = $wpdb->prefix . 'ufsc_licences l';
-        $clubs_table = $wpdb->prefix . 'ufsc_clubs c';
-        $where       = 'WHERE 1=1';
-        $params      = [];
+        $licence_table = $wpdb->prefix . 'ufsc_licences';
+        $table         = $licence_table . ' l';
+        $clubs_table   = $wpdb->prefix . 'ufsc_clubs c';
+        $where         = 'WHERE 1=1';
+        $params        = [];
+
+        // Check if payment_status column exists
+        $payment_col    = $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM {$licence_table} LIKE %s", 'payment_status' ) );
+        $payment_select = $payment_col ? 'l.payment_status' : "'pending' AS payment_status";
 
         if ( $this->club_id ) {
             $where   .= ' AND l.club_id = %d';
@@ -321,7 +326,7 @@ class UFSC_Licence_List_Table extends WP_List_Table {
 
         $offset = ( $current_page - 1 ) * $per_page;
 
-        $select_sql = "SELECT l.id, l.nom, l.prenom, l.email, l.sexe, l.date_naissance, c.nom AS club, l.categorie, l.is_included AS quota, l.statut, l.payment_status, l.date_inscription AS date_licence
+        $select_sql = "SELECT l.id, l.nom, l.prenom, l.email, l.sexe, l.date_naissance, c.nom AS club, l.categorie, l.is_included AS quota, l.statut, {$payment_select}, l.date_inscription AS date_licence
                         FROM {$table}
                         LEFT JOIN {$clubs_table} ON l.club_id = c.id
                         {$where}
