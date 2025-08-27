@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 
 require_once dirname(__DIR__) . '/repository/class-licence-repository.php';
 require_once dirname(__DIR__) . '/repository/class-club-repository.php';
+require_once __DIR__ . '/validation.php';
 
 class UFSC_Licence_Manager
 {
@@ -84,7 +85,8 @@ class UFSC_Licence_Manager
      */
     public function create_licence(array $data): int|false
     {
-        if (empty($data['nom']) || empty($data['prenom']) || empty($data['club_id'])) {
+        $errors = ufsc_validate_licence_data($data);
+        if (!empty($errors)) {
             return false;
         }
 
@@ -181,6 +183,12 @@ class UFSC_Licence_Manager
     {
         $status = $this->licence_repository->get_status($id);
         if ($status === null) {
+            return false;
+        }
+
+        $existing = (array) $this->licence_repository->get($id);
+        $errors   = ufsc_validate_licence_data(array_merge($existing, $data), $status === 'validee');
+        if (!empty($errors)) {
             return false;
         }
 
