@@ -72,6 +72,9 @@
 
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_add_licence_to_cart'});
+    if (window.UFSC && UFSC.nonces && UFSC.nonces.add_licence_to_cart) {
+      payload.push({name:'_ufsc_licence_nonce', value:UFSC.nonces.add_licence_to_cart});
+    }
 
     $.post(ajaxUrl, payload).done(function(res){
       if(res && res.success){
@@ -88,18 +91,67 @@
     });
   });
 
-})(jQuery);
+    // Add an existing licence to cart
+    $(document).on('click', '.ufsc-add-to-cart', function(e){
+      e.preventDefault();
+      var $b = $(this);
+      var id = $b.data('licenceId') || $b.data('licence-id');
+      if(!id) return;
+      lock($b, 'Ajout…');
+      $.post(ajaxUrl, {
+        action: 'ufsc_add_to_cart',
+        licence_id: id,
+        nonce: (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
+      }).done(function(res){
+        if(res && res.success){
+          var url = (res.data && res.data.redirect) || (window.wc_cart_url) || window.location.href;
+          if(url){ window.location.href = url; }
+        } else {
+          alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+        }
+      }).fail(function(){
+        alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+      }).always(function(){
+        unlock($b);
+      });
+    });
 
+    // Delete draft from licences table
+    $(document).on('click', '.ufsc-delete-draft', function(e){
+      e.preventDefault();
+      var id = $(this).data('id') || $(this).data('licence-id');
+      if(!id) return;
+      if(!confirm('Supprimer ce brouillon ?')) return;
+      $.post(ajaxUrl, {
+        action:'ufsc_delete_licence_draft',
+        licence_id:id,
+        nonce:(UFSC && UFSC.nonces && UFSC.nonces.delete_draft) || ''
+      }).done(function(res){
+        if(res && res.success){ location.reload(); }
+        else { alert((res && res.data && res.data.message) || 'Suppression impossible.'); }
+      }).fail(function(){ alert('Erreur de suppression.'); });
+    });
 
-  // Delete draft from licences table
-  $(document).on('click', '.ufsc-delete-draft', function(e){
-    e.preventDefault();
-    var id = $(this).data('id') || $(this).data('licence-id');
-    if(!id) return;
-    if(!confirm('Supprimer ce brouillon ?')) return;
-    $.post(ajaxUrl, {action:'ufsc_delete_licence_draft', licence_id:id}).done(function(res){
-      if(res && res.success){ location.reload(); }
-      else { alert((res && res.data && res.data.message) || 'Suppression impossible.'); }
-    }).fail(function(){ alert('Erreur de suppression.'); });
-  });
+    // Include licence in quota
+    $(document).on('click', '.ufsc-include-quota', function(e){
+      e.preventDefault();
+      var $b = $(this);
+      var id = $b.data('licenceId') || $b.data('licence-id');
+      if(!id) return;
+      lock($b, 'Inclusion…');
+      $.post(ajaxUrl, {
+        action:'ufsc_include_quota',
+        licence_id:id,
+        nonce:(UFSC && UFSC.nonces && UFSC.nonces.include_quota) || ''
+      }).done(function(res){
+        if(res && res.success){ location.reload(); }
+        else { alert((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur'); }
+      }).fail(function(){
+        alert((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
+      }).always(function(){
+        unlock($b);
+      });
+    });
+
+  })(jQuery);
 
