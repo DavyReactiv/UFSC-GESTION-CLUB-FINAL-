@@ -198,38 +198,72 @@ class UFSC_Licence_Manager
      */
     public function update_licence($id, $data)
     {
-        $update = [
-            'nom'                         => sanitize_text_field($data['nom']),
-            'prenom'                      => sanitize_text_field($data['prenom']),
-            'sexe'                        => in_array($data['sexe'], ['F','M']) ? $data['sexe'] : 'M',
-            'date_naissance'             => sanitize_text_field($data['date_naissance']),
-            'email'                       => sanitize_email($data['email']),
-            'adresse'                     => sanitize_text_field($data['adresse']),
-            'suite_adresse'              => sanitize_text_field($data['suite_adresse']),
-            'code_postal'                => sanitize_text_field($data['code_postal']),
-            'ville'                      => sanitize_text_field($data['ville']),
-            'tel_fixe'                   => sanitize_text_field($data['tel_fixe']),
-            'tel_mobile'                 => sanitize_text_field($data['tel_mobile']),
-            'reduction_benevole'         => intval($data['reduction_benevole']),
-            'reduction_postier'          => intval($data['reduction_postier']),
-            'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte']),
-            'profession'                 => sanitize_text_field($data['profession']),
-            'fonction_publique'          => intval($data['fonction_publique']),
-            'competition'                => intval($data['competition']),
-            'licence_delegataire'        => intval($data['licence_delegataire']),
-            'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire']),
-            'diffusion_image'            => intval($data['diffusion_image']),
-            'infos_fsasptt'              => intval($data['infos_fsasptt']),
-            'infos_asptt'                => intval($data['infos_asptt']),
-            'infos_cr'                   => intval($data['infos_cr']),
-            'infos_partenaires'          => intval($data['infos_partenaires']),
-            'honorabilite'               => intval($data['honorabilite']),
-            'assurance_dommage_corporel' => intval($data['assurance_dommage_corporel']),
-            'assurance_assistance'       => intval($data['assurance_assistance']),
-            'note'                       => sanitize_textarea_field($data['note']),
-            'region'                     => sanitize_text_field($data['region']),
-            'is_included'                => !empty($data['is_included']) ? 1 : 0,
-        ];
+        // Retrieve current licence status
+        $status = $this->wpdb->get_var(
+            $this->wpdb->prepare(
+                "SELECT statut FROM {$this->table_licences} WHERE id = %d",
+                intval($id)
+            )
+        );
+
+        if (!$status) {
+            return false;
+        }
+
+        if ('validee' === $status) {
+            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe'];
+            $data = array_intersect_key($data, array_flip($allowed_fields));
+
+            $update = [];
+
+            if (isset($data['email'])) {
+                $update['email'] = sanitize_email($data['email']);
+            }
+            if (isset($data['tel_mobile'])) {
+                $update['tel_mobile'] = sanitize_text_field($data['tel_mobile']);
+            }
+            if (isset($data['tel_fixe'])) {
+                $update['tel_fixe'] = sanitize_text_field($data['tel_fixe']);
+            }
+
+            // Short-circuit if nothing to update
+            if (empty($update)) {
+                return true;
+            }
+        } else {
+            $update = [
+                'nom'                         => sanitize_text_field($data['nom']),
+                'prenom'                      => sanitize_text_field($data['prenom']),
+                'sexe'                        => in_array($data['sexe'], ['F','M']) ? $data['sexe'] : 'M',
+                'date_naissance'             => sanitize_text_field($data['date_naissance']),
+                'email'                       => sanitize_email($data['email']),
+                'adresse'                     => sanitize_text_field($data['adresse']),
+                'suite_adresse'              => sanitize_text_field($data['suite_adresse']),
+                'code_postal'                => sanitize_text_field($data['code_postal']),
+                'ville'                      => sanitize_text_field($data['ville']),
+                'tel_fixe'                   => sanitize_text_field($data['tel_fixe']),
+                'tel_mobile'                 => sanitize_text_field($data['tel_mobile']),
+                'reduction_benevole'         => intval($data['reduction_benevole']),
+                'reduction_postier'          => intval($data['reduction_postier']),
+                'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte']),
+                'profession'                 => sanitize_text_field($data['profession']),
+                'fonction_publique'          => intval($data['fonction_publique']),
+                'competition'                => intval($data['competition']),
+                'licence_delegataire'        => intval($data['licence_delegataire']),
+                'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire']),
+                'diffusion_image'            => intval($data['diffusion_image']),
+                'infos_fsasptt'              => intval($data['infos_fsasptt']),
+                'infos_asptt'                => intval($data['infos_asptt']),
+                'infos_cr'                   => intval($data['infos_cr']),
+                'infos_partenaires'          => intval($data['infos_partenaires']),
+                'honorabilite'               => intval($data['honorabilite']),
+                'assurance_dommage_corporel' => intval($data['assurance_dommage_corporel']),
+                'assurance_assistance'       => intval($data['assurance_assistance']),
+                'note'                       => sanitize_textarea_field($data['note']),
+                'region'                     => sanitize_text_field($data['region']),
+                'is_included'                => !empty($data['is_included']) ? 1 : 0,
+            ];
+        }
 
         $result = $this->wpdb->update(
             $this->table_licences,
