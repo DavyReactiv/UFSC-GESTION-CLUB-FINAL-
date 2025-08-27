@@ -2,27 +2,29 @@
  * Styles additionnels pour le tableau de bord club
  */
 
+@import url('ufsc-theme.css');
+
 /* Dashboard structure and layout */
 .ufsc-dashboard-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-bottom: 30px;
+    gap: 1.5rem;
+    margin-bottom: 1.875rem;
 }
 
 .ufsc-welcome-block {
-    background: linear-gradient(135deg, var(--ufsc-navy), #434278);
+    background: linear-gradient(135deg, var(--ufsc-color-primary), #434278);
     color: white;
-    border-radius: 8px;
-    padding: 25px;
-    margin-bottom: 30px;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.875rem;
     text-align: center;
     box-shadow: var(--ufsc-shadow);
 }
 
 .ufsc-welcome-block h2 {
     margin-top: 0;
-    font-size: 24px;
+    font-size: clamp(1.5rem, 1rem + 1vw, 2rem);
 }
 
 .ufsc-welcome-block p {
@@ -31,7 +33,7 @@
 }
 
 .ufsc-action-bar {
-    margin-bottom: 25px;
+    margin-bottom: 1.5rem;
     display: flex;
     justify-content: flex-end;
 }
@@ -43,96 +45,96 @@
 
 .ufsc-action-buttons {
     display: flex;
-    gap: 5px;
+    gap: 0.3125rem;
 }
 
 /* Profile page styles */
 .ufsc-profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .ufsc-profile-item {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .ufsc-profile-label {
     font-weight: 600;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
+    font-size: 0.875rem;
+    color: var(--ufsc-color-muted);
+    margin-bottom: 0.3125rem;
 }
 
 .ufsc-profile-value {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .ufsc-action-note {
-    margin-top: 25px;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    border-left: 4px solid var(--ufsc-navy);
+    margin-top: 1.5rem;
+    background: var(--ufsc-color-bg-light);
+    padding: 1rem;
+    border-radius: 0.3125rem;
+    border-left: 0.25rem solid var(--ufsc-color-primary);
 }
 
 /* Dirigeants grid */
 .ufsc-dirigeants-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .ufsc-dirigeant-card {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
-    border-top: 3px solid var(--ufsc-navy);
+    background: var(--ufsc-color-bg-light);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border-top: 0.1875rem solid var(--ufsc-color-primary);
 }
 
 .ufsc-dirigeant-role {
-    color: var(--ufsc-navy);
+    color: var(--ufsc-color-primary);
     font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 5px;
+    font-size: 0.875rem;
+    margin-bottom: 0.3125rem;
 }
 
 .ufsc-dirigeant-name {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 }
 
 .ufsc-dirigeant-contact {
-    font-size: 13px;
-    color: #666;
-    margin-top: 5px;
+    font-size: 0.8125rem;
+    color: var(--ufsc-color-muted);
+    margin-top: 0.3125rem;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.3125rem;
 }
 
 /* Documents page */
 .ufsc-documents-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .ufsc-document-item {
     display: flex;
     align-items: center;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    gap: 15px;
+    padding: 1rem;
+    background: var(--ufsc-color-bg-light);
+    border-radius: 0.5rem;
+    gap: 1rem;
 }
 
 .ufsc-document-icon {
-    background: var(--ufsc-navy);
+    background: var(--ufsc-color-primary);
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -141,7 +143,7 @@
 }
 
 .ufsc-document-icon i {
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .ufsc-document-info {
@@ -149,87 +151,87 @@
 }
 
 .ufsc-document-info h4 {
-    margin: 0 0 5px;
-    font-size: 16px;
+    margin: 0 0 0.3125rem;
+    font-size: 1rem;
 }
 
 .ufsc-document-info p {
     margin: 0;
-    font-size: 13px;
-    color: #666;
+    font-size: 0.8125rem;
+    color: var(--ufsc-color-muted);
 }
 
 .ufsc-download-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 1rem;
 }
 
 .ufsc-download-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    padding: 1rem;
+    background: var(--ufsc-color-bg-light);
+    border-radius: 0.5rem;
     text-decoration: none;
-    color: var(--ufsc-text);
-    border: 1px solid var(--ufsc-border);
+    color: var(--ufsc-color-text);
+    border: 1px solid var(--ufsc-color-border);
     transition: all 0.2s ease;
     text-align: center;
-    min-width: 150px;
+    min-width: 9.375rem;
 }
 
 .ufsc-download-btn:hover {
     background: white;
     box-shadow: var(--ufsc-shadow);
-    transform: translateY(-3px);
+    transform: translateY(-0.1875rem);
 }
 
 .ufsc-download-btn i {
-    font-size: 24px;
-    color: var(--ufsc-navy);
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: var(--ufsc-color-primary);
+    margin-bottom: 0.625rem;
 }
 
 /* Empty state */
 .ufsc-empty-state {
     text-align: center;
-    padding: 40px 20px;
+    padding: 2.5rem 1.25rem;
     background: white;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     box-shadow: var(--ufsc-shadow);
 }
 
 .ufsc-empty-icon {
-    background: #f5f5f5;
-    width: 80px;
-    height: 80px;
+    background: var(--ufsc-color-bg-light);
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
-    margin: 0 auto 20px;
+    margin: 0 auto 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .ufsc-empty-icon i {
-    font-size: 40px;
+    font-size: 2.5rem;
     color: #999;
 }
 
 .ufsc-empty-state h3 {
-    margin: 0 0 10px;
+    margin: 0 0 0.625rem;
     color: #555;
 }
 
 .ufsc-empty-state p {
-    margin: 0 0 20px;
+    margin: 0 0 1.25rem;
     color: #777;
 }
 
 /* Utility classes */
 .ufsc-text-danger {
-    color: var(--ufsc-red) !important;
+    color: var(--ufsc-color-accent) !important;
 }
 
 .ufsc-text-warning {
@@ -243,27 +245,27 @@
 .ufsc-btn-text {
     background: none;
     border: none;
-    color: var(--ufsc-navy);
+    color: var(--ufsc-color-primary);
     padding: 0;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;
 }
 
 .ufsc-btn-text:hover {
-    color: var(--ufsc-red);
+    color: var(--ufsc-color-accent);
 }
 
 .ufsc-inline-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .ufsc-inline-form label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
     font-weight: 500;
 }
 
@@ -281,52 +283,52 @@
 
 /* Document status styles */
 .ufsc-document-counter {
-    font-size: 14px;
-    color: #666;
+    font-size: 0.875rem;
+    color: var(--ufsc-color-muted);
     font-weight: normal;
 }
 
 .ufsc-document-status {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     display: block;
-    margin-top: 5px;
+    margin-top: 0.3125rem;
 }
 
 .ufsc-document-available {
-    border-left: 4px solid #46b450;
+    border-left: 0.25rem solid var(--ufsc-color-success);
     background: #f0f8f0;
 }
 
 .ufsc-document-available .ufsc-document-status {
-    color: #46b450;
+    color: var(--ufsc-color-success);
 }
 
 .ufsc-document-missing {
-    border-left: 4px solid #d63638;
+    border-left: 0.25rem solid var(--ufsc-color-accent);
     background: #fef7f1;
 }
 
 .ufsc-document-missing .ufsc-document-status {
-    color: #d63638;
+    color: var(--ufsc-color-accent);
 }
 
 .ufsc-document-pending {
-    border-left: 4px solid #e65100;
+    border-left: 0.25rem solid var(--ufsc-color-warning);
     background: #fff8e1;
 }
 
 .ufsc-document-pending .ufsc-document-status {
-    color: #e65100;
+    color: var(--ufsc-color-warning);
 }
 
 .ufsc-document-unavailable {
-    border-left: 4px solid #757575;
-    background: #f5f5f5;
+    border-left: 0.25rem solid var(--ufsc-color-muted);
+    background: var(--ufsc-color-bg-light);
 }
 
 .ufsc-document-unavailable .ufsc-document-status {
-    color: #757575;
+    color: var(--ufsc-color-muted);
 }
 
 .ufsc-btn-disabled {
@@ -343,36 +345,36 @@
 
 .ufsc-success-box {
     background: #f0f8f0;
-    border: 1px solid #46b450;
-    border-radius: 5px;
-    padding: 15px;
+    border: 1px solid var(--ufsc-color-success);
+    border-radius: 0.3125rem;
+    padding: 1rem;
     color: #2e7d32;
 }
 
 .ufsc-success-box h4 {
-    margin: 0 0 10px 0;
+    margin: 0 0 0.625rem 0;
     color: #2e7d32;
 }
 
 .ufsc-info-box {
     background: #e3f2fd;
     border: 1px solid #2196f3;
-    border-radius: 5px;
-    padding: 15px;
+    border-radius: 0.3125rem;
+    padding: 1rem;
     color: #1976d2;
 }
 
 .ufsc-info-box h4 {
-    margin: 0 0 10px 0;
+    margin: 0 0 0.625rem 0;
     color: #1976d2;
 }
 
 .ufsc-badge-success {
-    background: #46b450;
+    background: var(--ufsc-color-success);
     color: white;
 }
 
 .ufsc-badge-warning {
-    background: #e65100;
+    background: var(--ufsc-color-warning);
     color: white;
 }

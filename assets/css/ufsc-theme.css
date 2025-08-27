@@ -2,16 +2,32 @@
  * UFSC Theme - Styles professionnels pour formulaires et tableaux de bord
  */
 
+/* Palette et variables globales */
 :root {
-  --ufsc-navy: #2e2d54;
-  --ufsc-red: #d40000;
-  --ufsc-light-gray: #f5f5f5;
-  --ufsc-border: #e0e0e0;
-  --ufsc-text: #333333;
-  --ufsc-success: #46b450;
-  --ufsc-warning: #ffb900;
+  --ufsc-color-primary: #2e2d54;
+  --ufsc-color-accent: #d40000;
+  --ufsc-color-bg-light: #f5f5f5;
+  --ufsc-color-border: #e0e0e0;
+  --ufsc-color-text: #333333;
+  --ufsc-color-muted: #666666;
+  --ufsc-color-success: #46b450;
+  --ufsc-color-warning: #ffb900;
   --ufsc-shadow: 0 2px 8px rgba(0,0,0,0.08);
   --ufsc-transition: all 0.3s ease;
+  --ufsc-font-size-base: clamp(1rem, 0.5vw + 1rem, 1.125rem);
+  --ufsc-spacing-base: 1rem;
+  /* Variables héritées pour compatibilité */
+  --ufsc-navy: var(--ufsc-color-primary);
+  --ufsc-red: var(--ufsc-color-accent);
+  --ufsc-light-gray: var(--ufsc-color-bg-light);
+  --ufsc-border: var(--ufsc-color-border);
+  --ufsc-text: var(--ufsc-color-text);
+  --ufsc-success: var(--ufsc-color-success);
+  --ufsc-warning: var(--ufsc-color-warning);
+}
+
+html {
+  font-size: var(--ufsc-font-size-base);
 }
 
 /* ===== LAYOUT GÉNÉRAL ===== */
