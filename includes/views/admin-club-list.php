@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 require_once plugin_dir_path(__FILE__) . '../helpers.php';
 // Include UFSC CSV Export helper
 require_once plugin_dir_path(__FILE__) . '../helpers/class-ufsc-csv-export.php';
+require_once plugin_dir_path(__FILE__) . '../repository/class-club-repository.php';
 
 // Handle CSV export for selected clubs
 if (isset($_POST['export_selected']) && isset($_POST['selected_clubs']) && is_array($_POST['selected_clubs'])) {
@@ -36,59 +37,24 @@ $date_affiliation_from = isset($_GET['date_affiliation_from']) ? sanitize_text_f
 $date_affiliation_to = isset($_GET['date_affiliation_to']) ? sanitize_text_field(wp_unslash($_GET['date_affiliation_to'])) : '';
 $page     = isset($_GET['paged']) ? max(1, intval(wp_unslash($_GET['paged']))) : 1;
 $per_page = 20;
-$offset   = ($page - 1) * $per_page;
 
-global $wpdb;
-$where_sql = ['1=1'];
-$params = [];
+$repo = new UFSC_Club_Repository();
+$result = $repo->search([
+    'keyword'   => $search,
+    'region'    => $region,
+    'statut'    => $statut,
+    'date_from' => $date_affiliation_from,
+    'date_to'   => $date_affiliation_to,
+    'page'      => $page,
+    'per_page'  => $per_page,
+]);
 
-if ($search) {
-    $where_sql[] = 'nom LIKE %s';
-    $params[] = '%' . $search . '%';
-}
-if ($region) {
-    $where_sql[] = 'region = %s';
-    $params[] = $region;
-}
-if ($statut) {
-    $where_sql[] = 'statut = %s';
-    $params[] = $statut;
-}
-if ($date_affiliation_from) {
-    $where_sql[] = 'DATE(date_creation) >= %s';
-    $params[] = $date_affiliation_from;
-}
-if ($date_affiliation_to) {
-    $where_sql[] = 'DATE(date_creation) <= %s';
-    $params[] = $date_affiliation_to;
-}
-
-$where_clause = implode(' AND ', $where_sql);
-
-// 🔢 Total clubs
-if (!empty($params)) {
-    $total = $wpdb->get_var($wpdb->prepare(
-        "SELECT COUNT(*) FROM {$wpdb->prefix}ufsc_clubs WHERE $where_clause",
-        ...$params
-    ));
+if (is_wp_error($result)) {
+    $clubs = [];
+    $total = 0;
 } else {
-    // Safe query when no parameters - $where_clause only contains '1=1'
-    $total = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}ufsc_clubs WHERE 1=1");
-}
-
-// 📥 Clubs paginés
-$params_limit = array_merge($params, [$per_page, $offset]);
-if (!empty($params)) {
-    $clubs = $wpdb->get_results($wpdb->prepare(
-        "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE $where_clause ORDER BY nom ASC LIMIT %d OFFSET %d",
-        ...$params_limit
-    ));
-} else {
-    // Safe query when no parameters - using prepare for consistency
-    $clubs = $wpdb->get_results($wpdb->prepare(
-        "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE 1=1 ORDER BY nom ASC LIMIT %d OFFSET %d",
-        $per_page, $offset
-    ));
+    $clubs = $result['items'];
+    $total = $result['total'];
 }
 
 $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '');
