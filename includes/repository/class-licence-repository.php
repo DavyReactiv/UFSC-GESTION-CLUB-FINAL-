@@ -253,20 +253,20 @@ class UFSC_Licence_Repository
         $where_clause = implode(' AND ', $where);
         $clubs_table = $this->wpdb->prefix . 'ufsc_clubs';
 
-        $count_sql = "SELECT COUNT(*) FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause}";
+        $count_sql   = "SELECT COUNT(*) FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause}";
         $count_query = empty($params)
-            ? $this->wpdb->prepare($count_sql)
+            ? $count_sql
             : $this->wpdb->prepare($count_sql, ...$params);
-        $total = (int) $this->wpdb->get_var($count_query);
+        $total       = (int) $this->wpdb->get_var($count_query);
 
-        $offset = ((int) $args['page'] - 1) * (int) $args['per_page'];
+        $offset           = ((int) $args['page'] - 1) * (int) $args['per_page'];
         $params_with_limit = array_merge($params, [(int) $args['per_page'], (int) $offset]);
 
-        $list_sql = "SELECT l.*, c.nom as club FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause} ORDER BY l.date_inscription DESC LIMIT %d OFFSET %d";
+        $list_sql   = "SELECT l.*, c.nom as club FROM {$this->table} l LEFT JOIN {$clubs_table} c ON l.club_id = c.id WHERE {$where_clause} ORDER BY l.date_inscription DESC LIMIT %d OFFSET %d";
         $list_query = empty($params)
             ? $this->wpdb->prepare($list_sql, (int) $args['per_page'], (int) $offset)
             : $this->wpdb->prepare($list_sql, ...$params_with_limit);
-        $items = $this->wpdb->get_results($list_query, ARRAY_A);
+        $items      = $this->wpdb->get_results($list_query, ARRAY_A);
 
         return [
             'items'    => $items,
