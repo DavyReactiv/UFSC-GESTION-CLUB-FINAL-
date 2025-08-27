@@ -900,7 +900,7 @@ class UFSC_Menu
             <h1><?php echo esc_html__('Liste des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Gérez toutes les licences enregistrées dans le système.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             <p>
-                <a href="https://ufsc-france.fr/ajouter-licencie/" class="button button-primary">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-licence-add')); ?>" class="button button-primary">
                     <?php echo esc_html__('Ajouter une nouvelle licence', 'plugin-ufsc-gestion-club-13072025'); ?>
                 </a>
             </p>
@@ -2555,7 +2555,7 @@ class UFSC_Menu
 
     public function render_ajouter_licence_page()
     {
-        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
+        if (!current_user_can('ufsc_manage') && !current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
             wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
         }
         global $wpdb;
