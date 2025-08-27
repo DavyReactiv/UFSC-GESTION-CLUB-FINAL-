@@ -43,6 +43,7 @@ if (!$club) {
 // 📝 Traitement de la modification de licence
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_edit_licence', 'ufsc_edit_licence_nonce')) {
     $data = [
+        'club_id'                     => isset($_POST['club_id']) ? intval($_POST['club_id']) : $current_licence->club_id,
         'nom'                         => isset($_POST['nom']) ? sanitize_text_field(wp_unslash($_POST['nom'])) : '',
         'prenom'                      => isset($_POST['prenom']) ? sanitize_text_field(wp_unslash($_POST['prenom'])) : '',
         'sexe'                        => (isset($_POST['sexe']) && wp_unslash($_POST['sexe']) === 'F') ? 'F' : 'M',
@@ -81,6 +82,10 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
         echo '<div class="notice notice-success"><p>✅ Licence modifiée avec succès.</p></div>';
         // Reload the licence data to show updated values
         $current_licence = $manager->get_licence_by_id($licence_id);
+        $club = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
+            $current_licence->club_id
+        ));
     } else {
         echo '<div class="notice notice-error"><p>❌ Erreur lors de la modification de la licence.</p></div>';
     }

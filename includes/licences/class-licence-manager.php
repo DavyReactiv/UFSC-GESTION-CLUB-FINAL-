@@ -231,6 +231,10 @@ class UFSC_Licence_Manager
             'is_included'                => !empty($data['is_included']) ? 1 : 0,
         ];
 
+        if (isset($data['club_id'])) {
+            $update['club_id'] = intval($data['club_id']);
+        }
+
         $result = $this->wpdb->update(
             $this->table_licences,
             $update,

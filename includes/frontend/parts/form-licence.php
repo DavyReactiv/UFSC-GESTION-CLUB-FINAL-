@@ -25,7 +25,7 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
             <!-- Club Selection -->
             <div class="ufsc-form-field">
                 <label for="club_id" class="required"><?php _e('Club', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                <select name="club_id" id="club_id" required <?php echo $current_licence ? 'disabled' : ''; ?>>
+                <select name="club_id" id="club_id" required <?php echo ($current_licence && !is_admin()) ? 'disabled' : ''; ?>>
                     <option value=""><?php _e('Sélectionner un club', 'plugin-ufsc-gestion-club-13072025'); ?></option>
                     <?php foreach ($clubs as $club): ?>
                         <option value="<?php echo esc_attr($club->id); ?>" <?php selected($current_club_id, $club->id); ?>>
@@ -33,7 +33,7 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <?php if ($current_licence): ?>
+                <?php if ($current_licence && !is_admin()): ?>
                     <input type="hidden" name="club_id" value="<?php echo esc_attr($current_licence->club_id); ?>">
                     <span class="help-text"><?php _e('Le club ne peut pas être modifié après création', 'plugin-ufsc-gestion-club-13072025'); ?></span>
                 <?php endif; ?>
