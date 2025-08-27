@@ -211,7 +211,7 @@ if (is_admin() && current_user_can('manage_ufsc')) {
             'manage_options',
             'ufsc-test-form-harmonization',
             function() {
-                echo '<div class="wrap">';
+                echo '<div class="wrap ufsc-ui">';
                 echo '<h1>Test: Harmonisation du formulaire de licence</h1>';
                 ufsc_test_license_form_harmonization();
                 echo '</div>';

@@ -22,7 +22,7 @@ if (!$licence) {
 }
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1>Compléter la licence — <?php echo esc_html($licence->nom); ?></h1>
 
     <!-- 🎯 FORMULAIRE avec action vers admin-post.php -->

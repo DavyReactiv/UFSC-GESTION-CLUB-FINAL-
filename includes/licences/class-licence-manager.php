@@ -1,21 +1,22 @@
 <?php
+declare(strict_types=1);
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once dirname(__DIR__) . '/repository/class-licence-repository.php';
+require_once dirname(__DIR__) . '/repository/class-club-repository.php';
+
 class UFSC_Licence_Manager
 {
-    private $wpdb;
-    private $table_licences;
-    private $table_clubs;
+    private UFSC_Licence_Repository $licence_repository;
+    private UFSC_Club_Repository $club_repository;
 
     public function __construct()
     {
-        global $wpdb;
-        $this->wpdb = $wpdb;
-        $this->table_licences = $wpdb->prefix . 'ufsc_licences';
-        $this->table_clubs = $wpdb->prefix . 'ufsc_clubs';
+        $this->licence_repository = new UFSC_Licence_Repository();
+        $this->club_repository    = new UFSC_Club_Repository();
     }
 
     /**
@@ -24,57 +25,54 @@ class UFSC_Licence_Manager
      * @param array $data Données de la licence
      * @return int ID de la licence insérée
      */
-    public function add_licence($data)
+    public function add_licence(array $data): int
     {
-        $club = $this->wpdb->get_row(
-            $this->wpdb->prepare("SELECT nom FROM {$this->table_clubs} WHERE id = %d", intval($data['club_id']))
-        );
-        $note = $club ? $club->nom : '';
+        $club_name = $this->club_repository->get_name((int) ($data['club_id'] ?? 0));
+        $note      = $club_name ?? '';
 
         $insert = [
-            'club_id'                     => intval($data['club_id']),
-            'nom'                         => sanitize_text_field($data['nom']),
-            'prenom'                      => sanitize_text_field($data['prenom']),
-            'sexe'                        => in_array($data['sexe'], ['F','M']) ? $data['sexe'] : 'M',
-            'date_naissance'             => sanitize_text_field($data['date_naissance']),
-            'email'                       => sanitize_email($data['email']),
-            'adresse'                     => sanitize_text_field($data['adresse']),
-            'suite_adresse'              => sanitize_text_field($data['suite_adresse']),
-            'code_postal'                => sanitize_text_field($data['code_postal']),
-            'ville'                      => sanitize_text_field($data['ville']),
-            'tel_fixe'                   => sanitize_text_field($data['tel_fixe']),
-            'tel_mobile'                 => sanitize_text_field($data['tel_mobile']),
-            'reduction_benevole'         => intval($data['reduction_benevole']),
-            'reduction_postier'          => intval($data['reduction_postier']),
-            'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte']),
-            'profession'                 => sanitize_text_field($data['profession']),
-            'fonction_publique'          => intval($data['fonction_publique']),
-            'competition'                => intval($data['competition']),
-            'licence_delegataire'        => intval($data['licence_delegataire']),
-            'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire']),
-            'diffusion_image'            => intval($data['diffusion_image']),
-            'infos_fsasptt'              => intval($data['infos_fsasptt']),
-            'infos_asptt'                => intval($data['infos_asptt']),
-            'infos_cr'                   => intval($data['infos_cr']),
-            'infos_partenaires'          => intval($data['infos_partenaires']),
-            'honorabilite'               => intval($data['honorabilite']),
-            'assurance_dommage_corporel' => intval($data['assurance_dommage_corporel']),
-            'assurance_assistance'       => intval($data['assurance_assistance']),
-            'note'                       => sanitize_textarea_field($data['note']),
-            'region'                     => sanitize_text_field($data['region']),
+            'club_id'                     => (int) ($data['club_id'] ?? 0),
+            'nom'                         => sanitize_text_field($data['nom'] ?? ''),
+            'prenom'                      => sanitize_text_field($data['prenom'] ?? ''),
+            'sexe'                        => in_array($data['sexe'] ?? 'M', ['F', 'M'], true) ? $data['sexe'] : 'M',
+            'date_naissance'             => sanitize_text_field($data['date_naissance'] ?? ''),
+            'email'                       => sanitize_email($data['email'] ?? ''),
+            'adresse'                     => sanitize_text_field($data['adresse'] ?? ''),
+            'suite_adresse'              => sanitize_text_field($data['suite_adresse'] ?? ''),
+            'code_postal'                => sanitize_text_field($data['code_postal'] ?? ''),
+            'ville'                      => sanitize_text_field($data['ville'] ?? ''),
+            'tel_fixe'                   => sanitize_text_field($data['tel_fixe'] ?? ''),
+            'tel_mobile'                 => sanitize_text_field($data['tel_mobile'] ?? ''),
+            'reduction_benevole'         => (int) ($data['reduction_benevole'] ?? 0),
+            'reduction_postier'          => (int) ($data['reduction_postier'] ?? 0),
+            'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte'] ?? ''),
+            'profession'                 => sanitize_text_field($data['profession'] ?? ''),
+            'fonction_publique'          => (int) ($data['fonction_publique'] ?? 0),
+            'competition'                => (int) ($data['competition'] ?? 0),
+            'licence_delegataire'        => (int) ($data['licence_delegataire'] ?? 0),
+            'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire'] ?? ''),
+            'diffusion_image'            => (int) ($data['diffusion_image'] ?? 0),
+            'infos_fsasptt'              => (int) ($data['infos_fsasptt'] ?? 0),
+            'infos_asptt'                => (int) ($data['infos_asptt'] ?? 0),
+            'infos_cr'                   => (int) ($data['infos_cr'] ?? 0),
+            'infos_partenaires'          => (int) ($data['infos_partenaires'] ?? 0),
+            'honorabilite'               => (int) ($data['honorabilite'] ?? 0),
+            'assurance_dommage_corporel' => (int) ($data['assurance_dommage_corporel'] ?? 0),
+            'assurance_assistance'       => (int) ($data['assurance_assistance'] ?? 0),
+            'note'                       => sanitize_textarea_field($data['note'] ?? $note),
+            'region'                     => sanitize_text_field($data['region'] ?? ''),
             'statut'                     => !empty($data['statut']) ? sanitize_text_field($data['statut']) : 'en_attente',
             'is_included'                => !empty($data['is_included']) ? 1 : 0,
-            'date_inscription'          => current_time('mysql')
+            'payment_status'             => sanitize_text_field($data['payment_status'] ?? 'pending'),
+            'date_inscription'           => current_time('mysql')
         ];
 
-        $this->wpdb->insert($this->table_licences, $insert);
-        $licence_id = $this->wpdb->insert_id;
-        
-        // Trigger action for licence creation
-        if ($licence_id) {
+        $licence_id = $this->licence_repository->insert($insert);
+
+        if ($licence_id > 0) {
             do_action('ufsc_licence_created', $licence_id, $insert);
         }
-        
+
         return $licence_id;
     }
 
@@ -84,33 +82,27 @@ class UFSC_Licence_Manager
      * @param array $data Données de la licence
      * @return int|false ID de la licence insérée ou false en cas d'erreur
      */
-    public function create_licence($data)
+    public function create_licence(array $data): int|false
     {
-        // Validation des champs obligatoires
         if (empty($data['nom']) || empty($data['prenom']) || empty($data['club_id'])) {
             return false;
         }
 
-        // Vérifier les doublons
         $duplicate_id = $this->check_duplicate_licence($data);
         if ($duplicate_id) {
-            return $duplicate_id; // Retourner l'ID existant
+            return $duplicate_id;
         }
 
-        // Définir le statut par défaut
         if (empty($data['statut'])) {
-            $data['statut'] = 'en_attente'; // Statut par défaut: en attente (standardisé)
+            $data['statut'] = 'en_attente';
         }
 
-        // Vérifier et gérer le quota inclus
-        if (!empty($data['is_included']) && $data['is_included'] == 1) {
-            if (!$this->club_has_remaining_included_quota($data['club_id'])) {
-                // Forcer is_included à 0 si le quota est dépassé
+        if (!empty($data['is_included']) && (int) $data['is_included'] === 1) {
+            if (!$this->club_has_remaining_included_quota((int) $data['club_id'])) {
                 $data['is_included'] = 0;
             }
         }
 
-        // Calculer la catégorie par âge si la date de naissance est fournie
         if (!empty($data['date_naissance'])) {
             $data['categorie'] = $this->calculate_age_category($data['date_naissance']);
         }
@@ -124,25 +116,9 @@ class UFSC_Licence_Manager
      * @param array $data Données de la licence
      * @return int|false ID de la licence existante ou false si pas de doublon
      */
-    public function check_duplicate_licence($data)
+    public function check_duplicate_licence(array $data): int|false
     {
-        if (empty($data['nom']) || empty($data['prenom']) || empty($data['date_naissance']) || empty($data['club_id'])) {
-            return false;
-        }
-
-        $existing_licence = $this->wpdb->get_row(
-            $this->wpdb->prepare(
-                "SELECT id FROM {$this->table_licences} 
-                 WHERE nom = %s AND prenom = %s AND date_naissance = %s AND club_id = %d 
-                 AND statut != 'refuse'",
-                sanitize_text_field($data['nom']),
-                sanitize_text_field($data['prenom']),
-                sanitize_text_field($data['date_naissance']),
-                intval($data['club_id'])
-            )
-        );
-
-        return $existing_licence ? $existing_licence->id : false;
+        return $this->licence_repository->find_duplicate($data);
     }
 
     /**
@@ -151,25 +127,32 @@ class UFSC_Licence_Manager
      * @param string $date_naissance Date de naissance (Y-m-d)
      * @return string Catégorie d'âge
      */
-    public function calculate_age_category($date_naissance)
+    public function calculate_age_category(?string $date_naissance): string
     {
+        if (empty($date_naissance)) {
+            return 'Inconnu';
+        }
+
         $birth_date = new DateTime($date_naissance);
-        $today = new DateTime();
-        $age = $today->diff($birth_date)->y;
+        $today      = new DateTime();
+        $age        = $today->diff($birth_date)->y;
 
         if ($age < 18) {
             return 'Moins de 18 ans';
-        } elseif ($age < 25) {
-            return '18-24 ans';
-        } elseif ($age < 35) {
-            return '25-34 ans';
-        } elseif ($age < 45) {
-            return '35-44 ans';
-        } elseif ($age < 55) {
-            return '45-54 ans';
-        } else {
-            return '55 ans et plus';
         }
+        if ($age < 25) {
+            return '18-24 ans';
+        }
+        if ($age < 35) {
+            return '25-34 ans';
+        }
+        if ($age < 45) {
+            return '35-44 ans';
+        }
+        if ($age < 55) {
+            return '45-54 ans';
+        }
+        return '55 ans et plus';
     }
 
     /**
@@ -182,11 +165,9 @@ class UFSC_Licence_Manager
      * @param int $id ID de la licence
      * @return object|null Licence trouvée ou null
      */
-    public function get_licence_by_id($id)
+    public function get_licence_by_id(int $id): ?object
     {
-        return $this->wpdb->get_row(
-            $this->wpdb->prepare("SELECT * FROM {$this->table_licences} WHERE id = %d", intval($id))
-        );
+        return $this->licence_repository->get_by_id($id);
     }
 
     /**
@@ -196,23 +177,16 @@ class UFSC_Licence_Manager
      * @param array $data Données de la licence
      * @return bool Succès de la mise à jour
      */
-    public function update_licence($id, $data)
+    public function update_licence(int $id, array $data): bool
     {
-        // Retrieve current licence status
-        $status = $this->wpdb->get_var(
-            $this->wpdb->prepare(
-                "SELECT statut FROM {$this->table_licences} WHERE id = %d",
-                intval($id)
-            )
-        );
-
-        if (!$status) {
+        $status = $this->licence_repository->get_status($id);
+        if ($status === null) {
             return false;
         }
 
-        if ('validee' === $status) {
-            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe'];
-            $data = array_intersect_key($data, array_flip($allowed_fields));
+        if ($status === 'validee') {
+            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe', 'payment_status'];
+            $data          = array_intersect_key($data, array_flip($allowed_fields));
 
             $update = [];
 
@@ -225,59 +199,56 @@ class UFSC_Licence_Manager
             if (isset($data['tel_fixe'])) {
                 $update['tel_fixe'] = sanitize_text_field($data['tel_fixe']);
             }
+            if (isset($data['payment_status'])) {
+                $update['payment_status'] = $this->normalize_payment_status($data['payment_status']);
+            }
 
-            // Short-circuit if nothing to update
             if (empty($update)) {
                 return true;
             }
         } else {
+            $payment_status = $this->normalize_payment_status($data['payment_status'] ?? 'pending');
+
             $update = [
-                'nom'                         => sanitize_text_field($data['nom']),
-                'prenom'                      => sanitize_text_field($data['prenom']),
-                'sexe'                        => in_array($data['sexe'], ['F','M']) ? $data['sexe'] : 'M',
-                'date_naissance'             => sanitize_text_field($data['date_naissance']),
-                'email'                       => sanitize_email($data['email']),
-                'adresse'                     => sanitize_text_field($data['adresse']),
-                'suite_adresse'              => sanitize_text_field($data['suite_adresse']),
-                'code_postal'                => sanitize_text_field($data['code_postal']),
-                'ville'                      => sanitize_text_field($data['ville']),
-                'tel_fixe'                   => sanitize_text_field($data['tel_fixe']),
-                'tel_mobile'                 => sanitize_text_field($data['tel_mobile']),
-                'reduction_benevole'         => intval($data['reduction_benevole']),
-                'reduction_postier'          => intval($data['reduction_postier']),
-                'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte']),
-                'profession'                 => sanitize_text_field($data['profession']),
-                'fonction_publique'          => intval($data['fonction_publique']),
-                'competition'                => intval($data['competition']),
-                'licence_delegataire'        => intval($data['licence_delegataire']),
-                'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire']),
-                'diffusion_image'            => intval($data['diffusion_image']),
-                'infos_fsasptt'              => intval($data['infos_fsasptt']),
-                'infos_asptt'                => intval($data['infos_asptt']),
-                'infos_cr'                   => intval($data['infos_cr']),
-                'infos_partenaires'          => intval($data['infos_partenaires']),
-                'honorabilite'               => intval($data['honorabilite']),
-                'assurance_dommage_corporel' => intval($data['assurance_dommage_corporel']),
-                'assurance_assistance'       => intval($data['assurance_assistance']),
-                'note'                       => sanitize_textarea_field($data['note']),
-                'region'                     => sanitize_text_field($data['region']),
+                'nom'                         => sanitize_text_field($data['nom'] ?? ''),
+                'prenom'                      => sanitize_text_field($data['prenom'] ?? ''),
+                'sexe'                        => in_array($data['sexe'] ?? 'M', ['F', 'M'], true) ? $data['sexe'] : 'M',
+                'date_naissance'             => sanitize_text_field($data['date_naissance'] ?? ''),
+                'email'                       => sanitize_email($data['email'] ?? ''),
+                'adresse'                     => sanitize_text_field($data['adresse'] ?? ''),
+                'suite_adresse'              => sanitize_text_field($data['suite_adresse'] ?? ''),
+                'code_postal'                => sanitize_text_field($data['code_postal'] ?? ''),
+                'ville'                      => sanitize_text_field($data['ville'] ?? ''),
+                'tel_fixe'                   => sanitize_text_field($data['tel_fixe'] ?? ''),
+                'tel_mobile'                 => sanitize_text_field($data['tel_mobile'] ?? ''),
+                'reduction_benevole'         => (int) ($data['reduction_benevole'] ?? 0),
+                'reduction_postier'          => (int) ($data['reduction_postier'] ?? 0),
+                'identifiant_laposte'        => sanitize_text_field($data['identifiant_laposte'] ?? ''),
+                'profession'                 => sanitize_text_field($data['profession'] ?? ''),
+                'fonction_publique'          => (int) ($data['fonction_publique'] ?? 0),
+                'competition'                => (int) ($data['competition'] ?? 0),
+                'licence_delegataire'        => (int) ($data['licence_delegataire'] ?? 0),
+                'numero_licence_delegataire' => sanitize_text_field($data['numero_licence_delegataire'] ?? ''),
+                'diffusion_image'            => (int) ($data['diffusion_image'] ?? 0),
+                'infos_fsasptt'              => (int) ($data['infos_fsasptt'] ?? 0),
+                'infos_asptt'                => (int) ($data['infos_asptt'] ?? 0),
+                'infos_cr'                   => (int) ($data['infos_cr'] ?? 0),
+                'infos_partenaires'          => (int) ($data['infos_partenaires'] ?? 0),
+                'honorabilite'               => (int) ($data['honorabilite'] ?? 0),
+                'assurance_dommage_corporel' => (int) ($data['assurance_dommage_corporel'] ?? 0),
+                'assurance_assistance'       => (int) ($data['assurance_assistance'] ?? 0),
+                'payment_status'             => $payment_status,
+                'note'                       => sanitize_textarea_field($data['note'] ?? ''),
+                'region'                     => sanitize_text_field($data['region'] ?? ''),
                 'is_included'                => !empty($data['is_included']) ? 1 : 0,
             ];
         }
 
         if (isset($data['club_id'])) {
-            $update['club_id'] = intval($data['club_id']);
+            $update['club_id'] = (int) $data['club_id'];
         }
 
-        $result = $this->wpdb->update(
-            $this->table_licences,
-            $update,
-            ['id' => intval($id)],
-            null,
-            ['%d']
-        );
-
-        return $result !== false;
+        return $this->licence_repository->update($id, $update);
     }
 
     /**
@@ -286,15 +257,9 @@ class UFSC_Licence_Manager
      * @param int $id ID de la licence
      * @return bool Succès de la suppression
      */
-    public function delete_licence($id)
+    public function delete_licence(int $id): bool
     {
-        $result = $this->wpdb->delete(
-            $this->table_licences,
-            ['id' => intval($id)],
-            ['%d']
-        );
-
-        return $result !== false;
+        return $this->licence_repository->delete($id);
     }
 
     /**
@@ -304,26 +269,20 @@ class UFSC_Licence_Manager
      * @param string $new_status Nouveau statut (pending, active, refused, revoked)
      * @return bool Succès de la mise à jour
      */
-    public function update_licence_status($licence_id, $new_status)
+    public function update_licence_status(int $licence_id, string $new_status): bool
     {
         $valid_statuses = ['pending', 'active', 'refused', 'revoked', 'draft', 'validated', 'en_attente', 'validee', 'refusee'];
-        
-        if (!in_array($new_status, $valid_statuses)) {
+
+        if (!in_array($new_status, $valid_statuses, true)) {
             return false;
         }
 
-        $result = $this->wpdb->update(
-            $this->table_licences,
-            [
-                'statut' => sanitize_text_field($new_status),
-                'date_modification' => current_time('mysql')
-            ],
-            ['id' => intval($licence_id)],
-            ['%s', '%s'],
-            ['%d']
-        );
+        $update = [
+            'statut'            => sanitize_text_field($new_status),
+            'date_modification' => current_time('mysql'),
+        ];
 
-        return $result !== false;
+        return $this->licence_repository->update($licence_id, $update);
     }
 
     /**
@@ -332,39 +291,25 @@ class UFSC_Licence_Manager
      * @param array $filters Filtres de recherche
      * @return array Liste des licences
      */
-    public function get_licences($filters = [])
+    public function get_licences(array $filters = []): array
     {
-        if (!isset($filters['club_id']) || intval($filters['club_id']) <= 0) {
-            return [];
+        return $this->licence_repository->get_all_by_filters($filters);
+    }
+
+    /**
+     * Normalize payment status values
+     *
+     * @param string $status Payment status
+     * @return string Normalized status
+     */
+    private function normalize_payment_status(string $status): string
+    {
+        $status = sanitize_text_field($status);
+        if ($status === 'completed') {
+            $status = 'paid';
         }
-
-        $where = ['1=1'];
-        $params = [];
-
-        $where[] = 'l.club_id = %d';
-        $params[] = intval($filters['club_id']);
-
-        if (!empty($filters['search'])) {
-            $where[] = '(l.nom LIKE %s OR l.prenom LIKE %s OR l.email LIKE %s)';
-            $search_term = '%' . sanitize_text_field($filters['search']) . '%';
-            $params[] = $search_term;
-            $params[] = $search_term;
-            $params[] = $search_term;
-        }
-
-        $where_clause = implode(' AND ', $where);
-
-        $query = "SELECT l.*, c.nom as club_nom 
-                  FROM {$this->table_licences} l
-                  LEFT JOIN {$this->table_clubs} c ON l.club_id = c.id
-                  WHERE {$where_clause}
-                  ORDER BY l.date_inscription DESC";
-
-        if (!empty($params)) {
-            return $this->wpdb->get_results($this->wpdb->prepare($query, ...$params));
-        } else {
-            return $this->wpdb->get_results($query);
-        }
+        $allowed = ['pending', 'paid', 'failed', 'refunded', 'included'];
+        return in_array($status, $allowed, true) ? $status : 'pending';
     }
 
     /**
@@ -373,36 +318,9 @@ class UFSC_Licence_Manager
      * @param int $club_id ID du club
      * @return bool True si du quota est disponible
      */
-    private function club_has_remaining_included_quota($club_id) {
-        if (!$club_id) {
-            return false;
-        }
-        
-        // Utiliser les fonctions helper globales
-        if (function_exists('ufsc_has_included_quota')) {
-            return ufsc_has_included_quota($club_id);
-        }
-        
-        // Fallback si les helpers ne sont pas disponibles
-        global $wpdb;
-        $clubs_table = $wpdb->prefix . 'ufsc_clubs';
-        $licences_table = $wpdb->prefix . 'ufsc_licences';
-        
-        $quota = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT quota_licences FROM {$clubs_table} WHERE id = %d",
-                $club_id
-            )
-        );
-        
-        $used = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$licences_table} WHERE club_id = %d AND is_included = 1",
-                $club_id
-            )
-        );
-        
-        return (int) $quota > (int) $used;
+    private function club_has_remaining_included_quota(int $club_id): bool
+    {
+        return $this->club_repository->has_remaining_included_quota($club_id);
     }
 
     /**
@@ -410,7 +328,7 @@ class UFSC_Licence_Manager
      *
      * @return UFSC_Licence_Manager Instance du gestionnaire
      */
-    public static function get_instance()
+    public static function get_instance(): self
     {
         static $instance = null;
         if ($instance === null) {

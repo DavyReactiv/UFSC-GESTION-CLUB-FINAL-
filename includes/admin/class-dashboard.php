@@ -46,14 +46,14 @@ class UFSC_Dashboard
 
         // Formulaires de recherche
         echo '<div class="ufsc-search-forms">';
-        echo '<form method="get" class="ufsc-search-form">
+        echo '<form method="get" class="ufsc-search-form" action="' . esc_url(admin_url('admin.php')) . '">
                 <input type="hidden" name="page" value="ufsc-liste-clubs">
                 <input type="text" name="club_search" class="regular-text" placeholder="🔍 Rechercher un club par nom...">
                 <button type="submit" class="button button-primary">Rechercher un club</button>
               </form>';
 
-        echo '<form method="get" class="ufsc-search-form">
-                <input type="hidden" name="page" value="ufsc-liste-licences">
+        echo '<form method="get" class="ufsc-search-form" action="' . esc_url(admin_url('admin.php')) . '">
+                <input type="hidden" name="page" value="ufsc_licenses_admin">
                 <input type="text" name="licence_search" class="regular-text" placeholder="🔍 Rechercher un licencié par nom...">
                 <button type="submit" class="button button-secondary">Rechercher un licencié</button>
               </form>';
@@ -61,7 +61,7 @@ class UFSC_Dashboard
 
         // Widgets d'actions rapides
         echo '<div class="ufsc-quick-actions">';
-        $this->render_quick_action_widget('Licences récentes', $licences_attente, 'ufsc-liste-licences', '⏳');
+        $this->render_quick_action_widget('Licences récentes', $licences_attente, 'ufsc_licenses_admin', '⏳');
         $this->render_quick_action_widget('Clubs à valider', $clubs_attente, 'ufsc-liste-clubs', '🏢');
         $this->render_alerts_widget();
         echo '</div>';

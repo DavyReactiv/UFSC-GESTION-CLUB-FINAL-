@@ -94,7 +94,7 @@ if (!empty($params)) {
 $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '');
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1>Liste des clubs</h1>
 
     <div class="ufsc-filters-container">
@@ -169,7 +169,7 @@ $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslas
                 </div>
             </div>
 
-            <table class="wp-list-table widefat fixed striped" id="club-table">
+            <table class="wp-list-table widefat fixed striped ufsc-table" id="club-table">
                 <thead>
                     <tr>
                         <th style="width: 40px;">
@@ -199,7 +199,7 @@ $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslas
                                 <input type="checkbox" name="selected_clubs[]" value="<?php echo esc_attr($club->id); ?>" class="club-checkbox">
                             </td>
                             <td>
-                                <strong><?php echo esc_html($club->nom); ?></strong>
+                                <strong class="ufsc-text-ellipsis" title="<?php echo esc_attr($club->nom); ?>"><?php echo esc_html($club->nom); ?></strong>
                                 <?php if ($club->statut === 'Actif'): ?>
                                     <span class="dashicons dashicons-yes-alt" style="color: green;" title="Club validé"></span>
                                 <?php endif; ?>
