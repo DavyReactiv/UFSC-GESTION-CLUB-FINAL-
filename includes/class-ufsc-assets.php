@@ -36,6 +36,7 @@ class UFSC_Fix_Assets {
             // Provide ajax endpoints for scripts
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'ajaxurl' => admin_url('admin-ajax.php'),
+            'frontNonce' => wp_create_nonce('ufsc_front_nonce'),
             'nonces' => [
                 'add_licence_to_cart' => wp_create_nonce('ufsc_add_licence_to_cart'),
                 'add_to_cart'         => wp_create_nonce('ufsc_add_to_cart'),
