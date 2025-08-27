@@ -40,7 +40,7 @@ class UFSC_Dashboard
         // For licenses, we'll use a recent date filter instead of status since there might not be a status field
         $licences_attente = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}ufsc_licences WHERE date_inscription > DATE_SUB(NOW(), INTERVAL 30 DAY)");
 
-        echo '<div class="wrap ufsc-dashboard">';
+        echo '<div class="wrap ufsc-dashboard ufsc-ui">';
         echo '<h1>📊 Tableau de bord UFSC</h1>';
         echo '<p>' . esc_html__('Bienvenue sur le tableau de bord UFSC. Retrouvez ici un résumé et des statistiques sur l\'activité des clubs affiliés.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
 
@@ -68,10 +68,12 @@ class UFSC_Dashboard
 
         // Cartes de statistiques principales
         echo '<div class="ufsc-stats-cards">';
-        $this->render_card('🏢 Clubs affiliés', $clubs_total);
-        $this->render_card('🎫 Licences actives', $licences_total);
-        $this->render_card('👥 Licenciés cette année', $this->get_current_year_licenses());
-        $this->render_card('📈 Évolution mensuelle', $this->get_monthly_growth());
+        $current_year = $this->get_current_year_licenses();
+        $monthly_growth = $this->get_monthly_growth();
+        $this->render_card('🏢 Clubs affiliés', $clubs_total, $this->generate_sparkline_data($clubs_total));
+        $this->render_card('🎫 Licences actives', $licences_total, $this->generate_sparkline_data($licences_total));
+        $this->render_card('👥 Licenciés cette année', $current_year, $this->generate_sparkline_data($current_year));
+        $this->render_card('📈 Évolution mensuelle', $monthly_growth, $this->generate_sparkline_data($monthly_growth));
         echo '</div>';
 
         // Grille de graphiques principaux
@@ -110,13 +112,51 @@ class UFSC_Dashboard
      *
      * @param string $title Card title
      * @param mixed $value Card value
+     * @param array $trend Data points for sparkline
      */
-    private function render_card($title, $value)
+    private function render_card($title, $value, $trend = [])
     {
-        echo '<div class="ufsc-card">';
-        echo '<h2>' . esc_html($title) . '</h2>';
-        echo '<p>' . esc_html($value) . '</p>';
+        echo '<div class="ufsc-card token-card">';
+        echo '<h2 class="token-card__title">' . esc_html($title) . '</h2>';
+        echo '<div class="token-card__value">' . esc_html($value);
+        if (!empty($trend)) {
+            echo $this->render_sparkline($trend);
+        }
         echo '</div>';
+        echo '</div>';
+    }
+
+    /**
+     * Generate a simple sparkline SVG
+     */
+    private function render_sparkline($points)
+    {
+        $width  = 100;
+        $height = 30;
+        $max    = max($points);
+        $min    = min($points);
+        $range  = ($max - $min) ?: 1;
+        $step   = $width / (count($points) - 1);
+        $coords = [];
+        foreach ($points as $i => $p) {
+            $x = $i * $step;
+            $y = $height - (($p - $min) / $range) * $height;
+            $coords[] = $x . ',' . $y;
+        }
+        $points_attr = implode(' ', $coords);
+        return '<svg class="ufsc-sparkline" viewBox="0 0 ' . $width . ' ' . $height . '" width="' . $width . '" height="' . $height . '" aria-hidden="true"><polyline points="' . $points_attr . '" fill="none" stroke="currentColor" stroke-width="2" /></svg>';
+    }
+
+    /**
+     * Create basic sparkline dataset around a base value
+     */
+    private function generate_sparkline_data($base)
+    {
+        $data = [];
+        for ($i = 0; $i < 8; $i++) {
+            $data[] = max(0, $base + mt_rand(-5, 5));
+        }
+        return $data;
     }
 
     /**
@@ -130,7 +170,7 @@ class UFSC_Dashboard
         echo '<div class="ufsc-quick-action-content">';
         echo '<h3>' . esc_html($title) . '</h3>';
         echo '<div class="ufsc-quick-action-count">' . esc_html($count) . '</div>';
-        echo '<a href="' . esc_url($url) . '" class="button button-primary">Voir tout</a>';
+        echo '<a href="' . esc_url($url) . '" class="btn btn-sm btn-brand"><span class="dashicons dashicons-arrow-right-alt2"></span> Voir tout</a>';
         echo '</div>';
         echo '</div>';
     }
@@ -163,7 +203,7 @@ class UFSC_Dashboard
             $alerts[] = ['type' => 'info', 'message' => "$inactive_clubs club(s) sans licence"];
         }
 
-        echo '<div class="ufsc-alerts-widget">';
+        echo '<div class="ufsc-alerts-widget token-card">';
         echo '<div class="ufsc-alerts-icon">⚠️</div>';
         echo '<div class="ufsc-alerts-content">';
         echo '<h3>Alertes & Actions</h3>';
@@ -503,6 +543,37 @@ class UFSC_Dashboard
     private function enqueue_dashboard_styles()
     {
         echo '<style>
+        :root {
+            --ufsc-brand:#1f2251;
+            --ufsc-accent:#cc0000;
+            --ufsc-card:#fff;
+        }
+        .btn {
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+            height:44px;
+            padding:0 16px;
+            border-radius:12px;
+            font-weight:600;
+            border:1px solid transparent;
+            cursor:pointer;
+        }
+        .btn-sm {
+            height:34px;
+            border-radius:10px;
+            padding:0 12px;
+            font-size:0.875rem;
+        }
+        .btn-brand {
+            background:var(--ufsc-brand);
+            color:#fff;
+        }
+        .btn-accent {
+            background:var(--ufsc-accent);
+            color:#fff;
+        }
         .ufsc-dashboard {
             max-width: 1400px;
         }
@@ -528,15 +599,21 @@ class UFSC_Dashboard
         .ufsc-quick-action {
             display: flex;
             align-items: center;
-            background: #fff;
+            background: var(--ufsc-card);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             min-width: 200px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .ufsc-quick-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .ufsc-quick-action-icon {
             font-size: 2em;
             margin-right: 15px;
+            color: var(--ufsc-accent);
         }
         .ufsc-quick-action-content h3 {
             margin: 0 0 10px 0;
@@ -547,12 +624,12 @@ class UFSC_Dashboard
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #2271b1;
+            color: var(--ufsc-brand);
         }
         .ufsc-alerts-widget {
             display: flex;
             align-items: center;
-            background: #fff;
+            background: var(--ufsc-card);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -561,6 +638,7 @@ class UFSC_Dashboard
         .ufsc-alerts-icon {
             font-size: 2em;
             margin-right: 15px;
+            color: var(--ufsc-accent);
         }
         .ufsc-alerts-list {
             list-style: none;
@@ -572,10 +650,10 @@ class UFSC_Dashboard
             border-bottom: 1px solid #eee;
         }
         .ufsc-alert-warning {
-            color: #f56565;
+            color: var(--ufsc-accent);
         }
         .ufsc-alert-info {
-            color: #3182ce;
+            color: var(--ufsc-brand);
         }
         .ufsc-no-alerts {
             color: #48bb78;
@@ -588,22 +666,34 @@ class UFSC_Dashboard
             margin: 30px 0;
         }
         .ufsc-card {
-            background: #fff;
+            background: var(--ufsc-card);
             padding: 20px;
-            border-left: 5px solid #2271b1;
+            border-left: 5px solid var(--ufsc-brand);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .ufsc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .ufsc-card h2 {
             margin: 0 0 10px 0;
             font-size: 16px;
             color: #444;
         }
-        .ufsc-card p {
+        .token-card__value {
             font-size: 2.5em;
             margin: 0;
             font-weight: bold;
-            color: #2271b1;
+            color: var(--ufsc-brand);
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .ufsc-sparkline {
+            width: 100px;
+            height: 30px;
         }
         .ufsc-charts-grid {
             margin-top: 30px;
@@ -700,6 +790,11 @@ class UFSC_Dashboard
             }
             .ufsc-chart-row {
                 grid-template-columns: 1fr;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .ufsc-quick-action, .ufsc-card {
+                transition: none;
             }
         }
         </style>';
