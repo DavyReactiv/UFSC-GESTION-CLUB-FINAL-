@@ -9,7 +9,11 @@ require_once plugin_dir_path(__FILE__) . '../helpers/helpers-licence-status.php'
 
 global $wpdb;
 
-$club_id = isset($_GET['club_id']) ? intval(wp_unslash($_GET['club_id'])) : 0;
+$club_id = isset($club_id) ? (int) $club_id : (isset($_GET['club_id']) ? intval(wp_unslash($_GET['club_id'])) : 0);
+if ($club_id && !isset($_GET['club_id'])) {
+    // Keep query parameters consistent for downstream forms
+    $_GET['club_id'] = $club_id;
+}
 $club = null;
 if ($club_id) {
     $club = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d", $club_id));
@@ -64,8 +68,8 @@ wp_enqueue_script(
     true
 );
 
-// Get filter parameters with club_id override
-$filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
+// Get filter parameters with club_id override, allowing precomputed filters
+$filters = isset($filters) ? $filters : UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
 
 // Retrieve licence data for display
 $license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);

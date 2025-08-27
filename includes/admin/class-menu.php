@@ -3737,7 +3737,52 @@ class UFSC_Menu
      */
     public function render_voir_licences_page()
     {
+        require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-filters.php';
+
+        // Resolve club ID from request or current user
+        $club_id = isset($_GET['club_id']) ? absint(wp_unslash($_GET['club_id'])) : 0;
+        if (!$club_id) {
+            $club_id = $this->resolve_admin_club_id();
+            if ($club_id) {
+                // Ensure downstream components see the resolved club
+                $_GET['club_id'] = $club_id;
+            }
+        }
+
+        // Prepare filters with detected club ID so queries target the proper club
+        $filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
+
         require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-list.php';
+    }
+
+    /**
+     * Resolve club ID for the current admin user
+     *
+     * @return int Club ID or 0 if none found
+     */
+    private function resolve_admin_club_id(): int
+    {
+        $user_id = get_current_user_id();
+        if (!$user_id) {
+            return 0;
+        }
+
+        $club_id = (int) get_user_meta($user_id, 'ufsc_club_id', true);
+        if (!$club_id) {
+            $club_id = (int) get_user_meta($user_id, 'club_id', true);
+        }
+
+        if (!$club_id) {
+            global $wpdb;
+            $club_id = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT id FROM {$wpdb->prefix}ufsc_clubs WHERE responsable_id = %d LIMIT 1",
+                    $user_id
+                )
+            );
+        }
+
+        return $club_id;
     }
 
     // ================================
