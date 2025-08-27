@@ -24,10 +24,10 @@ add_action('init', function(){
         <?php if($rows): foreach($rows as $r): $is_draft=in_array(strtolower(trim($r->statut)),array('brouillon','draft','')); ?>
           <tr>
             <td><?php echo (int)$r->id; ?></td>
-            <td><?php echo esc_html($r->nom); ?></td>
-            <td><?php echo esc_html($r->prenom); ?></td>
-            <td><?php echo esc_html($r->email); ?></td>
-            <td><?php echo $is_draft?'<span style="color:#b45309">Brouillon</span>':'<span style="color:#059669">Validée</span>'; ?></td>
+            <td class="ufsc-text-ellipsis" title="<?php echo esc_attr($r->nom); ?>"><?php echo esc_html($r->nom); ?></td>
+            <td class="ufsc-text-ellipsis" title="<?php echo esc_attr($r->prenom); ?>"><?php echo esc_html($r->prenom); ?></td>
+            <td class="ufsc-text-ellipsis" title="<?php echo esc_attr($r->email); ?>"><?php echo esc_html($r->email); ?></td>
+            <td><?php echo $is_draft?'<span class="ufsc-badge ufsc-badge--pending">Brouillon</span>':'<span class="ufsc-badge ufsc-badge--ok">Validée</span>'; ?></td>
             <td>
             <?php if($is_draft): ?>
               <button class="button ufsc-pay-licence" data-licence-id="<?php echo (int)$r->id; ?>"><?php _e('Envoyer au paiement','plugin-ufsc-gestion-club-13072025'); ?></button>
