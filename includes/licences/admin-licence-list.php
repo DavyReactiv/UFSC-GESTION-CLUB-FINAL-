@@ -6,7 +6,11 @@ if (!defined('ABSPATH')) {
 require_once plugin_dir_path(__FILE__) . 'class-ufsc-licence-list-table.php';
 require_once plugin_dir_path(__FILE__) . '../helpers.php';
 require_once plugin_dir_path(__FILE__) . '../helpers/helpers-licence-status.php';
+
+require_once plugin_dir_path(__FILE__) . 'class-licence-filters.php';
+
 require_once plugin_dir_path(__FILE__) . 'class-ufsc-licenses-repository.php';
+
 
 global $wpdb;
 
