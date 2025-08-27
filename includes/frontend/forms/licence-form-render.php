@@ -40,6 +40,7 @@ function ufsc_render_licence_form($args = array()){
     $v = function($key) use ($prefill){ return isset($prefill[$key]) ? esc_attr($prefill[$key]) : ''; };
     $is_checked = function($key) use ($prefill){ return !empty($prefill[$key]) ? ' checked' : ''; };
     $sel = function($key,$val) use ($prefill){ return (isset($prefill[$key]) && (string)$prefill[$key]===(string)$val) ? ' selected' : ''; };
+    $is_validated = ($prefill['statut'] ?? '') === 'validee';
 
     ob_start();
     ?>
@@ -113,6 +114,14 @@ function ufsc_render_licence_form($args = array()){
           <p class="ufsc-form-hint"></p>
           <span class="ufsc-form-error"></span>
         </div>
+        <?php if (!empty($prefill['id'])): ?>
+        <div class="ufsc-form-field ufsc-full">
+          <label for="numero_licence">Numéro de licence</label>
+          <input type="text" id="numero_licence" name="numero_licence" value="<?php echo $v('numero_licence'); ?>">
+          <p class="ufsc-form-hint"></p>
+          <span class="ufsc-form-error"></span>
+        </div>
+        <?php endif; ?>
       </fieldset>
 
       <fieldset class="ufsc-form-section">
@@ -291,6 +300,13 @@ function ufsc_render_licence_form($args = array()){
         }
         $('#licence_delegataire').on('change', toggleDelegataire);
         toggleDelegataire();
+        <?php if ($is_validated): ?>
+        var $form = $('#<?php echo esc_js($args['form_id']); ?>');
+        $form.find('input, select, textarea')
+             .not('#numero_licence, #email, [type="hidden"]')
+             .prop('disabled', true)
+             .prop('readonly', true);
+        <?php endif; ?>
       });
     })(jQuery);
     </script>
