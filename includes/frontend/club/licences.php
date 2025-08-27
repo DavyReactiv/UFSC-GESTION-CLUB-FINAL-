@@ -27,12 +27,13 @@ function ufsc_club_render_licences($club){
  */
 function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url, $order_id = 0) {
     ob_start();
+    $nonce = wp_create_nonce('ufsc_add_to_cart_' . $id);
     ?>
     <div class="ufsc-actions">
       <a class="button button-secondary" title="<?php esc_attr_e('Modifier','plugin-ufsc-gestion-club-13072025'); ?>" href="<?php echo esc_url($edit_url); ?>"><?php _e('Modifier','plugin-ufsc-gestion-club-13072025'); ?></a>
       <?php if ($statut === 'brouillon'): ?>
         <button type="button" class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$id; ?>"><?php _e('Supprimer','plugin-ufsc-gestion-club-13072025'); ?></button>
-        <button type="button" class="button button-primary ufsc-add-to-cart" data-licence-id="<?php echo (int)$id; ?>"><?php _e('Ajouter au panier','plugin-ufsc-gestion-club-13072025'); ?></button>
+        <button type="button" class="button button-primary ufsc-add-to-cart" data-licence-id="<?php echo (int)$id; ?>" data-nonce="<?php echo esc_attr($nonce); ?>"><?php _e('Ajouter au panier','plugin-ufsc-gestion-club-13072025'); ?></button>
         <button type="button" class="button ufsc-include-quota" data-licence-id="<?php echo (int)$id; ?>"><?php echo $is_included ? esc_html__('Retirer du quota','plugin-ufsc-gestion-club-13072025') : esc_html__('Inclure au quota','plugin-ufsc-gestion-club-13072025'); ?></button>
       <?php elseif ($statut === 'in_cart'): ?>
         <a class="button" href="<?php echo esc_url($cart_url); ?>"><?php _e('Voir panier','plugin-ufsc-gestion-club-13072025'); ?></a>

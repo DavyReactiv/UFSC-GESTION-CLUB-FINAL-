@@ -101,7 +101,7 @@
       $.post(ajaxUrl, {
         action: 'ufsc_add_to_cart',
         licence_id: id,
-        nonce: (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
+        nonce: $b.data('nonce') || (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
       }).done(function(res){
         if(res && res.success){
           var url = (res.data && res.data.redirect) || (window.wc_cart_url) || window.location.href;

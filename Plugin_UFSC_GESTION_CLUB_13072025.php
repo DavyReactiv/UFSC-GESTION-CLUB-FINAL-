@@ -2263,13 +2263,21 @@ function ufsc_handle_add_to_cart(){
     if ( ! class_exists('WC') ) {
         wp_send_json_error(['message'=>__('WooCommerce requis.','plugin-ufsc-gestion-club-13072025')], 400);
     }
-    $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
-    if ( ! wp_verify_nonce($nonce, 'ufsc_add_to_cart') && ! wp_verify_nonce($nonce, 'ufsc_front_nonce') ) {
-        wp_send_json_error(['message'=>__('Jeton invalide.','plugin-ufsc-gestion-club-13072025')], 400);
-    }
+
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     if ( ! $licence_id ) {
         wp_send_json_error(['message'=>__('Licence manquante.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+
+    $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+    if ( ! wp_verify_nonce( $nonce, 'ufsc_add_to_cart_' . $licence_id ) &&
+         ! wp_verify_nonce( $nonce, 'ufsc_add_to_cart' ) &&
+         ! wp_verify_nonce( $nonce, 'ufsc_front_nonce' ) ) {
+        wp_send_json_error(['message'=>__('Jeton invalide.','plugin-ufsc-gestion-club-13072025')], 400);
+    }
+
+    if ( ! current_user_can('ufsc_manage_own') && ! current_user_can('ufsc_manage') ) {
+        wp_send_json_error(['message'=>__('Droit insuffisant.','plugin-ufsc-gestion-club-13072025')], 403);
     }
     require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
     $manager = new UFSC_Licence_Manager();
@@ -2280,6 +2288,10 @@ function ufsc_handle_add_to_cart(){
     $club_id = (int) $licence->club_id;
     if ( ! ufsc_verify_club_access($club_id) ) {
         wp_send_json_error(['message'=>__('Accès non autorisé.','plugin-ufsc-gestion-club-13072025')], 403);
+    }
+    $user_club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
+    if ( ! $user_club || (int) $user_club->id !== $club_id ) {
+        wp_send_json_error(['message'=>__('Licence non associée à votre club.','plugin-ufsc-gestion-club-13072025')], 403);
     }
     $product_id = function_exists('ufsc_get_licence_product_id_safe') ? ufsc_get_licence_product_id_safe() : ufsc_get_licence_product_id();
     if ( ! $product_id ) {
