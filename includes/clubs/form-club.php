@@ -349,81 +349,88 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                     <p>Renseignez les informations de base de votre club ou association, incluant l'adresse de correspondance officielle.</p>
                 </div>
                 <div class="ufsc-form-section-body">
-                    <div class="ufsc-form-row">
-                        <label for="nom">Nom du club / association <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="text" name="nom" id="nom" placeholder="Nom complet de votre club ou association" value="<?php echo esc_attr($club->nom ?? ''); ?>" required>
+                    <div class="ufsc-form-grid">
+                        <div class="ufsc-form-row">
+                            <label for="nom">Nom du club / association <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="text" name="nom" id="nom" placeholder="Nom complet de votre club ou association" value="<?php echo esc_attr($club->nom ?? ''); ?>" required>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="region">Région <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <select name="region" id="region" required>
+                                    <option value="">-- Sélectionnez votre région --</option>
+                                    <?php foreach ($regions as $reg): ?>
+                                        <option value="<?php echo esc_attr($reg); ?>"
+                                        <?php echo selected($club->region ?? '', $reg, false); ?>>
+                                            <?php echo esc_html($reg); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="adresse">Adresse du club <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="text" name="adresse" id="adresse" placeholder="Numéro et nom de la rue" value="<?php echo esc_attr($club->adresse ?? ''); ?>" required>
+                                <div class="ufsc-form-hint">Adresse de correspondance officielle du club</div>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="code_postal">Code postal <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="text" name="code_postal" id="code_postal" placeholder="75001" pattern="[0-9]{5}" maxlength="5" value="<?php echo esc_attr($club->code_postal ?? ''); ?>" required>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="ville">Ville <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="text" name="ville" id="ville" placeholder="Ville de correspondance du club" value="<?php echo esc_attr($club->ville ?? ''); ?>" required>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="email">Adresse email du club <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="email" name="email" id="email" placeholder="contact@monclub.fr" value="<?php echo esc_attr($club->email ?? ''); ?>" required>
+                                <div class="ufsc-form-hint">Email de contact principal du club</div>
+                            </div>
+                        </div>
+
+                        <div class="ufsc-form-row">
+                            <label for="telephone">Téléphone du club <span class="ufsc-form-required">*</span></label>
+                            <div>
+                                <input type="tel" name="telephone" id="telephone" placeholder="01 23 45 67 89" value="<?php echo esc_attr($club->telephone ?? ''); ?>" required>
+                                <div class="ufsc-form-hint">Numéro de téléphone principal du club</div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="region">Région <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <select name="region" id="region" required>
-                                <option value="">-- Sélectionnez votre région --</option>
-                                <?php foreach ($regions as $reg): ?>
-                                    <option value="<?php echo esc_attr($reg); ?>"
-                                    <?php echo selected($club->region ?? '', $reg, false); ?>>
-                                        <?php echo esc_html($reg); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+
+                    <details class="ufsc-optional-fields">
+                        <summary>Champs optionnels</summary>
+                        <div class="ufsc-form-grid">
+                            <div class="ufsc-form-row">
+                                <label for="complement_adresse">Complément d'adresse</label>
+                                <div>
+                                    <input type="text" name="complement_adresse" id="complement_adresse" placeholder="Bâtiment, étage, appartement..." value="<?php echo esc_attr($club->complement_adresse ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Informations complémentaires (optionnel)</div>
+                                </div>
+                            </div>
+
+                            <div class="ufsc-form-row">
+                                <label for="type">Type de structure</label>
+                                <div>
+                                    <input type="text" name="type" id="type" value="<?php echo esc_attr($club->type ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Association loi 1901, SARL, etc.</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="adresse">Adresse du club <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="text" name="adresse" id="adresse" placeholder="Numéro et nom de la rue" value="<?php echo esc_attr($club->adresse ?? ''); ?>" required>
-                            <div class="ufsc-form-hint">Adresse de correspondance officielle du club</div>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="complement_adresse">Complément d'adresse</label>
-                        <div>
-                            <input type="text" name="complement_adresse" id="complement_adresse" placeholder="Bâtiment, étage, appartement..." value="<?php echo esc_attr($club->complement_adresse ?? ''); ?>">
-                            <div class="ufsc-form-hint">Informations complémentaires (optionnel)</div>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="code_postal">Code postal <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="text" name="code_postal" id="code_postal" placeholder="75001" pattern="[0-9]{5}" maxlength="5" value="<?php echo esc_attr($club->code_postal ?? ''); ?>" required>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="ville">Ville <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="text" name="ville" id="ville" placeholder="Ville de correspondance du club" value="<?php echo esc_attr($club->ville ?? ''); ?>" required>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="email">Adresse email du club <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="email" name="email" id="email" placeholder="contact@monclub.fr" value="<?php echo esc_attr($club->email ?? ''); ?>" required>
-                            <div class="ufsc-form-hint">Email de contact principal du club</div>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="telephone">Téléphone du club <span class="ufsc-form-required">*</span></label>
-                        <div>
-                            <input type="tel" name="telephone" id="telephone" placeholder="01 23 45 67 89" value="<?php echo esc_attr($club->telephone ?? ''); ?>" required>
-                            <div class="ufsc-form-hint">Numéro de téléphone principal du club</div>
-                        </div>
-                    </div>
-                    
-                    <div class="ufsc-form-row">
-                        <label for="type">Type de structure</label>
-                        <div>
-                            <input type="text" name="type" id="type" value="<?php echo esc_attr($club->type ?? ''); ?>">
-                            <div class="ufsc-form-hint">Association loi 1901, SARL, etc.</div>
-                        </div>
-                    </div>
+                    </details>
                 </div>
             </div>
 
@@ -436,43 +443,50 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                     <p>Personnalisez l'identité visuelle de votre club et renseignez vos canaux de communication.</p>
                 </div>
                 <div class="ufsc-form-section-body">
-                    <div class="ufsc-form-row">
-                        <label for="logo_upload">Logo du club</label>
-                        <div>
-                            <input type="file" name="logo_upload" id="logo_upload" accept="image/*">
-                            <div class="ufsc-form-hint">Formats acceptés: JPG, PNG. Taille max: 2 MB</div>
-                            <?php if (!empty($club->logo_url)): ?>
-                                <div class="ufsc-current-logo">
-                                    <img src="<?php echo esc_url($club->logo_url); ?>" alt="Logo actuel" style="max-width: 100px; margin-top: 10px;">
-                                    <p><small>Logo actuel</small></p>
+                    <div class="ufsc-form-grid">
+                        <div class="ufsc-form-row">
+                            <label for="logo_upload">Logo du club</label>
+                            <div>
+                                <input type="file" name="logo_upload" id="logo_upload" accept="image/*">
+                                <div class="ufsc-form-hint">Formats acceptés: JPG, PNG. Taille max: 2 MB</div>
+                                <?php if (!empty($club->logo_url)): ?>
+                                    <div class="ufsc-current-logo">
+                                        <img src="<?php echo esc_url($club->logo_url); ?>" alt="Logo actuel" style="max-width: 100px; margin-top: 10px;">
+                                        <p><small>Logo actuel</small></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <details class="ufsc-optional-fields">
+                        <summary>Présence en ligne (optionnel)</summary>
+                        <div class="ufsc-form-grid">
+                            <div class="ufsc-form-row">
+                                <label for="url_site">Site internet du club</label>
+                                <div>
+                                    <input type="url" name="url_site" id="url_site" placeholder="https://www.monclub.fr" value="<?php echo esc_attr($club->url_site ?? ''); ?>">
+                                    <div class="ufsc-form-hint">URL complète de votre site web (optionnel)</div>
                                 </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+                            </div>
 
-                    <div class="ufsc-form-row">
-                        <label for="url_site">Site internet du club</label>
-                        <div>
-                            <input type="url" name="url_site" id="url_site" placeholder="https://www.monclub.fr" value="<?php echo esc_attr($club->url_site ?? ''); ?>">
-                            <div class="ufsc-form-hint">URL complète de votre site web (optionnel)</div>
-                        </div>
-                    </div>
+                            <div class="ufsc-form-row">
+                                <label for="url_facebook">Page Facebook</label>
+                                <div>
+                                    <input type="url" name="url_facebook" id="url_facebook" placeholder="https://www.facebook.com/monclub" value="<?php echo esc_attr($club->url_facebook ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Lien vers votre page Facebook (optionnel)</div>
+                                </div>
+                            </div>
 
-                    <div class="ufsc-form-row">
-                        <label for="url_facebook">Page Facebook</label>
-                        <div>
-                            <input type="url" name="url_facebook" id="url_facebook" placeholder="https://www.facebook.com/monclub" value="<?php echo esc_attr($club->url_facebook ?? ''); ?>">
-                            <div class="ufsc-form-hint">Lien vers votre page Facebook (optionnel)</div>
+                            <div class="ufsc-form-row">
+                                <label for="url_instagram">Compte Instagram</label>
+                                <div>
+                                    <input type="url" name="url_instagram" id="url_instagram" placeholder="https://www.instagram.com/monclub" value="<?php echo esc_attr($club->url_instagram ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Lien vers votre compte Instagram (optionnel)</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="ufsc-form-row">
-                        <label for="url_instagram">Compte Instagram</label>
-                        <div>
-                            <input type="url" name="url_instagram" id="url_instagram" placeholder="https://www.instagram.com/monclub" value="<?php echo esc_attr($club->url_instagram ?? ''); ?>">
-                            <div class="ufsc-form-hint">Lien vers votre compte Instagram (optionnel)</div>
-                        </div>
-                    </div>
+                    </details>
                 </div>
             </div>
 
@@ -485,29 +499,34 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                     <p>Informations juridiques et bancaires nécessaires pour les clubs et associations.</p>
                 </div>
                 <div class="ufsc-form-section-body">
-                    <div class="ufsc-form-row">
-                        <label for="siren">Numéro SIREN</label>
-                        <div>
-                            <input type="text" name="siren" id="siren" placeholder="123 456 789" pattern="[0-9\s]{9,14}" value="<?php echo esc_attr($club->siren ?? ''); ?>">
-                            <div class="ufsc-form-hint">Numéro SIREN de votre structure (9 chiffres)</div>
-                        </div>
-                    </div>
+                    <details class="ufsc-optional-fields">
+                        <summary>Champs optionnels</summary>
+                        <div class="ufsc-form-grid">
+                            <div class="ufsc-form-row">
+                                <label for="siren">Numéro SIREN</label>
+                                <div>
+                                    <input type="text" name="siren" id="siren" placeholder="123 456 789" pattern="[0-9\s]{9,14}" value="<?php echo esc_attr($club->siren ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Numéro SIREN de votre structure (9 chiffres)</div>
+                                </div>
+                            </div>
 
-                    <div class="ufsc-form-row">
-                        <label for="rna_number">Numéro RNA (si association)</label>
-                        <div>
-                            <input type="text" name="rna_number" id="rna_number" placeholder="W751234567" value="<?php echo esc_attr($club->rna_number ?? ''); ?>">
-                            <div class="ufsc-form-hint">Numéro RNA pour les associations déclarées</div>
-                        </div>
-                    </div>
+                            <div class="ufsc-form-row">
+                                <label for="rna_number">Numéro RNA (si association)</label>
+                                <div>
+                                    <input type="text" name="rna_number" id="rna_number" placeholder="W751234567" value="<?php echo esc_attr($club->rna_number ?? ''); ?>">
+                                    <div class="ufsc-form-hint">Numéro RNA pour les associations déclarées</div>
+                                </div>
+                            </div>
 
-                    <div class="ufsc-form-row">
-                        <label for="iban">IBAN/RIB du club</label>
-                        <div>
-                            <input type="text" name="iban" id="iban" placeholder="FR76 1234 5678 9012 3456 7890 123" value="<?php echo esc_attr($club->iban ?? ''); ?>">
-                            <div class="ufsc-form-hint">IBAN pour la gestion des paiements (optionnel)</div>
+                            <div class="ufsc-form-row">
+                                <label for="iban">IBAN/RIB du club</label>
+                                <div>
+                                    <input type="text" name="iban" id="iban" placeholder="FR76 1234 5678 9012 3456 7890 123" value="<?php echo esc_attr($club->iban ?? ''); ?>">
+                                    <div class="ufsc-form-hint">IBAN pour la gestion des paiements (optionnel)</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </details>
                 </div>
             </div>
 
@@ -736,53 +755,63 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                 <div class="ufsc-form-section-body">
                     <?php foreach ($roles as $key => $label): ?>
                         <?php $is_required = $key !== 'entraineur'; // Tous les dirigeants obligatoires sauf entraîneur ?>
-                        <div class="ufsc-dirigeant-section">
-                            <h4><?php echo esc_html($label); ?> <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></h4>
-                            
-                            <div class="ufsc-form-row-group">
+                        <?php if ($is_required): ?>
+                            <div class="ufsc-dirigeant-section">
+                                <h4><?php echo esc_html($label); ?> <span class="ufsc-form-required">*</span></h4>
+                        <?php else: ?>
+                            <details class="ufsc-dirigeant-section ufsc-optional-fields">
+                                <summary><?php echo esc_html($label); ?></summary>
+                        <?php endif; ?>
+
+                                <div class="ufsc-form-row-group">
+                                    <div class="ufsc-form-row">
+                                        <label for="<?php echo $key; ?>_prenom">Prénom <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
+                                        <div>
+                                            <input type="text" name="<?php echo $key; ?>_prenom" id="<?php echo $key; ?>_prenom" placeholder="Prénom"
+                                                value="<?php echo esc_attr($club->{$key . '_prenom'} ?? ''); ?>"
+                                                <?php echo $is_required ? 'required' : ''; ?>>
+                                        </div>
+                                    </div>
+
+                                    <div class="ufsc-form-row">
+                                        <label for="<?php echo $key; ?>_nom">Nom <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
+                                        <div>
+                                            <input type="text" name="<?php echo $key; ?>_nom" id="<?php echo $key; ?>_nom" placeholder="Nom"
+                                                value="<?php echo esc_attr($club->{$key . '_nom'} ?? ''); ?>"
+                                                <?php echo $is_required ? 'required' : ''; ?>>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="ufsc-form-row">
-                                    <label for="<?php echo $key; ?>_prenom">Prénom <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
+                                    <label for="<?php echo $key; ?>_tel">Téléphone <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
                                     <div>
-                                        <input type="text" name="<?php echo $key; ?>_prenom" id="<?php echo $key; ?>_prenom" placeholder="Prénom" 
-                                            value="<?php echo esc_attr($club->{$key . '_prenom'} ?? ''); ?>"
+                                        <input type="tel" name="<?php echo $key; ?>_tel" id="<?php echo $key; ?>_tel" placeholder="01 23 45 67 89"
+                                            value="<?php echo esc_attr($club->{$key . '_tel'} ?? ''); ?>"
                                             <?php echo $is_required ? 'required' : ''; ?>>
                                     </div>
                                 </div>
-                                
+
                                 <div class="ufsc-form-row">
-                                    <label for="<?php echo $key; ?>_nom">Nom <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
+                                    <label for="<?php echo $key; ?>_email">Email <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
                                     <div>
-                                        <input type="text" name="<?php echo $key; ?>_nom" id="<?php echo $key; ?>_nom" placeholder="Nom" 
-                                            value="<?php echo esc_attr($club->{$key . '_nom'} ?? ''); ?>"
+                                        <input type="email" name="<?php echo $key; ?>_email" id="<?php echo $key; ?>_email" placeholder="prenom.nom@email.fr"
+                                            value="<?php echo esc_attr($club->{$key . '_email'} ?? ''); ?>"
                                             <?php echo $is_required ? 'required' : ''; ?>>
+                                        <?php if ($is_affiliation && $key !== 'entraineur'): ?>
+                                            <div class="ufsc-form-hint">Une licence dirigeant sera automatiquement générée</div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
+
+                        <?php if ($is_required): ?>
                             </div>
-                            
-                            <div class="ufsc-form-row">
-                                <label for="<?php echo $key; ?>_tel">Téléphone <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
-                                <div>
-                                    <input type="tel" name="<?php echo $key; ?>_tel" id="<?php echo $key; ?>_tel" placeholder="01 23 45 67 89"
-                                        value="<?php echo esc_attr($club->{$key . '_tel'} ?? ''); ?>"
-                                        <?php echo $is_required ? 'required' : ''; ?>>
-                                </div>
-                            </div>
-                            
-                            <div class="ufsc-form-row">
-                                <label for="<?php echo $key; ?>_email">Email <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
-                                <div>
-                                    <input type="email" name="<?php echo $key; ?>_email" id="<?php echo $key; ?>_email" placeholder="prenom.nom@email.fr"
-                                        value="<?php echo esc_attr($club->{$key . '_email'} ?? ''); ?>"
-                                        <?php echo $is_required ? 'required' : ''; ?>>
-                                    <?php if ($is_affiliation && $key !== 'entraineur'): ?>
-                                        <div class="ufsc-form-hint">Une licence dirigeant sera automatiquement générée</div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                        
+                        <?php else: ?>
+                            </details>
+                        <?php endif; ?>
+
                         <?php if ($key !== array_key_last($roles)): ?>
-                            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                            <hr style="margin: 1.25rem 0; border: 0; border-top: 1px solid #eee;">
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
@@ -801,22 +830,48 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                     <p><strong>Formats acceptés :</strong> PDF, JPG, PNG. <strong>Taille max :</strong> 5 Mo par document.</p>
                 </div>
                 <div class="ufsc-form-section-body">
-                    <?php foreach ($docs as $key => $label):
-                        $is_required = $is_affiliation && in_array($key, ['statuts', 'recepisse', 'cer']);
-                     ?>
-                        <div class="ufsc-form-row">
-                            <label for="<?php echo $key; ?>"><?php echo $label; ?> <?php echo $is_required ? '<span class="ufsc-form-required">*</span>' : ''; ?></label>
-                            <div>
-                                <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*" <?php echo $is_required && empty($club->{$key}) ? 'required' : ''; ?>>
-                                <?php if (isset($club->{$key}) && !empty($club->{$key})): ?>
-                                    <div class="ufsc-form-hint">
-                                        <i class="dashicons dashicons-yes-alt"></i> Document déjà téléchargé. 
-                                        <a href="<?php echo esc_url($club->{$key}); ?>" target="_blank">Voir le document</a>
-                                    </div>
-                                <?php endif; ?>
+                    <div class="ufsc-form-grid">
+                        <?php foreach ($docs as $key => $label):
+                            $is_required = $is_affiliation && in_array($key, ['statuts', 'recepisse', 'cer']);
+                            if (!$is_required) { continue; }
+                        ?>
+                            <div class="ufsc-form-row">
+                                <label for="<?php echo $key; ?>"><?php echo $label; ?> <span class="ufsc-form-required">*</span></label>
+                                <div>
+                                    <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*" <?php echo empty($club->{$key}) ? 'required' : ''; ?>>
+                                    <?php if (isset($club->{$key}) && !empty($club->{$key})): ?>
+                                        <div class="ufsc-form-hint">
+                                            <i class="dashicons dashicons-yes-alt"></i> Document déjà téléchargé.
+                                            <a href="<?php echo esc_url($club->{$key}); ?>" target="_blank">Voir le document</a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <details class="ufsc-optional-fields">
+                        <summary>Documents optionnels</summary>
+                        <div class="ufsc-form-grid">
+                            <?php foreach ($docs as $key => $label):
+                                $is_required = $is_affiliation && in_array($key, ['statuts', 'recepisse', 'cer']);
+                                if ($is_required) { continue; }
+                            ?>
+                                <div class="ufsc-form-row">
+                                    <label for="<?php echo $key; ?>"><?php echo $label; ?></label>
+                                    <div>
+                                        <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*">
+                                        <?php if (isset($club->{$key}) && !empty($club->{$key})): ?>
+                                            <div class="ufsc-form-hint">
+                                                <i class="dashicons dashicons-yes-alt"></i> Document déjà téléchargé.
+                                                <a href="<?php echo esc_url($club->{$key}); ?>" target="_blank">Voir le document</a>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
+                    </details>
                 </div>
             </div>
             
