@@ -1,0 +1,46 @@
+.ufsc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ufsc-btn--primary {
+  background: var(--ufsc-color-primary);
+  color: #fff;
+}
+
+.ufsc-btn--secondary {
+  background: var(--ufsc-color-bg-light);
+  color: var(--ufsc-color-text);
+  border: 1px solid var(--ufsc-color-border);
+}
+
+.ufsc-btn--subtle {
+  background: transparent;
+  color: var(--ufsc-color-primary);
+}
+
+.ufsc-btn--destructive {
+  background: var(--ufsc-color-accent);
+  color: #fff;
+}
+
+.ufsc-btn__icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+
+.ufsc-btn__icon--end {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
