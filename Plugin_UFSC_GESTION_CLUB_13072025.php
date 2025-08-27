@@ -37,8 +37,6 @@ if (!function_exists('ufsc_add_caps_on_activate')) {
         $role = get_role('administrator');
         if ($role) {
 
-            foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licenses'] as $cap) {
-
             foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licences','manage_ufsc_licenses'] as $cap) {
 
                 $role->add_cap($cap);
@@ -1416,8 +1414,6 @@ function ufsc_handle_club_file_uploads($club_id, $files) {
 function ufsc_handle_licence_attestation_admin_download() {
     // Check permissions
 
-    if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-
     if (!current_user_can('manage_ufsc_licenses')) {
 
         wp_die('Permissions insuffisantes', 'Erreur', ['response' => 403]);
@@ -1954,8 +1950,6 @@ function ufsc_handle_licence_attestation_download() {
 
     // Check if user can access this license (club owner or admin)
 
-    if (!current_user_can(UFSC_MANAGE_LICENSES_CAP) && !ufsc_verify_club_access($licence->club_id)) {
-
     if (!current_user_can('manage_ufsc_licenses') && !ufsc_verify_club_access($licence->club_id)) {
 
         wp_die('Accès refusé à cette licence', 'Erreur', ['response' => 403]);
@@ -2090,8 +2084,6 @@ function ufsc_handle_save_licence_draft(){
     }
 
     // Verify that the current user has rights on the target club
-
-    if (!current_user_can(UFSC_MANAGE_LICENSES_CAP) && !ufsc_verify_club_access($club_id)) {
 
     if (!current_user_can('manage_ufsc_licenses') && !ufsc_verify_club_access($club_id)) {
 
@@ -2293,8 +2285,6 @@ function ufsc_handle_add_to_cart(){
 add_action('admin_init', function (){
     $role = get_role('administrator');
     if ($role) {
-
-        foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licenses'] as $cap) {
 
         foreach (['manage_ufsc','manage_ufsc_clubs','manage_ufsc_licences','manage_ufsc_licenses'] as $cap) {
 
@@ -2544,8 +2534,6 @@ if ( defined('ABSPATH') ) { require_once __DIR__ . '/includes/overrides_profix/_
  */
 function ufsc_admin_post_delete_licence() {
 
-    if ( ! current_user_can(UFSC_MANAGE_LICENSES_CAP) ) {
-
     if ( ! current_user_can('manage_ufsc_licenses') ) {
 
         wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
@@ -2578,8 +2566,6 @@ add_action('admin_post_ufsc_delete_licence', 'ufsc_admin_post_delete_licence');
  * Handle licence reassignment.
  */
 function ufsc_admin_post_reassign_licence() {
-
-    if ( ! current_user_can(UFSC_MANAGE_LICENSES_CAP) ) {
 
     if ( ! current_user_can('manage_ufsc_licenses') ) {
 
