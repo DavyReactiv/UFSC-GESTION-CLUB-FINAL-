@@ -79,12 +79,72 @@ function ufsc_render_club_list_page() {
     $table = new UFSC_Club_List_Table();
     $table->prepare_items();
 
+    // Helper to render list table with UFSC classes and accessibility tweaks.
+    $render_table = static function ( $table ) {
+        ob_start();
+        $table->display();
+        $html = ob_get_clean();
+
+        // Replace default table classes with UFSC variants.
+        $html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', $html );
+        // Apply ufsc-row to all rows for zebra styling.
+        $html = preg_replace( '/<tr(?! class=)/', '<tr class="ufsc-row"', $html );
+
+        echo $html;
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.ufsc-table th.sortable').forEach(function (th) {
+                if (!th.hasAttribute('aria-sort')) {
+                    th.setAttribute('aria-sort', 'none');
+                }
+                th.tabIndex = 0;
+                th.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        var link = th.querySelector('a');
+                        if (link) { link.click(); }
+                    }
+                });
+            });
+        });
+        </script>
+        <?php
+    };
+
     echo '<div class="wrap ufsc-ui">';
     echo '<h1>' . esc_html__( 'Liste des clubs', 'plugin-ufsc-gestion-club-13072025' ) . '</h1>';
+
+    $search = isset( $_REQUEST['s'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ) : '';
     echo '<form method="get">';
     echo '<input type="hidden" name="page" value="' . esc_attr( $_REQUEST['page'] ) . '" />';
-    $table->search_box( __( 'Recherche', 'plugin-ufsc-gestion-club-13072025' ), 'club' );
-    $table->display();
+
+    // Actions bar with search, filters, export and bulk actions.
+    echo '<div class="ufsc-actions">';
+    echo '<input type="search" name="s" value="' . esc_attr( $search ) . '" placeholder="' . esc_attr__( 'Recherche', 'plugin-ufsc-gestion-club-13072025' ) . '" />';
+    echo '<select name="region"><option value="">' . esc_html__( 'Toutes r\u00e9gions', 'plugin-ufsc-gestion-club-13072025' ) . '</option></select>';
+    echo '<button type="submit" class="button">' . esc_html__( 'Filtrer', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+    echo '<button type="submit" name="export" value="1" class="button">' . esc_html__( 'Exporter', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+    $bulk_actions = $table->get_bulk_actions();
+    echo '<select name="action">';
+    echo '<option value="">' . esc_html__( 'Actions group\u00e9es', 'plugin-ufsc-gestion-club-13072025' ) . '</option>';
+    foreach ( $bulk_actions as $action => $label ) {
+        echo '<option value="' . esc_attr( $action ) . '">' . esc_html( $label ) . '</option>';
+    }
+    echo '</select>';
+    echo '<button type="submit" class="button">' . esc_html__( 'Appliquer', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+    echo '</div>';
+
+    // Loading and error placeholders (hidden by default, can be toggled via JS if needed).
+    echo '<div class="ufsc-loading-state" style="display:none"><span class="dashicons dashicons-update spin"></span> ' . esc_html__( 'Chargement...', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+    echo '<div class="ufsc-error-state" style="display:none"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Une erreur est survenue.', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+
+    if ( empty( $table->items ) ) {
+        echo '<div class="ufsc-empty-state"><span class="dashicons dashicons-search"></span> ' . esc_html__( 'Aucun club trouv\u00e9.', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+    } else {
+        $render_table( $table );
+    }
+
     echo '</form>';
     echo '</div>';
 }

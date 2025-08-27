@@ -200,7 +200,57 @@ $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
         <?php if ($club_id) : ?>
             <input type="hidden" name="club_id" value="<?php echo esc_attr($club_id); ?>" />
         <?php endif; ?>
-        <?php $list_table->search_box(__('Recherche', 'plugin-ufsc-gestion-club-13072025'), 'licence'); ?>
-        <?php $list_table->display(); ?>
+
+        <?php
+        // Build actions bar.
+        $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+        echo '<div class="ufsc-actions">';
+        echo '<input type="search" name="s" value="' . esc_attr( $search ) . '" placeholder="' . esc_attr__( 'Recherche', 'plugin-ufsc-gestion-club-13072025' ) . '" />';
+        echo '<select name="statut"><option value="">' . esc_html__( 'Tous statuts', 'plugin-ufsc-gestion-club-13072025' ) . '</option></select>';
+        echo '<button type="submit" class="button">' . esc_html__( 'Filtrer', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+        echo '<button type="submit" name="export_csv" value="1" class="button">' . esc_html__( 'Exporter', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+        $bulk_actions = $list_table->get_bulk_actions();
+        echo '<select name="action">';
+        echo '<option value="">' . esc_html__( 'Actions group\u00e9es', 'plugin-ufsc-gestion-club-13072025' ) . '</option>';
+        foreach ( $bulk_actions as $action => $label ) {
+            echo '<option value="' . esc_attr( $action ) . '">' . esc_html( $label ) . '</option>';
+        }
+        echo '</select>';
+        echo '<button type="submit" class="button">' . esc_html__( 'Appliquer', 'plugin-ufsc-gestion-club-13072025' ) . '</button>';
+        echo '</div>';
+
+        // Loading, error and empty states.
+        echo '<div class="ufsc-loading-state" style="display:none"><span class="dashicons dashicons-update spin"></span> ' . esc_html__( 'Chargement...', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+        echo '<div class="ufsc-error-state" style="display:none"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Une erreur est survenue.', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+
+        if ( empty( $list_table->items ) ) {
+            echo '<div class="ufsc-empty-state"><span class="dashicons dashicons-search"></span> ' . esc_html__( 'Aucune licence trouv\u00e9e.', 'plugin-ufsc-gestion-club-13072025' ) . '</div>';
+        } else {
+            ob_start();
+            $list_table->display();
+            $table_html = ob_get_clean();
+            $table_html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', $table_html );
+            $table_html = preg_replace( '/<tr(?! class=)/', '<tr class="ufsc-row"', $table_html );
+            echo $table_html;
+        }
+
+        ?>
     </form>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.ufsc-table th.sortable').forEach(function (th) {
+        if (!th.hasAttribute('aria-sort')) {
+            th.setAttribute('aria-sort', 'none');
+        }
+        th.tabIndex = 0;
+        th.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                var link = th.querySelector('a');
+                if (link) { link.click(); }
+            }
+        });
+    });
+});
+</script>
