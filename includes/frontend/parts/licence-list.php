@@ -13,13 +13,15 @@ if (!$club_id) {
 }
 
 require_once dirname(__DIR__, 2) . '/licences/class-licence-filters.php';
+require_once dirname(__DIR__, 2) . '/licences/class-ufsc-licenses-repository.php';
 
 $filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
 if (empty($filters['statuses'])) {
     // By default only show validated licences or those without a status
     $filters['statuses'] = ['validee', ''];
 }
-$license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
+$repo = new UFSC_Licenses_Repository();
+$license_data = $repo->get_list($filters);
 $licences = $license_data['data'];
 $search = $filters['search_global'];
 ?>
