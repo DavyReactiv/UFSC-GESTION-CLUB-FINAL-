@@ -11,7 +11,7 @@ require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-repository.php'
 require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 $repo       = new UFSC_Licence_Repository();
-$licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+$licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
 $licence    = $licence_id ? $repo->get($licence_id) : null;
 $errors     = [];
 
@@ -36,35 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_a
     ];
 
     $errors = ufsc_validate_licence_data($data);
-
-        'sexe'                       => sanitize_text_field($_POST['sexe'] ?? ''),
-        'adresse'                    => sanitize_text_field($_POST['adresse'] ?? ''),
-        'suite_adresse'              => sanitize_text_field($_POST['suite_adresse'] ?? ''),
-        'code_postal'                => sanitize_text_field($_POST['code_postal'] ?? ''),
-        'ville'                      => sanitize_text_field($_POST['ville'] ?? ''),
-        'tel_fixe'                   => sanitize_text_field($_POST['tel_fixe'] ?? ''),
-        'tel_mobile'                 => sanitize_text_field($_POST['tel_mobile'] ?? ''),
-        'region'                     => sanitize_text_field($_POST['region'] ?? ''),
-        'profession'                 => sanitize_text_field($_POST['profession'] ?? ''),
-        'identifiant_laposte'        => sanitize_text_field($_POST['identifiant_laposte'] ?? ''),
-        'reduction_benevole'         => !empty($_POST['reduction_benevole']) ? 1 : 0,
-        'reduction_postier'          => !empty($_POST['reduction_postier']) ? 1 : 0,
-        'fonction_publique'          => !empty($_POST['fonction_publique']) ? 1 : 0,
-        'competition'                => !empty($_POST['competition']) ? 1 : 0,
-        'licence_delegataire'        => !empty($_POST['licence_delegataire']) ? 1 : 0,
-        'numero_licence_delegataire' => sanitize_text_field($_POST['numero_licence_delegataire'] ?? ''),
-        'diffusion_image'            => !empty($_POST['diffusion_image']) ? 1 : 0,
-        'infos_fsasptt'              => !empty($_POST['infos_fsasptt']) ? 1 : 0,
-        'infos_asptt'                => !empty($_POST['infos_asptt']) ? 1 : 0,
-        'infos_cr'                   => !empty($_POST['infos_cr']) ? 1 : 0,
-        'infos_partenaires'          => !empty($_POST['infos_partenaires']) ? 1 : 0,
-        'honorabilite'               => !empty($_POST['honorabilite']) ? 1 : 0,
-        'assurance_dommage_corporel' => !empty($_POST['assurance_dommage_corporel']) ? 1 : 0,
-        'assurance_assistance'       => !empty($_POST['assurance_assistance']) ? 1 : 0,
-        'note'                       => sanitize_textarea_field($_POST['note'] ?? ''),
-        'is_included'                => !empty($_POST['is_included']) ? 1 : 0,
-    ];
-
     if (empty($data['nom'])) {
         $errors[] = __('Le nom est obligatoire.', 'plugin-ufsc-gestion-club-13072025');
     }

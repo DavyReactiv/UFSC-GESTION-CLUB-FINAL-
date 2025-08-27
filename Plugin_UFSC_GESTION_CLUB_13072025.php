@@ -2556,7 +2556,7 @@ function ufsc_admin_post_delete_licence() {
         wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
     }
 
-    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+    $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
     if ( ! $licence_id ) {
         wp_die(__('ID de licence invalide.', 'plugin-ufsc-gestion-club-13072025'));
     }
@@ -2589,8 +2589,8 @@ function ufsc_admin_post_reassign_licence() {
         wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
     }
 
-    $licence_id  = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
-    $new_club_id = isset($_GET['new_club_id']) ? absint($_GET['new_club_id']) : 0;
+    $licence_id  = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
+    $new_club_id = isset($_GET['new_club_id']) ? absint( wp_unslash( $_GET['new_club_id'] ) ) : 0;
 
     if ( ! $licence_id || ! $new_club_id ) {
         wp_die(__('Paramètres invalides.', 'plugin-ufsc-gestion-club-13072025'));
@@ -2622,8 +2622,8 @@ function ufsc_licence_actions_admin_notices() {
         return;
     }
 
-    $message    = sanitize_text_field($_GET['message']);
-    $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+    $message    = sanitize_text_field( wp_unslash( $_GET['message'] ) );
+    $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
 
     switch ( $message ) {
         case 'deleted':

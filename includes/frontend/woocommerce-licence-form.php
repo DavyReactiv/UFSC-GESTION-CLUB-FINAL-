@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
  */
 function ufsc_handle_licence_url_data() {
     if (isset($_GET['ufsc_licence_data']) && !empty($_GET['ufsc_licence_data'])) {
-        $encoded_data = sanitize_text_field($_GET['ufsc_licence_data']);
+        $encoded_data = sanitize_text_field( wp_unslash( $_GET['ufsc_licence_data'] ) );
         $licence_data = json_decode(base64_decode($encoded_data), true);
         
         if ($licence_data && is_array($licence_data)) {

@@ -139,7 +139,7 @@ if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . 
     // Check if this is a selected export or full export
     if (isset($_GET['export_selected']) && !empty($_GET['selected_ids'])) {
         // Export only selected licences
-        $selected_ids = explode(',', sanitize_text_field($_GET['selected_ids']));
+        $selected_ids = explode(',', sanitize_text_field( wp_unslash( $_GET['selected_ids'] ) ));
         $selected_ids = array_map('intval', $selected_ids);
         $selected_ids = array_filter($selected_ids, function($id) { return $id > 0; });
         

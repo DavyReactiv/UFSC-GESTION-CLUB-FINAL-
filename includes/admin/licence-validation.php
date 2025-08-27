@@ -40,7 +40,7 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
         }
         
         // Get and validate license ID
-        $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+        $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
         if (!$licence_id) {
             wp_die(
                 __('ID de licence invalide.', 'plugin-ufsc-gestion-club-13072025'),
@@ -210,11 +210,11 @@ function ufsc_licence_validation_admin_notices() {
         return;
     }
     
-    $message = sanitize_text_field($_GET['message']);
+    $message = sanitize_text_field( wp_unslash( $_GET['message'] ) );
     
     switch ($message) {
         case 'validated':
-            $licence_id = isset($_GET['licence_id']) ? absint($_GET['licence_id']) : 0;
+            $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
             echo '<div class="notice notice-success is-dismissible">';
             echo '<p>' . sprintf(
                 __('Licence #%d validée avec succès !', 'plugin-ufsc-gestion-club-13072025'),
@@ -224,8 +224,8 @@ function ufsc_licence_validation_admin_notices() {
             break;
             
         case 'bulk_validated':
-            $validated = isset($_GET['validated']) ? absint($_GET['validated']) : 0;
-            $errors = isset($_GET['errors']) ? absint($_GET['errors']) : 0;
+            $validated = isset($_GET['validated']) ? absint( wp_unslash( $_GET['validated'] ) ) : 0;
+            $errors = isset($_GET['errors']) ? absint( wp_unslash( $_GET['errors'] ) ) : 0;
             
             if ($validated > 0) {
                 echo '<div class="notice notice-success is-dismissible">';
@@ -257,7 +257,7 @@ function ufsc_licence_validation_admin_notices() {
             break;
             
         case 'error':
-            $error_code = isset($_GET['error_code']) ? sanitize_text_field($_GET['error_code']) : '';
+            $error_code = isset($_GET['error_code']) ? sanitize_text_field( wp_unslash( $_GET['error_code'] ) ) : '';
             $error_messages = [
                 'invalid_status' => __('La licence ne peut pas être validée dans son état actuel.', 'plugin-ufsc-gestion-club-13072025'),
                 'unpaid' => __('La licence ne peut pas être validée car elle n\'est pas payée ou incluse dans le quota.', 'plugin-ufsc-gestion-club-13072025'),

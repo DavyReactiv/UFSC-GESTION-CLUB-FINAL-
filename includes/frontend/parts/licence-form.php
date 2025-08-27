@@ -178,8 +178,8 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
     <?php 
     // Display action result message if present
     if (isset($_GET['action_result']) && isset($_GET['message'])) {
-        $result_status = sanitize_text_field($_GET['action_result']);
-        $message = sanitize_text_field(urldecode($_GET['message']));
+        $result_status = sanitize_text_field( wp_unslash( $_GET['action_result'] ) );
+        $message = sanitize_text_field( urldecode( wp_unslash( $_GET['message'] ) ) );
         
         if ($result_status === 'success') {
             echo '<div class="ufsc-alert ufsc-alert-success">';

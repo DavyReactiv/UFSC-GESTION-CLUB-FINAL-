@@ -255,7 +255,7 @@ class UFSC_Club_Dashboard
 
         // Determine current section
         $this->current_section = isset($_GET['section']) ?
-            sanitize_text_field($_GET['section']) : 'home';
+            sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'home';
 
         // Validate section exists
         if (!isset($this->sections[$this->current_section])) {

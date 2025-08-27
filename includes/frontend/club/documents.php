@@ -33,8 +33,8 @@ function ufsc_club_render_documents($club)
 
     // Display upload result message if present
     if (isset($_GET['doc_update']) && isset($_GET['message'])) {
-        $update_status = sanitize_text_field($_GET['doc_update']);
-        $message = sanitize_text_field(urldecode($_GET['message']));
+        $update_status = sanitize_text_field( wp_unslash( $_GET['doc_update'] ) );
+        $message = sanitize_text_field( urldecode( wp_unslash( $_GET['message'] ) ) );
         
         if ($update_status === 'success') {
             $output .= '<div class="ufsc-alert ufsc-alert-success">';
@@ -401,9 +401,9 @@ function ufsc_handle_attestation_download()
         wp_die('Accès non autorisé', 'Erreur', ['response' => 403]);
     }
 
-    $attestation_type = sanitize_text_field($_GET['attestation_type'] ?? '');
-    $club_id = intval($_GET['club_id'] ?? 0);
-    $nonce = sanitize_text_field($_GET['nonce'] ?? '');
+    $attestation_type = sanitize_text_field( wp_unslash( $_GET['attestation_type'] ?? '' ) );
+    $club_id = intval( wp_unslash( $_GET['club_id'] ?? 0 ) );
+    $nonce = sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) );
 
     // Verify nonce
     if (!wp_verify_nonce($nonce, 'ufsc_download_attestation_' . $attestation_type . '_' . $club_id)) {
@@ -452,9 +452,9 @@ function ufsc_handle_document_download()
         wp_die('Accès non autorisé', 'Erreur', ['response' => 403]);
     }
 
-    $document_type = sanitize_text_field($_GET['document_type'] ?? '');
-    $club_id = intval($_GET['club_id'] ?? 0);
-    $nonce = sanitize_text_field($_GET['nonce'] ?? '');
+    $document_type = sanitize_text_field( wp_unslash( $_GET['document_type'] ?? '' ) );
+    $club_id = intval( wp_unslash( $_GET['club_id'] ?? 0 ) );
+    $nonce = sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) );
 
     // Verify nonce
     if (!wp_verify_nonce($nonce, 'ufsc_download_' . $document_type . '_' . $club_id)) {
