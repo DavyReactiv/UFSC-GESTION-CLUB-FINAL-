@@ -30,7 +30,7 @@ require_once UFSC_PLUGIN_PATH . 'includes/helpers/helpers-licence-status.php';
 if (!function_exists('ufsc_admin_post_validate_licence')) {
     function ufsc_admin_post_validate_licence() {
         // Check user capabilities
-        if (!current_user_can('manage_ufsc_licences')) {
+        if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
             wp_die(
                 __('Accès refusé. Vous n\'avez pas les permissions nécessaires.', 'plugin-ufsc-gestion-club-13072025'),
                 __('Erreur de permission', 'plugin-ufsc-gestion-club-13072025'),
@@ -83,7 +83,7 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
         // Check if license can be validated (must be pending)
         if (!ufsc_is_pending_status($licence->statut)) {
             $redirect_url = add_query_arg([
-                'page' => 'ufsc-liste-licences',
+                'page' => 'ufsc_licenses_admin',
                 'message' => 'error',
                 'error_code' => 'invalid_status'
             ], admin_url('admin.php'));
@@ -95,7 +95,7 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
         // Check if license is paid or included in quota
         if (!ufsc_is_licence_paid($licence_id)) {
             $redirect_url = add_query_arg([
-                'page' => 'ufsc-liste-licences',
+                'page' => 'ufsc_licenses_admin',
                 'message' => 'error',
                 'error_code' => 'unpaid'
             ], admin_url('admin.php'));
@@ -110,13 +110,13 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
         // Determine redirect URL based on success
         if ($success) {
             $redirect_url = add_query_arg([
-                'page' => 'ufsc-liste-licences',
+                'page' => 'ufsc_licenses_admin',
                 'message' => 'validated',
                 'licence_id' => $licence_id
             ], admin_url('admin.php'));
         } else {
             $redirect_url = add_query_arg([
-                'page' => 'ufsc-liste-licences',
+                'page' => 'ufsc_licenses_admin',
                 'message' => 'error',
                 'error_code' => 'update_failed'
             ], admin_url('admin.php'));
@@ -134,7 +134,7 @@ if (!function_exists('ufsc_admin_post_validate_licence')) {
  */
 function ufsc_handle_bulk_validate_licences() {
     // Check user capabilities
-    if (!current_user_can('manage_ufsc_licences')) {
+    if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
         wp_die(
             __('Accès refusé. Vous n\'avez pas les permissions nécessaires.', 'plugin-ufsc-gestion-club-13072025'),
             __('Erreur de permission', 'plugin-ufsc-gestion-club-13072025'),
@@ -155,7 +155,7 @@ function ufsc_handle_bulk_validate_licences() {
     $licence_ids = isset($_POST['licence']) ? array_map('absint', $_POST['licence']) : [];
     if (empty($licence_ids)) {
         $redirect_url = add_query_arg([
-            'page' => 'ufsc-liste-licences',
+            'page' => 'ufsc_licenses_admin',
             'message' => 'error',
             'error_code' => 'no_selection'
         ], admin_url('admin.php'));
@@ -202,7 +202,7 @@ function ufsc_handle_bulk_validate_licences() {
     
     // Redirect with results
     $redirect_url = add_query_arg([
-        'page' => 'ufsc-liste-licences',
+        'page' => 'ufsc_licenses_admin',
         'message' => 'bulk_validated',
         'validated' => $validated_count,
         'errors' => $error_count
@@ -306,6 +306,6 @@ add_action('admin_post_ufsc_force_validate_licence', function(){
         global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
         $ok = $wpdb->update($t, array('statut'=>'validee'), array('id'=>$licence_id));
     }
-    wp_redirect(add_query_arg(array('page'=>'ufsc-liste-licences','message'=>$ok?'validated':'error'), admin_url('admin.php')));
+    wp_redirect(add_query_arg(array('page'=>'ufsc_licenses_admin','message'=>$ok?'validated':'error'), admin_url('admin.php')));
     exit;
 });

@@ -12,7 +12,7 @@ if (!function_exists('ufscsn_resolve_club_id_sanitized')) {
 
 if (!function_exists('ufscsn_require_manage_licence')) {
     function ufscsn_require_manage_licence(int $licence_id) {
-        if (!current_user_can('manage_ufsc_licences')) {
+        if (!current_user_can('manage_ufsc_licenses')) {
             wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
         }
 
