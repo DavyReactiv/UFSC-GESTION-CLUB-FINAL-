@@ -137,8 +137,13 @@ class UFSC_Licence_List_Table extends WP_List_Table {
             $params[] = $like;
         }
 
-        $orderby = ! empty( $_REQUEST['orderby'] ) ? sanitize_sql_orderby( $_REQUEST['orderby'] ) : 'date_inscription';
-        $order   = ! empty( $_REQUEST['order'] ) && 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
+        $allowed_orderby = [ 'id', 'nom', 'date_inscription' ];
+        $orderby         = isset( $_REQUEST['orderby'] ) ? sanitize_key( $_REQUEST['orderby'] ) : 'date_inscription';
+        if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+            $orderby = 'date_inscription';
+        }
+
+        $order = ! empty( $_REQUEST['order'] ) && 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
 
         $count_sql = "SELECT COUNT(*) FROM {$table} l {$where}";
         if ( empty( $params ) ) {
