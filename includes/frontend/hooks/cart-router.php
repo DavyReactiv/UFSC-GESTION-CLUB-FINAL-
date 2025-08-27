@@ -5,12 +5,9 @@ if (!defined('ABSPATH')) exit;
  * Route front pour ajouter une licence au panier sans passer par /wp-admin/ (cookies Woo ok).
  * Utilisation : /?ufsc_pay_licence=ID
  */
-/* Legacy redirect disabled by v20.3 fixes */
 add_action('template_redirect', function(){
-    if ( ! apply_filters('ufsc_enable_legacy_redirects', false) ) { return; }
-
     if (empty($_GET['ufsc_pay_licence'])) return;
-    if (!is_user_logged_in()) { wp_safe_redirect( wp_login_url( wc_get_cart_url() ) ); exit; }
+    if (!is_user_logged_in()) { wp_safe_redirect( wp_login_url( wc_get_checkout_url() ) ); exit; }
 
     $licence_id = absint($_GET['ufsc_pay_licence']);
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
@@ -44,6 +41,6 @@ add_action('template_redirect', function(){
             'ufsc_is_included' => (int) ($lic->is_included ?? 0),
         );
         WC()->cart->add_to_cart($licence_product_id, 1, 0, array(), $data);
-        wp_safe_redirect( wc_get_cart_url() ); exit;
+        wp_safe_redirect( wc_get_checkout_url() ); exit;
     }
 });
