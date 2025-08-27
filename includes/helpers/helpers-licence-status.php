@@ -91,7 +91,7 @@ function ufsc_process_license_creation_after_payment($order_id)
     }
 
     // Check if already processed
-    if ($order->get_meta('ufsc_licenses_processed')) {
+    if ($order->get_meta('ufsc_licences_processed')) {
         return;
     }
 
@@ -133,7 +133,7 @@ function ufsc_process_license_creation_after_payment($order_id)
     }
 
     // Mark as processed
-    $order->add_meta_data('ufsc_licenses_processed', true);
+    $order->add_meta_data('ufsc_licences_processed', true);
     $order->save();
 }
 

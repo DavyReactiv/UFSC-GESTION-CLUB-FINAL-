@@ -309,14 +309,14 @@ class UFSC_WooCommerce_Integration {
                 // Last resort: update user/club meta
                 $user_id = $order->get_user_id();
                 if ($user_id) {
-                    $existing_licenses = get_user_meta($user_id, 'ufsc_licenses', true) ?: array();
+                    $existing_licenses = get_user_meta($user_id, 'ufsc_licences', true) ?: array();
                     $existing_licenses[] = array(
                         'club_id' => $club_id,
                         'license_data' => $license_data,
                         'order_id' => $order->get_id(),
                         'created' => current_time('mysql')
                     );
-                    update_user_meta($user_id, 'ufsc_licenses', $existing_licenses);
+                    update_user_meta($user_id, 'ufsc_licences', $existing_licenses);
                 }
             }
         }

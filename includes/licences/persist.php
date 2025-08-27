@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) exit;
 
 /**
- * Persist a licence from POST data into DB (ufsc_licences / ufsc_licenses).
+ * Persist a licence from POST data into DB (ufsc_licences).
  * Returns licence_id (int) on success or 0 on failure.
  *
  * @param int   $club_id
@@ -12,13 +12,7 @@ if (!defined('ABSPATH')) exit;
  */
 function ufsc_detect_licence_table_name(){
   global $wpdb;
-  $c1 = $wpdb->prefix.'ufsc_licences';
-  $c2 = $wpdb->prefix.'ufsc_licenses';
-  $exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $c1));
-  if ($exists === $c1) return $c1;
-  $exists2 = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $c2));
-  if ($exists2 === $c2) return $c2;
-  return $c1;
+  return $wpdb->prefix . 'ufsc_licences';
 }
 
 function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = array()){
