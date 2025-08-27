@@ -10,13 +10,19 @@ $clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER
 // Get current values if editing
 $current_licence = isset($current_licence) ? $current_licence : null;
 $current_club_id = $current_licence ? $current_licence->club_id : (isset($_GET['club_id']) ? intval($_GET['club_id']) : 0);
+$is_validated = $current_licence && $current_licence->statut === 'validee';
 
 // Load regions helper
 require_once plugin_dir_path(__FILE__) . '../../helpers.php';
 ?>
 
 <div class="ufsc-licence-form">
-    
+    <?php if ($is_validated): ?>
+    <div class="ufsc-notice ufsc-notice-info">
+        <?php _e('Cette licence est validée. Seuls l\'email et les numéros de téléphone peuvent être modifiés.', 'plugin-ufsc-gestion-club-13072025'); ?>
+    </div>
+    <?php endif; ?>
+
     <!-- Identity Section -->
     <div class="ufsc-form-section ufsc-section-identity">
         <h3><?php _e('Informations d\'identité', 'plugin-ufsc-gestion-club-13072025'); ?></h3>
@@ -315,3 +321,17 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
         <?php endif; ?>
     </div>
 </div>
+
+<?php if ($is_validated): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var allowed = ['email', 'tel_mobile', 'tel_fixe'];
+    document.querySelectorAll('.ufsc-licence-form input, .ufsc-licence-form select, .ufsc-licence-form textarea').forEach(function (el) {
+        if (!allowed.includes(el.id)) {
+            el.setAttribute('readonly', 'readonly');
+            el.setAttribute('disabled', 'disabled');
+        }
+    });
+});
+</script>
+<?php endif; ?>

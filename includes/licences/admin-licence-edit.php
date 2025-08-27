@@ -24,6 +24,7 @@ if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']),
 
 $manager = new UFSC_Licence_Manager();
 $current_licence = $manager->get_licence_by_id($licence_id);
+$is_validated = $current_licence && $current_licence->statut === 'validee';
 
 if (!$current_licence) {
     echo '<div class="notice notice-error"><p>Licence introuvable.</p></div>';
@@ -75,6 +76,21 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
         'region'                     => isset($_POST['region']) ? sanitize_text_field(wp_unslash($_POST['region'])) : '',
         'is_included'                => isset($_POST['is_included']) ? 1 : 0,
     ];
+
+    if ($is_validated) {
+        $locked_fields = [
+            'nom', 'prenom', 'sexe', 'date_naissance', 'adresse', 'suite_adresse',
+            'code_postal', 'ville', 'region', 'profession', 'identifiant_laposte',
+            'reduction_benevole', 'reduction_postier', 'fonction_publique',
+            'competition', 'licence_delegataire', 'numero_licence_delegataire',
+            'diffusion_image', 'infos_fsasptt', 'infos_asptt', 'infos_cr',
+            'infos_partenaires', 'honorabilite', 'assurance_dommage_corporel',
+            'assurance_assistance', 'note', 'is_included'
+        ];
+        foreach ($locked_fields as $field) {
+            $data[$field] = $current_licence->$field;
+        }
+    }
 
     $success = $manager->update_licence($licence_id, $data);
 
