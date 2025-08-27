@@ -272,7 +272,7 @@ function ufsc_render_simple_club_register_form($atts) {
                             <?php esc_html_e('Nom du club', 'plugin-ufsc-gestion-club-13072025'); ?>
                         </label>
                         <input type="text" id="club_nom" name="club_nom" class="ufsc-input" required 
-                               value="<?php echo esc_attr($_POST['club_nom'] ?? ''); ?>">
+                               value="<?php echo esc_attr( wp_unslash( $_POST['club_nom'] ?? '' ) ); ?>">
                     </div>
                     
                     <div class="ufsc-form-group">
@@ -280,7 +280,7 @@ function ufsc_render_simple_club_register_form($atts) {
                             <?php esc_html_e('Adresse', 'plugin-ufsc-gestion-club-13072025'); ?>
                         </label>
                         <textarea id="club_adresse" name="club_adresse" class="ufsc-textarea" required 
-                                  rows="3"><?php echo esc_textarea($_POST['club_adresse'] ?? ''); ?></textarea>
+                                  rows="3"><?php echo esc_textarea( wp_unslash( $_POST['club_adresse'] ?? '' ) ); ?></textarea>
                     </div>
                     
                     <div class="ufsc-form-row">
@@ -289,14 +289,14 @@ function ufsc_render_simple_club_register_form($atts) {
                                 <?php esc_html_e('Ville', 'plugin-ufsc-gestion-club-13072025'); ?>
                             </label>
                             <input type="text" id="club_ville" name="club_ville" class="ufsc-input" required 
-                                   value="<?php echo esc_attr($_POST['club_ville'] ?? ''); ?>">
+                                   value="<?php echo esc_attr( wp_unslash( $_POST['club_ville'] ?? '' ) ); ?>">
                         </div>
                         <div class="ufsc-form-group">
                             <label for="club_code_postal" class="ufsc-label required">
                                 <?php esc_html_e('Code postal', 'plugin-ufsc-gestion-club-13072025'); ?>
                             </label>
                             <input type="text" id="club_code_postal" name="club_code_postal" class="ufsc-input" required 
-                                   value="<?php echo esc_attr($_POST['club_code_postal'] ?? ''); ?>">
+                                   value="<?php echo esc_attr( wp_unslash( $_POST['club_code_postal'] ?? '' ) ); ?>">
                         </div>
                     </div>
                     
