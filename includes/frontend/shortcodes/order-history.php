@@ -32,7 +32,7 @@ function ufsc_order_history_shortcode($atts = array()) {
                 'ufsc-order-history',
                 UFSC_PLUGIN_URL . 'assets/css/order-history.css',
                 array(),
-                UFSC_GESTION_CLUB_VERSION
+                UFSC_PLUGIN_VERSION
             );
         }
 

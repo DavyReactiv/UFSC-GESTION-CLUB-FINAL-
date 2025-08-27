@@ -433,7 +433,7 @@ function ufsc_enqueue_dashboard_mvp_assets() {
             'ufsc-club-logo',
             UFSC_PLUGIN_URL . 'assets/js/ufsc-club-logo.js',
             ['jquery'],
-            UFSC_GESTION_CLUB_VERSION,
+            UFSC_PLUGIN_VERSION,
             true
         );
         
@@ -450,6 +450,6 @@ function ufsc_enqueue_dashboard_mvp_assets() {
         'ufsc-dashboard-mvp',
         UFSC_PLUGIN_URL . 'assets/css/dashboard-mvp.css',
         [],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 }

@@ -29,7 +29,7 @@ function ufsc_club_render_profile($club)
         'ufsc-club-infos-compact',
         UFSC_PLUGIN_URL . 'assets/css/club-infos-compact.css',
         ['ufsc-theme'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
     
     // Security check: ensure we have a valid club object

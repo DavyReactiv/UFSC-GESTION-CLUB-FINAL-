@@ -289,7 +289,7 @@ class UFSC_Admin_Settings {
                     </p>
                     <p>
                         <strong><?php _e('Version du plugin:', 'plugin-ufsc-gestion-club-13072025'); ?></strong> 
-                        <?php echo defined('UFSC_GESTION_CLUB_VERSION') ? UFSC_GESTION_CLUB_VERSION : '1.2.1'; ?>
+                        <?php echo defined('UFSC_PLUGIN_VERSION') ? UFSC_PLUGIN_VERSION : '20.8.1'; ?>
                     </p>
                 </div>
             </div>

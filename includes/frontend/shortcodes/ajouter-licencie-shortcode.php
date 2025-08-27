@@ -193,7 +193,7 @@ function ufsc_enqueue_add_licencie_assets()
         'ufsc-add-licencie',
         UFSC_PLUGIN_URL . 'assets/js/ufsc-add-licencie.js',
         ['jquery'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
     

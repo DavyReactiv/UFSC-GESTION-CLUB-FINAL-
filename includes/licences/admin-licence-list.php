@@ -19,7 +19,7 @@ wp_enqueue_style(
     'ufsc-admin-licence-table-style',
     UFSC_PLUGIN_URL . 'assets/css/admin-licence-table.css',
     [],
-    UFSC_GESTION_CLUB_VERSION
+    UFSC_PLUGIN_VERSION
 );
 
 
@@ -86,7 +86,7 @@ wp_enqueue_script(
     'ufsc-datatables-config',
     UFSC_PLUGIN_URL . 'assets/js/datatables-config.js',
     ['datatables-js', 'datatables-buttons-js', 'datatables-responsive-js'],
-    UFSC_GESTION_CLUB_VERSION,
+    UFSC_PLUGIN_VERSION,
     true
 );
 

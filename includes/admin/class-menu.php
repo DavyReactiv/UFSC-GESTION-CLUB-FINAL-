@@ -53,7 +53,7 @@ class UFSC_Menu
                 'ufsc-licence-actions',
                 UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
                 ['jquery'],
-                UFSC_GESTION_CLUB_VERSION,
+                UFSC_PLUGIN_VERSION,
                 true
             );
 
@@ -62,7 +62,7 @@ class UFSC_Menu
                 'ufsc-admin-licences',
                 UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
                 [],
-                UFSC_GESTION_CLUB_VERSION
+                UFSC_PLUGIN_VERSION
             );
 
             // Localize script with nonces and AJAX URL
@@ -871,7 +871,7 @@ class UFSC_Menu
             'ufsc-admin-licence-table-style',
             UFSC_PLUGIN_URL . 'assets/css/admin-licence-table.css',
             [],
-            UFSC_GESTION_CLUB_VERSION
+            UFSC_PLUGIN_VERSION
         );
 
         require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licence-list-table.php';
@@ -1283,7 +1283,7 @@ class UFSC_Menu
             'ufsc-admin-style',
             UFSC_PLUGIN_URL . 'assets/css/admin.css',
             [],
-            UFSC_GESTION_CLUB_VERSION
+            UFSC_PLUGIN_VERSION
         );
         
         // Handle export processing
@@ -2556,14 +2556,14 @@ class UFSC_Menu
             'ufsc-licence-form-style',
             UFSC_PLUGIN_URL . 'assets/css/form-licence.css',
             [],
-            UFSC_GESTION_CLUB_VERSION
+            UFSC_PLUGIN_VERSION
         );
 
         wp_enqueue_script(
             'ufsc-licence-form-script',
             UFSC_PLUGIN_URL . 'assets/js/form-licence.js',
             ['jquery'],
-            UFSC_GESTION_CLUB_VERSION,
+            UFSC_PLUGIN_VERSION,
             true
         );
         ?>
