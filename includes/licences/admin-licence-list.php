@@ -31,6 +31,10 @@ wp_enqueue_style(
     UFSC_PLUGIN_VERSION
 );
 
+
+$list_table = new UFSC_Licenses_List_Table($club_id);
+$list_table->prepare_items();
+
 // Enqueue DataTables CSS and JS with local fallback
 $dt_base_url  = UFSC_PLUGIN_URL . 'assets/datatables/';
 $dt_base_path = dirname(__DIR__, 2) . '/assets/datatables/';
@@ -165,9 +169,8 @@ if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . 
 $base_url = remove_query_arg(['paged', 'export_csv'], wp_unslash($_SERVER['REQUEST_URI']));
 $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
 
-?>
 
-<?php echo $no_license_notice; ?>
+?>
 
 <div class="wrap">
     <h1>Licences <?php echo $club ? '– ' . esc_html($club->nom) : ''; ?></h1>
