@@ -193,25 +193,25 @@ class UFSC_Licence_Manager
         }
 
         if ($status === 'validee') {
-            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe', 'payment_status'];
-            $data          = array_intersect_key($data, array_flip($allowed_fields));
+            $allowed_fields     = ['numero_licence', 'email'];
+            $non_modifiable     = array_diff(array_keys($data), $allowed_fields);
+            $data               = array_intersect_key($data, array_flip($allowed_fields));
 
-            $update = [];
+            $update = ['statut' => $status];
 
+            if (isset($data['numero_licence'])) {
+                $update['numero_licence'] = sanitize_text_field($data['numero_licence']);
+            }
             if (isset($data['email'])) {
                 $update['email'] = sanitize_email($data['email']);
             }
-            if (isset($data['tel_mobile'])) {
-                $update['tel_mobile'] = sanitize_text_field($data['tel_mobile']);
-            }
-            if (isset($data['tel_fixe'])) {
-                $update['tel_fixe'] = sanitize_text_field($data['tel_fixe']);
-            }
-            if (isset($data['payment_status'])) {
-                $update['payment_status'] = $this->normalize_payment_status($data['payment_status']);
+
+            foreach ($non_modifiable as $field) {
+                $update[$field] = $existing[$field] ?? null;
             }
 
-            if (empty($update)) {
+            // Nothing to update except status preservation
+            if (count($update) === 1 && isset($update['statut'])) {
                 return true;
             }
         } else {

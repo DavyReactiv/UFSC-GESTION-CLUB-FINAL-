@@ -24,10 +24,21 @@ function ufsc_handle_front_licence_submit(){
     $is_included = $included_remaining > 0 ? 1 : 0;
     if ($bureau_count < 3 && !$is_bureau){ wp_die(__('Veuillez d\'abord renseigner Président, Secrétaire et Trésorier (3 licences bureau incluses).','plugin-ufsc-gestion-club-13072025')); }
 
-    // Create / update in DB with statut en_attente
-    $licence_id_edit = isset($_POST['licence_id'])?absint($_POST['licence_id']):0;
-    if ($licence_id_edit){ $wpdb->update($table, array_merge($data, array('statut'=>'en_attente')), array('id'=>$licence_id_edit,'club_id'=>$club_id)); $licence_id=$licence_id_edit; }
-    else { $wpdb->insert($table, array_merge($data, array('club_id'=>$club_id,'statut'=>'en_attente','date_creation'=>current_time('mysql')))); $licence_id = (int)$wpdb->insert_id; }
+    // Create / update in DB with statut en_attente unless already validated
+    $licence_id_edit = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    if ($licence_id_edit){
+        $current_statut = $wpdb->get_var($wpdb->prepare("SELECT statut FROM {$table} WHERE id=%d AND club_id=%d", $licence_id_edit, $club_id));
+        if ($current_statut === 'validee'){
+            $wpdb->update($table, $data, array('id'=>$licence_id_edit, 'club_id'=>$club_id));
+        } else {
+            $wpdb->update($table, array_merge($data, array('statut'=>'en_attente')), array('id'=>$licence_id_edit, 'club_id'=>$club_id));
+        }
+        $licence_id = $licence_id_edit;
+    }
+    else {
+        $wpdb->insert($table, array_merge($data, array('club_id'=>$club_id,'statut'=>'en_attente','date_creation'=>current_time('mysql'))));
+        $licence_id = (int)$wpdb->insert_id;
+    }
 
     // Resolve Licence product ID
     $licence_product_id = 0; $pid1 = absint(get_option('ufsc_wc_individual_licence_product_id', 0));
