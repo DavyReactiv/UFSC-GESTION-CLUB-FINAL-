@@ -36,56 +36,66 @@ class UFSC_Menu
      */
     public function enqueue_admin_scripts($hook)
     {
-        // Only enqueue on UFSC admin pages
-        if (strpos($hook, 'ufsc') === false && strpos($hook, 'plugin-ufsc-gestion-club') === false) {
-            return;
-        }
-
-        // Enqueue licence actions script on pages that manage licences
         $licence_pages = [
             'ufsc_page_ufsc-licences',
             'ufsc_page_ufsc-edit-club',
             'plugin-ufsc-gestion-club-13072025_page_ufsc-licences'
         ];
 
-        if (in_array($hook, $licence_pages) || strpos($hook, 'ufsc-licences') !== false || strpos($hook, 'ufsc-edit-club') !== false) {
-            wp_enqueue_script(
-                'ufsc-licence-actions',
-                UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
-                ['jquery'],
-                UFSC_PLUGIN_VERSION,
-                true
-            );
-
-            // Enqueue admin licences table CSS
-            wp_enqueue_style(
-                'ufsc-admin-licences',
-                UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
-                [],
-                UFSC_PLUGIN_VERSION
-            );
-
-            // Localize script with nonces and AJAX URL
-            
-        // Enqueue enhanced admin UI styles/scripts for UFSC screens
-        wp_enqueue_style('ufsc-admin-ui', plugins_url('../../assets/css/ufsc-admin-ui.css', __FILE__), [], '1.0.0');
-        wp_enqueue_script('ufsc-admin-ui', plugins_url('../../assets/js/ufsc-admin-ui.js', __FILE__), [], '1.0.0', true);
-    
-            wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonces' => [
-                    'delete_licence' => wp_create_nonce('ufsc_delete_licence'),
-                    'change_licence_status' => wp_create_nonce('ufsc_change_licence_status'),
-                ],
-                'messages' => [
-                    'confirmDelete' => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
-                    'deleteSuccess' => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                    'deleteError' => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
-                    'statusUpdateSuccess' => __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                    'statusUpdateError' => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
-                ]
-            ]);
+        // Load assets only on licence management screens
+        if (!in_array($hook, $licence_pages, true)) {
+            return;
         }
+
+        // Licence actions script
+        wp_enqueue_script(
+            'ufsc-licence-actions',
+            UFSC_PLUGIN_URL . 'assets/js/admin-licence-actions.js',
+            ['jquery'],
+            UFSC_PLUGIN_VERSION,
+            true
+        );
+
+        // Licence table styles
+        wp_enqueue_style(
+            'ufsc-admin-licences',
+            UFSC_PLUGIN_URL . 'assets/css/admin-licences.css',
+            [],
+            UFSC_PLUGIN_VERSION
+        );
+
+        // Scoped admin UI enhancements
+        wp_register_style(
+            'ufsc-admin-ui',
+            UFSC_PLUGIN_URL . 'assets/css/ufsc-ui-admin.css',
+            [],
+            UFSC_PLUGIN_VERSION
+        );
+        wp_register_script(
+            'ufsc-admin-ui',
+            UFSC_PLUGIN_URL . 'assets/js/ufsc-admin-ui.js',
+            [],
+            UFSC_PLUGIN_VERSION,
+            true
+        );
+        wp_enqueue_style('ufsc-admin-ui');
+        wp_enqueue_script('ufsc-admin-ui');
+
+        // Localize script with nonces and AJAX URL
+        wp_localize_script('ufsc-licence-actions', 'ufscLicenceConfig', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonces' => [
+                'delete_licence' => wp_create_nonce('ufsc_delete_licence'),
+                'change_licence_status' => wp_create_nonce('ufsc_change_licence_status'),
+            ],
+            'messages' => [
+                'confirmDelete' => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
+                'deleteSuccess' => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+                'deleteError' => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
+                'statusUpdateSuccess' => __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+                'statusUpdateError' => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
+            ]
+        ]);
     }
 
     /**
