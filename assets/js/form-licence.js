@@ -47,6 +47,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form validation improvements
     document.querySelectorAll('form').forEach(form => {
+        const updateStatus = (container, status, message = '') => {
+            let icon = container.querySelector('.ufsc-field-status');
+            if (!icon) {
+                icon = document.createElement('span');
+                icon.className = 'ufsc-field-status dashicons';
+                container.appendChild(icon);
+            }
+            container.classList.remove('error', 'success');
+            icon.classList.remove('dashicons-warning', 'dashicons-yes');
+            const msg = container.querySelector('.error-message');
+            if (msg) msg.remove();
+
+            if (status === 'error') {
+                container.classList.add('error');
+                icon.classList.add('dashicons-warning');
+                if (message) {
+                    const span = document.createElement('span');
+                    span.className = 'error-message';
+                    span.textContent = message;
+                    container.appendChild(span);
+                }
+            } else if (status === 'success') {
+                container.classList.add('success');
+                icon.classList.add('dashicons-yes');
+            }
+        };
+
         form.addEventListener('submit', function(e) {
             let hasErrors = false;
 
@@ -54,18 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
             form.querySelectorAll('input[required], select[required]').forEach(field => {
                 const container = field.closest('.ufsc-form-field');
                 if (!field.value.trim()) {
-                    container.classList.add('error');
-                    if (!container.querySelector('.error-message')) {
-                        const span = document.createElement('span');
-                        span.className = 'error-message';
-                        span.textContent = 'Ce champ est requis';
-                        container.appendChild(span);
-                    }
+                    updateStatus(container, 'error', 'Ce champ est requis');
                     hasErrors = true;
                 } else {
-                    container.classList.remove('error');
-                    const msg = container.querySelector('.error-message');
-                    if (msg) msg.remove();
+                    updateStatus(container, 'success');
                 }
             });
 
@@ -75,18 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const email = field.value.trim();
 
                 if (email && !isValidEmail(email)) {
-                    container.classList.add('error');
-                    if (!container.querySelector('.error-message')) {
-                        const span = document.createElement('span');
-                        span.className = 'error-message';
-                        span.textContent = "Format d'email invalide";
-                        container.appendChild(span);
-                    }
+                    updateStatus(container, 'error', "Format d'email invalide");
                     hasErrors = true;
                 } else if (email) {
-                    container.classList.remove('error');
-                    const msg = container.querySelector('.error-message');
-                    if (msg) msg.remove();
+                    updateStatus(container, 'success');
                 }
             });
 
@@ -96,18 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const phone = field.value.trim();
 
                 if (phone && !isValidPhone(phone)) {
-                    container.classList.add('error');
-                    if (!container.querySelector('.error-message')) {
-                        const span = document.createElement('span');
-                        span.className = 'error-message';
-                        span.textContent = 'Format de téléphone invalide';
-                        container.appendChild(span);
-                    }
+                    updateStatus(container, 'error', 'Format de téléphone invalide');
                     hasErrors = true;
                 } else if (phone) {
-                    container.classList.remove('error');
-                    const msg = container.querySelector('.error-message');
-                    if (msg) msg.remove();
+                    updateStatus(container, 'success');
                 }
             });
 
