@@ -12,7 +12,11 @@ global $wpdb;
 $club_id = isset($_GET['club_id']) ? intval(wp_unslash($_GET['club_id'])) : 0;
 $club = null;
 if ($club_id) {
-    $club = $wpdb->get_row($wpdb->prepare("SELECT nom FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d", $club_id));
+    $club = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d", $club_id));
+    if (!$club) {
+        echo '<div class="notice notice-error"><p>Club introuvable.</p></div>';
+        return;
+    }
 }
 
 wp_enqueue_style(
@@ -21,10 +25,6 @@ wp_enqueue_style(
     [],
     UFSC_PLUGIN_VERSION
 );
-
-
-$list_table = new UFSC_Licence_List_Table($club_id);
-$list_table->prepare_items();
 
 // Enqueue DataTables CSS and JS with local fallback
 $dt_base_url  = UFSC_PLUGIN_URL . 'assets/datatables/';
@@ -64,21 +64,19 @@ wp_enqueue_script(
     true
 );
 
-// Get club ID and verify club exists
-$club_id = isset($_GET['club_id']) ? intval(wp_unslash($_GET['club_id'])) : 0;
-
-// 🔎 Vérification du club
-$club = $wpdb->get_row($wpdb->prepare(
-    "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
-    $club_id
-));
-if (!$club) {
-    echo '<div class="notice notice-error"><p>Club introuvable.</p></div>';
-    return;
-}
-
 // Get filter parameters with club_id override
 $filters = UFSC_Licence_Filters::get_filter_parameters(['club_id' => $club_id]);
+
+// Retrieve licence data for display
+$license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
+
+$list_table = new UFSC_Licence_List_Table($club_id);
+$list_table->prepare_items();
+$list_table->items = array_map('get_object_vars', $license_data['data']);
+$list_table->set_pagination_args([
+    'total_items' => $license_data['total_items'],
+    'per_page'    => $license_data['per_page'],
+]);
 
 // 📤 Export CSV
 if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . $club_id)) {
@@ -131,13 +129,6 @@ if (isset($_GET['export_csv']) && check_admin_referer('ufsc_export_licences_' . 
     $filename = 'licences_' . sanitize_file_name($club->nom) . '_' . date('Y-m-d') . '.csv';
     UFSC_CSV_Export::export_licenses($rows, $filename);
 }
-
-// Get filtered license data using the filter system
-$license_data = UFSC_Licence_Filters::get_filtered_licenses($filters);
-$data = $license_data['data'];
-$total_items = $license_data['total_items'];
-$per_page = $license_data['per_page'];
-$current_page = $license_data['current_page'];
 
 // 🔗 URL & nonce pour export
 $base_url = remove_query_arg(['paged', 'export_csv'], wp_unslash($_SERVER['REQUEST_URI']));
