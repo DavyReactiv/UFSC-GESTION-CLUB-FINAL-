@@ -96,23 +96,35 @@ class UFSC_Licence_List_Table extends WP_List_Table {
         $orderby = ! empty( $_REQUEST['orderby'] ) ? sanitize_sql_orderby( $_REQUEST['orderby'] ) : 'date_inscription';
         $order   = ! empty( $_REQUEST['order'] ) && 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
 
-        $total_items = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} l {$where}", ...$params ) );
+        $count_sql = "SELECT COUNT(*) FROM {$table} l {$where}";
+        if ( empty( $params ) ) {
+            $total_items = (int) $wpdb->get_var( $count_sql );
+        } else {
+            $total_items = (int) $wpdb->get_var( $wpdb->prepare( $count_sql, ...$params ) );
+        }
 
-        $params[] = $per_page;
-        $params[] = ( $current_page - 1 ) * $per_page;
+        $limit  = $per_page;
+        $offset = ( $current_page - 1 ) * $per_page;
 
-        $sql = "SELECT l.id, l.nom, l.prenom, l.email, l.statut, l.date_inscription, c.nom AS club_nom
+        $select_sql = "SELECT l.id, l.nom, l.prenom, l.email, l.statut, l.date_inscription, c.nom AS club_nom
                 FROM {$table} l
                 LEFT JOIN {$clubs_table} c ON l.club_id = c.id
                 {$where}
                 ORDER BY {$orderby} {$order}
                 LIMIT %d OFFSET %d";
 
-        $this->items = $wpdb->get_results( $wpdb->prepare( $sql, ...$params ), ARRAY_A );
+        if ( empty( $params ) ) {
+            $this->items = $wpdb->get_results( sprintf( $select_sql, $limit, $offset ), ARRAY_A );
+        } else {
+            $params_with_limit = array_merge( $params, [ $limit, $offset ] );
+            $this->items       = $wpdb->get_results( $wpdb->prepare( $select_sql, ...$params_with_limit ), ARRAY_A );
+        }
 
+        $total_pages = (int) ceil( $total_items / $per_page );
         $this->set_pagination_args([
             'total_items' => $total_items,
             'per_page'    => $per_page,
+            'total_pages' => $total_pages,
         ]);
     }
 
