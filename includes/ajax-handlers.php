@@ -15,6 +15,9 @@ add_action('wp_ajax_ufsc_club_search', 'ufsc_ajax_club_search');
 function ufsc_ajax_club_search() {
 
     if (!current_user_can('ufsc_manage_own')) {
+        wp_send_json_error('Unauthorized', 403);
+        return;
+    }
 
     if (!check_ajax_referer('ufsc_club_search', 'nonce', false)) {
         wp_send_json_error('Invalid nonce', 403);
