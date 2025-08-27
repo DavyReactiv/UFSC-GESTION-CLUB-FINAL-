@@ -149,14 +149,15 @@ class UFSC_Menu
 
         // Licences
         add_submenu_page(
-
             'plugin-ufsc-gestion-club-13072025',
             'Ajouter une licence',
             'Ajouter une licence',
             UFSC_MANAGE_LICENSES_CAP,
             'ufsc_license_add_admin',
             array($this, 'render_licence_add_admin_page')
+        );
 
+        add_submenu_page(
             'ufsc-dashboard',
             __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
             __('Licences', 'plugin-ufsc-gestion-club-13072025'),
@@ -164,7 +165,6 @@ class UFSC_Menu
             'ufsc-licences',
             array($this, 'render_liste_licences_page')
         );
-
 
         add_submenu_page(
             'ufsc-dashboard',
