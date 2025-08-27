@@ -8,6 +8,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 class UFSC_Licence_List_Table extends WP_List_Table {
     protected $club_id = 0;
+    private $external_data = null;
 
     public function __construct( $club_id = 0 ) {
         $this->club_id = (int) $club_id;
@@ -113,7 +114,28 @@ class UFSC_Licence_List_Table extends WP_List_Table {
         ];
     }
 
+    public function set_external_data($data, $total_items, $per_page) {
+        $this->external_data = [
+            'items'       => array_map('get_object_vars', $data),
+            'total_items' => (int) $total_items,
+            'per_page'    => (int) $per_page,
+        ];
+    }
+
     public function prepare_items() {
+        if ($this->external_data) {
+            $this->items = $this->external_data['items'];
+            $total_items = $this->external_data['total_items'];
+            $per_page    = $this->external_data['per_page'];
+            $total_pages = (int) ceil($total_items / $per_page);
+            $this->set_pagination_args([
+                'total_items' => $total_items,
+                'per_page'    => $per_page,
+                'total_pages' => $total_pages,
+            ]);
+            return;
+        }
+
         global $wpdb;
         $per_page = 20;
         $current_page = $this->get_pagenum();

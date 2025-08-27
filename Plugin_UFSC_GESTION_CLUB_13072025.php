@@ -2534,9 +2534,9 @@ function ufsc_admin_post_delete_licence() {
 
     check_admin_referer('ufsc_delete_licence_' . $licence_id);
 
-    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
-    $manager = UFSC_Licence_Manager::get_instance();
-    $success = $manager->delete_licence($licence_id);
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
+    $repo = new UFSC_Licenses_Repository();
+    $success = $repo->soft_delete($licence_id);
 
     $message  = $success ? 'deleted' : 'delete_error';
     $redirect = add_query_arg([
@@ -2567,15 +2567,9 @@ function ufsc_admin_post_reassign_licence() {
 
     check_admin_referer('ufsc_reassign_licence_' . $licence_id);
 
-    global $wpdb;
-    $table   = $wpdb->prefix . 'ufsc_licences';
-    $updated = $wpdb->update(
-        $table,
-        ['club_id' => $new_club_id],
-        ['id' => $licence_id],
-        ['%d'],
-        ['%d']
-    );
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
+    $repo = new UFSC_Licenses_Repository();
+    $updated = $repo->update($licence_id, ['club_id' => $new_club_id]);
 
     $message  = $updated !== false ? 'reassigned' : 'reassign_error';
     $redirect = add_query_arg([
