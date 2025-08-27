@@ -144,10 +144,6 @@ class UFSC_Licenses_List_Table extends WP_List_Table {
     protected function column_email( $item ) {
         $email = esc_html( $item['email'] );
         return '<span class="ufsc-text-ellipsis" title="' . esc_attr( $item['email'] ) . '">' . $email . '</span>';
-
-        return sprintf( '%1$s %2$s', esc_html( $item['nom'] ), $this->row_actions( $actions ) );
-
-
     }
 
     protected function column_default( $item, $column_name ) {
