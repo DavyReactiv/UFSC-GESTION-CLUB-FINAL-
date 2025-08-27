@@ -131,7 +131,7 @@ function ufsc_render_registration_form() {
     // Email field
     $output .= '<div class="ufsc-form-row ufsc-full">';
     $output .= '<label for="ufsc_register_email">' . __('Email', 'plugin-ufsc-gestion-club-13072025') . ' <span class="required">*</span></label>';
-    $output .= '<input type="email" id="ufsc_register_email" name="ufsc_register_email" required value="' . esc_attr(isset($_POST['ufsc_register_email']) ? $_POST['ufsc_register_email'] : '') . '">';
+    $output .= '<input type="email" id="ufsc_register_email" name="ufsc_register_email" required value="' . esc_attr( wp_unslash( $_POST['ufsc_register_email'] ?? '' ) ) . '">';
     $output .= '</div>';
     
     // Password field
