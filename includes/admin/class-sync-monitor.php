@@ -50,7 +50,7 @@ class UFSC_Sync_Monitor
     public function add_admin_menu()
     {
         add_submenu_page(
-            'ufsc_dashboard',
+            'ufsc_licenses_admin',
             'Synchronisation',
             'Synchronisation',
             'manage_ufsc',
