@@ -23,9 +23,10 @@ function ufsc_club_render_licences($club){
  * @param string $edit_url    URL d'édition de la licence
  * @param string $cart_url    URL du panier WooCommerce
  * @param int    $order_id    Identifiant de la commande associée
+ * @param string $payment_status Statut du paiement
  * @return string             HTML des boutons d'action
  */
-function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url, $order_id = 0) {
+function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url, $order_id = 0, $payment_status = '') {
     ob_start();
     $nonce = wp_create_nonce('ufsc_add_to_cart_' . $id);
     ?>
@@ -33,7 +34,9 @@ function ufscsn_render_actions($id, $statut, $is_included, $edit_url, $cart_url,
       <a class="button button-secondary" title="<?php esc_attr_e('Modifier','plugin-ufsc-gestion-club-13072025'); ?>" href="<?php echo esc_url($edit_url); ?>"><?php _e('Modifier','plugin-ufsc-gestion-club-13072025'); ?></a>
       <?php if ($statut === 'brouillon'): ?>
         <button type="button" class="button ufsc-delete-draft" data-licence-id="<?php echo (int)$id; ?>"><?php _e('Supprimer','plugin-ufsc-gestion-club-13072025'); ?></button>
+        <?php if (!in_array($payment_status, ['paid','completed'], true)): ?>
         <button type="button" class="button button-primary ufsc-add-to-cart" data-licence-id="<?php echo (int)$id; ?>" data-nonce="<?php echo esc_attr($nonce); ?>"><?php _e('Ajouter au panier','plugin-ufsc-gestion-club-13072025'); ?></button>
+        <?php endif; ?>
         <button type="button" class="button ufsc-include-quota" data-licence-id="<?php echo (int)$id; ?>"><?php echo $is_included ? esc_html__('Retirer du quota','plugin-ufsc-gestion-club-13072025') : esc_html__('Inclure au quota','plugin-ufsc-gestion-club-13072025'); ?></button>
       <?php elseif ($statut === 'in_cart'): ?>
         <a class="button" href="<?php echo esc_url($cart_url); ?>"><?php _e('Voir panier','plugin-ufsc-gestion-club-13072025'); ?></a>
@@ -158,14 +161,14 @@ function ufsc_render_club_licences_list($club){
                   $edit_url = add_query_arg('licence_id', (int)$r->id, get_permalink());
                   $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/panier/');
                   $order_id = isset($r->order_id) ? (int) $r->order_id : 0;
-                  echo ufscsn_render_actions((int)$r->id, $stat, !empty($r->is_included), $edit_url, $cart_url, $order_id);
+                  echo ufscsn_render_actions((int)$r->id, $stat, !empty($r->is_included), $edit_url, $cart_url, $order_id, $r->payment_status ?? '');
                 ?>
               </td>
             </tr>
             <tr class="ufsc-row-details" data-licence-id="<?php echo (int)$r->id; ?>">
               <td colspan="6">
                 <?php
-                  echo ufscsn_render_actions((int)$r->id, $stat, !empty($r->is_included), $edit_url, $cart_url, $order_id);
+                  echo ufscsn_render_actions((int)$r->id, $stat, !empty($r->is_included), $edit_url, $cart_url, $order_id, $r->payment_status ?? '');
                 ?>
               </td>
             </tr>
