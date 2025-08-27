@@ -1229,11 +1229,14 @@ function ufsc_handle_club_account_update() {
     
     // Update the database if we have valid data
     if (!empty($update_data)) {
+        // Build format array matching each updated field (all stored as text)
+        $formats = array_fill(0, count($update_data), '%s');
+
         $result = $wpdb->update(
             $table_name,
             $update_data,
             ['id' => intval($club->id)],
-            null,
+            $formats,
             ['%d']
         );
         
