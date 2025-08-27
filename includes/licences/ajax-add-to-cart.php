@@ -32,19 +32,19 @@ function ufsc_handle_add_licence_to_cart() {
         $nonce_ok = true;
     }
     if (!$nonce_ok) {
-        wp_send_json_error(['message'=>__('Security check failed.','plugin-ufsc-gestion-club-13072025'),'code'=>'nonce_failed']);
+        wp_send_json_error(['message'=>esc_html__('Security check failed.', 'ufsc-domain'),'code'=>'nonce_failed']);
     }
 
     // Get and validate club ID
     $club_id = isset($_POST['club_id']) ? intval($_POST['club_id']) : 0;
     if (!$club_id) {
-        wp_send_json_error(__('Club ID is required.', 'plugin-ufsc-gestion-club-13072025'), 400);
+        wp_send_json_error(esc_html__('Club ID is required.', 'ufsc-domain'), 400);
     }
 
     // Verify club access if function exists
     if (function_exists('ufsc_verify_club_access')) {
         if (!ufsc_verify_club_access($club_id)) {
-            wp_send_json_error(['message'=>__('Access denied to this club.', 'plugin-ufsc-gestion-club-13072025'),'code'=>'club_forbidden']);
+            wp_send_json_error(['message'=>esc_html__('Access denied to this club.', 'ufsc-domain'),'code'=>'club_forbidden']);
         }
     } else {
         // Fallback: try to infer club from current user
@@ -59,12 +59,12 @@ function ufsc_handle_add_licence_to_cart() {
 
     // Validate required fields
     if (empty($nom) || empty($prenom) || empty($email)) {
-        wp_send_json_error(__('Nom, prénom et email sont requis.', 'plugin-ufsc-gestion-club-13072025'), 400);
+        wp_send_json_error(esc_html__('Nom, prénom et email sont requis.', 'ufsc-domain'), 400);
     }
 
     // Validate email format
     if (!is_email($email)) {
-        wp_send_json_error(__('Format d\'email invalide.', 'plugin-ufsc-gestion-club-13072025'), 400);
+        wp_send_json_error(esc_html__('Format d\'email invalide.', 'ufsc-domain'), 400);
     }
 
     // Resolve WooCommerce product ID
@@ -79,12 +79,12 @@ function ufsc_handle_add_licence_to_cart() {
     $product_id = apply_filters('ufsc_licence_product_id', $product_id);
 
     if (!$product_id) {
-        wp_send_json_error(__('Product ID not found.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_send_json_error(esc_html__('Product ID not found.', 'ufsc-domain'));
     }
 
     // Check if WooCommerce is active
     if (!class_exists('WooCommerce')) {
-        wp_send_json_error(__('WooCommerce is not active.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_send_json_error(esc_html__('WooCommerce is not active.', 'ufsc-domain'));
     }
 
     // Prepare licence payload for cart item data
@@ -148,7 +148,7 @@ function ufsc_handle_add_licence_to_cart() {
     $unique_key = ufsc_generate_licence_key(array_merge($licence_payload, ['club_id' => $club_id]));
 
     if (ufsc_cart_contains_licence($unique_key)) {
-        wp_send_json_error(__('Ce licencié est déjà dans votre panier.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_send_json_error(esc_html__('Ce licencié est déjà dans votre panier.', 'ufsc-domain'));
     }
 
     // Prepare cart item data with the correct structure
@@ -168,15 +168,15 @@ function ufsc_handle_add_licence_to_cart() {
             $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : wc_get_page_permalink('cart');
             
             wp_send_json_success([
-                'message' => __('Licence ajoutée au panier avec succès.', 'plugin-ufsc-gestion-club-13072025'),
+                'message' => esc_html__('Licence ajoutée au panier avec succès.', 'ufsc-domain'),
                 'cart_url' => $cart_url,
                 'cart_item_key' => $cart_item_key
             ]);
         } else {
-            wp_send_json_error(__('Erreur lors de l\'ajout au panier.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_send_json_error(esc_html__('Erreur lors de l\'ajout au panier.', 'ufsc-domain'));
         }
     } catch (Exception $e) {
-        wp_send_json_error(__('Erreur lors de l\'ajout au panier: ', 'plugin-ufsc-gestion-club-13072025') . $e->getMessage());
+        wp_send_json_error(sprintf(esc_html__('Erreur lors de l\'ajout au panier : %s', 'ufsc-domain'), $e->getMessage()));
     }
 }
 

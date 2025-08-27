@@ -4,18 +4,18 @@ if (!defined('ABSPATH')) { exit; }
 
 function ufsc_handle_set_club_logo() {
     if (!ufsc_check_ajax_nonce('ufsc_set_club_logo_nonce', 'nonce', false)) {
-        wp_send_json_error(['message' => 'Erreur de sécurité. Veuillez recharger la page.']);
+        wp_send_json_error(['message' => esc_html__('Erreur de sécurité. Veuillez recharger la page.', 'ufsc-domain')]);
     }
     if (!is_user_logged_in()) {
-        wp_send_json_error(['message' => 'Vous devez être connecté pour modifier le logo.']);
+        wp_send_json_error(['message' => esc_html__('Vous devez être connecté pour modifier le logo.', 'ufsc-domain')]);
     }
     $access_check = ufsc_check_frontend_access('dashboard');
     if (!$access_check['allowed']) {
-        wp_send_json_error(['message' => 'Vous n\'êtes pas autorisé à effectuer cette action.']);
+        wp_send_json_error(['message' => esc_html__('Vous n\'êtes pas autorisé à effectuer cette action.', 'ufsc-domain')]);
     }
     $club = $access_check['club'];
     if (!ufsc_is_club_active($club)) {
-        wp_send_json_error(['message' => 'Votre club doit être validé pour modifier le logo.']);
+        wp_send_json_error(['message' => esc_html__('Votre club doit être validé pour modifier le logo.', 'ufsc-domain')]);
     }
 
     $attachment_id = 0;
@@ -25,7 +25,7 @@ function ufsc_handle_set_club_logo() {
         $file = $_FILES['logo_file'];
         $max_size = 2 * 1024 * 1024; // 2MB
         if (!empty($file['size']) && $file['size'] > $max_size) {
-            wp_send_json_error(['message' => 'Fichier trop volumineux. Taille max: 2 Mo.']);
+            wp_send_json_error(['message' => esc_html__('Fichier trop volumineux. Taille max : 2 Mo.', 'ufsc-domain')]);
         }
         $allowed_mimes = [
             'jpg|jpeg|jpe' => 'image/jpeg',
@@ -36,7 +36,7 @@ function ufsc_handle_set_club_logo() {
         $overrides = [ 'test_form' => false, 'mimes' => $allowed_mimes ];
         $movefile = wp_handle_upload($file, $overrides);
         if (!$movefile || !empty($movefile['error'])) {
-            wp_send_json_error(['message' => !empty($movefile['error']) ? $movefile['error'] : 'Téléversement impossible.']);
+            wp_send_json_error(['message' => !empty($movefile['error']) ? $movefile['error'] : esc_html__('Téléversement impossible.', 'ufsc-domain')]);
         }
         $filetype = wp_check_filetype(basename($movefile['file']), $allowed_mimes);
         $attachment_post = [
@@ -49,7 +49,7 @@ function ufsc_handle_set_club_logo() {
         $attachment_id = wp_insert_attachment($attachment_post, $movefile['file']);
         if (is_wp_error($attachment_id) || !$attachment_id) {
             @unlink($movefile['file']);
-            wp_send_json_error(['message' => 'Erreur lors de l\'enregistrement du fichier.']);
+            wp_send_json_error(['message' => esc_html__('Erreur lors de l\'enregistrement du fichier.', 'ufsc-domain')]);
         }
         require_once ABSPATH . 'wp-admin/includes/image.php';
         $attach_data = wp_generate_attachment_metadata($attachment_id, $movefile['file']);
@@ -61,12 +61,12 @@ function ufsc_handle_set_club_logo() {
         $attachment_id = isset($_POST['attachment_id']) ? intval($_POST['attachment_id']) : 0;
     }
     if (!$attachment_id) {
-        wp_send_json_error(['message' => 'Aucun fichier fourni.']);
+        wp_send_json_error(['message' => esc_html__('Aucun fichier fourni.', 'ufsc-domain')]);
     }
 
     $attachment = get_post($attachment_id);
     if (!$attachment || $attachment->post_type !== 'attachment' || !wp_attachment_is_image($attachment_id)) {
-        wp_send_json_error(['message' => 'Le fichier doit être une image valide.']);
+        wp_send_json_error(['message' => esc_html__('Le fichier doit être une image valide.', 'ufsc-domain')]);
     }
 
     global $wpdb;
@@ -83,17 +83,17 @@ function ufsc_handle_set_club_logo() {
     
     // $result can be 0 if no rows were affected (e.g., same values), which is not an error
     if ($result === false && $wpdb->last_error) {
-        wp_send_json_error(['message' => 'Erreur lors de la sauvegarde du logo.']);
+        wp_send_json_error(['message' => esc_html__('Erreur lors de la sauvegarde du logo.', 'ufsc-domain')]);
     }
     
     // Verify the attachment still exists and update succeeded (even if 0 rows affected)
     if (!wp_attachment_is_image($attachment_id)) {
-        wp_send_json_error(['message' => 'Le fichier attachement n\'est plus valide.']);
+        wp_send_json_error(['message' => esc_html__('Le fichier attachement n\'est plus valide.', 'ufsc-domain')]);
     }
 
     $logo_thumbnail = wp_get_attachment_image_url($attachment_id, 'thumbnail');
     wp_send_json_success([
-        'message'        => 'Logo mis à jour avec succès.',
+        'message'        => esc_html__('Logo mis à jour avec succès.', 'ufsc-domain'),
         'logo_url'       => $logo_url,
         'logo_thumbnail' => $logo_thumbnail ?: $logo_url,
         'attachment_id'  => $attachment_id

@@ -194,7 +194,7 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
      */
     function ufsc_gestion_club_load_textdomain() {
         load_plugin_textdomain(
-            'plugin-ufsc-gestion-club-13072025',
+            'ufsc-domain',
             false,
             dirname(plugin_basename(__FILE__)) . '/languages/'
         );
