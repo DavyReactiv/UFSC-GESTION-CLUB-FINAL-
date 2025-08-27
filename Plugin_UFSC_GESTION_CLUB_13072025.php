@@ -67,6 +67,7 @@ require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/attestations-helper.php';
 require_once UFSC_PLUGIN_PATH . 'includes/helpers/security.php';
+require_once UFSC_PLUGIN_PATH . 'includes/helpers/club-permissions.php';
 
 // Compatibility shims
 require_once UFSC_PLUGIN_PATH . 'includes/compat/monetico-compat.php';
@@ -343,22 +344,19 @@ add_action('wp_ajax_ufsc_delete_licence', 'ufsc_handle_delete_licence');
  * Requires admin privileges and nonce verification
  */
 function ufsc_handle_delete_licence() {
-    // Check permissions
-    if (!current_user_can('manage_ufsc_licences')) {
-        wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
-    }
-    
-    // Verify nonce
+    // Verify nonce first
     check_ajax_referer('ufsc_delete_licence', 'nonce');
-    
+
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
     if (!$licence_id) {
         wp_send_json_error(__('Invalid request.', 'plugin-ufsc-gestion-club-13072025'));
     }
-    
+
+    ufscsn_require_manage_licence($licence_id);
+
     require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
     $licence_manager = new UFSC_Licence_Manager();
-    
+
     if ($licence_manager->delete_licence($licence_id)) {
         wp_send_json_success(__('License deleted successfully.', 'plugin-ufsc-gestion-club-13072025'));
     } else {
@@ -369,31 +367,28 @@ function ufsc_handle_delete_licence() {
 // Change license status AJAX handler
 add_action('wp_ajax_ufsc_change_licence_status', 'ufsc_handle_change_licence_status');
 function ufsc_handle_change_licence_status() {
-    // Check permissions
-    if (!current_user_can('manage_ufsc_licences')) {
-        wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
-    }
-    
-    // Verify nonce
+    // Verify nonce first
     check_ajax_referer('ufsc_change_licence_status', 'nonce');
-    
+
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
     $new_status = isset($_POST['new_status']) ? sanitize_text_field(wp_unslash($_POST['new_status'])) : '';
     $reason = isset($_POST['reason']) ? sanitize_textarea_field(wp_unslash($_POST['reason'])) : '';
-    
+
     if (!$licence_id) {
         wp_send_json_error(__('Invalid request.', 'plugin-ufsc-gestion-club-13072025'));
     }
-    
+
+    ufscsn_require_manage_licence($licence_id);
+
     // Validate status
     $valid_statuses = ['brouillon', 'en_attente', 'validee', 'refusee'];
     if (!in_array($new_status, $valid_statuses)) {
         wp_send_json_error(__('Invalid status.', 'plugin-ufsc-gestion-club-13072025'));
     }
-    
+
     global $wpdb;
     $licences_table = $wpdb->prefix . 'ufsc_licences';
-    
+
     // Update license status
     $result = $wpdb->update(
         $licences_table,
@@ -402,7 +397,7 @@ function ufsc_handle_change_licence_status() {
         ['%s'],
         ['%d']
     );
-    
+
     if ($result !== false) {
         // Log the status change for audit purposes
         $user = wp_get_current_user();
@@ -413,10 +408,10 @@ function ufsc_handle_change_licence_status() {
             'changed_by' => $user->display_name,
             'timestamp' => current_time('mysql')
         ];
-        
+
         // Store audit log
         update_option('ufsc_licence_status_log_' . $licence_id . '_' . time(), $log_data);
-        
+
         wp_send_json_success('Statut mis à jour avec succès.');
     } else {
         wp_send_json_error('Échec de la mise à jour du statut.');
@@ -427,12 +422,7 @@ function ufsc_handle_change_licence_status() {
 add_action('wp_ajax_ufsc_validate_licence', 'ufsc_handle_validate_licence');
 if (!function_exists('ufsc_handle_validate_licence')) {
     function ufsc_handle_validate_licence() {
-        // Check permissions
-        if (!current_user_can('manage_ufsc_licences')) {
-            wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
-        }
-        
-        // Verify nonce
+        // Verify nonce first
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ufsc_admin_licence_action')) {
             wp_send_json_error(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'), 403);
         }
@@ -442,18 +432,11 @@ if (!function_exists('ufsc_handle_validate_licence')) {
         if (!$licence_id) {
             wp_send_json_error(__('Invalid licence ID.', 'plugin-ufsc-gestion-club-13072025'));
         }
-        
+
+        $licence = ufscsn_require_manage_licence($licence_id);
+
         global $wpdb;
         $licences_table = $wpdb->prefix . 'ufsc_licences';
-        
-        // Check if licence exists
-        $licence = $wpdb->get_row(
-            $wpdb->prepare("SELECT * FROM {$licences_table} WHERE id = %d", $licence_id)
-        );
-        
-        if (!$licence) {
-            wp_send_json_error(__('Licence not found.', 'plugin-ufsc-gestion-club-13072025'));
-        }
         
         // Update licence status to validated (regardless of payment status)
         $result = $wpdb->update(
@@ -494,35 +477,23 @@ if (!function_exists('ufsc_handle_validate_licence')) {
 
 add_action('wp_ajax_ufsc_reject_licence', 'ufsc_handle_reject_licence');
 function ufsc_handle_reject_licence() {
-    // Check permissions
-    if (!current_user_can('manage_ufsc_licences')) {
-        wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
-    }
-    
-    // Verify nonce
+    // Verify nonce first
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ufsc_admin_licence_action')) {
         wp_send_json_error(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'), 403);
     }
-    
+
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
     $reason = isset($_POST['reason']) ? sanitize_textarea_field(wp_unslash($_POST['reason'])) : '';
-    
+
     if (!$licence_id) {
         wp_send_json_error(__('Invalid licence ID.', 'plugin-ufsc-gestion-club-13072025'));
     }
-    
+
+    $licence = ufscsn_require_manage_licence($licence_id);
+
     global $wpdb;
     $licences_table = $wpdb->prefix . 'ufsc_licences';
-    
-    // Check if licence exists
-    $licence = $wpdb->get_row(
-        $wpdb->prepare("SELECT * FROM {$licences_table} WHERE id = %d", $licence_id)
-    );
-    
-    if (!$licence) {
-        wp_send_json_error(__('Licence not found.', 'plugin-ufsc-gestion-club-13072025'));
-    }
-    
+
     // Update licence status to refused
     $result = $wpdb->update(
         $licences_table,
@@ -535,7 +506,7 @@ function ufsc_handle_reject_licence() {
         ['%s', '%s', '%s'],
         ['%d']
     );
-    
+
     if ($result !== false) {
         // Log the rejection action
         $user = wp_get_current_user();
@@ -547,12 +518,12 @@ function ufsc_handle_reject_licence() {
             'rejected_by' => $user->display_name,
             'timestamp' => current_time('mysql')
         ];
-        
+
         // Store audit log
         update_option('ufsc_licence_rejection_log_' . $licence_id . '_' . time(), $log_data);
-        
+
         wp_send_json_success([
-            'message' => sprintf(__('Licence for %s %s rejected successfully.', 'plugin-ufsc-gestion-club-13072025'), 
+            'message' => sprintf(__('Licence for %s %s rejected successfully.', 'plugin-ufsc-gestion-club-13072025'),
                                 $licence->prenom, $licence->nom),
             'new_status' => 'refusee'
         ]);
@@ -1554,14 +1525,14 @@ function ufsc_handle_licence_card_download() {
 // Club attestation upload handler
 add_action('wp_ajax_ufsc_upload_club_attestation', 'ufsc_handle_upload_club_attestation');
 function ufsc_handle_upload_club_attestation() {
+    // Verify nonce first
+    check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
+
     // Check permissions
     if (!current_user_can('manage_ufsc')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
-    
-    // Verify nonce
-    check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
-    
+
     $club_id = isset($_POST['club_id']) ? absint(wp_unslash($_POST['club_id'])) : 0;
     $type = isset($_POST['type']) ? sanitize_text_field(wp_unslash($_POST['type'])) : '';
     
@@ -1685,14 +1656,14 @@ function ufsc_handle_upload_club_attestation() {
 // Club attestation delete handler
 add_action('wp_ajax_ufsc_delete_club_attestation', 'ufsc_handle_delete_club_attestation');
 function ufsc_handle_delete_club_attestation() {
+    // Verify nonce first
+    check_ajax_referer('ufsc_delete_club_attestation', 'nonce');
+
     // Check permissions
     if (!current_user_can('manage_ufsc')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
-    
-    // Verify nonce
-    check_ajax_referer('ufsc_delete_club_attestation', 'nonce');
-    
+
     $club_id = isset($_POST['club_id']) ? absint(wp_unslash($_POST['club_id'])) : 0;
     $type = isset($_POST['type']) ? sanitize_text_field(wp_unslash($_POST['type'])) : '';
     
@@ -1711,14 +1682,14 @@ function ufsc_handle_delete_club_attestation() {
 // Club attestation attach existing media handler
 add_action('wp_ajax_ufsc_attach_existing_club_attestation', 'ufsc_handle_attach_existing_club_attestation');
 function ufsc_handle_attach_existing_club_attestation() {
+    // Verify nonce first
+    check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
+
     // Check permissions
     if (!current_user_can('manage_ufsc')) {
         wp_send_json_error('Accès non autorisé.', 403);
     }
-    
-    // Verify nonce
-    check_ajax_referer('ufsc_upload_club_attestation', 'nonce');
-    
+
     $club_id = isset($_POST['club_id']) ? absint(wp_unslash($_POST['club_id'])) : 0;
     $type = isset($_POST['type']) ? sanitize_text_field(wp_unslash($_POST['type'])) : '';
     $attachment_id = isset($_POST['attachment_id']) ? absint(wp_unslash($_POST['attachment_id'])) : 0;
@@ -1759,20 +1730,17 @@ function ufsc_handle_attach_existing_club_attestation() {
 // License attestation upload handler
 add_action('wp_ajax_ufsc_upload_licence_attestation', 'ufsc_handle_upload_licence_attestation');
 function ufsc_handle_upload_licence_attestation() {
-    // Check permissions
-    if (!current_user_can('manage_ufsc_licences')) {
-        wp_send_json_error('Accès non autorisé.', 403);
-    }
-    
-    // Verify nonce
+    // Verify nonce first
     check_ajax_referer('ufsc_upload_licence_attestation', 'nonce');
-    
+
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
-    
+
     if (!$licence_id) {
         wp_send_json_error('ID de licence invalide.');
     }
-    
+
+    $licence = ufscsn_require_manage_licence($licence_id);
+
     // Check if file was uploaded
     if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
         wp_send_json_error('Aucun fichier téléchargé ou erreur d\'upload.');
@@ -1817,15 +1785,7 @@ function ufsc_handle_upload_licence_attestation() {
     $filename = "licence_{$licence_id}_attestation_{$timestamp}.{$extension}";
     $file_path = $ufsc_dir . '/' . $filename;
     
-    // Get current license data to check for old file
-    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
-    $licence_manager = new UFSC_Licence_Manager();
-    $licence = $licence_manager->get_licence_by_id($licence_id);
-    
-    if (!$licence) {
-        wp_send_json_error('Licence introuvable.');
-    }
-    
+    // Use existing licence data to check for old file
     $old_file_url = $licence->attestation_url ?? null;
     $old_file_path = null;
     if ($old_file_url) {
@@ -1871,28 +1831,16 @@ function ufsc_handle_upload_licence_attestation() {
 // License attestation delete handler
 add_action('wp_ajax_ufsc_delete_licence_attestation', 'ufsc_handle_delete_licence_attestation');
 function ufsc_handle_delete_licence_attestation() {
-    // Check permissions
-    if (!current_user_can('manage_ufsc_licences')) {
-        wp_send_json_error('Accès non autorisé.', 403);
-    }
-    
-    // Verify nonce
+    // Verify nonce first
     check_ajax_referer('ufsc_delete_licence_attestation', 'nonce');
-    
+
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
-    
+
     if (!$licence_id) {
         wp_send_json_error('ID de licence invalide.');
     }
-    
-    // Get current license data
-    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
-    $licence_manager = new UFSC_Licence_Manager();
-    $licence = $licence_manager->get_licence_by_id($licence_id);
-    
-    if (!$licence) {
-        wp_send_json_error('Licence introuvable.');
-    }
+
+    $licence = ufscsn_require_manage_licence($licence_id);
     
     // Delete file from filesystem
     if (!empty($licence->attestation_url)) {

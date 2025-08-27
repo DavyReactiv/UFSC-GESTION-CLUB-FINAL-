@@ -2,16 +2,33 @@
 if (!defined('ABSPATH')) exit;
 function ufsc_profix_ajax_add_to_cart(){
     check_ajax_referer('ufsc_front_nonce');
+
     if (!class_exists('WC')) wp_send_json_error(esc_html__('WooCommerce requis', 'ufsc-domain'),400);
+
+    if (!class_exists('WC')) {
+        wp_send_json_error(['message' => __('WooCommerce requis','plugin-ufsc-gestion-club-13072025')],400);
+    }
+
     $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
     if (!$product_id) {
         // fallback to defined constant
         $product_id = defined('UFSC_LICENCE_PRODUCT_ID') ? (int)UFSC_LICENCE_PRODUCT_ID : 0;
     }
+
     if (!$product_id) wp_send_json_error(esc_html__('product_id requis', 'ufsc-domain'));
     $qty = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
     $added = WC()->cart->add_to_cart($product_id, $qty);
     if (!$added) wp_send_json_error(esc_html__('Ajout au panier impossible', 'ufsc-domain'));
+
+    if (!$product_id) {
+        wp_send_json_error(['message' => 'product_id requis']);
+    }
+    $qty = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
+    $added = WC()->cart->add_to_cart($product_id, $qty);
+    if (!$added) {
+        wp_send_json_error(['message' => 'Ajout au panier impossible']);
+    }
+
     $data = [
         'redirect' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/panier/')
     ];
@@ -22,16 +39,33 @@ add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 
 function ufsc_profix_ajax_save_draft(){
     check_ajax_referer('ufsc_front_nonce');
+
     if (!is_user_logged_in()) wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     global $wpdb; $table = $wpdb->prefix.'ufsc_licences';
     $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
     $club_id = ($club && isset($club->id)) ? (int)$club->id : 0;
     if (!$club_id) wp_send_json_error(esc_html__('Club introuvable', 'ufsc-domain'));
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(['message' => 'Connexion requise']);
+    }
+    global $wpdb; $table = $wpdb->prefix.'ufsc_licences';
+    $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
+    $club_id = ($club && isset($club->id)) ? (int)$club->id : 0;
+    if (!$club_id) {
+        wp_send_json_error(['message' => 'Club introuvable']);
+ }
     $nom = isset($_POST['nom']) ? sanitize_text_field(wp_unslash($_POST['nom'])) : '';
     $prenom = isset($_POST['prenom']) ? sanitize_text_field(wp_unslash($_POST['prenom'])) : '';
     $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
     $role = isset($_POST['role']) ? sanitize_text_field(wp_unslash($_POST['role'])) : '';
+
     if ($nom===''||$prenom===''||$email==='') wp_send_json_error(esc_html__('Nom, prénom et email requis', 'ufsc-domain'));
+
+    if ($nom===''||$prenom===''||$email==='') {
+        wp_send_json_error(['message' => 'Nom, prénom et email requis']);
+    }
+
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     $now = current_time('mysql');
     if ($licence_id) {
@@ -41,15 +75,29 @@ function ufsc_profix_ajax_save_draft(){
             ['%s','%s','%s','%s','%s','%s'],
             ['%d','%d']
         );
+
         if ($ok!==false) wp_send_json_success(['licence_id'=>$licence_id]);
         wp_send_json_error(esc_html__('Échec de mise à jour du brouillon', 'ufsc-domain'));
+
+        if ($ok!==false) {
+            wp_send_json_success(['licence_id'=>$licence_id]);
+        }
+        wp_send_json_error(['message' => 'Échec de mise à jour du brouillon']);
+
     } else {
         $ok = $wpdb->insert($table,
             ['club_id'=>$club_id,'role'=>$role,'nom'=>$nom,'prenom'=>$prenom,'email'=>$email,'statut'=>'brouillon','date_creation'=>$now],
             ['%d','%s','%s','%s','%s','%s','%s']
         );
+
         if ($ok) wp_send_json_success(['licence_id'=>(int)$wpdb->insert_id]);
         wp_send_json_error(esc_html__('Échec de création du brouillon', 'ufsc-domain'));
+
+        if ($ok) {
+            wp_send_json_success(['licence_id'=>(int)$wpdb->insert_id]);
+        }
+        wp_send_json_error(['message' => 'Échec de création du brouillon']);
+
     }
 }
 add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
@@ -57,6 +105,7 @@ add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft
 function ufsc_profix_ajax_delete_draft(){
     check_ajax_referer('ufsc_front_nonce');
     if ( ! is_user_logged_in() ) {
+
         wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     }
     global $wpdb;
@@ -73,6 +122,34 @@ function ufsc_profix_ajax_delete_draft(){
     }
     $ok = $wpdb->update($table, ['statut'=>'trash','deleted_at'=>current_time('mysql')], ['id'=>$id,'club_id'=>$club_id], ['%s','%s'], ['%d','%d']);
     if ($ok!==false) { wp_send_json_success(); } else { wp_send_json_error(esc_html__('Suppression impossible', 'ufsc-domain')); }
+
+        wp_send_json_error(['message' => 'Connexion requise']);
+    }
+    global $wpdb;
+    $id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
+    if ( ! $id ) {
+        wp_send_json_error(['message' => 'ID manquant']);
+    }
+    $club = function_exists('ufsc_get_user_club') ? ufsc_get_user_club() : null;
+    $club_id = ($club && isset($club->id)) ? (int) $club->id : 0;
+    if ( ! $club_id ) {
+        wp_send_json_error(['message' => 'Club introuvable']);
+    }
+    $table = $wpdb->prefix.'ufsc_licences';
+    $licence = $wpdb->get_row($wpdb->prepare("SELECT club_id FROM $table WHERE id=%d", $id));
+    if ( ! $licence ) {
+        wp_send_json_error(['message' => 'Licence introuvable']);
+    }
+    if ( (int) $licence->club_id !== $club_id ) {
+        wp_send_json_error(['message' => 'Utilisateur non autorisé']);
+    }
+    $ok = $wpdb->update($table, ['statut'=>'trash','deleted_at'=>current_time('mysql')], ['id'=>$id,'club_id'=>$club_id], ['%s','%s'], ['%d','%d']);
+    if ($ok!==false) {
+        wp_send_json_success();
+    } else {
+        wp_send_json_error(['message' => 'Suppression impossible']);
+    }
+
 }
 add_action('wp_ajax_ufsc_delete_licence_draft','ufsc_profix_ajax_delete_draft');
 
