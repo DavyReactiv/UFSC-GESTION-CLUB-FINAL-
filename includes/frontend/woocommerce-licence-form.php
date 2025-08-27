@@ -90,7 +90,13 @@ function ufsc_validate_licence_fields($passed, $product_id, $quantity)
     }
 
     // Security check - verify nonce
-    if (!isset($_POST['ufsc_wc_licence_nonce']) || !wp_verify_nonce($_POST['ufsc_wc_licence_nonce'], 'ufsc_woocommerce_licence')) {
+    if (
+        !isset($_POST['ufsc_wc_licence_nonce']) ||
+        !wp_verify_nonce(
+            sanitize_text_field(wp_unslash($_POST['ufsc_wc_licence_nonce'] ?? '')),
+            'ufsc_woocommerce_licence'
+        )
+    ) {
         wc_add_notice('Erreur de sécurité. Veuillez réessayer.', 'error');
         return false;
     }
