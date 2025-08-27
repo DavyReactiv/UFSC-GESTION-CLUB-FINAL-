@@ -264,7 +264,7 @@ class UFSC_Admin_Settings {
             wp_die(__('Vous n\'avez pas les permissions suffisantes pour accéder à cette page.'));
         }
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-settings" style="font-size: 1.3em; margin-right: 8px;"></span>
                 <?php _e('Paramètres UFSC', 'plugin-ufsc-gestion-club-13072025'); ?>

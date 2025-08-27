@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
  */
 function ufsc_test_dashboard_mvp() {
     ?>
-    <div class="wrap">
+    <div class="wrap ufsc-ui">
         <h1>Dashboard MVP Test</h1>
         
         <h2>1. Test Dashboard Shortcode</h2>

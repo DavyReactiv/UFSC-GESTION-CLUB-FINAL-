@@ -110,7 +110,7 @@ class UFSC_Pack_Exports_Admin {
     public function render_page() {
         if (!current_user_can('manage_ufsc')) wp_die(__('Unauthorized', 'plugin-ufsc-gestion-club-13072025'));
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php esc_html_e('Réglages Packs & Exports', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <form method="post" action="options.php">
                 <?php

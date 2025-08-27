@@ -95,7 +95,7 @@ class UFSC_GestionClub_Core
      */
     public static function render_admin_page()
     {
-        echo '<div class="wrap"><h1>Tableau de bord UFSC</h1><p>Bienvenue dans le plugin de gestion des clubs UFSC.</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>Tableau de bord UFSC</h1><p>Bienvenue dans le plugin de gestion des clubs UFSC.</p></div>';
     }
 
     public static function render_club_list_page()
@@ -109,22 +109,22 @@ class UFSC_GestionClub_Core
 
     public static function render_add_club_page()
     {
-        echo '<div class="wrap"><h1>Ajouter un nouveau club</h1><p>Formulaire à venir...</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>Ajouter un nouveau club</h1><p>Formulaire à venir...</p></div>';
     }
 
     public static function render_licence_list_page()
     {
-        echo '<div class="wrap"><h1>Liste des licences</h1><p>Gestion des licences à venir...</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>Liste des licences</h1><p>Gestion des licences à venir...</p></div>';
     }
 
     public static function render_add_licence_page()
     {
-        echo '<div class="wrap"><h1>Ajouter une licence</h1><p>Formulaire d’ajout de licence à venir...</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>Ajouter une licence</h1><p>Formulaire d’ajout de licence à venir...</p></div>';
     }
 
     public static function render_settings_page()
     {
-        echo '<div class="wrap"><h1>Paramètres UFSC</h1><p>Configuration du plugin à venir...</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>Paramètres UFSC</h1><p>Configuration du plugin à venir...</p></div>';
     }
 
     /**

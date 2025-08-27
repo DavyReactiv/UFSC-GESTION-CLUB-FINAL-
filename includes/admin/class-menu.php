@@ -447,7 +447,7 @@ class UFSC_Menu
         // Load regions for dropdown
         $regions = require UFSC_PLUGIN_PATH . 'data/regions.php';
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Créez une nouvelle affiliation pour un club. Remplissez le formulaire avec les informations du club à enregistrer.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -879,7 +879,7 @@ class UFSC_Menu
         $table->prepare_items();
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Liste des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Gérez toutes les licences enregistrées dans le système.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             <p>
@@ -988,7 +988,7 @@ class UFSC_Menu
         require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
         
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Export des clubs', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Exportez tous les clubs ou sélectionnez individuellement les clubs à exporter au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -1386,7 +1386,7 @@ class UFSC_Menu
         $all_clubs = $wpdb->get_results("SELECT id, nom FROM {$wpdb->prefix}ufsc_clubs ORDER BY nom ASC");
         ?>
         
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Export des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Configurez les filtres de recherche et le type d\'export souhaité, puis exportez les données des licences au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -1556,7 +1556,7 @@ class UFSC_Menu
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
             return;
         }
 
@@ -1564,7 +1564,7 @@ class UFSC_Menu
         $club_manager = UFSC_Club_Manager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
             return;
         }
 
@@ -1664,7 +1664,7 @@ class UFSC_Menu
         }
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Gestion des documents', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?></h1>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-liste-clubs')); ?>" class="button">
@@ -2413,7 +2413,7 @@ class UFSC_Menu
     public function render_settings_page()
     {
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-settings" style="font-size: 1.3em; margin-right: 8px;"></span>
                 <?php echo esc_html__('Paramètres du plugin UFSC', 'plugin-ufsc-gestion-club-13072025'); ?>
@@ -2567,7 +2567,7 @@ class UFSC_Menu
             true
         );
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Ajouter une nouvelle licence', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
             <p><?php echo esc_html__('Créez une nouvelle licence pour un licencié. Remplissez le formulaire avec les informations du licencié.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
             
@@ -2843,7 +2843,7 @@ class UFSC_Menu
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$club_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucun club sélectionné.</p></div></div>';
             return;
         }
 
@@ -2854,7 +2854,7 @@ class UFSC_Menu
         $club_manager = UFSC_Club_Manager::get_instance();
         $club = $club_manager->get_club($club_id);
         if (!$club) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Club introuvable.</p></div></div>';
             return;
         }
 
@@ -2971,7 +2971,7 @@ class UFSC_Menu
             $regions = require UFSC_PLUGIN_PATH . 'data/regions.php';
         }
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1>
                 <?php if ($edit_mode): ?>
                     <?php echo esc_html__('Modifier le club', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?>
@@ -3558,7 +3558,7 @@ class UFSC_Menu
         // Get license ID from URL parameter
         $licence_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         if (!$licence_id) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Aucune licence sélectionnée.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Aucune licence sélectionnée.</p></div></div>';
             return;
         }
 
@@ -3579,7 +3579,7 @@ class UFSC_Menu
         $licence = $licence_manager->get_licence_by_id($licence_id);
         
         if (!$licence) {
-            echo '<div class="wrap"><div class="notice notice-error"><p>Licence introuvable.</p></div></div>';
+            echo '<div class="wrap ufsc-ui"><div class="notice notice-error"><p>Licence introuvable.</p></div></div>';
             return;
         }
 
@@ -3610,7 +3610,7 @@ class UFSC_Menu
         }
 
         ?>
-        <div class="wrap">
+        <div class="wrap ufsc-ui">
             <h1><?php echo esc_html__('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($licence->prenom . ' ' . $licence->nom); ?></h1>
             
             <p>

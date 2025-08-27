@@ -79,7 +79,7 @@ function ufsc_render_club_list_page() {
     $table = new UFSC_Club_List_Table();
     $table->prepare_items();
 
-    echo '<div class="wrap">';
+    echo '<div class="wrap ufsc-ui">';
     echo '<h1>' . esc_html__( 'Liste des clubs', 'plugin-ufsc-gestion-club-13072025' ) . '</h1>';
     echo '<form method="get">';
     echo '<input type="hidden" name="page" value="' . esc_attr( $_REQUEST['page'] ) . '" />';

@@ -110,7 +110,7 @@ $licences = $wpdb->get_results($wpdb->prepare(
 ));
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1>Licences — <?php echo esc_html($club->nom); ?></h1>
 
     <!-- 🔍 Filtres -->

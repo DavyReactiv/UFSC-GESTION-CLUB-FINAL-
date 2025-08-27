@@ -183,7 +183,7 @@ class UFSC_Attestation_Functionality_Test
     {
         $results = self::run_tests();
         
-        echo '<div class="wrap">';
+        echo '<div class="wrap ufsc-ui">';
         echo '<h1>Attestation Functionality Test Results</h1>';
         
         $total_tests = count($results);

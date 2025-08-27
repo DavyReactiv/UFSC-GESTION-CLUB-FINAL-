@@ -119,7 +119,7 @@ function ufsc_display_validation_results() {
     
     $results = ufsc_validate_database_schema();
     
-    echo '<div class="wrap">';
+    echo '<div class="wrap ufsc-ui">';
     echo '<h1>🔧 UFSC Database Schema Validation</h1>';
     
     if ($results['status'] === 'success') {

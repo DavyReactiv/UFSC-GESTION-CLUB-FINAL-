@@ -157,7 +157,7 @@ wp_enqueue_script(
 );
 ?>
 
-<div class="wrap">
+<div class="wrap ufsc-ui">
     <h1><?php echo esc_html("Ajouter une licence" . ($club && $club_id ? " pour le club « {$club->nom} »" : "")); ?></h1>
 
     <?php if ($club && $club_id): ?>
