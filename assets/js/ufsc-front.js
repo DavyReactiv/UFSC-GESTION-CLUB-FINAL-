@@ -127,36 +127,27 @@
       $.post(ajaxUrl, {
         action: 'ufsc_add_to_cart',
         licence_id: id,
-
-        _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
-
         club_id: club,
         _ajax_nonce: $b.data('nonce') || (UFSC && UFSC.nonces && UFSC.nonces.add_to_cart) || ''
-
       }).done(function(res){
         if(res && res.success){
+          var msg = (UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.';
           if (typeof ufscToast === 'function') {
-            ufscToast((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.', 'success');
+            ufscToast(msg, 'success');
           } else {
-            alert((UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.');
+            notifySuccess(msg);
           }
           setTimeout(function(){ location.reload(); }, 800);
         } else {
-
           notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
         }
       }).fail(function(){
-        notifyError((UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur');
-
-          var msg = (res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur';
-          if (typeof ufscToast === 'function') { ufscToast(msg, 'error'); }
-          else { alert(msg); }
-        }
-      }).fail(function(){
         var msg = (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur';
-        if (typeof ufscToast === 'function') { ufscToast(msg, 'error'); }
-        else { alert(msg); }
-
+        if (typeof ufscToast === 'function') {
+          ufscToast(msg, 'error');
+        } else {
+          notifyError(msg);
+        }
       }).always(function(){
         unlock($b);
       });
