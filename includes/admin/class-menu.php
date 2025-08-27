@@ -185,6 +185,8 @@ class UFSC_Menu
             'ufsc-modifier-licence',
             array($this, 'render_modifier_licence_page')
 
+        );
+
         // Add / edit licence submenu
         add_submenu_page(
             'plugin-ufsc-gestion-club-13072025',
@@ -2597,9 +2599,11 @@ class UFSC_Menu
      * Render modifier licence page
      */
     public function render_modifier_licence_page()
+    {
+        require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
+    }
 
     public function render_licence_add_admin_page()
-
     {
         require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
     }
