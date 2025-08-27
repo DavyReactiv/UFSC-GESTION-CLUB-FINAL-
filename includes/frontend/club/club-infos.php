@@ -53,132 +53,128 @@ function ufsc_club_render_profile($club)
     $output .= '<div class="ufsc-card">';
     $output .= '<div class="ufsc-card-header">Informations générales</div>';
     $output .= '<div class="ufsc-card-body">';
-    $output .= '<div class="ufsc-profile-grid">';
+    $output .= '<table class="ufsc-profile-grid ufsc-table ufsc-grid-table"><tbody>';
 
     // Club logo (if available)
     if (!empty($club->logo_url)) {
-        $output .= '<div class="ufsc-profile-item ufsc-profile-logo">';
-        $output .= '<div class="ufsc-profile-label">Logo du club</div>';
-        $output .= '<div class="ufsc-profile-value">';
-        $output .= '<img src="' . esc_url($club->logo_url) . '" alt="Logo ' . esc_attr($club->nom) . '" class="ufsc-club-logo">';
-        $output .= '</div>';
-        $output .= '</div>';
+        $output .= '<tr class="ufsc-profile-logo">';
+        $output .= '<th scope="row">Logo du club</th>';
+        $output .= '<td><img src="' . esc_url($club->logo_url) . '" alt="Logo ' . esc_attr($club->nom) . '" class="ufsc-club-logo"></td>';
+        $output .= '</tr>';
     }
 
     // Club name
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Nom du club</div>';
-    $output .= '<div class="ufsc-profile-value">' . esc_html($club->nom) . '</div>';
-    $output .= '</div>';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Nom du club</th>';
+    $output .= '<td>' . esc_html($club->nom) . '</td>';
+    $output .= '</tr>';
 
     // Region
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Région</div>';
-    $output .= '<div class="ufsc-profile-value">' . esc_html($club->region ?? 'Non définie') . '</div>';
-    $output .= '</div>';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Région</th>';
+    $output .= '<td>' . esc_html($club->region ?? 'Non définie') . '</td>';
+    $output .= '</tr>';
 
     // Complete address
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Adresse</div>';
-    $output .= '<div class="ufsc-profile-value">';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Adresse</th>';
+    $output .= '<td>';
     $output .= esc_html($club->adresse);
     if (!empty($club->complement_adresse)) {
         $output .= '<br>' . esc_html($club->complement_adresse);
     }
     $output .= '<br>' . esc_html($club->code_postal) . ' ' . esc_html($club->ville);
-    $output .= '</div>';
-    $output .= '</div>';
+    $output .= '</td>';
+    $output .= '</tr>';
 
     // Email (editable)
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Email</div>';
-    $output .= '<div class="ufsc-profile-value">' . esc_html($club->email) . ' ';
-    $output .= '<a href="#" class="ufsc-edit-contact-link" data-field="email" title="Modifier">';
-    $output .= '<i class="dashicons dashicons-edit-page"></i>';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Email</th>';
+    $output .= '<td>' . esc_html($club->email) . ' ';
+    $output .= '<a href="#" class="ufsc-edit-contact-link" data-field="email" title="Modifier l\'email" aria-label="Modifier l\'email">';
+    $output .= '<i class="dashicons dashicons-edit-page" aria-hidden="true"></i>';
     $output .= '</a>';
-    $output .= '</div>';
-    $output .= '</div>';
+    $output .= '</td>';
+    $output .= '</tr>';
 
     // Phone (editable)
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Téléphone</div>';
-    $output .= '<div class="ufsc-profile-value">' . esc_html($club->telephone) . ' ';
-    $output .= '<a href="#" class="ufsc-edit-contact-link" data-field="telephone" title="Modifier">';
-    $output .= '<i class="dashicons dashicons-edit-page"></i>';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Téléphone</th>';
+    $output .= '<td>' . esc_html($club->telephone) . ' ';
+    $output .= '<a href="#" class="ufsc-edit-contact-link" data-field="telephone" title="Modifier le téléphone" aria-label="Modifier le téléphone">';
+    $output .= '<i class="dashicons dashicons-edit-page" aria-hidden="true"></i>';
     $output .= '</a>';
-    $output .= '</div>';
-    $output .= '</div>';
+    $output .= '</td>';
+    $output .= '</tr>';
 
     // Website
     if (!empty($club->url_site)) {
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">Site internet</div>';
-        $output .= '<div class="ufsc-profile-value">';
-        $output .= '<a href="' . esc_url($club->url_site) . '" target="_blank" rel="noopener">';
-        $output .= '<i class="dashicons dashicons-admin-site"></i> ' . esc_html($club->url_site);
+        $output .= '<tr>';
+        $output .= '<th scope="row">Site internet</th>';
+        $output .= '<td>';
+        $output .= '<a href="' . esc_url($club->url_site) . '" target="_blank" rel="noopener" aria-label="Visiter le site du club">';
+        $output .= '<i class="dashicons dashicons-admin-site" aria-hidden="true"></i> ' . esc_html($club->url_site);
         $output .= '</a>';
-        $output .= '</div>';
-        $output .= '</div>';
+        $output .= '</td>';
+        $output .= '</tr>';
     }
 
     // Social media
     $social_links = [];
     if (!empty($club->url_facebook)) {
-        $social_links[] = '<a href="' . esc_url($club->url_facebook) . '" target="_blank" rel="noopener" title="Facebook"><i class="dashicons dashicons-facebook"></i></a>';
+        $social_links[] = '<a href="' . esc_url($club->url_facebook) . '" target="_blank" rel="noopener" aria-label="Facebook"><i class="dashicons dashicons-facebook" aria-hidden="true"></i></a>';
     }
     if (!empty($club->url_instagram)) {
-        $social_links[] = '<a href="' . esc_url($club->url_instagram) . '" target="_blank" rel="noopener" title="Instagram"><i class="dashicons dashicons-instagram"></i></a>';
+        $social_links[] = '<a href="' . esc_url($club->url_instagram) . '" target="_blank" rel="noopener" aria-label="Instagram"><i class="dashicons dashicons-instagram" aria-hidden="true"></i></a>';
     }
-    
+
     if (!empty($social_links)) {
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">Réseaux sociaux</div>';
-        $output .= '<div class="ufsc-profile-value ufsc-social-links">';
-        $output .= implode(' ', $social_links);
-        $output .= '</div>';
-        $output .= '</div>';
+        $output .= '<tr>';
+        $output .= '<th scope="row">Réseaux sociaux</th>';
+        $output .= '<td class="ufsc-social-links">' . implode(' ', $social_links) . '</td>';
+        $output .= '</tr>';
     }
 
     // Structure type
-    $output .= '<div class="ufsc-profile-item">';
-    $output .= '<div class="ufsc-profile-label">Type de structure</div>';
-    $output .= '<div class="ufsc-profile-value">' . esc_html($club->type ?? 'Non renseigné') . '</div>';
-    $output .= '</div>';
+    $output .= '<tr>';
+    $output .= '<th scope="row">Type de structure</th>';
+    $output .= '<td>' . esc_html($club->type ?? 'Non renseigné') . '</td>';
+    $output .= '</tr>';
 
     // SIREN
     if (!empty($club->siren)) {
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">SIREN</div>';
-        $output .= '<div class="ufsc-profile-value">' . esc_html($club->siren) . '</div>';
-        $output .= '</div>';
+        $output .= '<tr>';
+        $output .= '<th scope="row">SIREN</th>';
+        $output .= '<td>' . esc_html($club->siren) . '</td>';
+        $output .= '</tr>';
     }
 
     // RNA
     if (!empty($club->rna_number)) {
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">Numéro RNA</div>';
-        $output .= '<div class="ufsc-profile-value">' . esc_html($club->rna_number) . '</div>';
-        $output .= '</div>';
+        $output .= '<tr>';
+        $output .= '<th scope="row">Numéro RNA</th>';
+        $output .= '<td>' . esc_html($club->rna_number) . '</td>';
+        $output .= '</tr>';
     }
 
     // Affiliation number (if available)
     if (!empty($club->num_affiliation)) {
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">Numéro d\'affiliation</div>';
-        $output .= '<div class="ufsc-profile-value">' . esc_html($club->num_affiliation) . '</div>';
-        $output .= '</div>';
+        $output .= '<tr>';
+        $output .= '<th scope="row">Numéro d\'affiliation</th>';
+        $output .= '<td>' . esc_html($club->num_affiliation) . '</td>';
+        $output .= '</tr>';
     }
 
     // Affiliation date (if available)
     if (!empty($club->date_affiliation)) {
         $date_affiliation = new DateTime($club->date_affiliation);
-        $output .= '<div class="ufsc-profile-item">';
-        $output .= '<div class="ufsc-profile-label">Date d\'affiliation</div>';
-        $output .= '<div class="ufsc-profile-value">' . esc_html($date_affiliation->format('d/m/Y')) . '</div>';
-        $output .= '</div>';
+        $output .= '<tr>';
+        $output .= '<th scope="row">Date d\'affiliation</th>';
+        $output .= '<td>' . esc_html($date_affiliation->format('d/m/Y')) . '</td>';
+        $output .= '</tr>';
     }
 
-    $output .= '</div>'; // End profile-grid
+    $output .= '</tbody></table>'; // End profile-grid table
 
     // Contact edit form (hidden by default)
     $output .= ufsc_render_contact_edit_form($club);
@@ -187,7 +183,7 @@ function ufsc_club_render_profile($club)
     $output .= '<div class="ufsc-action-note">';
     $output .= '<p>Pour toute autre modification de vos informations, veuillez contacter l\'administration par email.</p>';
     $output .= '<p><a href="mailto:demande-modification@ufsc-france.org?subject=Demande%20de%20modification%20-%20Club%20' . urlencode($club->nom) . '" class="ufsc-btn ufsc-btn-outline">';
-    $output .= '<i class="dashicons dashicons-email"></i> Demander une modification</a></p>';
+    $output .= '<i class="dashicons dashicons-email" aria-hidden="true"></i> Demander une modification</a></p>';
     $output .= '</div>';
 
     $output .= '</div>'; // End card-body
@@ -229,25 +225,25 @@ function ufsc_club_render_home($club)
     $output .= '<div class="ufsc-dashboard-stats">';
     
     $output .= '<div class="ufsc-stat-card">';
-    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-id"></i></div>';
+    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-id" aria-hidden="true"></i></div>';
     $output .= '<div class="ufsc-stat-value">' . $stats['total'] . '</div>';
     $output .= '<div class="ufsc-stat-label">Licences totales</div>';
     $output .= '</div>';
 
     $output .= '<div class="ufsc-stat-card">';
-    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-yes-alt"></i></div>';
+    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-yes-alt" aria-hidden="true"></i></div>';
     $output .= '<div class="ufsc-stat-value">' . $stats['active'] . '</div>';
     $output .= '<div class="ufsc-stat-label">Licences actives</div>';
     $output .= '</div>';
 
     $output .= '<div class="ufsc-stat-card">';
-    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-chart-bar"></i></div>';
+    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-chart-bar" aria-hidden="true"></i></div>';
     $output .= '<div class="ufsc-stat-value' . ($stats['remaining'] <= 0 ? ' ufsc-text-danger' : '') . '">' . $stats['remaining'] . '</div>';
     $output .= '<div class="ufsc-stat-label">Licences disponibles</div>';
     $output .= '</div>';
 
     $output .= '<div class="ufsc-stat-card">';
-    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-calendar-alt"></i></div>';
+    $output .= '<div class="ufsc-stat-icon"><i class="dashicons dashicons-calendar-alt" aria-hidden="true"></i></div>';
     $output .= '<div class="ufsc-stat-value' . ($stats['expiring'] > 0 ? ' ufsc-text-warning' : '') . '">' . $stats['expiring'] . '</div>';
     $output .= '<div class="ufsc-stat-label">Licences expirant bientôt</div>';
     $output .= '</div>';
@@ -386,13 +382,13 @@ function ufsc_render_club_leadership($club)
 
             if (!empty($club->{$key . '_email'})) {
                 $output .= '<div class="ufsc-dirigeant-contact">';
-                $output .= '<i class="dashicons dashicons-email"></i> ' . esc_html($club->{$key . '_email'});
+                $output .= '<i class="dashicons dashicons-email" aria-hidden="true"></i> ' . esc_html($club->{$key . '_email'});
                 $output .= '</div>';
             }
 
             if (!empty($club->{$key . '_tel'})) {
                 $output .= '<div class="ufsc-dirigeant-contact">';
-                $output .= '<i class="dashicons dashicons-phone"></i> ' . esc_html($club->{$key . '_tel'});
+                $output .= '<i class="dashicons dashicons-phone" aria-hidden="true"></i> ' . esc_html($club->{$key . '_tel'});
                 $output .= '</div>';
             }
 
@@ -527,7 +523,7 @@ function ufsc_render_quick_downloads($club)
 
     foreach ($downloads as $download) {
         $output .= '<a href="' . esc_url($download['url']) . '" class="ufsc-download-btn">';
-        $output .= '<i class="dashicons dashicons-download"></i>';
+        $output .= '<i class="dashicons dashicons-download" aria-hidden="true"></i>';
         $output .= '<span>' . esc_html($download['label']) . '</span>';
         $output .= '</a>';
     }
