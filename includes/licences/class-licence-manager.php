@@ -64,6 +64,7 @@ class UFSC_Licence_Manager
             'region'                     => sanitize_text_field($data['region']),
             'statut'                     => !empty($data['statut']) ? sanitize_text_field($data['statut']) : 'en_attente',
             'is_included'                => !empty($data['is_included']) ? 1 : 0,
+            'payment_status'             => sanitize_text_field($data['payment_status'] ?? 'pending'),
             'date_inscription'          => current_time('mysql')
         ];
 
@@ -211,7 +212,7 @@ class UFSC_Licence_Manager
         }
 
         if ('validee' === $status) {
-            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe'];
+            $allowed_fields = ['email', 'tel_mobile', 'tel_fixe', 'payment_status'];
             $data = array_intersect_key($data, array_flip($allowed_fields));
 
             $update = [];
@@ -225,12 +226,26 @@ class UFSC_Licence_Manager
             if (isset($data['tel_fixe'])) {
                 $update['tel_fixe'] = sanitize_text_field($data['tel_fixe']);
             }
+            if (isset($data['payment_status'])) {
+                $allowed_payment_statuses = ['pending', 'paid', 'failed', 'refunded', 'completed', 'included'];
+                $payment_status = sanitize_text_field($data['payment_status']);
+                if (!in_array($payment_status, $allowed_payment_statuses, true)) {
+                    $payment_status = 'pending';
+                }
+                $update['payment_status'] = $payment_status;
+            }
 
             // Short-circuit if nothing to update
             if (empty($update)) {
                 return true;
             }
         } else {
+            $allowed_payment_statuses = ['pending', 'paid', 'failed', 'refunded', 'completed', 'included'];
+            $payment_status = sanitize_text_field($data['payment_status'] ?? 'pending');
+            if (!in_array($payment_status, $allowed_payment_statuses, true)) {
+                $payment_status = 'pending';
+            }
+
             $update = [
                 'nom'                         => sanitize_text_field($data['nom']),
                 'prenom'                      => sanitize_text_field($data['prenom']),
@@ -259,6 +274,7 @@ class UFSC_Licence_Manager
                 'honorabilite'               => intval($data['honorabilite']),
                 'assurance_dommage_corporel' => intval($data['assurance_dommage_corporel']),
                 'assurance_assistance'       => intval($data['assurance_assistance']),
+                'payment_status'             => $payment_status,
                 'note'                       => sanitize_textarea_field($data['note']),
                 'region'                     => sanitize_text_field($data['region']),
                 'is_included'                => !empty($data['is_included']) ? 1 : 0,

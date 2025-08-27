@@ -24,6 +24,12 @@ function ufsc_run_migrations() {
         $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN deleted_at datetime NULL DEFAULT NULL AFTER role");
     }
 
+    // Add payment_status column if missing
+    $col_pay = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$licences_table} LIKE %s", 'payment_status'));
+    if (!$col_pay) {
+        $wpdb->query("ALTER TABLE {$licences_table} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+    }
+
     // Add helpful indexes
     $indexes = $wpdb->get_results("SHOW INDEX FROM {$licences_table}", ARRAY_A);
     $have_idx = function($name) use ($indexes) {
