@@ -41,6 +41,7 @@ vendor/
 
 # Allow built assets from plugin
 !assets/build/
+!assets/dist/
 
 # Backup files
 *.bak
