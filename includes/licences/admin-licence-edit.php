@@ -14,6 +14,14 @@ if (!$licence_id) {
     return;
 }
 
+if (!current_user_can('ufsc_manage_licences')) {
+    wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+}
+
+if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']), 'ufsc_edit_licence_' . $licence_id)) {
+    wp_die(__('Action non autorisée.', 'plugin-ufsc-gestion-club-13072025'));
+}
+
 $manager = new UFSC_Licence_Manager();
 $current_licence = $manager->get_licence_by_id($licence_id);
 
@@ -141,7 +149,11 @@ wp_enqueue_script(
         <?php endif; ?>
     </div>
 
-    <form method="post" action="<?php echo esc_url(admin_url("admin.php?page=ufsc-modifier-licence&licence_id={$licence_id}")); ?>">
+    <?php $form_action = wp_nonce_url(
+        admin_url("admin.php?page=ufsc-modifier-licence&licence_id={$licence_id}"),
+        'ufsc_edit_licence_' . $licence_id
+    ); ?>
+    <form method="post" action="<?php echo esc_url($form_action); ?>">
         <?php wp_nonce_field('ufsc_edit_licence', 'ufsc_edit_licence_nonce'); ?>
 
         <?php require UFSC_PLUGIN_PATH . 'includes/frontend/parts/form-licence.php'; ?>

@@ -3562,6 +3562,14 @@ class UFSC_Menu
             return;
         }
 
+        if (!current_user_can('ufsc_manage_licences')) {
+            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']), 'ufsc_view_licence_' . $licence_id)) {
+            wp_die(__('Action non autorisée.', 'plugin-ufsc-gestion-club-13072025'));
+        }
+
         // Check if edit mode is requested
         $edit_mode = isset($_GET['edit']) && $_GET['edit'] === '1';
 
@@ -3582,7 +3590,11 @@ class UFSC_Menu
         // Handle form submission for license update (if in edit mode)
         if ($edit_mode && isset($_POST['ufsc_update_licence_submit']) && isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             // Redirect to the dedicated edit page for actual editing
-            wp_redirect(admin_url('admin.php?page=ufsc-modifier-licence&licence_id=' . $licence_id));
+            $redirect_url = wp_nonce_url(
+                admin_url('admin.php?page=ufsc-modifier-licence&licence_id=' . $licence_id),
+                'ufsc_edit_licence_' . $licence_id
+            );
+            wp_redirect($redirect_url);
             exit;
         }
 
@@ -3611,7 +3623,11 @@ class UFSC_Menu
                     ← Retour à la liste des licences
                 </a>
                 <?php endif; ?>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-modifier-licence&licence_id=' . $licence->id)); ?>" class="button button-primary">
+                <?php $edit_link = wp_nonce_url(
+                    admin_url('admin.php?page=ufsc-modifier-licence&licence_id=' . $licence->id),
+                    'ufsc_edit_licence_' . $licence->id
+                ); ?>
+                <a href="<?php echo esc_url($edit_link); ?>" class="button button-primary">
                     ✏️ Modifier
                 </a>
                 <?php if ($club): ?>
