@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -185,3 +186,7 @@ wp_enqueue_script(
         </div>
     </form>
 </div>
+
+// Deprecated separate edit page - reuse unified form handler.
+require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
+

@@ -71,6 +71,44 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
     }
 
     /**
+     * Restore a previously deleted licence
+     *
+     * @param {number} licenceId The licence ID to restore
+     */
+    function restoreLicence(licenceId) {
+        if (!licenceId) {
+            alert('ID de licence manquant.');
+            return;
+        }
+
+        var restoreButton = $('[data-licence-id="' + licenceId + '"] .restore-licence-btn');
+        var originalText = restoreButton.text();
+        restoreButton.text('Restauration...').prop('disabled', true);
+
+        $.ajax({
+            url: config.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'ufsc_restore_licence',
+                licence_id: licenceId,
+                nonce: config.nonces.restore_licence
+            },
+            success: function(response) {
+                if (response.success) {
+                    showMessage(response.data || 'Licence restaurée avec succès.', 'success');
+                } else {
+                    showMessage(response.data || 'Erreur lors de la restauration.', 'error');
+                    restoreButton.text(originalText).prop('disabled', false);
+                }
+            },
+            error: function() {
+                showMessage('Erreur de connexion.', 'error');
+                restoreButton.text(originalText).prop('disabled', false);
+            }
+        });
+    }
+
+    /**
      * Change licence status
      * 
      * @param {number} licenceId The licence ID
@@ -125,7 +163,38 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
      * @param {number} licenceId The licence ID
      */
     function validateLicence(licenceId) {
-        changeLicenceStatus(licenceId, 'validee', 'Validation...');
+        if (!licenceId) {
+            alert('ID de licence manquant.');
+            return;
+        }
+
+        var validateButton = $('[data-licence-id="' + licenceId + '"] .validate-licence-btn');
+        var originalText = validateButton.text();
+        validateButton.text('Validation...').prop('disabled', true);
+
+        $.ajax({
+            url: config.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'ufsc_validate_licence',
+                licence_id: licenceId,
+                nonce: config.nonces.validate_licence
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateStatusDisplay(licenceId, 'validee');
+                    var msg = response.data && response.data.message ? response.data.message : 'Licence validée avec succès.';
+                    showMessage(msg, 'success');
+                } else {
+                    showMessage(response.data || 'Erreur lors de la validation.', 'error');
+                    validateButton.text(originalText).prop('disabled', false);
+                }
+            },
+            error: function() {
+                showMessage('Erreur de connexion.', 'error');
+                validateButton.text(originalText).prop('disabled', false);
+            }
+        });
     }
 
     /**
@@ -246,6 +315,13 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
             rejectLicence(licenceId);
         });
 
+        // Restore licence buttons
+        $(document).on('click', '.restore-licence-btn', function(e) {
+            e.preventDefault();
+            var licenceId = $(this).data('licence-id');
+            restoreLicence(licenceId);
+        });
+
         // Generic status change buttons
         $(document).on('click', '.change-status-btn', function(e) {
             e.preventDefault();
@@ -262,6 +338,7 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
         changeLicenceStatus: changeLicenceStatus,
         validateLicence: validateLicence,
         rejectLicence: rejectLicence,
+        restoreLicence: restoreLicence,
         showMessage: showMessage,
         init: function(configData) {
             if (configData) {
