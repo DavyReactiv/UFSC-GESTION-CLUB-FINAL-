@@ -33,7 +33,7 @@ function ufsc_attestations_enqueue_frontend_assets() {
         'ufsc-attestations-frontend',
         UFSC_PLUGIN_URL . 'assets/css/attestations-frontend.css',
         ['ufsc-frontend-style'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
     
     // Enqueue JS
@@ -41,7 +41,7 @@ function ufsc_attestations_enqueue_frontend_assets() {
         'ufsc-attestations-frontend',
         UFSC_PLUGIN_URL . 'assets/js/attestations-frontend.js',
         ['jquery'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
     

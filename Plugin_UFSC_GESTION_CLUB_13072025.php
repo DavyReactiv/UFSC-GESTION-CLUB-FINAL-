@@ -12,9 +12,9 @@ if (!defined('UFSC_ENABLE_DIAG_ENDPOINT')) define('UFSC_ENABLE_DIAG_ENDPOINT', f
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: plugin-ufsc-gestion-club-13072025
  * Domain Path: /languages
- * Requires at least: 5.5
+ * Requires at least: 6.6
  * Tested up to: 6.8
- * Requires PHP: 7.4
+ * Requires PHP: 8.3
  * Network: false
  */
 
@@ -24,7 +24,6 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('UFSC_GESTION_CLUB_VERSION', '1.3.0');
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 // Global helper functions (including ufsc_verify_club_access)
@@ -229,7 +228,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
         'ufsc-admin-style',
         UFSC_PLUGIN_URL . 'assets/css/admin.css',
         [],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
     
     // Enqueue admin fixes CSS
@@ -237,7 +236,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
         'ufsc-admin-fixes',
         UFSC_PLUGIN_URL . 'assets/css/admin-fixes.css',
         ['ufsc-admin-style'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 
     // Enqueue WordPress media scripts on edit club page
@@ -258,7 +257,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
         'ufsc-admin-script',
         UFSC_PLUGIN_URL . 'assets/js/admin.js',
         ['jquery'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
 
@@ -268,7 +267,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
             'ufsc-attestations',
             UFSC_PLUGIN_URL . 'assets/js/ufsc-attestations.js',
             ['jquery'],
-            UFSC_GESTION_CLUB_VERSION,
+            UFSC_PLUGIN_VERSION,
             true
         );
         
@@ -756,7 +755,7 @@ function ufsc_gestion_club_enqueue_scripts()
         'ufsc-charts-script',
         UFSC_PLUGIN_URL . 'assets/js/ufsc-charts.js',
         ['jquery'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
 
@@ -818,14 +817,14 @@ function ufsc_enqueue_form_enhancements()
             'ufsc-form-enhancements-style',
             UFSC_PLUGIN_URL . 'assets/css/form-enhancements.css',
             ['ufsc-frontend-style'],
-            UFSC_GESTION_CLUB_VERSION
+            UFSC_PLUGIN_VERSION
         );
 
         wp_enqueue_script(
             'ufsc-form-enhancements-script',
             UFSC_PLUGIN_URL . 'assets/js/form-enhancements.js',
             ['jquery', 'ufsc-frontend-script'],
-            UFSC_GESTION_CLUB_VERSION,
+            UFSC_PLUGIN_VERSION,
             true
         );
         
@@ -857,7 +856,7 @@ function ufsc_enqueue_frontend_pro_assets()
         'ufsc-frontend-pro-style',
         UFSC_PLUGIN_URL . 'assets/css/frontend-pro.css',
         ['ufsc-frontend-style'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 
     // Enqueue enhanced license form styles
@@ -865,7 +864,7 @@ function ufsc_enqueue_frontend_pro_assets()
         'ufsc-licence-form-enhanced',
         UFSC_PLUGIN_URL . 'assets/css/licence-form-enhanced.css',
         ['ufsc-frontend-pro-style'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 
     // Enqueue new multi-licence styles
@@ -873,7 +872,7 @@ function ufsc_enqueue_frontend_pro_assets()
         'ufsc-licence-styles',
         UFSC_PLUGIN_URL . 'assets/css/ufsc-licence.css',
         ['ufsc-frontend-pro-style'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 
     // Enqueue dashboard fixes for UI improvements
@@ -881,14 +880,14 @@ function ufsc_enqueue_frontend_pro_assets()
         'ufsc-dashboard-fixes',
         UFSC_PLUGIN_URL . 'assets/css/ufsc-dashboard-fixes.css',
         ['ufsc-licence-styles'],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
 
     wp_enqueue_script(
         'ufsc-frontend-pro-script',
         UFSC_PLUGIN_URL . 'assets/js/frontend-pro.js',
         ['jquery', 'ufsc-frontend-script'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
 
@@ -897,7 +896,7 @@ function ufsc_enqueue_frontend_pro_assets()
         'ufsc-licence-multi',
         UFSC_PLUGIN_URL . 'assets/js/ufsc-licence-multi.js',
         ['jquery', 'ufsc-frontend-pro-script'],
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
 
@@ -1081,7 +1080,7 @@ function ufsc_enqueue_woocommerce_styles()
             'ufsc-woocommerce-styles',
             UFSC_PLUGIN_URL . 'assets/css/woocommerce-custom.css',
             [],
-            UFSC_GESTION_CLUB_VERSION
+            UFSC_PLUGIN_VERSION
         );
     }
 }

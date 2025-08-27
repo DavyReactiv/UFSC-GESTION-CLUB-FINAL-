@@ -277,7 +277,7 @@ class UFSC_Test_Helper
                 'memory_limit' => ini_get('memory_limit')
             ],
             'plugin' => [
-                'version' => UFSC_GESTION_CLUB_VERSION,
+                'version' => UFSC_PLUGIN_VERSION,
                 'path' => UFSC_PLUGIN_PATH,
                 'url' => UFSC_PLUGIN_URL
             ],

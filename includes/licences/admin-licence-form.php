@@ -145,14 +145,14 @@ wp_enqueue_style(
     'ufsc-licence-form-style',
     UFSC_PLUGIN_URL . 'assets/css/form-licence.css',
     [],
-    UFSC_GESTION_CLUB_VERSION
+    UFSC_PLUGIN_VERSION
 );
 
 wp_enqueue_script(
     'ufsc-licence-form-script',
     UFSC_PLUGIN_URL . 'assets/js/form-licence.js',
     ['jquery'],
-    UFSC_GESTION_CLUB_VERSION,
+    UFSC_PLUGIN_VERSION,
     true
 );
 ?>

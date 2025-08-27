@@ -10,7 +10,7 @@ function ufsc_render_club_list_page() {
         'ufsc-admin-style',
         UFSC_PLUGIN_URL . 'assets/css/admin.css',
         [],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
     wp_enqueue_style(
 
@@ -62,7 +62,7 @@ function ufsc_render_club_list_page() {
         'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
 
         [],
-        UFSC_GESTION_CLUB_VERSION
+        UFSC_PLUGIN_VERSION
     );
     wp_enqueue_script(
         'ufsc-admin-script',
@@ -72,7 +72,7 @@ function ufsc_render_club_list_page() {
 
         ['ufsc-datatables-config'],
 
-        UFSC_GESTION_CLUB_VERSION,
+        UFSC_PLUGIN_VERSION,
         true
     );
 

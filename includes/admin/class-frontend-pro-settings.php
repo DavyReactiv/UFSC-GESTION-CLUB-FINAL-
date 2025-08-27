@@ -181,7 +181,7 @@ class UFSC_Frontend_Pro_Settings {
                         <div>
                             <h4>📊 Statut actuel</h4>
                             <ul>
-                                <li><strong>Version:</strong> <?php echo UFSC_GESTION_CLUB_VERSION; ?></li>
+                                <li><strong>Version:</strong> <?php echo UFSC_PLUGIN_VERSION; ?></li>
                                 <li><strong>Fonctionnalités pro:</strong> 
                                     <?php echo $enabled ? '<span style="color: green;">✅ Activées</span>' : '<span style="color: red;">❌ Désactivées</span>'; ?>
                                 </li>
