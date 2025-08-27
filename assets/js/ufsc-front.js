@@ -119,6 +119,7 @@
       var $b = $(this);
       var id = $b.data('licenceId') || $b.data('licence-id');
       if(!id) return;
+
         var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
         lock($b, 'Ajout…');
         $.post(ajaxUrl, {
@@ -127,6 +128,17 @@
           club_id: club,
           _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
         }).done(function(res){
+
+      var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
+      var nonce = (UFSC && (UFSC.frontNonce || (UFSC.nonces && UFSC.nonces.add_to_cart))) || '';
+      lock($b, 'Ajout…');
+      $.post(ajaxUrl, {
+        action: 'ufsc_add_to_cart',
+        licence_id: id,
+        club_id: club,
+        _ajax_nonce: nonce
+      }).done(function(res){
+
         if(res && res.success){
           var msg = (UFSC && UFSC.i18n && UFSC.i18n.added) || 'Ajouté au panier.';
           if (typeof ufscToast === 'function') {

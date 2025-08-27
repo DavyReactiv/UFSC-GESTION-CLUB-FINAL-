@@ -17,8 +17,12 @@ function ufsc_profix_ajax_add_to_cart() {
 
     $licence_id = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     $club_id    = isset($_POST['club_id']) ? absint($_POST['club_id']) : 0;
-    $qty        = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
-    $item_data  = [
+    if (!$licence_id || !$club_id) {
+        wp_send_json_error(esc_html__('Paramètres manquants', 'ufsc-domain'));
+    }
+
+    $qty       = isset($_POST['quantity']) ? max(1, absint($_POST['quantity'])) : 1;
+    $item_data = [
         'licence_id' => $licence_id,
         'club_id'    => $club_id,
     ];
