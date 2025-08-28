@@ -19,6 +19,32 @@ $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id
 $licence    = $licence_id ? $repo->get_by_id($licence_id) : null;
 $errors     = [];
 
+// Récupérer le club lié si fourni
+global $wpdb;
+$club_id = isset($_GET['club_id']) ? absint( wp_unslash( $_GET['club_id'] ) ) : 0;
+$club    = $club_id ? $wpdb->get_row(
+    $wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
+        $club_id
+    )
+) : null;
+
+if ( $club_id && ! $club ) {
+    echo '<div class="notice notice-error"><p>' . esc_html__( 'Club introuvable.', 'plugin-ufsc-gestion-club-13072025' ) . '</p></div>';
+}
+
+// Informations de quota
+$included_percent = $quota_usage = $quota_total = $payantes = $montant = 0;
+if ( $club ) {
+    $quota_total   = ufsc_get_club_included_quota( $club_id );
+    $quota_usage   = ufsc_get_club_included_used( $club_id );
+    $included_percent = $quota_total > 0 ? min( 100, round( ( $quota_usage / $quota_total ) * 100 ) ) : 0;
+
+    $total_usage = ufsc_get_quota_usage( $club_id );
+    $payantes    = max( 0, $total_usage - $quota_usage );
+    $montant     = $payantes * 35;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_admin_action', 'ufsc_license_admin_nonce')) {
     $data = [
         'nom'                        => sanitize_text_field($_POST['nom'] ?? ''),
