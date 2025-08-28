@@ -24,15 +24,9 @@ if (!defined('ABSPATH')) {
  * licences to the WooCommerce cart with proper validation.
  */
 function ufsc_handle_add_licence_to_cart() {
-    // Verify nonce (accept both new and legacy)
-    $nonce_ok = false;
-    if (isset($_POST['_ufsc_licence_nonce']) && wp_verify_nonce($_POST['_ufsc_licence_nonce'], 'ufsc_add_licence_to_cart')) {
-        $nonce_ok = true;
-    } elseif (isset($_POST['ufsc_nonce']) && wp_verify_nonce($_POST['ufsc_nonce'], 'ufsc_add_licence_nonce')) {
-        $nonce_ok = true;
-    }
-    if (!$nonce_ok) {
-        wp_send_json_error(['message'=>esc_html__('Security check failed.', 'ufsc-domain'),'code'=>'nonce_failed']);
+    // Verify nonce using standard frontend nonce
+    if (!check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce', false)) {
+        wp_send_json_error(['message' => esc_html__('Security check failed.', 'ufsc-domain'), 'code' => 'nonce_failed']);
     }
 
     if (is_user_logged_in() && !current_user_can('read')) {

@@ -314,7 +314,7 @@
                 type: 'POST',
                 data: $.extend(data, {
                     action: 'ufsc_save_licence_draft',
-                    nonce: ufscLicenceConfig.nonces.licence_draft
+                    ufsc_nonce: ufscLicenceConfig.nonces.licence_draft
                 }),
                 success: function(response) {
                     if (response.success) {
@@ -359,7 +359,7 @@
                 type: 'POST',
                 data: $.extend(data, {
                     action: 'ufsc_add_licencie_to_cart',
-                    nonce: ufscLicenceConfig.nonces.add_licencie
+                    ufsc_nonce: ufscLicenceConfig.nonces.add_licencie
                 }),
                 success: function(response) {
                     if (response.success) {
@@ -410,7 +410,7 @@
                 type: 'POST',
                 data: {
                     action: 'ufsc_add_all_drafts_to_cart',
-                    nonce: ufscLicenceConfig.nonces.licence_draft
+                    ufsc_nonce: ufscLicenceConfig.nonces.licence_draft
                 },
                 success: function(response) {
                     if (response.success) {
@@ -452,7 +452,7 @@
                 data: {
                     action: 'ufsc_delete_licence_draft',
                     draft_id: draftId,
-                    nonce: ufscLicenceConfig.nonces.licence_draft
+                    ufsc_nonce: ufscLicenceConfig.nonces.licence_draft
                 },
                 success: function(response) {
                     if (response.success) {
@@ -483,7 +483,7 @@
                 data: {
                     action: 'ufsc_add_draft_to_cart',
                     draft_id: draftId,
-                    nonce: ufscLicenceConfig.nonces.licence_draft
+                    ufsc_nonce: ufscLicenceConfig.nonces.licence_draft
                 },
                 success: function(response) {
                     if (response.success) {

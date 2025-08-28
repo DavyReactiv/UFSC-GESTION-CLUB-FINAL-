@@ -48,7 +48,7 @@ function ufsc_attestations_enqueue_frontend_assets() {
     // Localize script with AJAX data
     wp_localize_script('ufsc-attestations-frontend', 'ufscAttestationsFrontend', [
         'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('ufsc_attestation_nonce'),
+        'nonce' => ufsc_create_nonce('ufsc_front_nonce'),
         'messages' => [
             'uploading' => __('Téléchargement en cours...', 'plugin-ufsc-gestion-club-13072025'),
             'success' => __('Attestation téléchargée avec succès', 'plugin-ufsc-gestion-club-13072025'),

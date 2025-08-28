@@ -108,6 +108,16 @@ function ufscx_licences_direct_shortcode($atts){
         return ob_get_clean();
     }
 
+
+    // Enqueue assets minimal
+    wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');
+    wp_enqueue_style('ufscx-licences-direct');
+    wp_enqueue_script('ufscx-licences-direct', plugins_url('../../../assets/js/ufsc-licenses-direct.js', __FILE__), ['jquery'], '1.0', true);
+    wp_localize_script('ufscx-licences-direct', 'UFSCX_AJAX', [
+        'ajax' => admin_url('admin-ajax.php'),
+        'nonce' => ufsc_create_nonce('ufsc_front_nonce'),
+    ]);
+
     // Fetch data
     $t = $wpdb->prefix.'ufsc_licences';
     $licences = [];

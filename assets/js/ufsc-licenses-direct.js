@@ -158,7 +158,7 @@
       btn.disabled = true;
       const params = new URLSearchParams();
       params.append('action', act==='toggleq'?'ufscx_toggle_quota':'ufscx_delete_draft');
-      params.append('nonce', UFSCX_AJAX.nonce);
+      params.append('ufsc_nonce', UFSCX_AJAX.nonce);
       params.append('id', id);
       fetch(UFSCX_AJAX.ajax, {
         method: 'POST',

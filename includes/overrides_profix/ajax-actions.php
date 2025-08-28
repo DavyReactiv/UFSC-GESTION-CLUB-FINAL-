@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 function ufsc_profix_ajax_add_to_cart() {
-    check_ajax_referer('ufsc_front_nonce');
+    check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce');
     if (is_user_logged_in() && !current_user_can('read')) {
         wp_send_json_error(esc_html__('Non autorisé', 'ufsc-domain'), 403);
     }
@@ -52,7 +52,7 @@ add_action('wp_ajax_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_ufsc_add_to_cart','ufsc_profix_ajax_add_to_cart');
 
 function ufsc_profix_ajax_save_draft() {
-    check_ajax_referer('ufsc_front_nonce');
+    check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce');
     if (!is_user_logged_in() || !current_user_can('read')) {
         wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     }
@@ -121,7 +121,7 @@ function ufsc_profix_ajax_save_draft() {
 add_action('wp_ajax_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 add_action('wp_ajax_nopriv_ufsc_save_licence_draft','ufsc_profix_ajax_save_draft');
 function ufsc_profix_ajax_delete_draft() {
-    check_ajax_referer('ufsc_front_nonce');
+    check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce');
     if (!is_user_logged_in() || !current_user_can('read')) {
         wp_send_json_error(esc_html__('Connexion requise', 'ufsc-domain'));
     }

@@ -513,7 +513,7 @@ class UFSC_Sync_Monitor
      */
     public function handle_clear_logs()
     {
-        if (!check_ajax_referer('ufsc_clear_logs', 'nonce', false)) {
+        if (!check_ajax_referer('ufsc_admin_nonce', 'ufsc_nonce', false)) {
             wp_send_json_error('Nonce verification failed');
             return;
         }
@@ -532,7 +532,7 @@ class UFSC_Sync_Monitor
      */
     public function handle_test_sync()
     {
-        if (!check_ajax_referer('ufsc_test_sync', 'nonce', false)) {
+        if (!check_ajax_referer('ufsc_admin_nonce', 'ufsc_nonce', false)) {
             wp_send_json_error(['message' => 'Nonce verification failed']);
             return;
         }

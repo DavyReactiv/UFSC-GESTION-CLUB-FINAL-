@@ -53,7 +53,7 @@
         formData.append('action', 'ufsc_upload_attestation');
         formData.append('type', type);
         formData.append('attestation_file', file);
-        formData.append('_ajax_nonce', ufscAttestationsFrontend.nonce);
+        formData.append('ufsc_nonce', ufscAttestationsFrontend.nonce);
         
         // Update UI for loading state
         setLoadingState($submitBtn, true);

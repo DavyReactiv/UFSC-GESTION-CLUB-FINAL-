@@ -2,8 +2,7 @@
 if (!defined('ABSPATH')) exit;
 /** Optional nonce check: if a nonce is provided, verify; if not, continue (capability still required). */
 function ufsc__maybe_check_nonce(){
-    $n = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : ( isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '' );
-    if ($n && ! wp_verify_nonce($n, 'ufsc_admin_licence_action')) {
+    if (isset($_REQUEST['ufsc_nonce']) && !check_ajax_referer('ufsc_admin_nonce', 'ufsc_nonce', false)) {
         // Invalid nonce, continue gracefully
     }
     return true;

@@ -233,7 +233,7 @@ jQuery(document).ready(function ($) {
                 type: 'POST',
                 data: Object.assign({
                     action: 'ufsc_get_club_data',
-                    nonce: self.config.nonce
+                    ufsc_nonce: self.config.nonce
                 }, self.config.canManage && clubId ? { club_id: clubId } : {}),
                 success: function(response) {
                     if (response.success) {
@@ -322,7 +322,7 @@ jQuery(document).ready(function ($) {
                 type: 'POST',
                 data: {
                     action: 'ufsc_get_clubs_list',
-                    nonce: ufsc_dashboard_data?.nonce || ''
+                    ufsc_nonce: ufsc_dashboard_data?.nonce || ''
                 },
                 success: function(response) {
                     if (response.success) {
@@ -524,7 +524,7 @@ jQuery(document).ready(function ($) {
         var $form = $btn.closest('form');
         var data = $form.serializeArray();
         data.push({name:'action', value:'ufsc_save_licence_draft'});
-        data.push({name:'nonce', value: (window.ufsc_frontend_config && ufsc_frontend_config.nonce) ? ufsc_frontend_config.nonce : ''});
+        data.push({name:'ufsc_nonce', value: (window.ufsc_frontend_config && ufsc_frontend_config.nonce) ? ufsc_frontend_config.nonce : ''});
         jQuery.post((window.ufsc_frontend_config ? ufsc_frontend_config.ajax_url : '/wp-admin/admin-ajax.php'), data)
             .done(function(resp){
                 var msg = (resp && resp.data && resp.data.message) ? resp.data.message : 'Brouillon enregistré.';
@@ -541,7 +541,7 @@ jQuery(document).ready(function ($) {
         var $btn = jQuery(this);
         var licenceId = parseInt($btn.data('licence-id'), 10);
         var clubId = parseInt($btn.data('club-id'), 10) || 0;
-        var data = { action: 'ufsc_get_licence_pay_url', nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : ''), licence_id: licenceId };
+        var data = { action: 'ufsc_get_licence_pay_url', ufsc_nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : ''), licence_id: licenceId };
         if (ufsc_frontend_config && ufsc_frontend_config.can_manage && clubId) {
             data.club_id = clubId;
         }
@@ -566,7 +566,7 @@ jQuery(document).on('click', '.ufsc-delete-draft', function(e){
     if (!confirm('Confirmer la suppression de ce brouillon ?')) return;
     jQuery.post((window.ufsc_frontend_config ? ufsc_frontend_config.ajax_url : (window.UFSC_AJAX ? UFSC_AJAX.url : '/wp-admin/admin-ajax.php')), {
         action: 'ufsc_delete_licence_draft',
-        nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : (window.UFSC_AJAX ? UFSC_AJAX.nonce : '')),
+        ufsc_nonce: (window.ufsc_frontend_config ? ufsc_frontend_config.nonce : (window.UFSC_AJAX ? UFSC_AJAX.nonce : '')),
         licence_id: licenceId
     }).done(function(resp){
         if (resp && resp.success){

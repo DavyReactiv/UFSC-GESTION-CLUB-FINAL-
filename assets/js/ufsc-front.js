@@ -56,7 +56,7 @@
 
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_save_licence_draft'});
-    payload.push({name:'_ajax_nonce', value:(UFSC && UFSC.frontNonce) || ''});
+    payload.push({name:'ufsc_nonce', value:(UFSC && UFSC.frontNonce) || ''});
 
     lock($btn, (window.UFSC && UFSC.i18n && UFSC.i18n.saving) || 'Enregistrement…');
 
@@ -96,7 +96,7 @@
 
     var payload = $form.serializeArray();
     payload.push({name:'action', value:'ufsc_add_licence_to_cart'});
-    payload.push({name:'_ajax_nonce', value:(UFSC && UFSC.frontNonce) || ''});
+    payload.push({name:'ufsc_nonce', value:(UFSC && UFSC.frontNonce) || ''});
 
     $.post(ajaxUrl, payload).done(function(res){
       if(res && res.success){
@@ -127,7 +127,7 @@
         action: 'ufsc_add_to_cart',
         licence_id: id,
         club_id: club,
-        _ajax_nonce: nonce
+        ufsc_nonce: nonce
       }).done(function(res){
 
         if(res && res.success){
@@ -171,7 +171,7 @@
       $.post(ajaxUrl, {
         action:'ufsc_delete_licence_draft',
         licence_id:id,
-        _ajax_nonce:(UFSC && UFSC.frontNonce) || ''
+        ufsc_nonce:(UFSC && UFSC.frontNonce) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
         else { notifyError((res && res.data && res.data.message) || 'Suppression impossible.'); }
@@ -188,7 +188,7 @@
       $.post(ajaxUrl, {
         action:'ufsc_include_quota',
         licence_id:id,
-        _ajax_nonce:(UFSC && UFSC.frontNonce) || ''
+        ufsc_nonce:(UFSC && UFSC.frontNonce) || ''
       }).done(function(res){
         if(res && res.success){ location.reload(); }
         else { notifyError((res && res.data && res.data.message) || (UFSC && UFSC.i18n && UFSC.i18n.error) || 'Erreur'); }
