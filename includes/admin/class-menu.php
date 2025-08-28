@@ -44,7 +44,7 @@ class UFSC_Menu
     {
         $screen = get_current_screen();
 
-        if (!$screen || strpos($screen->id, 'ufsc') === false) {
+        if (!$screen || strpos((string) ($screen->id ?? ''), 'ufsc') === false) {
             return;
         }
 

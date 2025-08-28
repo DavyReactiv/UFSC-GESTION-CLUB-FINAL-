@@ -86,7 +86,7 @@ function ufsc_render_club_list_page() {
         $html = ob_get_clean();
 
         // Replace default table classes with UFSC variants.
-        $html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', $html );
+        $html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', (string) $html );
         // Apply ufsc-row to all rows for zebra styling.
         $html = preg_replace( '/<tr(?! class=)/', '<tr class="ufsc-row"', $html );
 

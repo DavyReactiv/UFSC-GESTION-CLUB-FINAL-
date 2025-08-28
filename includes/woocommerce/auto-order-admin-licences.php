@@ -102,7 +102,7 @@ class UFSC_Auto_Order_Admin_Licences {
     private function is_admin_ajax() {
         // Check if the AJAX request is coming from admin
         $referer = wp_get_referer();
-        return $referer && strpos($referer, '/wp-admin/') !== false;
+        return $referer && strpos((string) $referer, '/wp-admin/') !== false;
     }
     
     /**

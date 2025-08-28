@@ -691,10 +691,10 @@ function ufsc_get_file_path_from_url($url)
 {
     if (filter_var($url, FILTER_VALIDATE_URL)) {
         $upload_dir = wp_upload_dir();
-        return str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $url);
+        return str_replace($upload_dir['baseurl'], $upload_dir['basedir'], (string) $url);
     }
-    
-    return $url; // Already a file path
+
+    return (string) $url; // Already a file path
 }
 
 /**

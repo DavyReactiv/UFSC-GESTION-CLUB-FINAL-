@@ -148,7 +148,7 @@ class UFSC_Test_Helper
 
             // Test secure link generation
             $test_link = $doc_manager->get_secure_download_link(1, 'statuts');
-            if (strpos($test_link, '_wpnonce') !== false) {
+            if (strpos((string) $test_link, '_wpnonce') !== false) {
                 $tests['document_manager']['details'][] = "✓ Génération de liens sécurisés";
             } else {
                 $tests['document_manager']['status'] = 'warning';

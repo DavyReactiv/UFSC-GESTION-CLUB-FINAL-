@@ -216,10 +216,10 @@ function ufsc_render_club_attestation($atts = [])
         // Si c'est une URL complète, on la convertit en chemin local
         if (filter_var($file_url, FILTER_VALIDATE_URL)) {
             $upload_dir = wp_upload_dir();
-            $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_url);
+            $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], (string) $file_url);
         } else {
             // Si c'est déjà un chemin local
-            $file_path = $file_url;
+            $file_path = (string) $file_url;
         }
         
         if (file_exists($file_path) && is_readable($file_path)) {
