@@ -2,11 +2,16 @@
 
 /* UFSC Admin UI Enhancements */
 .ufsc-wrap { max-width: 100%; }
-.ufsc-table { table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; }
+.ufsc-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .ufsc-table th, .ufsc-table td { padding: 8px 10px; vertical-align: middle; }
 .ufsc-table thead th { position: sticky; top: 32px; background: #fff; z-index: 1; }
 .ufsc-table tr:nth-child(even){ background: #fafafa; }
-.ufsc-table th, .ufsc-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ufsc-table th, .ufsc-table td { overflow: hidden; text-overflow: ellipsis; }
+
+/* Static table layout */
+.ufsc-table--static { table-layout: fixed; }
+.ufsc-table--static th,
+.ufsc-table--static td { white-space: nowrap; }
 .ufsc-col--id { width: 70px; text-align: right; }
 .ufsc-col--name { width: 220px; }
 .ufsc-col--role { width: 120px; }

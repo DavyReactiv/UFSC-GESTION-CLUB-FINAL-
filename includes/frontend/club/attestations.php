@@ -198,7 +198,7 @@ function ufsc_render_licence_attestations($club)
 
         // Individual license attestations table
         $output .= '<div class="ufsc-table-responsive">';
-        $output .= '<table class="ufsc-table ufsc-table-compact">';
+        $output .= '<table class="ufsc-table ufsc-table--static ufsc-table-compact">';
         $output .= '<thead>';
         $output .= '<tr>';
         $output .= '<th>Nom</th>';
