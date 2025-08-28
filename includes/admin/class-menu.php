@@ -29,12 +29,14 @@ class UFSC_Menu
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($register_hooks = true)
     {
-        add_action('admin_menu', array($this, 'register_menus'));
-        add_action('admin_init', array($this, 'register_settings'));
-        // Enqueue admin assets only when needed.
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'), 10, 0);
+        if ($register_hooks) {
+            add_action('admin_menu', array($this, 'register_menus'));
+            add_action('admin_init', array($this, 'register_settings'));
+            // Enqueue admin assets only when needed.
+            add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'), 10, 0);
+        }
     }
 
     /**
