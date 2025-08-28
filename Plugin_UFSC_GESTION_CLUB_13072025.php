@@ -27,6 +27,15 @@ if (!defined('ABSPATH')) {
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 
+// Ensure menu capabilities are available early.
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
+}
+if (!defined('UFSC_MANAGE_LICENSES_CAP')) {
+    define('UFSC_MANAGE_LICENSES_CAP', 'ufsc_manage_own');
+}
+
+
 
 // Global helper functions (including ufsc_verify_club_access)
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
@@ -343,6 +352,8 @@ function ufsc_render_voir_licences_page() { ufsc_call_menu_method('render_voir_l
 
 function ufsc_register_menu()
 {
+    $cap = defined('UFSC_MANAGE_LICENSES_CAP') ? UFSC_MANAGE_LICENSES_CAP : 'ufsc_manage_own';
+
     add_menu_page(
         __('UFSC', 'ufsc-gestion-club-final'),
         __('UFSC', 'ufsc-gestion-club-final'),
@@ -405,7 +416,7 @@ function ufsc_register_menu()
         'plugin-ufsc-gestion-club-13072025',
         'Ajouter une licence',
         'Ajouter une licence',
-        UFSC_MANAGE_LICENSES_CAP,
+        $cap,
         'ufsc_license_add_admin',
         'ufsc_render_licence_add_admin_page'
     );
@@ -414,7 +425,7 @@ function ufsc_register_menu()
         'ufsc-dashboard',
         __('Toutes les licences', 'ufsc-gestion-club-final'),
         __('Licences', 'ufsc-gestion-club-final'),
-        UFSC_MANAGE_LICENSES_CAP,
+        $cap,
         'ufsc-licences',
         'ufsc_render_liste_licences_page'
     );
@@ -423,7 +434,7 @@ function ufsc_register_menu()
         'ufsc-dashboard',
         __('Ajouter une licence', 'ufsc-gestion-club-final'),
         __('Ajouter une licence', 'ufsc-gestion-club-final'),
-        UFSC_MANAGE_LICENSES_CAP,
+        $cap,
         'ufsc-licence-add',
         'ufsc_render_ajouter_licence_page'
     );
@@ -432,7 +443,7 @@ function ufsc_register_menu()
         'ufsc-dashboard',
         __('Licences supprimées', 'ufsc-gestion-club-final'),
         __('Licences supprimées', 'ufsc-gestion-club-final'),
-        UFSC_MANAGE_LICENSES_CAP,
+        $cap,
         'ufsc-licences-trash',
         'ufsc_render_licences_trash_page'
     );
@@ -441,7 +452,7 @@ function ufsc_register_menu()
         'ufsc-dashboard',
         __('Exporter les licences', 'ufsc-gestion-club-final'),
         __('Exporter les licences', 'ufsc-gestion-club-final'),
-        UFSC_MANAGE_LICENSES_CAP,
+        $cap,
         'ufsc-licences-export',
         'ufsc_render_export_licences_page'
     );
@@ -470,15 +481,15 @@ function ufsc_register_menu()
     add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_dashboard', 'ufsc_render_dashboard_page');
     add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-liste-clubs', 'ufsc_render_liste_clubs_page');
     add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-ajouter-club', 'ufsc_render_ajouter_club_page');
-    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_licenses_admin', 'ufsc_render_liste_licences_page');
-    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_license_add_admin', 'ufsc_render_licence_add_admin_page');
+    add_submenu_page(null, '', '', $cap, 'ufsc_licenses_admin', 'ufsc_render_liste_licences_page');
+    add_submenu_page(null, '', '', $cap, 'ufsc_license_add_admin', 'ufsc_render_licence_add_admin_page');
 
     // Hidden forms
     add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_edit_club', 'ufsc_render_edit_club_page');
     add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_view_club', 'ufsc_render_view_club_page');
-    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc-modifier-licence', 'ufsc_render_modifier_licence_page');
-    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_view_licence', 'ufsc_render_view_licence_page');
-    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_voir_licences', 'ufsc_render_voir_licences_page');
+    add_submenu_page(null, '', '', $cap, 'ufsc-modifier-licence', 'ufsc_render_modifier_licence_page');
+    add_submenu_page(null, '', '', $cap, 'ufsc_view_licence', 'ufsc_render_view_licence_page');
+    add_submenu_page(null, '', '', $cap, 'ufsc_voir_licences', 'ufsc_render_voir_licences_page');
 }
 
 add_action('admin_menu', 'ufsc_register_menu', 9);
