@@ -155,11 +155,8 @@ if (empty($license_data['data'])) {
         '</p></div>';
 }
 
-if (!empty($license_data['data'])) {
-    $list_table->set_external_data($license_data['data'], $license_data['total'], $license_data['per_page']);
-} else {
-    $list_table->set_external_data([], 0, $license_data['per_page']);
-}
+$total_for_table = $license_data['total'] ?? ($license_data['total_items'] ?? 0);
+$list_table->set_external_data($license_data['data'], $total_for_table, $license_data['per_page']);
 $list_table->prepare_items();
 
 // 📤 Export CSV
@@ -258,11 +255,11 @@ $export_nonce = wp_create_nonce('ufsc_export_licences_' . $club_id);
             ob_start();
             $list_table->display();
             $table_html = ob_get_clean();
-            $table_html = str_replace( '<table', '<table id="licenses-table-club"', $table_html );
-            $table_html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', $table_html );
+            $table_html = str_replace('<table', '<table id="licenses-table-club"', $table_html);
+            $table_html = preg_replace('/class="([^"]*wp-list-table[^"]*)"/', 'class="$1 ufsc-table"', $table_html);
             $table_html = preg_replace( '/<tr(?![^>]*class=)/', '<tr class="ufsc-row" ', $table_html );
             echo $table_html;
-        }
+            }
 
         ?>
     </form>
