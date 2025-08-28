@@ -76,11 +76,11 @@ class UFSC_Menu
                 'restore_licence'       => wp_create_nonce('ufsc_restore_licence'),
             ],
             'messages' => [
-                'confirmDelete'      => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'plugin-ufsc-gestion-club-13072025'),
-                'deleteSuccess'      => __('Licence supprimée avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                'deleteError'        => __('Erreur lors de la suppression.', 'plugin-ufsc-gestion-club-13072025'),
-                'statusUpdateSuccess'=> __('Statut mis à jour avec succès.', 'plugin-ufsc-gestion-club-13072025'),
-                'statusUpdateError'  => __('Erreur lors de la mise à jour du statut.', 'plugin-ufsc-gestion-club-13072025'),
+                'confirmDelete'      => __('Êtes-vous sûr de vouloir supprimer cette licence ?', 'ufsc-gestion-club-final'),
+                'deleteSuccess'      => __('Licence supprimée avec succès.', 'ufsc-gestion-club-final'),
+                'deleteError'        => __('Erreur lors de la suppression.', 'ufsc-gestion-club-final'),
+                'statusUpdateSuccess'=> __('Statut mis à jour avec succès.', 'ufsc-gestion-club-final'),
+                'statusUpdateError'  => __('Erreur lors de la mise à jour du statut.', 'ufsc-gestion-club-final'),
             ],
         ]);
     }
@@ -91,8 +91,8 @@ class UFSC_Menu
     public function register_menus()
     {
         add_menu_page(
-            __('UFSC', 'plugin-ufsc-gestion-club-13072025'),
-            __('UFSC', 'plugin-ufsc-gestion-club-13072025'),
+            __('UFSC', 'ufsc-gestion-club-final'),
+            __('UFSC', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-dashboard',
             array($this, 'render_dashboard_page'),
@@ -103,8 +103,8 @@ class UFSC_Menu
         // Dashboard
         add_submenu_page(
             'ufsc-dashboard',
-            __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
-            __('Tableau de bord', 'plugin-ufsc-gestion-club-13072025'),
+            __('Tableau de bord', 'ufsc-gestion-club-final'),
+            __('Tableau de bord', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-dashboard',
             array($this, 'render_dashboard_page')
@@ -113,8 +113,8 @@ class UFSC_Menu
         // Clubs
         add_submenu_page(
             'ufsc-dashboard',
-            __('Tous les clubs', 'plugin-ufsc-gestion-club-13072025'),
-            __('Clubs', 'plugin-ufsc-gestion-club-13072025'),
+            __('Tous les clubs', 'ufsc-gestion-club-final'),
+            __('Clubs', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-clubs',
             array($this, 'render_liste_clubs_page')
@@ -122,8 +122,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
-            __('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'),
+            __('Ajouter un club', 'ufsc-gestion-club-final'),
+            __('Ajouter un club', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-club-add',
             array($this, 'render_ajouter_club_page')
@@ -131,8 +131,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025'),
-            __('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025'),
+            __('Clubs supprimés', 'ufsc-gestion-club-final'),
+            __('Clubs supprimés', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-clubs-trash',
             array($this, 'render_clubs_trash_page')
@@ -140,8 +140,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Exporter les clubs', 'plugin-ufsc-gestion-club-13072025'),
-            __('Exporter les clubs', 'plugin-ufsc-gestion-club-13072025'),
+            __('Exporter les clubs', 'ufsc-gestion-club-final'),
+            __('Exporter les clubs', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-clubs-export',
             array($this, 'render_export_clubs_page')
@@ -159,8 +159,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'),
-            __('Licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Toutes les licences', 'ufsc-gestion-club-final'),
+            __('Licences', 'ufsc-gestion-club-final'),
             UFSC_MANAGE_LICENSES_CAP,
             'ufsc-licences',
             array($this, 'render_liste_licences_page')
@@ -168,8 +168,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
-            __('Ajouter une licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('Ajouter une licence', 'ufsc-gestion-club-final'),
+            __('Ajouter une licence', 'ufsc-gestion-club-final'),
             UFSC_MANAGE_LICENSES_CAP,
             'ufsc-licence-add',
             array($this, 'render_ajouter_licence_page')
@@ -177,8 +177,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Licences supprimées', 'plugin-ufsc-gestion-club-13072025'),
-            __('Licences supprimées', 'plugin-ufsc-gestion-club-13072025'),
+            __('Licences supprimées', 'ufsc-gestion-club-final'),
+            __('Licences supprimées', 'ufsc-gestion-club-final'),
             UFSC_MANAGE_LICENSES_CAP,
             'ufsc-licences-trash',
             array($this, 'render_licences_trash_page')
@@ -186,8 +186,8 @@ class UFSC_Menu
 
         add_submenu_page(
             'ufsc-dashboard',
-            __('Exporter les licences', 'plugin-ufsc-gestion-club-13072025'),
-            __('Exporter les licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Exporter les licences', 'ufsc-gestion-club-final'),
+            __('Exporter les licences', 'ufsc-gestion-club-final'),
             UFSC_MANAGE_LICENSES_CAP,
             'ufsc-licences-export',
             array($this, 'render_export_licences_page')
@@ -196,8 +196,8 @@ class UFSC_Menu
         // Statistiques
         add_submenu_page(
             'ufsc-dashboard',
-            __('Statistiques', 'plugin-ufsc-gestion-club-13072025'),
-            __('Statistiques', 'plugin-ufsc-gestion-club-13072025'),
+            __('Statistiques', 'ufsc-gestion-club-final'),
+            __('Statistiques', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-stats',
             array($this, 'render_stats_page')
@@ -206,8 +206,8 @@ class UFSC_Menu
         // Settings
         add_submenu_page(
             'ufsc-dashboard',
-            __('Réglages', 'plugin-ufsc-gestion-club-13072025'),
-            __('Réglages', 'plugin-ufsc-gestion-club-13072025'),
+            __('Réglages', 'ufsc-gestion-club-final'),
+            __('Réglages', 'ufsc-gestion-club-final'),
             'manage_ufsc',
             'ufsc-settings',
             array($this, 'render_settings_page')
@@ -234,7 +234,7 @@ class UFSC_Menu
     public function render_dashboard_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         $dashboard = new UFSC_Dashboard();
         $dashboard->render_dashboard();
@@ -246,7 +246,7 @@ class UFSC_Menu
     public function render_liste_clubs_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         // Load the advanced club list view with search, filters, and export functionality
         require_once UFSC_PLUGIN_PATH . 'includes/views/admin-club-list.php';
@@ -258,7 +258,7 @@ class UFSC_Menu
     public function render_ajouter_club_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         // Handle form submission
         $form_submitted = false;
@@ -462,8 +462,8 @@ class UFSC_Menu
         $regions = require UFSC_PLUGIN_PATH . 'data/regions.php';
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Ajouter un club', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
-            <p><?php echo esc_html__('Créez une nouvelle affiliation pour un club. Remplissez le formulaire avec les informations du club à enregistrer.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <h1><?php echo esc_html__('Ajouter un club', 'ufsc-gestion-club-final'); ?></h1>
+            <p><?php echo esc_html__('Créez une nouvelle affiliation pour un club. Remplissez le formulaire avec les informations du club à enregistrer.', 'ufsc-gestion-club-final'); ?></p>
             
             <?php if ($form_submitted): ?>
                 <?php if ($success): ?>
@@ -751,7 +751,7 @@ class UFSC_Menu
                 </div>
 
                 <p class="submit">
-                    <?php submit_button(__('Ajouter le club', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', false); ?>
+                    <?php submit_button(__('Ajouter le club', 'ufsc-gestion-club-final'), 'primary', 'submit', false); ?>
                 </p>
             </form>
         </div>
@@ -882,7 +882,7 @@ class UFSC_Menu
     public function render_liste_licences_page()
     {
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         wp_enqueue_style(
             'ufsc-admin-licence-table-style',
@@ -897,16 +897,16 @@ class UFSC_Menu
 
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Liste des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
-            <p><?php echo esc_html__('Gérez toutes les licences enregistrées dans le système.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <h1><?php echo esc_html__('Liste des licences', 'ufsc-gestion-club-final'); ?></h1>
+            <p><?php echo esc_html__('Gérez toutes les licences enregistrées dans le système.', 'ufsc-gestion-club-final'); ?></p>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-licence-add')); ?>" class="button button-primary">
-                    <?php echo esc_html__('Ajouter une nouvelle licence', 'plugin-ufsc-gestion-club-13072025'); ?>
+                    <?php echo esc_html__('Ajouter une nouvelle licence', 'ufsc-gestion-club-final'); ?>
                 </a>
             </p>
             <form method="get">
                 <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']); ?>" />
-                <?php $table->search_box(__('Recherche', 'plugin-ufsc-gestion-club-13072025'), 'licence'); ?>
+                <?php $table->search_box(__('Recherche', 'ufsc-gestion-club-final'), 'licence'); ?>
                 <?php $table->display(); ?>
             </form>
         </div>
@@ -919,10 +919,10 @@ class UFSC_Menu
     public function render_clubs_trash_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
-        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Clubs supprimés', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
-        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Clubs supprimés', 'ufsc-gestion-club-final') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'ufsc-gestion-club-final') . '</p></div>';
     }
 
     /**
@@ -931,7 +931,7 @@ class UFSC_Menu
     public function render_export_clubs_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         global $wpdb;
         
@@ -1021,8 +1021,8 @@ class UFSC_Menu
         
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Export des clubs', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
-            <p><?php echo esc_html__('Exportez tous les clubs ou sélectionnez individuellement les clubs à exporter au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <h1><?php echo esc_html__('Export des clubs', 'ufsc-gestion-club-final'); ?></h1>
+            <p><?php echo esc_html__('Exportez tous les clubs ou sélectionnez individuellement les clubs à exporter au format CSV.', 'ufsc-gestion-club-final'); ?></p>
             
             <!-- Export complet -->
             <div class="card" style="max-width: 600px; margin-bottom: 30px;">
@@ -1033,7 +1033,7 @@ class UFSC_Menu
                     <?php wp_nonce_field('ufsc_export_clubs_nonce', 'ufsc_export_clubs_nonce'); ?>
                     <input type="hidden" name="ufsc_export_clubs" value="1">
                     
-                    <?php submit_button(__('📥 Exporter tous les clubs (CSV)', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', true); ?>
+                    <?php submit_button(__('📥 Exporter tous les clubs (CSV)', 'ufsc-gestion-club-final'), 'primary', 'submit', true); ?>
                 </form>
             </div>
             
@@ -1309,10 +1309,10 @@ class UFSC_Menu
     public function render_licences_trash_page()
     {
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
-        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Licences supprimées', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
-        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Licences supprimées', 'ufsc-gestion-club-final') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'ufsc-gestion-club-final') . '</p></div>';
     }
 
     /**
@@ -1321,7 +1321,7 @@ class UFSC_Menu
     public function render_export_licences_page()
     {
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         global $wpdb;
 
@@ -1434,8 +1434,8 @@ class UFSC_Menu
         ?>
         
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Export des licences', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
-            <p><?php echo esc_html__('Configurez les filtres de recherche et le type d\'export souhaité, puis exportez les données des licences au format CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <h1><?php echo esc_html__('Export des licences', 'ufsc-gestion-club-final'); ?></h1>
+            <p><?php echo esc_html__('Configurez les filtres de recherche et le type d\'export souhaité, puis exportez les données des licences au format CSV.', 'ufsc-gestion-club-final'); ?></p>
             
             <!-- Enhanced Filters (same as license list page) -->
             <div class="ufsc-filters-container">
@@ -1445,54 +1445,54 @@ class UFSC_Menu
                     
                     <div class="ufsc-filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
                         <div class="ufsc-filter-field">
-                            <label for="search_nom"><?php _e('Nom', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                            <input type="text" name="search_nom" id="search_nom" value="<?php echo esc_attr($search); ?>" placeholder="<?php _e('Rechercher par nom', 'plugin-ufsc-gestion-club-13072025'); ?>">
+                            <label for="search_nom"><?php _e('Nom', 'ufsc-gestion-club-final'); ?></label>
+                            <input type="text" name="search_nom" id="search_nom" value="<?php echo esc_attr($search); ?>" placeholder="<?php _e('Rechercher par nom', 'ufsc-gestion-club-final'); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="search_prenom"><?php _e('Prénom', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                            <input type="text" name="search_prenom" id="search_prenom" value="<?php echo esc_attr($search_prenom); ?>" placeholder="<?php _e('Rechercher par prénom', 'plugin-ufsc-gestion-club-13072025'); ?>">
+                            <label for="search_prenom"><?php _e('Prénom', 'ufsc-gestion-club-final'); ?></label>
+                            <input type="text" name="search_prenom" id="search_prenom" value="<?php echo esc_attr($search_prenom); ?>" placeholder="<?php _e('Rechercher par prénom', 'ufsc-gestion-club-final'); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="search_email"><?php _e('Email', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                            <input type="email" name="search_email" id="search_email" value="<?php echo esc_attr($search_email); ?>" placeholder="<?php _e('Rechercher par email', 'plugin-ufsc-gestion-club-13072025'); ?>">
+                            <label for="search_email"><?php _e('Email', 'ufsc-gestion-club-final'); ?></label>
+                            <input type="email" name="search_email" id="search_email" value="<?php echo esc_attr($search_email); ?>" placeholder="<?php _e('Rechercher par email', 'ufsc-gestion-club-final'); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="search_ville"><?php _e('Ville', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                            <input type="text" name="search_ville" id="search_ville" value="<?php echo esc_attr($search_ville); ?>" placeholder="<?php _e('Rechercher par ville', 'plugin-ufsc-gestion-club-13072025'); ?>">
+                            <label for="search_ville"><?php _e('Ville', 'ufsc-gestion-club-final'); ?></label>
+                            <input type="text" name="search_ville" id="search_ville" value="<?php echo esc_attr($search_ville); ?>" placeholder="<?php _e('Rechercher par ville', 'ufsc-gestion-club-final'); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="search_telephone"><?php _e('Téléphone', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-                            <input type="text" name="search_telephone" id="search_telephone" value="<?php echo esc_attr($search_telephone); ?>" placeholder="<?php _e('Rechercher par téléphone', 'plugin-ufsc-gestion-club-13072025'); ?>">
+                            <label for="search_telephone"><?php _e('Téléphone', 'ufsc-gestion-club-final'); ?></label>
+                            <input type="text" name="search_telephone" id="search_telephone" value="<?php echo esc_attr($search_telephone); ?>" placeholder="<?php _e('Rechercher par téléphone', 'ufsc-gestion-club-final'); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="date_naissance_from"><?php _e('Date de naissance (de)', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="date_naissance_from"><?php _e('Date de naissance (de)', 'ufsc-gestion-club-final'); ?></label>
                             <input type="date" name="date_naissance_from" id="date_naissance_from" value="<?php echo esc_attr($date_naissance_from); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="date_naissance_to"><?php _e('Date de naissance (à)', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="date_naissance_to"><?php _e('Date de naissance (à)', 'ufsc-gestion-club-final'); ?></label>
                             <input type="date" name="date_naissance_to" id="date_naissance_to" value="<?php echo esc_attr($date_naissance_to); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="date_inscription_from"><?php _e('Date d\'enregistrement (de)', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="date_inscription_from"><?php _e('Date d\'enregistrement (de)', 'ufsc-gestion-club-final'); ?></label>
                             <input type="date" name="date_inscription_from" id="date_inscription_from" value="<?php echo esc_attr($date_inscription_from); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="date_inscription_to"><?php _e('Date d\'enregistrement (à)', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="date_inscription_to"><?php _e('Date d\'enregistrement (à)', 'ufsc-gestion-club-final'); ?></label>
                             <input type="date" name="date_inscription_to" id="date_inscription_to" value="<?php echo esc_attr($date_inscription_to); ?>">
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="region"><?php _e('Région', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="region"><?php _e('Région', 'ufsc-gestion-club-final'); ?></label>
                             <select name="region" id="region">
-                                <option value=""><?php _e('Toutes régions', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+                                <option value=""><?php _e('Toutes régions', 'ufsc-gestion-club-final'); ?></option>
                                 <?php foreach ($regions as $r): ?>
                                     <option value="<?php echo esc_attr($r); ?>" <?php selected($region, $r); ?>><?php echo esc_html($r); ?></option>
                                 <?php endforeach; ?>
@@ -1500,9 +1500,9 @@ class UFSC_Menu
                         </div>
                         
                         <div class="ufsc-filter-field">
-                            <label for="filter_club"><?php _e('Club', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="filter_club"><?php _e('Club', 'ufsc-gestion-club-final'); ?></label>
                             <select name="filter_club" id="filter_club">
-                                <option value=""><?php _e('Tous les clubs', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+                                <option value=""><?php _e('Tous les clubs', 'ufsc-gestion-club-final'); ?></option>
                                 <?php foreach ($all_clubs as $club_option): ?>
                                     <option value="<?php echo esc_attr($club_option->id); ?>" <?php selected($filter_club, $club_option->id); ?>>
                                         <?php echo esc_html($club_option->nom); ?>
@@ -1513,21 +1513,21 @@ class UFSC_Menu
                         
                         <!-- NEW: Export Type Filter -->
                         <div class="ufsc-filter-field">
-                            <label for="export_type"><?php _e('Type d\'export', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="export_type"><?php _e('Type d\'export', 'ufsc-gestion-club-final'); ?></label>
                             <select name="export_type" id="export_type">
-                                <option value="individual" <?php selected($export_type, 'individual'); ?>><?php _e('Individuel (une ligne par licence)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-                                <option value="group" <?php selected($export_type, 'group'); ?>><?php _e('Groupé (résumé par club)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+                                <option value="individual" <?php selected($export_type, 'individual'); ?>><?php _e('Individuel (une ligne par licence)', 'ufsc-gestion-club-final'); ?></option>
+                                <option value="group" <?php selected($export_type, 'group'); ?>><?php _e('Groupé (résumé par club)', 'ufsc-gestion-club-final'); ?></option>
                             </select>
                         </div>
                         
                         <!-- NEW: Status Filter -->
                         <div class="ufsc-filter-field">
-                            <label for="statut_filter"><?php _e('Statut des licences', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="statut_filter"><?php _e('Statut des licences', 'ufsc-gestion-club-final'); ?></label>
                             <select name="statut_filter" id="statut_filter">
-                                <option value=""><?php _e('Tous les statuts', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-                                <option value="en_attente" <?php selected($statut_filter ?? '', 'en_attente'); ?>><?php _e('En attente', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-                                <option value="validee" <?php selected($statut_filter ?? '', 'validee'); ?>><?php _e('Validées', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-                                <option value="refusee" <?php selected($statut_filter ?? '', 'refusee'); ?>><?php _e('Refusées', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+                                <option value=""><?php _e('Tous les statuts', 'ufsc-gestion-club-final'); ?></option>
+                                <option value="en_attente" <?php selected($statut_filter ?? '', 'en_attente'); ?>><?php _e('En attente', 'ufsc-gestion-club-final'); ?></option>
+                                <option value="validee" <?php selected($statut_filter ?? '', 'validee'); ?>><?php _e('Validées', 'ufsc-gestion-club-final'); ?></option>
+                                <option value="refusee" <?php selected($statut_filter ?? '', 'refusee'); ?>><?php _e('Refusées', 'ufsc-gestion-club-final'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -1568,7 +1568,7 @@ class UFSC_Menu
                         <input type="hidden" name="export_type" value="<?php echo esc_attr($export_type); ?>">
                         <input type="hidden" name="statut_filter" value="<?php echo esc_attr($statut_filter); ?>">>
                         
-                        <?php submit_button(__('📊 Télécharger l\'export CSV', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', true); ?>
+                        <?php submit_button(__('📊 Télécharger l\'export CSV', 'ufsc-gestion-club-final'), 'primary', 'submit', true); ?>
                     </form>
                 <?php else: ?>
                     <div class="notice notice-warning">
@@ -1601,10 +1601,10 @@ class UFSC_Menu
     public function render_stats_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
-        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Statistiques', 'plugin-ufsc-gestion-club-13072025') . '</h1>';
-        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
+        echo '<div class="wrap ufsc-ui"><h1>' . esc_html__('Statistiques', 'ufsc-gestion-club-final') . '</h1>';
+        echo '<p>' . esc_html__('Cette page est en cours de développement.', 'ufsc-gestion-club-final') . '</p></div>';
     }
 
     /**
@@ -1613,7 +1613,7 @@ class UFSC_Menu
     public function render_edit_club_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
@@ -1727,7 +1727,7 @@ class UFSC_Menu
 
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Gestion des documents', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?></h1>
+            <h1><?php echo esc_html__('Gestion des documents', 'ufsc-gestion-club-final'); ?> - <?php echo esc_html($club->nom); ?></h1>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc-liste-clubs')); ?>" class="button">
                     ← Retour à la liste des clubs
@@ -1962,7 +1962,7 @@ class UFSC_Menu
                 <?php endif; ?>
 
                 <p class="submit">
-                    <?php submit_button(__('Mettre à jour les documents', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', false); ?>
+                    <?php submit_button(__('Mettre à jour les documents', 'ufsc-gestion-club-final'), 'primary', 'submit', false); ?>
                 </p>
             </form>
         </div>
@@ -2069,7 +2069,7 @@ class UFSC_Menu
         // Add a basic settings section
         add_settings_section(
             'ufsc_general_section',
-            __('Paramètres généraux', 'plugin-ufsc-gestion-club-13072025'),
+            __('Paramètres généraux', 'ufsc-gestion-club-final'),
             array($this, 'general_section_callback'),
             'ufsc-settings'
         );
@@ -2077,7 +2077,7 @@ class UFSC_Menu
         // Add some basic settings fields
         add_settings_field(
             'ufsc_plugin_active',
-            __('Plugin actif', 'plugin-ufsc-gestion-club-13072025'),
+            __('Plugin actif', 'ufsc-gestion-club-final'),
             array($this, 'plugin_active_field_callback'),
             'ufsc-settings',
             'ufsc_general_section'
@@ -2088,7 +2088,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_page_config_section',
-            __('Configuration des pages', 'plugin-ufsc-gestion-club-13072025'),
+            __('Configuration des pages', 'ufsc-gestion-club-final'),
             array($this, 'page_config_section_callback'),
             'ufsc-settings'
         );
@@ -2096,7 +2096,7 @@ class UFSC_Menu
         // Dashboard page setting
         add_settings_field(
             'club_dashboard_page',
-            __('Page Espace Club (Dashboard)', 'plugin-ufsc-gestion-club-13072025'),
+            __('Page Espace Club (Dashboard)', 'ufsc-gestion-club-final'),
             array($this, 'club_dashboard_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
@@ -2105,7 +2105,7 @@ class UFSC_Menu
         // Affiliation page setting
         add_settings_field(
             'affiliation_page',
-            __('Page Affiliation', 'plugin-ufsc-gestion-club-13072025'),
+            __('Page Affiliation', 'ufsc-gestion-club-final'),
             array($this, 'affiliation_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
@@ -2114,7 +2114,7 @@ class UFSC_Menu
         // Club form page setting
         add_settings_field(
             'club_form_page',
-            __('Page Formulaire de club', 'plugin-ufsc-gestion-club-13072025'),
+            __('Page Formulaire de club', 'ufsc-gestion-club-final'),
             array($this, 'club_form_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
@@ -2123,7 +2123,7 @@ class UFSC_Menu
         // Licences page setting
         add_settings_field(
             'licences_page',
-            __('Page Licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Page Licences', 'ufsc-gestion-club-final'),
             array($this, 'licences_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
@@ -2132,7 +2132,7 @@ class UFSC_Menu
         // Attestations page setting
         add_settings_field(
             'attestations_page',
-            __('Page Attestations', 'plugin-ufsc-gestion-club-13072025'),
+            __('Page Attestations', 'ufsc-gestion-club-final'),
             array($this, 'attestations_page_callback'),
             'ufsc-settings',
             'ufsc_page_config_section'
@@ -2143,7 +2143,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_woocommerce_section',
-            __('Configuration WooCommerce', 'plugin-ufsc-gestion-club-13072025'),
+            __('Configuration WooCommerce', 'ufsc-gestion-club-final'),
             array($this, 'woocommerce_section_callback'),
             'ufsc-settings'
         );
@@ -2151,7 +2151,7 @@ class UFSC_Menu
         // Affiliation product ID setting
         add_settings_field(
             'affiliation_product_id',
-            __('ID Produit Affiliation', 'plugin-ufsc-gestion-club-13072025'),
+            __('ID Produit Affiliation', 'ufsc-gestion-club-final'),
             array($this, 'affiliation_product_id_callback'),
             'ufsc-settings',
             'ufsc_woocommerce_section'
@@ -2160,7 +2160,7 @@ class UFSC_Menu
         // Licence product ID setting
         add_settings_field(
             'licence_product_id',
-            __('ID Produit Licence', 'plugin-ufsc-gestion-club-13072025'),
+            __('ID Produit Licence', 'ufsc-gestion-club-final'),
             array($this, 'licence_product_id_callback'),
             'ufsc-settings',
             'ufsc_woocommerce_section'
@@ -2169,7 +2169,7 @@ class UFSC_Menu
         // WooCommerce license product IDs (CSV) - NEW
         add_settings_field(
             'ufsc_wc_license_product_ids',
-            __('IDs Produits Licences (CSV)', 'plugin-ufsc-gestion-club-13072025'),
+            __('IDs Produits Licences (CSV)', 'ufsc-gestion-club-final'),
             array($this, 'wc_license_product_ids_callback'),
             'ufsc-settings',
             'ufsc_woocommerce_section'
@@ -2178,7 +2178,7 @@ class UFSC_Menu
         // Auto-create user from order - NEW
         add_settings_field(
             'ufsc_auto_create_user',
-            __('Création automatique d\'utilisateur', 'plugin-ufsc-gestion-club-13072025'),
+            __('Création automatique d\'utilisateur', 'ufsc-gestion-club-final'),
             array($this, 'auto_create_user_callback'),
             'ufsc-settings',
             'ufsc_woocommerce_section'
@@ -2187,7 +2187,7 @@ class UFSC_Menu
         // Require login for shortcodes - NEW
         add_settings_field(
             'ufsc_require_login_shortcodes',
-            __('Connexion requise pour les shortcodes', 'plugin-ufsc-gestion-club-13072025'),
+            __('Connexion requise pour les shortcodes', 'ufsc-gestion-club-final'),
             array($this, 'require_login_shortcodes_callback'),
             'ufsc-settings',
             'ufsc_woocommerce_section'
@@ -2198,7 +2198,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_csv_export_section',
-            __('Configuration des exports CSV', 'plugin-ufsc-gestion-club-13072025'),
+            __('Configuration des exports CSV', 'ufsc-gestion-club-final'),
             array($this, 'csv_export_section_callback'),
             'ufsc-settings'
         );
@@ -2206,7 +2206,7 @@ class UFSC_Menu
         // CSV Separator
         add_settings_field(
             'csv_separator',
-            __('Séparateur CSV', 'plugin-ufsc-gestion-club-13072025'),
+            __('Séparateur CSV', 'ufsc-gestion-club-final'),
             array($this, 'csv_separator_field_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2215,7 +2215,7 @@ class UFSC_Menu
         // CSV Encoding
         add_settings_field(
             'csv_encoding',
-            __('Encodage CSV', 'plugin-ufsc-gestion-club-13072025'),
+            __('Encodage CSV', 'ufsc-gestion-club-final'),
             array($this, 'csv_encoding_field_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2224,7 +2224,7 @@ class UFSC_Menu
         // Club fields to export
         add_settings_field(
             'club_export_fields',
-            __('Champs clubs à exporter', 'plugin-ufsc-gestion-club-13072025'),
+            __('Champs clubs à exporter', 'ufsc-gestion-club-final'),
             array($this, 'club_export_fields_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2233,7 +2233,7 @@ class UFSC_Menu
         // License fields to export
         add_settings_field(
             'license_export_fields',
-            __('Champs licences à exporter', 'plugin-ufsc-gestion-club-13072025'),
+            __('Champs licences à exporter', 'ufsc-gestion-club-final'),
             array($this, 'license_export_fields_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2242,7 +2242,7 @@ class UFSC_Menu
         // License status filter
         add_settings_field(
             'license_status_filter',
-            __('Filtre statut licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Filtre statut licences', 'ufsc-gestion-club-final'),
             array($this, 'license_status_filter_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2251,7 +2251,7 @@ class UFSC_Menu
         // Custom filename
         add_settings_field(
             'custom_filename',
-            __('Nom de fichier personnalisé', 'plugin-ufsc-gestion-club-13072025'),
+            __('Nom de fichier personnalisé', 'ufsc-gestion-club-final'),
             array($this, 'custom_filename_callback'),
             'ufsc-settings',
             'ufsc_csv_export_section'
@@ -2262,7 +2262,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_validation_section',
-            __('Workflow de validation', 'plugin-ufsc-gestion-club-13072025'),
+            __('Workflow de validation', 'ufsc-gestion-club-final'),
             array($this, 'validation_section_callback'),
             'ufsc-settings'
         );
@@ -2270,7 +2270,7 @@ class UFSC_Menu
         // Enable manual validation
         add_settings_field(
             'enable_manual_validation',
-            __('Validation manuelle des licences', 'plugin-ufsc-gestion-club-13072025'),
+            __('Validation manuelle des licences', 'ufsc-gestion-club-final'),
             array($this, 'enable_manual_validation_callback'),
             'ufsc-settings',
             'ufsc_validation_section'
@@ -2279,7 +2279,7 @@ class UFSC_Menu
         // Enable email notifications
         add_settings_field(
             'enable_email_notifications',
-            __('Notifications email automatiques', 'plugin-ufsc-gestion-club-13072025'),
+            __('Notifications email automatiques', 'ufsc-gestion-club-final'),
             array($this, 'enable_email_notifications_callback'),
             'ufsc-settings',
             'ufsc_validation_section'
@@ -2288,7 +2288,7 @@ class UFSC_Menu
         // Email validation message
         add_settings_field(
             'email_validation_message',
-            __('Message email validation', 'plugin-ufsc-gestion-club-13072025'),
+            __('Message email validation', 'ufsc-gestion-club-final'),
             array($this, 'email_validation_message_callback'),
             'ufsc-settings',
             'ufsc_validation_section'
@@ -2297,7 +2297,7 @@ class UFSC_Menu
         // Email rejection message
         add_settings_field(
             'email_rejection_message',
-            __('Message email refus', 'plugin-ufsc-gestion-club-13072025'),
+            __('Message email refus', 'ufsc-gestion-club-final'),
             array($this, 'email_rejection_message_callback'),
             'ufsc-settings',
             'ufsc_validation_section'
@@ -2308,7 +2308,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_frontend_section',
-            __('Affichage Front-End', 'plugin-ufsc-gestion-club-13072025'),
+            __('Affichage Front-End', 'ufsc-gestion-club-final'),
             array($this, 'frontend_section_callback'),
             'ufsc-settings'
         );
@@ -2316,7 +2316,7 @@ class UFSC_Menu
         // Visible club fields frontend
         add_settings_field(
             'frontend_club_fields',
-            __('Champs clubs visibles (frontend)', 'plugin-ufsc-gestion-club-13072025'),
+            __('Champs clubs visibles (frontend)', 'ufsc-gestion-club-final'),
             array($this, 'frontend_club_fields_callback'),
             'ufsc-settings',
             'ufsc_frontend_section'
@@ -2325,7 +2325,7 @@ class UFSC_Menu
         // Visible license fields frontend
         add_settings_field(
             'frontend_license_fields',
-            __('Champs licences visibles (frontend)', 'plugin-ufsc-gestion-club-13072025'),
+            __('Champs licences visibles (frontend)', 'ufsc-gestion-club-final'),
             array($this, 'frontend_license_fields_callback'),
             'ufsc-settings',
             'ufsc_frontend_section'
@@ -2336,7 +2336,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_security_section',
-            __('Sécurité & RGPD', 'plugin-ufsc-gestion-club-13072025'),
+            __('Sécurité & RGPD', 'ufsc-gestion-club-final'),
             array($this, 'security_section_callback'),
             'ufsc-settings'
         );
@@ -2344,7 +2344,7 @@ class UFSC_Menu
         // Hide sensitive fields in exports
         add_settings_field(
             'hide_sensitive_export',
-            __('Masquer champs sensibles (export)', 'plugin-ufsc-gestion-club-13072025'),
+            __('Masquer champs sensibles (export)', 'ufsc-gestion-club-final'),
             array($this, 'hide_sensitive_export_callback'),
             'ufsc-settings',
             'ufsc_security_section'
@@ -2353,7 +2353,7 @@ class UFSC_Menu
         // Hide sensitive fields in frontend
         add_settings_field(
             'hide_sensitive_frontend',
-            __('Masquer champs sensibles (frontend)', 'plugin-ufsc-gestion-club-13072025'),
+            __('Masquer champs sensibles (frontend)', 'ufsc-gestion-club-final'),
             array($this, 'hide_sensitive_frontend_callback'),
             'ufsc-settings',
             'ufsc_security_section'
@@ -2364,7 +2364,7 @@ class UFSC_Menu
         // ================================
         add_settings_section(
             'ufsc_misc_section',
-            __('Divers', 'plugin-ufsc-gestion-club-13072025'),
+            __('Divers', 'ufsc-gestion-club-final'),
             array($this, 'misc_section_callback'),
             'ufsc-settings'
         );
@@ -2372,7 +2372,7 @@ class UFSC_Menu
         // Custom logo for exports
         add_settings_field(
             'export_logo_url',
-            __('Logo personnalisé pour exports', 'plugin-ufsc-gestion-club-13072025'),
+            __('Logo personnalisé pour exports', 'ufsc-gestion-club-final'),
             array($this, 'export_logo_callback'),
             'ufsc-settings',
             'ufsc_misc_section'
@@ -2454,7 +2454,7 @@ class UFSC_Menu
      */
     public function general_section_callback()
     {
-        echo '<p>' . esc_html__('Configurez les paramètres généraux du plugin UFSC.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Configurez les paramètres généraux du plugin UFSC.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -2466,7 +2466,7 @@ class UFSC_Menu
         $active = isset($options['plugin_active']) ? $options['plugin_active'] : true;
         
         echo '<input type="checkbox" id="ufsc_plugin_active" name="ufsc_general_settings[plugin_active]" value="1" ' . checked(1, $active, false) . ' />';
-        echo '<label for="ufsc_plugin_active">' . esc_html__('Activer le plugin UFSC', 'plugin-ufsc-gestion-club-13072025') . '</label>';
+        echo '<label for="ufsc_plugin_active">' . esc_html__('Activer le plugin UFSC', 'ufsc-gestion-club-final') . '</label>';
     }
 
     /**
@@ -2475,35 +2475,35 @@ class UFSC_Menu
     public function render_settings_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         ?>
         <div class="wrap ufsc-ui">
             <h1>
                 <span class="dashicons dashicons-admin-settings" style="font-size: 1.3em; margin-right: 8px;"></span>
-                <?php echo esc_html__('Paramètres du plugin UFSC', 'plugin-ufsc-gestion-club-13072025'); ?>
+                <?php echo esc_html__('Paramètres du plugin UFSC', 'ufsc-gestion-club-final'); ?>
             </h1>
-            <p class="description"><?php echo esc_html__('Configurez les options et paramètres du plugin UFSC. Personnalisez le comportement selon vos besoins et ceux de votre fédération.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <p class="description"><?php echo esc_html__('Configurez les options et paramètres du plugin UFSC. Personnalisez le comportement selon vos besoins et ceux de votre fédération.', 'ufsc-gestion-club-final'); ?></p>
             
             <div class="ufsc-settings-container" style="max-width: 1200px;">
                 <form method="post" action="options.php">
                     <?php
                     settings_fields('ufsc_settings');
                     do_settings_sections('ufsc-settings');
-                    submit_button(__('Enregistrer les paramètres', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', true, array('style' => 'margin-top: 20px;'));
+                    submit_button(__('Enregistrer les paramètres', 'ufsc-gestion-club-final'), 'primary', 'submit', true, array('style' => 'margin-top: 20px;'));
                     ?>
                 </form>
                 
                 <div class="card" style="margin-top: 30px; padding: 20px; background: #e7f3ff; border-left: 4px solid #0073aa;">
                     <h3>
                         <span class="dashicons dashicons-info" style="color: #0073aa;"></span>
-                        <?php esc_html_e('Informations importantes', 'plugin-ufsc-gestion-club-13072025'); ?>
+                        <?php esc_html_e('Informations importantes', 'ufsc-gestion-club-final'); ?>
                     </h3>
                     <ul>
-                        <li><strong><?php esc_html_e('Exports CSV :', 'plugin-ufsc-gestion-club-13072025'); ?></strong> <?php esc_html_e('Les paramètres d\'export s\'appliquent immédiatement aux nouveaux exports.', 'plugin-ufsc-gestion-club-13072025'); ?></li>
-                        <li><strong><?php esc_html_e('Validation manuelle :', 'plugin-ufsc-gestion-club-13072025'); ?></strong> <?php esc_html_e('Si désactivée, toutes les nouvelles licences seront automatiquement validées.', 'plugin-ufsc-gestion-club-13072025'); ?></li>
-                        <li><strong><?php esc_html_e('RGPD :', 'plugin-ufsc-gestion-club-13072025'); ?></strong> <?php esc_html_e('Les options de masquage des champs sensibles aident à respecter les exigences de protection des données.', 'plugin-ufsc-gestion-club-13072025'); ?></li>
-                        <li><strong><?php esc_html_e('Frontend :', 'plugin-ufsc-gestion-club-13072025'); ?></strong> <?php esc_html_e('Les modifications d\'affichage frontend peuvent nécessiter de vider le cache.', 'plugin-ufsc-gestion-club-13072025'); ?></li>
+                        <li><strong><?php esc_html_e('Exports CSV :', 'ufsc-gestion-club-final'); ?></strong> <?php esc_html_e('Les paramètres d\'export s\'appliquent immédiatement aux nouveaux exports.', 'ufsc-gestion-club-final'); ?></li>
+                        <li><strong><?php esc_html_e('Validation manuelle :', 'ufsc-gestion-club-final'); ?></strong> <?php esc_html_e('Si désactivée, toutes les nouvelles licences seront automatiquement validées.', 'ufsc-gestion-club-final'); ?></li>
+                        <li><strong><?php esc_html_e('RGPD :', 'ufsc-gestion-club-final'); ?></strong> <?php esc_html_e('Les options de masquage des champs sensibles aident à respecter les exigences de protection des données.', 'ufsc-gestion-club-final'); ?></li>
+                        <li><strong><?php esc_html_e('Frontend :', 'ufsc-gestion-club-final'); ?></strong> <?php esc_html_e('Les modifications d\'affichage frontend peuvent nécessiter de vider le cache.', 'ufsc-gestion-club-final'); ?></li>
                     </ul>
                 </div>
             </div>
@@ -2556,7 +2556,7 @@ class UFSC_Menu
     public function render_ajouter_licence_page()
     {
         if (!current_user_can('ufsc_manage') && !current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         global $wpdb;
         
@@ -2637,8 +2637,8 @@ class UFSC_Menu
         );
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Ajouter une nouvelle licence', 'plugin-ufsc-gestion-club-13072025'); ?></h1>
-            <p><?php echo esc_html__('Créez une nouvelle licence pour un licencié. Remplissez le formulaire avec les informations du licencié.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+            <h1><?php echo esc_html__('Ajouter une nouvelle licence', 'ufsc-gestion-club-final'); ?></h1>
+            <p><?php echo esc_html__('Créez une nouvelle licence pour un licencié. Remplissez le formulaire avec les informations du licencié.', 'ufsc-gestion-club-final'); ?></p>
             
             <form method="post" action="">
                 <?php wp_nonce_field('ufsc_add_licence_admin', 'ufsc_add_licence_admin_nonce'); ?>
@@ -2652,16 +2652,16 @@ class UFSC_Menu
                 
                 <!-- Additional admin-specific fields -->
                 <div class="ufsc-form-section ufsc-section-admin">
-                    <h3><?php echo esc_html__('Options administratives', 'plugin-ufsc-gestion-club-13072025'); ?></h3>
+                    <h3><?php echo esc_html__('Options administratives', 'ufsc-gestion-club-final'); ?></h3>
                     <div class="ufsc-checkbox-group">
                         <div class="ufsc-checkbox-item">
                             <input type="checkbox" name="is_included" id="is_included" value="1">
-                            <label for="is_included"><?php echo esc_html__('Cette licence est incluse dans le quota', 'plugin-ufsc-gestion-club-13072025'); ?></label>
+                            <label for="is_included"><?php echo esc_html__('Cette licence est incluse dans le quota', 'ufsc-gestion-club-final'); ?></label>
                         </div>
                     </div>
                 </div>
                 
-                <?php submit_button(__('Ajouter la licence', 'plugin-ufsc-gestion-club-13072025')); ?>
+                <?php submit_button(__('Ajouter la licence', 'ufsc-gestion-club-final')); ?>
             </form>
         </div>
         <?php
@@ -2673,7 +2673,7 @@ class UFSC_Menu
     public function render_modifier_licence_page()
     {
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         require_once UFSC_PLUGIN_PATH . 'includes/licences/admin-licence-form.php';
     }
@@ -2913,7 +2913,7 @@ class UFSC_Menu
     public function render_view_club_page()
     {
         if (!current_user_can('manage_ufsc')) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         // Get club ID from URL parameter
         $club_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
@@ -3049,9 +3049,9 @@ class UFSC_Menu
         <div class="wrap ufsc-ui">
             <h1>
                 <?php if ($edit_mode): ?>
-                    <?php echo esc_html__('Modifier le club', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?>
+                    <?php echo esc_html__('Modifier le club', 'ufsc-gestion-club-final'); ?> - <?php echo esc_html($club->nom); ?>
                 <?php else: ?>
-                    <?php echo esc_html__('Détails du club', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($club->nom); ?>
+                    <?php echo esc_html__('Détails du club', 'ufsc-gestion-club-final'); ?> - <?php echo esc_html($club->nom); ?>
                 <?php endif; ?>
             </h1>
             
@@ -3332,7 +3332,7 @@ class UFSC_Menu
                 </div>
 
                 <p class="submit">
-                    <?php submit_button(__('Mettre à jour le club', 'plugin-ufsc-gestion-club-13072025'), 'primary', 'submit', false); ?>
+                    <?php submit_button(__('Mettre à jour le club', 'ufsc-gestion-club-final'), 'primary', 'submit', false); ?>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=ufsc_view_club&id=' . $club->id)); ?>" class="button button-secondary">Annuler</a>
                 </p>
             </form>
@@ -3638,11 +3638,11 @@ class UFSC_Menu
         }
 
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
 
         if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']), 'ufsc_view_licence_' . $licence_id)) {
-            wp_die(__('Action non autorisée.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Action non autorisée.', 'ufsc-gestion-club-final'));
         }
 
         // Check if edit mode is requested
@@ -3686,7 +3686,7 @@ class UFSC_Menu
 
         ?>
         <div class="wrap ufsc-ui">
-            <h1><?php echo esc_html__('Détails de la licence', 'plugin-ufsc-gestion-club-13072025'); ?> - <?php echo esc_html($licence->prenom . ' ' . $licence->nom); ?></h1>
+            <h1><?php echo esc_html__('Détails de la licence', 'ufsc-gestion-club-final'); ?> - <?php echo esc_html($licence->prenom . ' ' . $licence->nom); ?></h1>
             
             <p>
                 <?php if ($club): ?>
@@ -3813,7 +3813,7 @@ class UFSC_Menu
     public function render_voir_licences_page()
     {
         if (!current_user_can(UFSC_MANAGE_LICENSES_CAP)) {
-            wp_die(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'));
+            wp_die(__('Access denied.', 'ufsc-gestion-club-final'));
         }
         require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-filters.php';
 
@@ -3872,7 +3872,7 @@ class UFSC_Menu
      */
     public function page_config_section_callback()
     {
-        echo '<p>' . esc_html__('Configurez les pages WordPress à utiliser pour les différentes fonctionnalités du plugin UFSC.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Configurez les pages WordPress à utiliser pour les différentes fonctionnalités du plugin UFSC.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3880,7 +3880,7 @@ class UFSC_Menu
      */
     public function woocommerce_section_callback()
     {
-        echo '<p>' . esc_html__('Configurez les identifiants des produits WooCommerce pour les affiliations et licences.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Configurez les identifiants des produits WooCommerce pour les affiliations et licences.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3888,7 +3888,7 @@ class UFSC_Menu
      */
     public function csv_export_section_callback()
     {
-        echo '<p>' . esc_html__('Configurez les options d\'exportation CSV pour personnaliser le format et le contenu des exports.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Configurez les options d\'exportation CSV pour personnaliser le format et le contenu des exports.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3896,7 +3896,7 @@ class UFSC_Menu
      */
     public function validation_section_callback()
     {
-        echo '<p>' . esc_html__('Configurez le workflow de validation des licences et les notifications email.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Configurez le workflow de validation des licences et les notifications email.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3904,7 +3904,7 @@ class UFSC_Menu
      */
     public function frontend_section_callback()
     {
-        echo '<p>' . esc_html__('Choisissez les champs visibles côté club/adhérent sur le frontend.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Choisissez les champs visibles côté club/adhérent sur le frontend.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3912,7 +3912,7 @@ class UFSC_Menu
      */
     public function security_section_callback()
     {
-        echo '<p>' . esc_html__('Options de sécurité et conformité RGPD pour masquer les champs sensibles.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Options de sécurité et conformité RGPD pour masquer les champs sensibles.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -3920,7 +3920,7 @@ class UFSC_Menu
      */
     public function misc_section_callback()
     {
-        echo '<p>' . esc_html__('Paramètres divers pour personnaliser l\'apparence et le comportement du plugin.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p>' . esc_html__('Paramètres divers pour personnaliser l\'apparence et le comportement du plugin.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     // ================================
@@ -3951,14 +3951,14 @@ class UFSC_Menu
         $pages = $this->get_pages_for_dropdown();
         ?>
         <select id="ufsc_club_dashboard_page_id" name="ufsc_club_dashboard_page_id">
-            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'ufsc-gestion-club-final'); ?></option>
             <?php foreach ($pages as $page): ?>
                 <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
                     <?php echo esc_html($page->post_title); ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><?php esc_html_e('Page qui servira de tableau de bord pour l\'espace club.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Page qui servira de tableau de bord pour l\'espace club.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -3971,14 +3971,14 @@ class UFSC_Menu
         $pages = $this->get_pages_for_dropdown();
         ?>
         <select id="ufsc_affiliation_page_id" name="ufsc_affiliation_page_id">
-            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'ufsc-gestion-club-final'); ?></option>
             <?php foreach ($pages as $page): ?>
                 <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
                     <?php echo esc_html($page->post_title); ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><?php esc_html_e('Page contenant le formulaire d\'affiliation des clubs.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Page contenant le formulaire d\'affiliation des clubs.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -3991,14 +3991,14 @@ class UFSC_Menu
         $pages = $this->get_pages_for_dropdown();
         ?>
         <select id="ufsc_club_form_page_id" name="ufsc_club_form_page_id">
-            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'ufsc-gestion-club-final'); ?></option>
             <?php foreach ($pages as $page): ?>
                 <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
                     <?php echo esc_html($page->post_title); ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><?php esc_html_e('Page contenant le formulaire de création ou d\'édition de club.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Page contenant le formulaire de création ou d\'édition de club.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4011,14 +4011,14 @@ class UFSC_Menu
         $pages = $this->get_pages_for_dropdown();
         ?>
         <select id="ufsc_licence_page_id" name="ufsc_licence_page_id">
-            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'ufsc-gestion-club-final'); ?></option>
             <?php foreach ($pages as $page): ?>
                 <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
                     <?php echo esc_html($page->post_title); ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><?php esc_html_e('Page pour la gestion des licences.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Page pour la gestion des licences.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4031,14 +4031,14 @@ class UFSC_Menu
         $pages = $this->get_pages_for_dropdown();
         ?>
         <select id="ufsc_attestation_page_id" name="ufsc_attestation_page_id">
-            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="0"><?php esc_html_e('-- Sélectionner une page --', 'ufsc-gestion-club-final'); ?></option>
             <?php foreach ($pages as $page): ?>
                 <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($page_id, $page->ID); ?>>
                     <?php echo esc_html($page->post_title); ?>
                 </option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><?php esc_html_e('Page pour la gestion des attestations.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Page pour la gestion des attestations.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4056,21 +4056,21 @@ class UFSC_Menu
         <input type="number" id="ufsc_wc_affiliation_product_id" name="ufsc_wc_affiliation_product_id"
                value="<?php echo esc_attr($product_id); ?>" min="1" step="1" />
         <p class="description">
-            <?php esc_html_e('ID du produit WooCommerce pour les affiliations de club (par défaut: 4823).', 'plugin-ufsc-gestion-club-13072025'); ?>
+            <?php esc_html_e('ID du produit WooCommerce pour les affiliations de club (par défaut: 4823).', 'ufsc-gestion-club-final'); ?>
             <?php if ($product_id) { ?>
                 <?php 
                 if (function_exists('wc_get_product')) {
                     $product = wc_get_product($product_id);
                     if ($product) { ?>
-                        <br><strong><?php esc_html_e('Produit actuel:', 'plugin-ufsc-gestion-club-13072025'); ?></strong> 
+                        <br><strong><?php esc_html_e('Produit actuel:', 'ufsc-gestion-club-final'); ?></strong> 
                         <a href="<?php echo esc_url(admin_url('post.php?post=' . $product_id . '&action=edit')); ?>" target="_blank">
                             <?php echo esc_html($product->get_name()); ?>
                         </a>
                     <?php } else { ?>
-                        <br><span style="color: #d63638;"><?php esc_html_e('⚠️ Produit introuvable avec cet ID', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                        <br><span style="color: #d63638;"><?php esc_html_e('⚠️ Produit introuvable avec cet ID', 'ufsc-gestion-club-final'); ?></span>
                     <?php } 
                 } else { ?>
-                    <br><span style="color: #d63638;"><?php esc_html_e('⚠️ WooCommerce n\'est pas activé', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                    <br><span style="color: #d63638;"><?php esc_html_e('⚠️ WooCommerce n\'est pas activé', 'ufsc-gestion-club-final'); ?></span>
                 <?php } ?>
 
             <?php } ?>
@@ -4089,22 +4089,22 @@ class UFSC_Menu
         <input type="number" id="ufsc_licence_product_id" name="ufsc_licence_product_id" 
                value="<?php echo esc_attr($product_id); ?>" min="1" step="1" />
         <p class="description">
-            <?php esc_html_e('ID du produit WooCommerce pour les licences (par défaut: 2934).', 'plugin-ufsc-gestion-club-13072025'); ?>
+            <?php esc_html_e('ID du produit WooCommerce pour les licences (par défaut: 2934).', 'ufsc-gestion-club-final'); ?>
             <?php if ($product_id) { ?>
                 <?php 
 
                 if (function_exists('wc_get_product')) {
                     $product = wc_get_product($product_id);
                     if ($product) { ?>
-                        <br><strong><?php esc_html_e('Produit actuel:', 'plugin-ufsc-gestion-club-13072025'); ?></strong> 
+                        <br><strong><?php esc_html_e('Produit actuel:', 'ufsc-gestion-club-final'); ?></strong> 
                         <a href="<?php echo esc_url(admin_url('post.php?post=' . $product_id . '&action=edit')); ?>" target="_blank">
                             <?php echo esc_html($product->get_name()); ?>
                         </a>
                     <?php } else { ?>
-                        <br><span style="color: #d63638;"><?php esc_html_e('⚠️ Produit introuvable avec cet ID', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                        <br><span style="color: #d63638;"><?php esc_html_e('⚠️ Produit introuvable avec cet ID', 'ufsc-gestion-club-final'); ?></span>
                     <?php } 
                 } else { ?>
-                    <br><span style="color: #d63638;"><?php esc_html_e('⚠️ WooCommerce n\'est pas activé', 'plugin-ufsc-gestion-club-13072025'); ?></span>
+                    <br><span style="color: #d63638;"><?php esc_html_e('⚠️ WooCommerce n\'est pas activé', 'ufsc-gestion-club-final'); ?></span>
                 <?php } ?>
 
             <?php } ?>
@@ -4126,11 +4126,11 @@ class UFSC_Menu
         $separator = isset($options['csv_separator']) ? $options['csv_separator'] : ';';
         ?>
         <select id="csv_separator" name="ufsc_general_settings[csv_separator]">
-            <option value=";" <?php selected($separator, ';'); ?>><?php esc_html_e('Point-virgule (;)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="," <?php selected($separator, ','); ?>><?php esc_html_e('Virgule (,)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="\t" <?php selected($separator, "\t"); ?>><?php esc_html_e('Tabulation', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value=";" <?php selected($separator, ';'); ?>><?php esc_html_e('Point-virgule (;)', 'ufsc-gestion-club-final'); ?></option>
+            <option value="," <?php selected($separator, ','); ?>><?php esc_html_e('Virgule (,)', 'ufsc-gestion-club-final'); ?></option>
+            <option value="\t" <?php selected($separator, "\t"); ?>><?php esc_html_e('Tabulation', 'ufsc-gestion-club-final'); ?></option>
         </select>
-        <p class="description"><?php esc_html_e('Séparateur utilisé dans les fichiers CSV exportés.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Séparateur utilisé dans les fichiers CSV exportés.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4143,11 +4143,11 @@ class UFSC_Menu
         $encoding = isset($options['csv_encoding']) ? $options['csv_encoding'] : 'UTF-8';
         ?>
         <select id="csv_encoding" name="ufsc_general_settings[csv_encoding]">
-            <option value="UTF-8" <?php selected($encoding, 'UTF-8'); ?>><?php esc_html_e('UTF-8 (recommandé)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="ISO-8859-1" <?php selected($encoding, 'ISO-8859-1'); ?>><?php esc_html_e('ISO-8859-1 (Latin-1)', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="Windows-1252" <?php selected($encoding, 'Windows-1252'); ?>><?php esc_html_e('Windows-1252', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="UTF-8" <?php selected($encoding, 'UTF-8'); ?>><?php esc_html_e('UTF-8 (recommandé)', 'ufsc-gestion-club-final'); ?></option>
+            <option value="ISO-8859-1" <?php selected($encoding, 'ISO-8859-1'); ?>><?php esc_html_e('ISO-8859-1 (Latin-1)', 'ufsc-gestion-club-final'); ?></option>
+            <option value="Windows-1252" <?php selected($encoding, 'Windows-1252'); ?>><?php esc_html_e('Windows-1252', 'ufsc-gestion-club-final'); ?></option>
         </select>
-        <p class="description"><?php esc_html_e('Encodage des caractères pour les fichiers CSV.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Encodage des caractères pour les fichiers CSV.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4192,7 +4192,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[club_export_fields][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Sélectionnez les champs à inclure dans l\'export CSV des clubs.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Sélectionnez les champs à inclure dans l\'export CSV des clubs.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -4228,7 +4228,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[license_export_fields][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Sélectionnez les champs à inclure dans l\'export CSV des licences.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Sélectionnez les champs à inclure dans l\'export CSV des licences.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -4240,12 +4240,12 @@ class UFSC_Menu
         $filter = isset($options['license_status_filter']) ? $options['license_status_filter'] : 'all';
         ?>
         <select id="license_status_filter" name="ufsc_general_settings[license_status_filter]">
-            <option value="all" <?php selected($filter, 'all'); ?>><?php esc_html_e('Toutes les licences', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="validee" <?php selected($filter, 'validee'); ?>><?php esc_html_e('Seulement les validées', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="en_attente" <?php selected($filter, 'en_attente'); ?>><?php esc_html_e('Seulement en attente', 'plugin-ufsc-gestion-club-13072025'); ?></option>
-            <option value="refusee" <?php selected($filter, 'refusee'); ?>><?php esc_html_e('Seulement les refusées', 'plugin-ufsc-gestion-club-13072025'); ?></option>
+            <option value="all" <?php selected($filter, 'all'); ?>><?php esc_html_e('Toutes les licences', 'ufsc-gestion-club-final'); ?></option>
+            <option value="validee" <?php selected($filter, 'validee'); ?>><?php esc_html_e('Seulement les validées', 'ufsc-gestion-club-final'); ?></option>
+            <option value="en_attente" <?php selected($filter, 'en_attente'); ?>><?php esc_html_e('Seulement en attente', 'ufsc-gestion-club-final'); ?></option>
+            <option value="refusee" <?php selected($filter, 'refusee'); ?>><?php esc_html_e('Seulement les refusées', 'ufsc-gestion-club-final'); ?></option>
         </select>
-        <p class="description"><?php esc_html_e('Filtrer les licences par statut lors de l\'export.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Filtrer les licences par statut lors de l\'export.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4258,7 +4258,7 @@ class UFSC_Menu
         $filename = isset($options['custom_filename']) ? $options['custom_filename'] : '';
         ?>
         <input type="text" id="custom_filename" name="ufsc_general_settings[custom_filename]" value="<?php echo esc_attr($filename); ?>" class="regular-text" placeholder="export_ufsc">
-        <p class="description"><?php esc_html_e('Nom de base pour les fichiers exportés (sans extension). Laisser vide pour utiliser le nom par défaut.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Nom de base pour les fichiers exportés (sans extension). Laisser vide pour utiliser le nom par défaut.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4275,8 +4275,8 @@ class UFSC_Menu
         $enabled = isset($options['enable_manual_validation']) ? $options['enable_manual_validation'] : true;
         ?>
         <input type="checkbox" id="enable_manual_validation" name="ufsc_general_settings[enable_manual_validation]" value="1" <?php checked(1, $enabled); ?>>
-        <label for="enable_manual_validation"><?php esc_html_e('Activer la validation manuelle des licences', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-        <p class="description"><?php esc_html_e('Si désactivé, toutes les licences seront automatiquement validées.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <label for="enable_manual_validation"><?php esc_html_e('Activer la validation manuelle des licences', 'ufsc-gestion-club-final'); ?></label>
+        <p class="description"><?php esc_html_e('Si désactivé, toutes les licences seront automatiquement validées.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4289,8 +4289,8 @@ class UFSC_Menu
         $enabled = isset($options['enable_email_notifications']) ? $options['enable_email_notifications'] : false;
         ?>
         <input type="checkbox" id="enable_email_notifications" name="ufsc_general_settings[enable_email_notifications]" value="1" <?php checked(1, $enabled); ?>>
-        <label for="enable_email_notifications"><?php esc_html_e('Envoyer des emails automatiques lors de la validation/refus', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-        <p class="description"><?php esc_html_e('Les adhérents recevront un email lors de la validation ou du refus de leur licence.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <label for="enable_email_notifications"><?php esc_html_e('Envoyer des emails automatiques lors de la validation/refus', 'ufsc-gestion-club-final'); ?></label>
+        <p class="description"><?php esc_html_e('Les adhérents recevront un email lors de la validation ou du refus de leur licence.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4300,10 +4300,10 @@ class UFSC_Menu
     public function email_validation_message_callback()
     {
         $options = get_option('ufsc_general_settings', array());
-        $message = isset($options['email_validation_message']) ? $options['email_validation_message'] : __('Votre licence a été validée avec succès !', 'plugin-ufsc-gestion-club-13072025');
+        $message = isset($options['email_validation_message']) ? $options['email_validation_message'] : __('Votre licence a été validée avec succès !', 'ufsc-gestion-club-final');
         ?>
         <textarea id="email_validation_message" name="ufsc_general_settings[email_validation_message]" rows="4" cols="50" class="large-text"><?php echo esc_textarea($message); ?></textarea>
-        <p class="description"><?php esc_html_e('Message personnalisé envoyé lors de la validation d\'une licence.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Message personnalisé envoyé lors de la validation d\'une licence.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4313,10 +4313,10 @@ class UFSC_Menu
     public function email_rejection_message_callback()
     {
         $options = get_option('ufsc_general_settings', array());
-        $message = isset($options['email_rejection_message']) ? $options['email_rejection_message'] : __('Votre demande de licence a été refusée. Veuillez contacter votre club pour plus d\'informations.', 'plugin-ufsc-gestion-club-13072025');
+        $message = isset($options['email_rejection_message']) ? $options['email_rejection_message'] : __('Votre demande de licence a été refusée. Veuillez contacter votre club pour plus d\'informations.', 'ufsc-gestion-club-final');
         ?>
         <textarea id="email_rejection_message" name="ufsc_general_settings[email_rejection_message]" rows="4" cols="50" class="large-text"><?php echo esc_textarea($message); ?></textarea>
-        <p class="description"><?php esc_html_e('Message personnalisé envoyé lors du refus d\'une licence.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('Message personnalisé envoyé lors du refus d\'une licence.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4350,7 +4350,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[frontend_club_fields][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Champs visibles sur le frontend pour les clubs.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Champs visibles sur le frontend pour les clubs.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -4376,7 +4376,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[frontend_license_fields][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Champs visibles sur le frontend pour les licences.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Champs visibles sur le frontend pour les licences.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     // ================================
@@ -4406,7 +4406,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[hide_sensitive_export][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Champs sensibles à masquer dans les exports pour la conformité RGPD.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Champs sensibles à masquer dans les exports pour la conformité RGPD.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     /**
@@ -4430,7 +4430,7 @@ class UFSC_Menu
             echo '<label><input type="checkbox" name="ufsc_general_settings[hide_sensitive_frontend][]" value="' . esc_attr($field) . '" ' . $checked . '> ' . esc_html($label) . '</label><br>';
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Champs sensibles à masquer sur le frontend public.', 'plugin-ufsc-gestion-club-13072025') . '</p>';
+        echo '<p class="description">' . esc_html__('Champs sensibles à masquer sur le frontend public.', 'ufsc-gestion-club-final') . '</p>';
     }
 
     // ================================
@@ -4446,7 +4446,7 @@ class UFSC_Menu
         $logo_url = isset($options['export_logo_url']) ? $options['export_logo_url'] : '';
         ?>
         <input type="url" id="export_logo_url" name="ufsc_general_settings[export_logo_url]" value="<?php echo esc_attr($logo_url); ?>" class="regular-text" placeholder="https://example.com/logo.png">
-        <p class="description"><?php esc_html_e('URL du logo à inclure dans les exports (format d\'image supporté).', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('URL du logo à inclure dans les exports (format d\'image supporté).', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4458,7 +4458,7 @@ class UFSC_Menu
         $value = get_option('ufsc_wc_license_product_ids', '2934');
         ?>
         <input type="text" id="ufsc_wc_license_product_ids" name="ufsc_wc_license_product_ids" value="<?php echo esc_attr($value); ?>" class="regular-text">
-        <p class="description"><?php esc_html_e('IDs des produits WooCommerce pour les licences, séparés par des virgules (ex: 2934,2935,2936).', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <p class="description"><?php esc_html_e('IDs des produits WooCommerce pour les licences, séparés par des virgules (ex: 2934,2935,2936).', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4470,8 +4470,8 @@ class UFSC_Menu
         $value = get_option('ufsc_auto_create_user', false);
         ?>
         <input type="checkbox" id="ufsc_auto_create_user" name="ufsc_auto_create_user" value="1" <?php checked(1, $value); ?>>
-        <label for="ufsc_auto_create_user"><?php esc_html_e('Créer automatiquement un utilisateur WordPress depuis une commande WooCommerce', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-        <p class="description"><?php esc_html_e('Si activé, un compte utilisateur sera créé automatiquement lors du traitement d\'une commande.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <label for="ufsc_auto_create_user"><?php esc_html_e('Créer automatiquement un utilisateur WordPress depuis une commande WooCommerce', 'ufsc-gestion-club-final'); ?></label>
+        <p class="description"><?php esc_html_e('Si activé, un compte utilisateur sera créé automatiquement lors du traitement d\'une commande.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
@@ -4483,8 +4483,8 @@ class UFSC_Menu
         $value = get_option('ufsc_require_login_shortcodes', true);
         ?>
         <input type="checkbox" id="ufsc_require_login_shortcodes" name="ufsc_require_login_shortcodes" value="1" <?php checked(1, $value); ?>>
-        <label for="ufsc_require_login_shortcodes"><?php esc_html_e('Exiger la connexion pour accéder aux shortcodes frontend', 'plugin-ufsc-gestion-club-13072025'); ?></label>
-        <p class="description"><?php esc_html_e('Si activé, les shortcodes [ufsc_club_register], [ufsc_club_account], [ufsc_club_licenses], [ufsc_club_dashboard] nécessiteront une connexion.', 'plugin-ufsc-gestion-club-13072025'); ?></p>
+        <label for="ufsc_require_login_shortcodes"><?php esc_html_e('Exiger la connexion pour accéder aux shortcodes frontend', 'ufsc-gestion-club-final'); ?></label>
+        <p class="description"><?php esc_html_e('Si activé, les shortcodes [ufsc_club_register], [ufsc_club_account], [ufsc_club_licenses], [ufsc_club_dashboard] nécessiteront une connexion.', 'ufsc-gestion-club-final'); ?></p>
         <?php
     }
 
