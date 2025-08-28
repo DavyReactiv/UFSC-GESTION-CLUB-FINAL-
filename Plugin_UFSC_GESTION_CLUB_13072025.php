@@ -929,7 +929,7 @@ function ufsc_enqueue_frontend_pro_assets()
 
     wp_enqueue_script(
         'ufsc-frontend-pro-script',
-        UFSC_PLUGIN_URL . 'assets/js/frontend-pro.js',
+        plugins_url('assets/js/frontend-pro.js', __FILE__),
         ['jquery', 'ufsc-frontend-script'],
         UFSC_PLUGIN_VERSION,
         true
