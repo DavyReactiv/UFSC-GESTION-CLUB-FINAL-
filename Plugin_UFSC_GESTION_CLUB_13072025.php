@@ -26,6 +26,8 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
+
+
 // Global helper functions (including ufsc_verify_club_access)
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
@@ -43,6 +45,7 @@ if (!function_exists('ufsc_activate_plugin')) {
     }
 }
 register_activation_hook(__FILE__, 'ufsc_activate_plugin');
+
 
 // === Capabilities on activation ===
 if (!function_exists('ufsc_add_caps_on_activate')) {
@@ -104,133 +107,165 @@ if (!defined('UFSC_LICENCE_MODE')) {
 }
 
 /**
- * Include required files
+ * Simple autoloader for UFSC classes.
  */
-// Helper classes
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/attestations-helper.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/security.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/club-permissions.php';
+spl_autoload_register(function($class) {
+    if (strpos($class, 'UFSC_') !== 0) {
+        return;
+    }
+    $class_file = 'class-' . strtolower(str_replace('_', '-', $class)) . '.php';
+    $paths = [
+        'includes/',
+        'includes/helpers/',
+        'includes/admin/',
+        'includes/clubs/',
+        'includes/core/',
+        'includes/frontend/',
+        'includes/frontend/shortcodes/',
+        'includes/licences/',
+        'includes/woocommerce/',
+    ];
+    foreach ($paths as $path) {
+        $file = UFSC_PLUGIN_PATH . $path . $class_file;
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
+    }
+});
 
-// Compatibility shims
-require_once UFSC_PLUGIN_PATH . 'includes/compat/monetico-compat.php';
-require_once UFSC_PLUGIN_PATH . 'includes/compat/wc-id-reconciliation.php';
+/**
+ * Load files shared between admin and frontend.
+ */
+function ufsc_load_common() {
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
+    ufsc_run_migrations();
 
-// Core files
-require_once UFSC_PLUGIN_PATH . 'includes/core/class-gestionclub-core.php';
-require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
-
-// Admin files
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-dashboard.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-frontend-pro-settings.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-admin-settings.php';
-require_once UFSC_PLUGIN_PATH . 'includes/admin/class-sync-monitor.php';
-
-// Include test file for development
-if (WP_DEBUG) {
-    require_once UFSC_PLUGIN_PATH . 'includes/admin/test-sync.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/director-fields-test.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/database-schema-test.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/user-club-association-enhancement-test.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/admin-settings-test.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/frontend-refonte-test.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/tests/woocommerce-ecommerce-test.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/class-ufsc-csv-export.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/ufsc-upload-validator.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/attestations-helper.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/security.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/club-permissions.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/compat/monetico-compat.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/compat/wc-id-reconciliation.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/core/class-gestionclub-core.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
 }
+add_action('plugins_loaded', 'ufsc_load_common', 0);
 
-// Include database validator for admin use
-if (is_admin()) {
+/**
+ * Load admin specific files.
+ */
+function ufsc_load_admin_files() {
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-dashboard.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-frontend-pro-settings.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-admin-settings.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-sync-monitor.php';
+
+    if (WP_DEBUG) {
+        require_once UFSC_PLUGIN_PATH . 'includes/admin/test-sync.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/director-fields-test.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/database-schema-test.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/user-club-association-enhancement-test.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/admin-settings-test.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/frontend-refonte-test.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/tests/woocommerce-ecommerce-test.php';
+    }
+
     require_once UFSC_PLUGIN_PATH . 'includes/admin/database-validator.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/user-profile-enhancement.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/licence-validation.php';
-}
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/ufsc-page-creator.php';
 
-// Page creator - needed for activation hook
-require_once UFSC_PLUGIN_PATH . 'includes/admin/ufsc-page-creator.php';
-
-// Frontend files
-$file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
-if (file_exists($file)) {
-    require_once $file;
-} else {
-    if (defined('WP_DEBUG') && WP_DEBUG) {
-        error_log('UFSC Gestion Club: missing file ' . $file);
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-pack-affiliation.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-pack-affiliation.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-order-admin-licences.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-order-admin-licences.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-pack-exports.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-pack-exports.php';
     }
 }
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-form-shortcode.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/affiliation-form-shortcode.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licence-button-shortcode.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-menu-shortcode.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/recent-licences-shortcode.php';
-
-// New modular club dashboard
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/club/dashboard.php';
-
-// New shortcodes for UFSC club management
-require_once UFSC_PLUGIN_PATH . 'includes/shortcodes.php';
-
-// Frontend attestation shortcodes and AJAX handlers
-require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-attestations.php';
-require_once UFSC_PLUGIN_PATH . 'includes/ajax-handlers.php';
-
-// AJAX handler for adding licences to cart
-require_once UFSC_PLUGIN_PATH . 'includes/licences/ajax-add-to-cart.php';
-
-// WooCommerce Integration
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/affiliation-woocommerce.php';
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-licence-form.php';
-
-// New WooCommerce integration for frontend refonte
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-affiliation-form.php';
-
-// New helper files for frontend refonte
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/helpers-licence-status.php';
-require_once UFSC_PLUGIN_PATH . 'includes/helpers/helpers-product-buttons.php';
-
-// New frontend shortcodes
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/new-frontend-shortcodes.php';
-
-// Dashboard overview shortcode
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/dashboard/overview.php';
-
-// New WooCommerce integration class (consolidated)
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php';
-}
-
-// Load cart item role metadata handling
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php';
-}
-
-// New WooCommerce e-commerce features
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-pack-affiliation.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-pack-affiliation.php';
-}
-
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-order-admin-licences.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/auto-order-admin-licences.php';
-}
-
-// Frontend shortcodes
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php';
-}
+add_action('admin_init', 'ufsc_load_admin_files', 0);
 
 /**
- * Initialize admin components.
- * This includes menu registration and document management.
+ * Load frontend specific files.
  */
-// Licences direct shortcode & ajax (added)
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
+function ufsc_load_frontend_files() {
+    $file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
+    if (file_exists($file)) {
+        require_once $file;
+    } elseif (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('UFSC Gestion Club: missing file ' . $file);
+    }
+
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-form-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/affiliation-form-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licence-button-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-menu-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/recent-licences-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/club/dashboard.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/shortcodes.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-attestations.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/ajax-handlers.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/ajax-add-to-cart.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/affiliation-woocommerce.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-licence-form.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-affiliation-form.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/helpers-licence-status.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/helpers-product-buttons.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/new-frontend-shortcodes.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/dashboard/overview.php';
+
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/class-ufsc-woocommerce-integration.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/woocommerce/cart-item-role-meta.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
+    }
+    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
+        require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
+    }
+
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/cart-router.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';
+
+    $assets = UFSC_PLUGIN_PATH . 'includes/class-ufsc-assets.php';
+    if (file_exists($assets)) {
+        require_once $assets;
+    }
+    $override = UFSC_PLUGIN_PATH . 'includes/overrides/club-licenses-override.php';
+    if (file_exists($override)) {
+        require_once $override;
+    }
+    $profix_loader = __DIR__ . '/includes/overrides_profix/_loader.php';
+    if (defined('ABSPATH') && file_exists($profix_loader)) {
+        require_once $profix_loader;
+    }
 }
-if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
+add_action('init', 'ufsc_load_frontend_files', 0);
+
+/**
+ * Activation hook for migrations.
+ */
+function ufsc_activate_migrations() {
+    require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
+    ufsc_run_migrations();
 }
+register_activation_hook(__FILE__, 'ufsc_activate_migrations');
 
 /**
  * Bootstrap admin functionality and verify database connection.
@@ -2609,125 +2644,6 @@ function ufsc_handle_delete_licence_draft(){
 }
 
 
-/**
- * Database migrations (idempotent).
- * - Ensures required columns and indexes exist.
- * - Stores schema version.
- */
-function ufsc_run_migrations() {
-    global $wpdb;
-    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-    $version_option = 'ufsc_gc_db_version';
-    $current = get_option($version_option, '');
-    $target  = '2025.08.23';
-
-    // Run only if not run before or on version mismatch
-    if ($current === $target) { return; }
-
-    // Tables
-    $t_lic = $wpdb->prefix . 'ufsc_licences';
-    $t_club = $wpdb->prefix . 'ufsc_clubs';
-    $t_link = $wpdb->prefix . 'ufsc_user_clubs';
-
-    // Ensure columns exist for licences
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'statut'));
-    if (!$col) {
-        $wpdb->query(
-            $wpdb->prepare(
-                "ALTER TABLE {$t_lic} ADD COLUMN statut VARCHAR(20) NOT NULL DEFAULT %s",
-                'brouillon'
-            )
-        );
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'date_creation'));
-    if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN date_creation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'club_id'));
-    if (!$col) {
-        $wpdb->query(
-            $wpdb->prepare(
-                "ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT %d",
-                0
-            )
-        );
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'payment_status'));
-    if (!$col) {
-        $wpdb->query(
-            $wpdb->prepare(
-                "ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT %s",
-                'pending'
-            )
-        );
-    }
-
-    // Ensure columns for clubs logo
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_total'));
-    if (!$col) {
-        $wpdb->query(
-            $wpdb->prepare(
-                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_total INT NOT NULL DEFAULT %d",
-                0
-            )
-        );
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_used'));
-    if (!$col) {
-        $wpdb->query(
-            $wpdb->prepare(
-                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_used INT NOT NULL DEFAULT %d",
-                0
-            )
-        );
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'logo_attachment_id'));
-    if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN logo_attachment_id BIGINT UNSIGNED NULL");
-    }
-    $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'logo_url'));
-    if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN logo_url VARCHAR(255) NULL");
-    }
-
-    // Indexes (licences)
-    $indexes = $wpdb->get_results("SHOW INDEX FROM {$t_lic}", ARRAY_A);
-    $idx_names = array();
-    foreach ($indexes as $ix) { $idx_names[$ix['Key_name']] = true; }
-    if (empty($idx_names['club_id'])) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD INDEX club_id (club_id)");
-    }
-    if (empty($idx_names['statut'])) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD INDEX statut (statut)");
-    }
-    if (empty($idx_names['date_creation'])) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD INDEX date_creation (date_creation)");
-    }
-
-    // Indexes (link table)
-    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $t_link)) == $t_link) {
-        $indexes = $wpdb->get_results("SHOW INDEX FROM {$t_link}", ARRAY_A);
-        $idx_names = array();
-        foreach ($indexes as $ix) { $idx_names[$ix['Key_name']] = true; }
-        if (empty($idx_names['user_id'])) {
-            $wpdb->query("ALTER TABLE {$t_link} ADD INDEX user_id (user_id)");
-        }
-        if (empty($idx_names['club_id'])) {
-            $wpdb->query("ALTER TABLE {$t_link} ADD INDEX club_id (club_id)");
-        }
-    }
-
-    update_option($version_option, $target);
-}
-
-// Hook on activation and early admin init (for upgrades without reactivation)
-register_activation_hook(__FILE__, 'ufsc_run_migrations');
-add_action('admin_init', 'ufsc_run_migrations');
-
-// Load Packs & Exports admin
-if (is_admin()) { require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-pack-exports.php'; }
-
 
 // === WooCommerce Pack Credits Logic ===
 add_action('woocommerce_before_calculate_totals', 'ufsc_apply_pack_credit_to_cart', 20, 1);
@@ -2807,31 +2723,6 @@ add_action('woocommerce_order_status_changed', function($order_id, $from, $to, $
     }
 }, 20, 4);
 
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/cart-router.php';
-
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
-
-require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
-require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';
-
-
-// === UFSC v20.3 Fixes: Assets + Front AJAX binding ===
-if ( defined('UFSC_PLUGIN_PATH') ) {
-    $__ufsc_fix_assets = UFSC_PLUGIN_PATH . 'includes/class-ufsc-assets.php';
-    if ( file_exists($__ufsc_fix_assets) ) require_once $__ufsc_fix_assets;
-}
-
-// UFSC v20.4 overrides
-if ( defined('UFSC_PLUGIN_PATH') ) {
-  $__ov = UFSC_PLUGIN_PATH . 'includes/overrides/club-licenses-override.php';
-  if ( file_exists($__ov) ) require_once $__ov;
-}
-
-// Ensure override is required (safety)
-if (defined('UFSC_PLUGIN_PATH')) { $ov = UFSC_PLUGIN_PATH.'includes/overrides/club-licenses-override.php'; if (file_exists($ov)) require_once $ov; }
-
-// UFSC profix overrides loader
-if ( defined('ABSPATH') ) { require_once __DIR__ . '/includes/overrides_profix/_loader.php'; }
 
 /**
  * Handle licence deletion.
