@@ -27,6 +27,7 @@ if (!defined('ABSPATH')) {
 define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 
+
 // Ensure menu capabilities are available early.
 if (file_exists(UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php')) {
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
@@ -42,12 +43,12 @@ require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
 
+
 // === Activation tasks ===
 if (!function_exists('ufsc_activate_plugin')) {
     function ufsc_activate_plugin() {
-        if (function_exists('ufsc_run_migrations')) {
-            ufsc_run_migrations();
-        }
+        require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
+        ufsc_run_migrations();
         if (function_exists('ufsc_ensure_frontend_pages')) {
             ufsc_ensure_frontend_pages();
         }
@@ -200,6 +201,7 @@ add_action('admin_init', 'ufsc_load_admin_files', 0);
 
 
 
+
 // Frontend files
 if ( ! is_admin() ) {
     $file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
@@ -280,6 +282,7 @@ if ( ! is_admin() ) {
     }
 }
 
+
 /**
  * Load frontend specific files.
  */
@@ -350,16 +353,6 @@ function ufsc_load_frontend_files() {
     }
 }
 add_action('init', 'ufsc_load_frontend_files', 0);
-
-/**
- * Activation hook for migrations.
- */
-function ufsc_activate_migrations() {
-    require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
-    ufsc_run_migrations();
-}
-register_activation_hook(__FILE__, 'ufsc_activate_migrations');
-
 /**
  * Bootstrap admin functionality and verify database connection.
  *
@@ -371,7 +364,9 @@ register_activation_hook(__FILE__, 'ufsc_activate_migrations');
 
 
 
+
 function ufsc_admin_bootstrap() {}
+
 
 function ufsc_admin_boot() {
     global $wpdb;
@@ -2833,33 +2828,6 @@ add_action('woocommerce_order_status_changed', function($order_id, $from, $to, $
         }
     }
 }, 20, 4);
-
-
-if ( ! is_admin() ) {
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/cart-router.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
-}
-require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';
-
-
-// === UFSC v20.3 Fixes: Assets + Front AJAX binding ===
-if ( defined('UFSC_PLUGIN_PATH') ) {
-    $__ufsc_fix_assets = UFSC_PLUGIN_PATH . 'includes/class-ufsc-assets.php';
-    if ( file_exists($__ufsc_fix_assets) ) require_once $__ufsc_fix_assets;
-}
-
-// UFSC v20.4 overrides
-if ( defined('UFSC_PLUGIN_PATH') ) {
-  $__ov = UFSC_PLUGIN_PATH . 'includes/overrides/club-licenses-override.php';
-  if ( file_exists($__ov) ) require_once $__ov;
-}
-
-// Ensure override is required (safety)
-if (defined('UFSC_PLUGIN_PATH')) { $ov = UFSC_PLUGIN_PATH.'includes/overrides/club-licenses-override.php'; if (file_exists($ov)) require_once $ov; }
-
-// UFSC profix overrides loader
-if ( defined('ABSPATH') ) { require_once __DIR__ . '/includes/overrides_profix/_loader.php'; }
 
 
 /**
