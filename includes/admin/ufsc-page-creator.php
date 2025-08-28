@@ -174,3 +174,80 @@ function ufsc_get_login_page_url() {
 
     return false;
 }
+
+/**
+ * Display a notice if required frontend pages are missing or return 404.
+ *
+ * Provides an action link to recreate the pages automatically.
+ *
+ * @since 1.3.0
+ */
+function ufsc_notice_missing_frontend_pages() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    $pages          = ufsc_get_frontend_required_pages();
+    $missing_titles = array();
+
+    foreach ($pages as $option_key => $page_config) {
+        $page_id = (int) get_option($option_key, 0);
+        if (!$page_id || get_post_status($page_id) !== 'publish') {
+            $missing_titles[] = $page_config['title'];
+            continue;
+        }
+
+        $permalink = get_permalink($page_id);
+        if (!$permalink) {
+            $missing_titles[] = $page_config['title'];
+            continue;
+        }
+
+        $response = wp_remote_head($permalink, array('timeout' => 3));
+        if (is_wp_error($response) || 404 === wp_remote_retrieve_response_code($response)) {
+            $missing_titles[] = $page_config['title'];
+        }
+    }
+
+    if (empty($missing_titles)) {
+        return;
+    }
+
+    $action_url = wp_nonce_url(
+        admin_url('admin-post.php?action=ufsc_recreate_frontend_pages'),
+        'ufsc_recreate_frontend_pages'
+    );
+
+    echo '<div class="notice notice-warning"><p>' .
+        esc_html(
+            sprintf(
+                __('Certaines pages requises sont manquantes ou introuvables : %s', 'plugin-ufsc-gestion-club-13072025'),
+                implode(', ', $missing_titles)
+            )
+        ) .
+        '</p><p><a class="button" href="' . esc_url($action_url) . '">' .
+        esc_html__('Recréer automatiquement', 'plugin-ufsc-gestion-club-13072025') .
+        '</a></p></div>';
+}
+add_action('admin_notices', 'ufsc_notice_missing_frontend_pages');
+
+/**
+ * Handle admin action to recreate frontend pages.
+ *
+ * @since 1.3.0
+ */
+function ufsc_handle_recreate_frontend_pages() {
+    if (
+        !current_user_can('manage_options') ||
+        !check_admin_referer('ufsc_recreate_frontend_pages')
+    ) {
+        wp_die(__('Action non autorisée.', 'plugin-ufsc-gestion-club-13072025'));
+    }
+
+    ufsc_ensure_frontend_pages();
+    delete_option('ufsc_auto_page_check_done');
+
+    wp_safe_redirect(admin_url());
+    exit;
+}
+add_action('admin_post_ufsc_recreate_frontend_pages', 'ufsc_handle_recreate_frontend_pages');
