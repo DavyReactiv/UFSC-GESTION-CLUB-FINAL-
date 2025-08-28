@@ -32,6 +32,8 @@ Plugin WordPress complet et professionnel permettant aux clubs UFSC (Union Fran�
 | MySQL | 5.6+ | 8.0+ |
 | WooCommerce | 4.0+ | 7.0+ (optionnel) |
 
+> ℹ️ Les bibliothèques Notyf et DataTables sont désormais fournies localement, aucune connexion externe n'est requise pour ces dépendances.
+
 ### Installation du plugin
 
 1. **Téléchargement**
