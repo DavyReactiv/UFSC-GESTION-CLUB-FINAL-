@@ -49,12 +49,16 @@ jQuery(document).ready(function($) {
                 console.log('Table club détectée:', headerColCount, 'colonnes');
                 
                 // Configuration spécifique pour la vue club (13 colonnes avec checkbox)
-                const exportColumns = [1,2,3,4,5,6,7,8,9,10,11]; // Exclut checkbox (0) et actions (12)
+                const exportColumns = [];
+                for (let i = 1; i < headerColCount - 1; i++) {
+                    exportColumns.push(i);
+                }
+
                 const columnDefs = [
-                    { targets: 0, orderable: false, searchable: false }, // checkbox
-                    { targets: 12, orderable: false, searchable: false } // actions
+                    { targets: headerColCount - 1, orderable: false, searchable: false },
+                    { targets: 0, orderable: false, searchable: false }
                 ];
-                
+
                 initializeDataTable(tableId, exportColumns, columnDefs, true, 'Club');
             }, 100);
         }
@@ -84,11 +88,15 @@ jQuery(document).ready(function($) {
                 console.log('Table globale détectée:', headerColCount, 'colonnes');
                 
                 // Configuration spécifique pour la vue globale (13 colonnes sans checkbox)
-                const exportColumns = [0,1,2,3,4,5,6,7,8,9,10,11]; // Exclut seulement actions (12)
+                const exportColumns = [];
+                for (let i = 0; i < headerColCount - 1; i++) {
+                    exportColumns.push(i);
+                }
+
                 const columnDefs = [
-                    { targets: 12, orderable: false, searchable: false } // actions
+                    { targets: headerColCount - 1, orderable: false, searchable: false }
                 ];
-                
+
                 initializeDataTable(tableId, exportColumns, columnDefs, false, 'Global');
             }, 100);
         }
