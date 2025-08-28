@@ -205,13 +205,30 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')
 }
 
 /**
- * Bootstrap admin functionality by instantiating required classes.
+ * Bootstrap admin functionality and verify database connection.
+ *
+ * Runs a lightweight check against the ufsc_clubs table and logs any
+ * database errors instead of stopping execution.
  */
-function ufsc_admin_bootstrap() {
+function ufsc_admin_boot() {
+    global $wpdb;
+
+    // Lightweight table check
+    $wpdb->get_var( "SELECT 1 FROM {$wpdb->prefix}ufsc_clubs LIMIT 1" );
+
+    if ( ! empty( $wpdb->last_error ) ) {
+        $error_message = $wpdb->last_error;
+        error_log( '[UFSC] ' . $error_message );
+
+        add_action( 'admin_notices', function () use ( $error_message ) {
+            echo '<div class="notice notice-error"><p>' . esc_html( '[UFSC] ' . $error_message ) . '</p></div>';
+        } );
+    }
+
     new UFSC_Menu();
     UFSC_Document_Manager::get_instance();
 }
-add_action('admin_init', 'ufsc_admin_bootstrap');
+add_action( 'admin_init', 'ufsc_admin_boot' );
 
     /**
      * Load text domain for translations
