@@ -120,17 +120,8 @@
       var id = $b.data('licenceId') || $b.data('licence-id');
       if(!id) return;
 
-        var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
-        lock($b, 'Ajout…');
-        $.post(ajaxUrl, {
-          action: 'ufsc_add_to_cart',
-          licence_id: id,
-          club_id: club,
-          _ajax_nonce: (UFSC && UFSC.frontNonce) || ''
-        }).done(function(res){
-
       var club = $b.data('clubId') || $b.data('club-id') || (UFSC && UFSC.club_id) || '';
-      var nonce = (UFSC && (UFSC.frontNonce || (UFSC.nonces && UFSC.nonces.add_to_cart))) || '';
+      var nonce = $b.data('nonce') || (UFSC.frontNonce || (UFSC.nonces && UFSC.nonces.add_to_cart) || '');
       lock($b, 'Ajout…');
       $.post(ajaxUrl, {
         action: 'ufsc_add_to_cart',
