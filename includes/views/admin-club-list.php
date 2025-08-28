@@ -135,7 +135,7 @@ $base_url = remove_query_arg('paged', isset($_SERVER['REQUEST_URI']) ? wp_unslas
                 </div>
             </div>
 
-            <table class="wp-list-table widefat fixed striped ufsc-table" id="club-table">
+            <table class="wp-list-table widefat fixed striped ufsc-table ufsc-table--static" id="club-table">
                 <thead>
                     <tr>
                         <th style="width: 40px;">

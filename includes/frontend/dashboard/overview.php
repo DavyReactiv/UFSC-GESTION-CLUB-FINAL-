@@ -295,7 +295,7 @@ function ufsc_render_licences_section($club, $limit = 10) {
     
     <?php if (!empty($licences)): ?>
     <!-- Licences Table -->
-    <table class="ufsc-table">
+    <table class="ufsc-table ufsc-table--static">
         <thead>
             <tr>
                 <th>Nom</th>
