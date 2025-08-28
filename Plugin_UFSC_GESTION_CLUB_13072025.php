@@ -49,13 +49,28 @@ if (!function_exists('ufsc_add_caps_on_activate')) {
     function ufsc_add_caps_on_activate() {
         $role = get_role('administrator');
         if ($role) {
-            foreach (['ufsc_manage', 'ufsc_manage_own'] as $cap) {
+            foreach (['manage_ufsc', 'ufsc_manage', 'ufsc_manage_own'] as $cap) {
                 $role->add_cap($cap);
             }
         }
     }
 }
 register_activation_hook(__FILE__, 'ufsc_add_caps_on_activate');
+// Ensure manage_ufsc capability is available and fallback to manage_options if missing
+add_action('init', 'ufsc_ensure_manage_ufsc_cap');
+function ufsc_ensure_manage_ufsc_cap() {
+    $role = get_role('administrator');
+    if ($role && !$role->has_cap('manage_ufsc')) {
+        $role->add_cap('manage_ufsc');
+    }
+    add_filter('user_has_cap', 'ufsc_manage_ufsc_fallback', 0, 3);
+}
+function ufsc_manage_ufsc_fallback($allcaps, $caps, $args) {
+    if (!isset($allcaps['manage_ufsc']) && isset($allcaps['manage_options'])) {
+        $allcaps['manage_ufsc'] = $allcaps['manage_options'];
+    }
+    return $allcaps;
+}
 // Map legacy capabilities to new ones for backward compatibility
 add_filter('user_has_cap', 'ufsc_map_legacy_caps', 10, 3);
 function ufsc_map_legacy_caps($allcaps, $caps, $args) {
