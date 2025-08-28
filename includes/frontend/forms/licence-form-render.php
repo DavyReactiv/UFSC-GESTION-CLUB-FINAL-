@@ -278,7 +278,7 @@ function ufsc_render_licence_form($args = array()){
       </fieldset>
 
       <div class="ufsc-form-actions">
-        <button type="button" id="ufsc-save-draft" class="ufsc-btn ufsc-btn-secondary">💾 Enregistrer brouillon</button>
+        <button type="button" id="ufsc-save-draft" class="ufsc-btn ufsc-btn-secondary ufsc-save-draft">💾 Enregistrer brouillon</button>
         <button type="submit" class="ufsc-btn"><?php echo esc_html($args['submit_button_text']); ?></button>
       </div>
     </form>
