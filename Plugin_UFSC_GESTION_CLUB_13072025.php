@@ -158,6 +158,9 @@ function ufsc_load_common() {
     require_once UFSC_PLUGIN_PATH . 'includes/compat/wc-id-reconciliation.php';
     require_once UFSC_PLUGIN_PATH . 'includes/core/class-gestionclub-core.php';
     require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
+    // Document Manager handles secure document operations for both admin and frontend
+    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
+    UFSC_Document_Manager::get_instance();
 }
 add_action('plugins_loaded', 'ufsc_load_common', 0);
 
@@ -167,7 +170,6 @@ add_action('plugins_loaded', 'ufsc_load_common', 0);
 function ufsc_load_admin_files() {
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-dashboard.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-menu.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-frontend-pro-settings.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-ufsc-admin-settings.php';
     require_once UFSC_PLUGIN_PATH . 'includes/admin/class-sync-monitor.php';
@@ -728,16 +730,9 @@ function ufsc_handle_delete_club() {
 }
 
 // Club validation AJAX handler - connects to Document Manager's validate_club() method
-// This hook validates clubs by checking required documents and updating status to 'valide'
-// Handles permissions, nonce verification, document validation, and status updates
+// This hook validates clubs by checking required documents and updating status to 'Actif'
+// Document Manager is loaded on both admin and frontend during plugin initialization
 add_action('wp_ajax_ufsc_validate_club', function () {
-    if (!class_exists('UFSC_Document_Manager')) {
-        if (function_exists('ufsc_load_admin_files')) {
-            ufsc_load_admin_files();
-        } else {
-            require_once UFSC_PLUGIN_PATH . 'includes/admin/class-document-manager.php';
-        }
-    }
     UFSC_Document_Manager::get_instance()->validate_club();
 });
 
