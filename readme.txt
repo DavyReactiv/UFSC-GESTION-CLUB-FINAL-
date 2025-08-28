@@ -43,6 +43,7 @@ Gestion complète des documents, licences, affiliations et expérience utilisate
 * Navigation clavier, focus visible, attributs ARIA
 * Sécurité WordPress (nonces, sanitization, validation d'accès)
 * Chargement conditionnel des ressources
+* Bibliothèques Notyf et DataTables embarquées (aucune connexion externe requise)
 
 = Shortcodes disponibles =
 
