@@ -10,7 +10,7 @@ if (!defined('UFSC_ENABLE_DIAG_ENDPOINT')) define('UFSC_ENABLE_DIAG_ENDPOINT', f
  * Author URI: https://studioreactiv.fr
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: plugin-ufsc-gestion-club-13072025
+ * Text Domain: ufsc-gestion-club-final
  * Domain Path: /languages
  * Requires at least: 6.6
  * Tested up to: 6.8
