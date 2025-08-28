@@ -19,8 +19,7 @@ function ufsc_ajax_club_search() {
         return;
     }
 
-    $nonce = isset($_REQUEST['nonce']) ? $_REQUEST['nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_club_search')) {
+    if (!check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce', false)) {
         wp_send_json_error('Invalid nonce', 403);
     }
     if (!current_user_can('manage_ufsc_licenses')) {
@@ -56,8 +55,7 @@ function ufsc_ajax_club_search() {
 add_action('wp_ajax_ufsc_upload_attestation', 'ufsc_handle_attestation_upload');
 function ufsc_handle_attestation_upload() {
     // Security checks
-    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_attestation_nonce')) {
+    if (!check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce', false)) {
         wp_send_json_error([
             'message' => esc_html__('Security check failed.', 'ufsc-domain')
         ], 403);
@@ -328,8 +326,7 @@ require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/logo-upload.php';
 add_action('wp_ajax_ufsc_check_licence_duplicate', 'ufsc_ajax_check_licence_duplicate');
 function ufsc_ajax_check_licence_duplicate() {
     // Security check
-    $nonce = isset($_REQUEST['_ajax_nonce']) ? $_REQUEST['_ajax_nonce'] : '';
-    if (!wp_verify_nonce($nonce, 'ufsc_licence_duplicate_nonce')) {
+    if (!check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce', false)) {
         wp_send_json_error([
             'message' => esc_html__('Échec de vérification de sécurité.', 'ufsc-domain')
         ], 403);

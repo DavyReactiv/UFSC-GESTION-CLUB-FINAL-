@@ -90,7 +90,7 @@ function ufsc_render_affiliation_form($args = [])
     $regions = file_exists($regions_file) ? require $regions_file : [];
     
     // Generate nonce for AJAX submission
-    $nonce = ufsc_create_nonce('ufsc_affiliation_nonce');
+    $nonce = ufsc_create_nonce('ufsc_front_nonce');
     
     // Start form output
     $output = '<div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card">';
@@ -107,7 +107,7 @@ function ufsc_render_affiliation_form($args = [])
     }
     
     $output .= '<form id="' . esc_attr($args['form_id']) . '" class="ufsc-affiliation-form" method="post">';
-    $output .= ufsc_nonce_field('ufsc_affiliation_nonce');
+    $output .= ufsc_nonce_field('ufsc_front_nonce');
     $output .= '<input type="hidden" name="action" value="ufsc_add_affiliation_to_cart">';
     $output .= '<input type="hidden" name="context" value="' . esc_attr($args['context']) . '">';
     $output .= '<input type="hidden" name="is_renewal" value="' . ($is_renewal ? '1' : '0') . '">';

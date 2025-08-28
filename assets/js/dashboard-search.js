@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: new URLSearchParams({
                         action: 'ufsc_search_dashboard',
                         query: query,
-                        nonce: ufscAjax.nonce
+                        ufsc_nonce: ufscAjax.nonce
                     })
                 });
                 const data = await response.json();

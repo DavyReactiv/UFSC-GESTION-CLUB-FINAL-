@@ -28,7 +28,7 @@
             // Prepare form data
             const formData = new FormData(this);
             formData.append('action', 'ufsc_add_licencie_to_cart');
-            formData.append('nonce', ufscAjax.addLicencieNonce);
+            formData.append('ufsc_nonce', ufscAjax.addLicencieNonce);
             
             // Send AJAX request
             $.ajax({

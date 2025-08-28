@@ -9,7 +9,7 @@ if ( ! defined('ABSPATH') ) exit;
  * Optionally accepts: licence_id (to update)
  */
 function ufsc_ajax_save_draft(){
-    check_ajax_referer('ufsc_front_nonce');
+    check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce');
     if ( ! is_user_logged_in() || ! current_user_can('read') ) {
         wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) ,401);
     }
@@ -99,7 +99,7 @@ add_action('wp_ajax_nopriv_ufsc_save_licence_draft', 'ufsc_ajax_save_draft');
  * Delete a draft (only if belongs to current user's club)
  */
 function ufsc_ajax_delete_draft(){
-    check_ajax_referer('ufsc_front_nonce');
+    check_ajax_referer('ufsc_front_nonce', 'ufsc_nonce');
     if ( ! is_user_logged_in() || ! current_user_can('read') ) {
         wp_send_json_error( array('message' => esc_html__('Connexion requise.', 'ufsc-domain')) ,401);
     }

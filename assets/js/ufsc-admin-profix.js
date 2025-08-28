@@ -1,6 +1,6 @@
 (function($){'use strict';
 var ajaxUrl=(UFSC_ADMIN&&UFSC_ADMIN.ajaxUrl)||'/wp-admin/admin-ajax.php';var nonce=(UFSC_ADMIN&&UFSC_ADMIN.nonce)||'';
-function doAction(a,p,f){p=p||{};p.action=a;if(nonce)p.nonce=nonce;return $.ajax({url:ajaxUrl,method:'POST',data:p,dataType:'json'})
+function doAction(a,p,f){p=p||{};p.action=a;if(nonce)p.ufsc_nonce=nonce;return $.ajax({url:ajaxUrl,method:'POST',data:p,dataType:'json'})
  .done(function(r){if(r&&r.success){location.reload();}else if(f){window.location.href=f;}else{alert((r&&r.data)||'Action failed');}})
  .fail(function(j){console.error('UFSC AJAX fail',j&&j.status,j&&j.responseText);if(f)window.location.href=f;else alert('Network error');});}
 function idFrom($e){return $e.data('licenceId')||$e.data('licence-id')||$e.data('id')||$e.closest('[data-licence-id]').data('licence-id')||0;}

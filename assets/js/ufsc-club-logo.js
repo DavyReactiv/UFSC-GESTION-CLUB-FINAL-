@@ -35,7 +35,7 @@
 
         const fd = new FormData();
         fd.append('action', 'ufsc_set_club_logo');
-        fd.append('nonce', ufscLogoUpload.setLogoNonce);
+        fd.append('ufsc_nonce', ufscLogoUpload.setLogoNonce);
         fd.append('logo_file', file);
 
         $button.prop('disabled', true).text('Téléversement...');

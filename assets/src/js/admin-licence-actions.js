@@ -48,7 +48,7 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
             data: {
                 action: 'ufsc_delete_licence',
                 licence_id: licenceId,
-                nonce: config.nonces.delete_licence
+                ufsc_nonce: config.nonces.delete_licence
             },
             success: function(response) {
                 if (response.success) {
@@ -91,7 +91,7 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
             data: {
                 action: 'ufsc_restore_licence',
                 licence_id: licenceId,
-                nonce: config.nonces.restore_licence
+                ufsc_nonce: config.nonces.restore_licence
             },
             success: function(response) {
                 if (response.success) {
@@ -138,7 +138,7 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
                 licence_id: licenceId,
                 new_status: newStatus,
                 reason: reason,
-                nonce: config.nonces.change_licence_status
+                ufsc_nonce: config.nonces.change_licence_status
             },
             success: function(response) {
                 if (response.success) {
@@ -178,7 +178,7 @@ window.UFSCLicenceActions = window.UFSCLicenceActions || {};
             data: {
                 action: 'ufsc_validate_licence',
                 licence_id: licenceId,
-                nonce: config.nonces.validate_licence
+                ufsc_nonce: config.nonces.validate_licence
             },
             success: function(response) {
                 if (response.success) {

@@ -232,7 +232,7 @@
         }
         formData.append('type', type);
         formData.append('attachment_id', attachmentId);
-        formData.append('nonce', ufscAttestations.uploadClubNonce);
+        formData.append('ufsc_nonce', ufscAttestations.uploadClubNonce);
         
         // Send AJAX request
         $.ajax({
@@ -275,7 +275,7 @@
         }
         formData.append('type', type);
         formData.append('file', file);
-        formData.append('nonce', ufscAttestations.uploadClubNonce);
+        formData.append('ufsc_nonce', ufscAttestations.uploadClubNonce);
         
         // Send AJAX request
         $.ajax({
@@ -316,7 +316,7 @@
             formData.append('club_id', clubId);
         }
         formData.append('type', type);
-        formData.append('nonce', ufscAttestations.deleteClubNonce);
+        formData.append('ufsc_nonce', ufscAttestations.deleteClubNonce);
         
         // Send AJAX request
         $.ajax({
@@ -360,7 +360,7 @@
         formData.append('action', 'ufsc_upload_licence_attestation');
         formData.append('licence_id', licenceId);
         formData.append('file', file);
-        formData.append('nonce', ufscAttestations.uploadLicenceNonce);
+        formData.append('ufsc_nonce', ufscAttestations.uploadLicenceNonce);
         
         // Send AJAX request
         $.ajax({
@@ -398,7 +398,7 @@
         const formData = new FormData();
         formData.append('action', 'ufsc_delete_licence_attestation');
         formData.append('licence_id', licenceId);
-        formData.append('nonce', ufscAttestations.deleteLicenceNonce);
+        formData.append('ufsc_nonce', ufscAttestations.deleteLicenceNonce);
         
         // Send AJAX request
         $.ajax({

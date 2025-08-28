@@ -292,7 +292,7 @@ function initializeFormValidation() {
     }
     
     // License form validation  
-    const licenseForm = document.querySelector('form input[name="ufsc_add_licence_nonce"]');
+    const licenseForm = document.querySelector('form input[name="ufsc_nonce"]');
     if (licenseForm) {
         initializeLicenseFormValidation(licenseForm.closest('form'));
     }
