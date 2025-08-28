@@ -76,8 +76,45 @@ jQuery(document).ready(function($) {
                 }
 
                 const columnDefs = [
-                    { targets: headerColCount - 1, orderable: false, searchable: false },
-                    { targets: 0, orderable: false, searchable: false }
+                    {
+                        targets: headerColCount - 1,
+                        orderable: false,
+                        searchable: false,
+                        width: '180px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '180px');
+                        }
+                    },
+                    {
+                        targets: 0,
+                        orderable: false,
+                        searchable: false,
+                        width: '40px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '40px');
+                        }
+                    },
+                    {
+                        targets: 1,
+                        width: '60px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '60px');
+                        }
+                    },
+                    {
+                        targets: 2,
+                        width: '120px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '120px');
+                        }
+                    },
+                    {
+                        targets: 6,
+                        width: '150px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '150px');
+                        }
+                    }
                 ];
 
                 initializeDataTable(tableId, exportColumns, columnDefs, true, 'Club');
@@ -115,7 +152,36 @@ jQuery(document).ready(function($) {
                 }
 
                 const columnDefs = [
-                    { targets: headerColCount - 1, orderable: false, searchable: false }
+                    {
+                        targets: headerColCount - 1,
+                        orderable: false,
+                        searchable: false,
+                        width: '180px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '180px');
+                        }
+                    },
+                    {
+                        targets: 0,
+                        width: '60px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '60px');
+                        }
+                    },
+                    {
+                        targets: 1,
+                        width: '120px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '120px');
+                        }
+                    },
+                    {
+                        targets: 5,
+                        width: '150px',
+                        createdCell: function(td) {
+                            $(td).css('min-width', '150px');
+                        }
+                    }
                 ];
 
                 initializeDataTable(tableId, exportColumns, columnDefs, false, 'Global');
@@ -140,6 +206,7 @@ jQuery(document).ready(function($) {
                 pageLength: 25,
                 stateSave: true,
                 scrollX: true,
+                autoWidth: false,
                 
                 // Traduction en français
                 language: {
@@ -212,7 +279,8 @@ jQuery(document).ready(function($) {
                     language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' },
                     responsive: true,
                     pageLength: 25,
-                    scrollX: true
+                    scrollX: true,
+                    autoWidth: false
                 });
                 console.log('✅ Initialisation basique réussie pour', context);
             } catch (basicError) {
