@@ -30,19 +30,47 @@ define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
-add_action('plugins_loaded', 'ufsc_run_migrations');
+
+// === Activation tasks ===
+if (!function_exists('ufsc_activate_plugin')) {
+    function ufsc_activate_plugin() {
+        if (function_exists('ufsc_run_migrations')) {
+            ufsc_run_migrations();
+        }
+        if (function_exists('ufsc_ensure_frontend_pages')) {
+            ufsc_ensure_frontend_pages();
+        }
+    }
+}
+register_activation_hook(__FILE__, 'ufsc_activate_plugin');
+
 // === Capabilities on activation ===
 if (!function_exists('ufsc_add_caps_on_activate')) {
     function ufsc_add_caps_on_activate() {
         $role = get_role('administrator');
         if ($role) {
-            foreach (['ufsc_manage', 'ufsc_manage_own'] as $cap) {
+            foreach (['manage_ufsc', 'ufsc_manage', 'ufsc_manage_own'] as $cap) {
                 $role->add_cap($cap);
             }
         }
     }
 }
 register_activation_hook(__FILE__, 'ufsc_add_caps_on_activate');
+// Ensure manage_ufsc capability is available and fallback to manage_options if missing
+add_action('init', 'ufsc_ensure_manage_ufsc_cap');
+function ufsc_ensure_manage_ufsc_cap() {
+    $role = get_role('administrator');
+    if ($role && !$role->has_cap('manage_ufsc')) {
+        $role->add_cap('manage_ufsc');
+    }
+    add_filter('user_has_cap', 'ufsc_manage_ufsc_fallback', 0, 3);
+}
+function ufsc_manage_ufsc_fallback($allcaps, $caps, $args) {
+    if (!isset($allcaps['manage_ufsc']) && isset($allcaps['manage_options'])) {
+        $allcaps['manage_ufsc'] = $allcaps['manage_options'];
+    }
+    return $allcaps;
+}
 // Map legacy capabilities to new ones for backward compatibility
 add_filter('user_has_cap', 'ufsc_map_legacy_caps', 10, 3);
 function ufsc_map_legacy_caps($allcaps, $caps, $args) {
@@ -205,12 +233,34 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')
 }
 
 /**
- * Bootstrap admin functionality by instantiating required classes.
+ * Bootstrap admin functionality and verify database connection.
+ *
+ * Runs a lightweight check against the ufsc_clubs table and logs any
+ * database errors instead of stopping execution.
  */
+
 function ufsc_admin_bootstrap() {
+
+function ufsc_admin_boot() {
+    global $wpdb;
+
+    // Lightweight table check
+    $wpdb->get_var( "SELECT 1 FROM {$wpdb->prefix}ufsc_clubs LIMIT 1" );
+
+    if ( ! empty( $wpdb->last_error ) ) {
+        $error_message = $wpdb->last_error;
+        error_log( '[UFSC] ' . $error_message );
+
+        add_action( 'admin_notices', function () use ( $error_message ) {
+            echo '<div class="notice notice-error"><p>' . esc_html( '[UFSC] ' . $error_message ) . '</p></div>';
+        } );
+    }
+
+    new UFSC_Menu();
+
     UFSC_Document_Manager::get_instance();
 }
-add_action('admin_init', 'ufsc_admin_bootstrap');
+add_action( 'admin_init', 'ufsc_admin_boot' );
 
 /**
  * Helper to invoke methods from UFSC_Menu without registering additional hooks.
