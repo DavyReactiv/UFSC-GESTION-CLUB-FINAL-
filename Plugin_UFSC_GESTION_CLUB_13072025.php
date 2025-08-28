@@ -272,7 +272,6 @@ if ( ! is_admin() ) {
         require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
     }
 }
-=======
 /**
  * Load frontend specific files.
  */
@@ -354,8 +353,6 @@ register_activation_hook(__FILE__, 'ufsc_activate_migrations');
  * Runs a lightweight check against the ufsc_clubs table and logs any
  * database errors instead of stopping execution.
  */
-
-function ufsc_admin_bootstrap() {
 
 function ufsc_admin_boot() {
     global $wpdb;
