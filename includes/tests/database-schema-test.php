@@ -157,8 +157,8 @@ class UFSC_Database_Schema_Test
         }
         
         // Check if types match (both should be mediumint(9) unsigned)
-        $clubs_type = strtolower(str_replace(' ', '', $clubs_id_column->Type));
-        $licences_type = strtolower(str_replace(' ', '', $licences_club_id_column->Type));
+        $clubs_type = strtolower(str_replace(' ', '', (string) ($clubs_id_column->Type ?? '')));
+        $licences_type = strtolower(str_replace(' ', '', (string) ($licences_club_id_column->Type ?? '')));
         
         $types_match = $clubs_type === $licences_type;
         
@@ -193,7 +193,7 @@ class UFSC_Database_Schema_Test
         $constraint_details = '';
         
         foreach ($foreign_keys as $fk) {
-            if (strpos($fk->CONSTRAINT_NAME, 'fk_licence_club') !== false || 
+            if (strpos((string) ($fk->CONSTRAINT_NAME ?? ''), 'fk_licence_club') !== false ||
                 $fk->REFERENCED_TABLE_NAME === $wpdb->prefix . 'ufsc_clubs') {
                 $has_constraint = true;
                 $constraint_details = "Constraint: {$fk->CONSTRAINT_NAME} references {$fk->REFERENCED_TABLE_NAME}.{$fk->REFERENCED_COLUMN_NAME}";

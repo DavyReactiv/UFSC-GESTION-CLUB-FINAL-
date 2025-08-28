@@ -151,7 +151,7 @@ class UFSC_Document_Manager
     {
         // Get file path from URL
         $upload_dir = wp_upload_dir();
-        $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $document_url);
+        $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], (string) $document_url);
 
         if (!file_exists($file_path)) {
             wp_die('Fichier introuvable sur le serveur.');

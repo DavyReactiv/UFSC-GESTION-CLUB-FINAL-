@@ -193,20 +193,25 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
 }
 
 /**
-* Initialize the menu and document manager
-     */
-    // Licences direct shortcode & ajax (added)
-    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
-        require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
-    }
-    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
-        require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
-    }
+ * Initialize admin components.
+ * This includes menu registration and document management.
+ */
+// Licences direct shortcode & ajax (added)
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
+}
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
+}
 
-    if (is_admin()) {
-        new UFSC_Menu();
-        UFSC_Document_Manager::get_instance();
-    }
+/**
+ * Bootstrap admin functionality by instantiating required classes.
+ */
+function ufsc_admin_bootstrap() {
+    new UFSC_Menu();
+    UFSC_Document_Manager::get_instance();
+}
+add_action('admin_init', 'ufsc_admin_bootstrap');
 
     /**
      * Load text domain for translations
@@ -239,7 +244,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
     
     // Also check for specific page parameters
     $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
-    if ($page && strpos($page, 'ufsc') !== false) {
+    if ($page && strpos((string) $page, 'ufsc') !== false) {
         $is_ufsc_page = true;
     }
     
@@ -832,7 +837,7 @@ function ufsc_enqueue_form_enhancements()
     
     // Check if we're in admin and on a club page
     $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
-    if (is_admin() && $page && strpos($page, 'ufsc') !== false) {
+    if (is_admin() && $page && strpos((string) $page, 'ufsc') !== false) {
         $should_enqueue = true;
     }
     
@@ -840,7 +845,7 @@ function ufsc_enqueue_form_enhancements()
     if (is_a($post, 'WP_Post') && (
         has_shortcode($post->post_content, 'ufsc_club_form') ||
         has_shortcode($post->post_content, 'ufsc_affiliation_form') ||
-        strpos($post->post_content, 'ufsc_render_club_form') !== false
+        strpos((string) ($post->post_content ?? ''), 'ufsc_render_club_form') !== false
     )) {
         $should_enqueue = true;
     }
@@ -1653,7 +1658,7 @@ function ufsc_handle_upload_club_attestation() {
     $old_file_url = get_post_meta($club_id, "_ufsc_attestation_{$type}", true);
     $old_file_path = null;
     if ($old_file_url) {
-        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
     }
     
     // Move uploaded file to uploads directory
@@ -1704,7 +1709,7 @@ function ufsc_handle_upload_club_attestation() {
         // Delete old file if it exists
         $old_file_url = get_post_meta($club_id, "_ufsc_attestation_{$type}", true);
         if ($old_file_url) {
-            $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+            $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
             if ($old_file_path && file_exists($old_file_path) && $old_file_path !== $file_path) {
                 unlink($old_file_path);
             }
@@ -1854,7 +1859,7 @@ function ufsc_handle_upload_licence_attestation() {
     $old_file_url = $licence->attestation_url ?? null;
     $old_file_path = null;
     if ($old_file_url) {
-        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
     }
     
     // Move uploaded file
@@ -1910,7 +1915,7 @@ function ufsc_handle_delete_licence_attestation() {
     // Delete file from filesystem
     if (!empty($licence->attestation_url)) {
         $upload_dir = wp_upload_dir();
-        $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', $licence->attestation_url);
+        $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', (string) $licence->attestation_url);
         
         if (file_exists($file_path)) {
             if (!unlink($file_path) && defined('WP_DEBUG') && WP_DEBUG) {
@@ -1981,13 +1986,13 @@ function ufsc_handle_licence_attestation_download() {
 
     // Get file path from URL
     $upload_dir = wp_upload_dir();
-    $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', $licence->attestation_url);
+    $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', (string) $licence->attestation_url);
 
     // Security check: ensure file is within attestations directory
     $realpath = realpath($file_path);
     $allowed_dir = realpath($upload_dir['basedir'] . '/ufsc-attestations/');
     
-    if (!$realpath || !$allowed_dir || strpos($realpath, $allowed_dir) !== 0) {
+    if (!$realpath || !$allowed_dir || strpos((string) $realpath, (string) $allowed_dir) !== 0) {
         wp_die('Chemin de fichier non autorisé', 'Erreur', ['response' => 403]);
     }
 
@@ -2389,7 +2394,12 @@ function ufsc_run_migrations() {
     // Ensure columns exist for licences
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'statut'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN statut VARCHAR(20) NOT NULL DEFAULT 'brouillon'");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN statut VARCHAR(20) NOT NULL DEFAULT %s",
+                'brouillon'
+            )
+        );
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'date_creation'));
     if (!$col) {
@@ -2397,18 +2407,42 @@ function ufsc_run_migrations() {
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'club_id'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT 0");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT %d",
+                0
+            )
+        );
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'payment_status'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT %s",
+                'pending'
+            )
+        );
     }
 
     // Ensure columns for clubs logo
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_total'));
-    if (!$col) { $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN pack_credits_total INT NOT NULL DEFAULT 0"); }
+    if (!$col) {
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_total INT NOT NULL DEFAULT %d",
+                0
+            )
+        );
+    }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_used'));
-    if (!$col) { $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN pack_credits_used INT NOT NULL DEFAULT 0"); }
+    if (!$col) {
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_used INT NOT NULL DEFAULT %d",
+                0
+            )
+        );
+    }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'logo_attachment_id'));
     if (!$col) {
         $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN logo_attachment_id BIGINT UNSIGNED NULL");

@@ -64,7 +64,7 @@ function ufsc_test_database_schema_fixes()
             // Check if tables use compatible types for foreign keys
             $create_table = $wpdb->get_row("SHOW CREATE TABLE {$clubs_table}");
             if ($create_table && property_exists($create_table, 'Create Table')) {
-                if (strpos($create_table->{'Create Table'}, 'mediumint') !== false) {
+                if (strpos((string) ($create_table->{'Create Table'} ?? ''), 'mediumint') !== false) {
                     echo "✅ Clubs table uses mediumint for id column<br>";
                 } else {
                     echo "⚠️ Clubs table id column type should be checked<br>";

@@ -17,13 +17,6 @@ class UFSC_GestionClub_Core
      */
     public static function init()
     {
-        // 🌍 Chargement de la traduction
-        load_plugin_textdomain(
-            'ufsc-domain',
-            false,
-            plugin_basename(dirname(__DIR__, 2)) . '/languages'
-        );
-
         // 🧩 Inclusion des classes
         require_once UFSC_PLUGIN_PATH . 'includes/clubs/class-club-manager.php';
         require_once UFSC_PLUGIN_PATH . 'includes/clubs/admin-club-list-page.php';
@@ -143,3 +136,17 @@ class UFSC_GestionClub_Core
         return self::$club_manager;
     }
 }
+
+/**
+ * Load the plugin text domain for internationalization.
+ */
+function ufsc_core_load_textdomain()
+{
+    load_plugin_textdomain(
+        'ufsc-domain',
+        false,
+        plugin_basename(dirname(__DIR__, 2)) . '/languages'
+    );
+}
+
+add_action('init', 'ufsc_core_load_textdomain');

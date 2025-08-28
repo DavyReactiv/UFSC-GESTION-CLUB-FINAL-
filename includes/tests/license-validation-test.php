@@ -83,7 +83,7 @@ class UFSC_License_Validation_Test
             $this->results[$test_name] = ['status' => 'pass', 'message' => 'Fichier licence-validation.php existe'];
             
             // Check if functions are defined
-            $content = file_get_contents($file_path);
+            $content = (string) file_get_contents($file_path);
             if (strpos($content, 'ufsc_admin_post_validate_licence') !== false) {
                 $this->results[$test_name . ' - Handler unitaire'] = ['status' => 'pass', 'message' => 'Handler validation unitaire défini'];
             } else {
@@ -112,7 +112,7 @@ class UFSC_License_Validation_Test
             $this->results[$test_name] = ['status' => 'pass', 'message' => 'Fichier ufsc-dashboard-fixes.css existe'];
             
             // Check if it contains key styles
-            $content = file_get_contents($css_path);
+            $content = (string) file_get_contents($css_path);
             if (strpos($content, 'max-width: 1200px') !== false) {
                 $this->results[$test_name . ' - Container max-width'] = ['status' => 'pass', 'message' => 'Constraint largeur conteneur trouvée'];
             } else {
@@ -166,7 +166,7 @@ class UFSC_License_Validation_Test
         
         $licences_file = UFSC_PLUGIN_PATH . 'includes/frontend/club/licences.php';
         if (file_exists($licences_file)) {
-            $content = file_get_contents($licences_file);
+            $content = (string) file_get_contents($licences_file);
             
             if (strpos($content, 'current_user_can(\'manage_options\')') !== false) {
                 $this->results[$test_name . ' - Permission check'] = ['status' => 'pass', 'message' => 'Vérification permissions admin trouvée'];

@@ -166,7 +166,7 @@ class UFSC_Sync_Monitor
                         </thead>
                         <tbody>
                             <?php foreach ($recent_logs as $log): ?>
-                                <tr class="<?php echo strpos($log['operation'], 'error') !== false ? 'ufsc-log-error' : ''; ?>">
+                                <tr class="<?php echo strpos((string) ($log['operation'] ?? ''), 'error') !== false ? 'ufsc-log-error' : ''; ?>">
                                     <td><?php echo esc_html($log['timestamp']); ?></td>
                                     <td>
                                         <code><?php echo esc_html($log['operation']); ?></code>
@@ -182,9 +182,9 @@ class UFSC_Sync_Monitor
                                         ?>
                                     </td>
                                     <td>
-                                        <?php if (strpos($log['operation'], 'error') !== false): ?>
+                                        <?php if (strpos((string) ($log['operation'] ?? ''), 'error') !== false): ?>
                                             <span class="badge badge-red">Erreur</span>
-                                        <?php elseif (strpos($log['operation'], 'success') !== false): ?>
+                                        <?php elseif (strpos((string) ($log['operation'] ?? ''), 'success') !== false): ?>
                                             <span class="badge badge-green">Succès</span>
                                         <?php else: ?>
                                             <span class="badge" style="background-color: #0073aa;">Info</span>
@@ -405,9 +405,9 @@ class UFSC_Sync_Monitor
         $failed = 0;
         
         foreach ($logs as $log) {
-            if (strpos($log['operation'], 'success') !== false) {
+            if (strpos((string) ($log['operation'] ?? ''), 'success') !== false) {
                 $successful++;
-            } elseif (strpos($log['operation'], 'error') !== false) {
+            } elseif (strpos((string) ($log['operation'] ?? ''), 'error') !== false) {
                 $failed++;
             }
         }

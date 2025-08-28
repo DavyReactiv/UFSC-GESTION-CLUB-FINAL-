@@ -210,8 +210,8 @@ class UFSC_Club_Manager
             ");
             
             foreach ($foreign_keys as $fk) {
-                if (strpos($fk->CONSTRAINT_NAME, 'fk_licence_club') !== false || 
-                    strpos($fk->CONSTRAINT_NAME, 'club') !== false) {
+                if (strpos((string) ($fk->CONSTRAINT_NAME ?? ''), 'fk_licence_club') !== false ||
+                    strpos((string) ($fk->CONSTRAINT_NAME ?? ''), 'club') !== false) {
                     $wpdb->query("ALTER TABLE $licences_table DROP FOREIGN KEY {$fk->CONSTRAINT_NAME}");
                 }
             }

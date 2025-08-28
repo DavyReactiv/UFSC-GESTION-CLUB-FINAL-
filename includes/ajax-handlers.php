@@ -253,7 +253,7 @@ function ufsc_validate_attestation_file($file) {
     
     // Check for malicious content (basic check)
     $file_content = file_get_contents($file['tmp_name'], false, null, 0, 1024);
-    if (strpos($file_content, '%PDF') !== 0) {
+    if (strpos((string) $file_content, '%PDF') !== 0) {
         $errors->add('invalid_pdf', esc_html__('Le fichier ne semble pas être un PDF valide.', 'ufsc-domain'));
     }
     

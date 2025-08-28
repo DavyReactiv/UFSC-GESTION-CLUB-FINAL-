@@ -27,6 +27,19 @@ function ufscx_resolve_club_id($user_id = 0){
 }
 }
 
+if (!function_exists('ufscx_licences_direct_assets')) {
+function ufscx_licences_direct_assets() {
+    wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');
+    wp_enqueue_style('ufscx-licences-direct');
+    wp_enqueue_script('ufscx-licences-direct', plugins_url('../../../assets/js/ufsc-licenses-direct.js', __FILE__), ['jquery'], '1.0', true);
+    wp_localize_script('ufscx-licences-direct', 'UFSCX_AJAX', [
+        'ajax' => admin_url('admin-ajax.php'),
+        'nonce' => ufsc_create_nonce('ufscx_licences'),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'ufscx_licences_direct_assets');
+}
+
 if (!function_exists('ufscx_licences_direct_shortcode')) {
 function ufscx_licences_direct_shortcode($atts){
     if (!is_user_logged_in()){
@@ -75,10 +88,6 @@ function ufscx_licences_direct_shortcode($atts){
             $date_licence = $licence->date_inscription;
         }
 
-        // Minimal style for detail view
-        wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');
-        wp_enqueue_style('ufscx-licences-direct');
-
         ob_start();
         ?>
         <div class="ufsc-container"><div class="ufsc-grid"><div class="ufsc-card ufscx-licence-detail">
@@ -98,6 +107,7 @@ function ufscx_licences_direct_shortcode($atts){
         <?php
         return ob_get_clean();
     }
+
 
     // Enqueue assets minimal
     wp_register_style('ufscx-licences-direct', plugins_url('../../../assets/css/ufsc-licenses-direct.css', __FILE__), [], '1.0');

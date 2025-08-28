@@ -375,8 +375,8 @@ function ufsc_resolve_document_url($raw) {
     }
     
     // If it's a relative path, make it absolute
-    if (strpos($raw, '/') === 0) {
-        return esc_url(home_url($raw));
+    if (strpos((string) $raw, '/') === 0) {
+        return esc_url(home_url((string) $raw));
     }
     
     return '';

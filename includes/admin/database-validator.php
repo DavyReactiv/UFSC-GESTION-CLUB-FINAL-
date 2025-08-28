@@ -49,8 +49,8 @@ function ufsc_validate_database_schema() {
     $clubs_id_info = $wpdb->get_row("SHOW COLUMNS FROM $clubs_table LIKE 'id'");
     $licences_club_id_info = $wpdb->get_row("SHOW COLUMNS FROM $licences_table LIKE 'club_id'");
     
-    $clubs_id_type = $clubs_id_info ? strtolower(str_replace(' ', '', $clubs_id_info->Type)) : '';
-    $licences_club_id_type = $licences_club_id_info ? strtolower(str_replace(' ', '', $licences_club_id_info->Type)) : '';
+    $clubs_id_type = $clubs_id_info ? strtolower(str_replace(' ', '', (string)($clubs_id_info->Type ?? ''))) : '';
+    $licences_club_id_type = $licences_club_id_info ? strtolower(str_replace(' ', '', (string)($licences_club_id_info->Type ?? ''))) : '';
     
     if ($clubs_id_type !== $licences_club_id_type) {
         $issues[] = "Column type mismatch: clubs.id ({$clubs_id_info->Type}) vs licences.club_id ({$licences_club_id_info->Type})";

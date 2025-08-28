@@ -4,31 +4,43 @@ if (!defined('ABSPATH')) {
 }
 
 require_once plugin_dir_path(__FILE__) . 'class-ufsc-club-list-table.php';
+/**
+ * Enqueue assets for the club list admin page.
+ */
+function ufsc_enqueue_admin_club_list_assets($hook)
+{
+    if ('ufsc-dashboard_page_ufsc-clubs' !== $hook) {
+        return;
+    }
 
-function ufsc_render_club_list_page() {
     wp_enqueue_style(
         'ufsc-admin-style',
         UFSC_PLUGIN_URL . 'assets/css/admin.css',
         [],
         UFSC_PLUGIN_VERSION
     );
-    wp_enqueue_style(
 
+    wp_enqueue_style(
         'ufsc-admin-licence-table-style',
         UFSC_PLUGIN_URL . 'assets/css/admin-licence-table.css',
+        [],
+        UFSC_PLUGIN_VERSION
+    );
 
+    wp_enqueue_style(
         'datatables-buttons-css',
         'https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css',
         [],
         '2.4.2'
     );
+
     wp_enqueue_style(
         'datatables-responsive-css',
         'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css',
         [],
         '2.5.0'
     );
-    
+
     wp_enqueue_script(
         'datatables-js',
         'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js',
@@ -36,6 +48,7 @@ function ufsc_render_club_list_page() {
         '1.13.6',
         true
     );
+
     wp_enqueue_script(
         'datatables-buttons-js',
         'https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js',
@@ -43,6 +56,7 @@ function ufsc_render_club_list_page() {
         '2.4.2',
         true
     );
+
     wp_enqueue_script(
         'datatables-buttons-html5-js',
         'https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js',
@@ -50,6 +64,7 @@ function ufsc_render_club_list_page() {
         '2.4.2',
         true
     );
+
     wp_enqueue_script(
         'datatables-responsive-js',
         'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js',
@@ -57,25 +72,34 @@ function ufsc_render_club_list_page() {
         '2.5.0',
         true
     );
+
     wp_enqueue_script(
         'jszip-js',
         'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
-
         [],
-        UFSC_PLUGIN_VERSION
+        '3.10.1',
+        true
     );
+
     wp_enqueue_script(
-        'ufsc-admin-script',
-        UFSC_PLUGIN_URL . 'assets/js/admin.js',
-
-        ['jquery'],
-
-        ['ufsc-datatables-config'],
-
+        'ufsc-datatables-config',
+        UFSC_PLUGIN_URL . 'assets/js/datatables-config.js',
+        ['datatables-js', 'datatables-buttons-js', 'datatables-responsive-js'],
         UFSC_PLUGIN_VERSION,
         true
     );
 
+    wp_enqueue_script(
+        'ufsc-admin-script',
+        UFSC_PLUGIN_URL . 'assets/js/admin.js',
+        ['jquery', 'ufsc-datatables-config'],
+        UFSC_PLUGIN_VERSION,
+        true
+    );
+}
+add_action('admin_enqueue_scripts', 'ufsc_enqueue_admin_club_list_assets');
+
+function ufsc_render_club_list_page() {
     $table = new UFSC_Club_List_Table();
     $table->prepare_items();
 
@@ -86,7 +110,7 @@ function ufsc_render_club_list_page() {
         $html = ob_get_clean();
 
         // Replace default table classes with UFSC variants.
-        $html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', $html );
+        $html = str_replace( 'wp-list-table widefat fixed striped', 'ufsc-table', (string) $html );
         // Apply ufsc-row to all rows for zebra styling.
         $html = preg_replace( '/<tr(?! class=)/', '<tr class="ufsc-row"', $html );
 
