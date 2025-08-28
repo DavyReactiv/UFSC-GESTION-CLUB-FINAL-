@@ -12,8 +12,6 @@ if ( ! class_exists( 'UFSC_Licence_Repository' ) ) {
     require_once UFSC_PLUGIN_PATH . 'includes/repository/class-licence-repository.php';
 }
 
-require_once UFSC_PLUGIN_PATH . 'includes/repository/class-licence-repository.php';
-
 require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 $repo       = new UFSC_Licence_Repository();
