@@ -144,6 +144,17 @@ spl_autoload_register(function($class) {
     }
 });
 
+// Load overrides early to ensure they are available before other hooks.
+$override = UFSC_PLUGIN_PATH . 'includes/overrides/club-licenses-override.php';
+if (file_exists($override)) {
+    require_once $override;
+}
+
+$profix_loader = UFSC_PLUGIN_PATH . 'includes/overrides_profix/_loader.php';
+if (file_exists($profix_loader)) {
+    require_once $profix_loader;
+}
+
 /**
  * Load files shared between admin and frontend.
  */
@@ -344,14 +355,6 @@ function ufsc_load_frontend_files() {
     $assets = UFSC_PLUGIN_PATH . 'includes/class-ufsc-assets.php';
     if (file_exists($assets)) {
         require_once $assets;
-    }
-    $override = UFSC_PLUGIN_PATH . 'includes/overrides/club-licenses-override.php';
-    if (file_exists($override)) {
-        require_once $override;
-    }
-    $profix_loader = __DIR__ . '/includes/overrides_profix/_loader.php';
-    if (defined('ABSPATH') && file_exists($profix_loader)) {
-        require_once $profix_loader;
     }
 }
 add_action('init', 'ufsc_load_frontend_files', 0);
