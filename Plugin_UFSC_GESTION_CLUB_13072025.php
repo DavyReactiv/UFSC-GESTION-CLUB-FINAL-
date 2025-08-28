@@ -212,8 +212,11 @@ function ufsc_load_frontend_files() {
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/club/dashboard.php';
     require_once UFSC_PLUGIN_PATH . 'includes/shortcodes.php';
     require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-attestations.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/ajax-handlers.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/licences/ajax-add-to-cart.php';
+
+    if ( wp_doing_ajax() ) {
+        require_once UFSC_PLUGIN_PATH . 'includes/ajax-handlers.php';
+        require_once UFSC_PLUGIN_PATH . 'includes/licences/ajax-add-to-cart.php';
+    }
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/affiliation-woocommerce.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-licence-form.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-affiliation-form.php';
@@ -234,12 +237,14 @@ function ufsc_load_frontend_files() {
     if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
         require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
     }
-    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
+    if ( wp_doing_ajax() && file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
         require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
     }
 
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/cart-router.php';
-    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
+    if ( wp_doing_ajax() ) {
+        require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
+    }
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
     require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';
 
@@ -273,6 +278,10 @@ register_activation_hook(__FILE__, 'ufsc_activate_migrations');
  * Runs a lightweight check against the ufsc_clubs table and logs any
  * database errors instead of stopping execution.
  */
+
+
+function ufsc_admin_bootstrap() {}
+
 
 function ufsc_admin_boot() {
     global $wpdb;
