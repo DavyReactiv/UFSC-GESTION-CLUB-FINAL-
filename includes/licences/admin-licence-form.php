@@ -18,7 +18,7 @@ require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
 $repo       = new UFSC_Licence_Repository();
 $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
-$licence    = $licence_id ? $repo->get($licence_id) : null;
+$licence    = $licence_id ? $repo->get_by_id($licence_id) : null;
 $errors     = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_admin_action', 'ufsc_license_admin_nonce')) {
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('ufsc_license_a
             $licence_id = $repo->insert($data);
             echo '<div class="notice notice-success"><p>' . esc_html__('Licence créée.', 'plugin-ufsc-gestion-club-13072025') . '</p></div>';
         }
-        $licence = $repo->get($licence_id);
+        $licence = $repo->get_by_id($licence_id);
     } else {
         echo '<div class="notice notice-error"><p>' . implode('<br>', array_map('esc_html', $errors)) . '</p></div>';
     }

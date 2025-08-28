@@ -32,7 +32,7 @@ if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(wp_unslash($_GET['_wpnonce']),
 }
 
 $repo = new UFSC_Licenses_Repository();
-$current_licence = $repo->get($licence_id);
+$current_licence = $repo->get_by_id($licence_id);
 $is_validated = $current_licence && $current_licence->statut === 'validee';
 
 if (!$current_licence) {
@@ -108,7 +108,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
         if ($success) {
             echo '<div class="notice notice-success"><p>✅ Licence modifiée avec succès.</p></div>';
             // Reload the licence data to show updated values
-            $current_licence = $repo->get($licence_id);
+            $current_licence = $repo->get_by_id($licence_id);
             $club = $wpdb->get_row($wpdb->prepare(
                 "SELECT * FROM {$wpdb->prefix}ufsc_clubs WHERE id = %d",
                 $current_licence->club_id

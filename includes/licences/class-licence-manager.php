@@ -186,7 +186,7 @@ class UFSC_Licence_Manager
             return false;
         }
 
-        $existing = (array) $this->licence_repository->get($id);
+        $existing = (array) $this->licence_repository->get_by_id($id);
         $errors   = ufsc_validate_licence_data(array_merge($existing, $data), $status === 'validee');
         if (!empty($errors)) {
             return false;
