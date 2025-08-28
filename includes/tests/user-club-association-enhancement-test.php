@@ -50,7 +50,7 @@ function ufsc_test_frontend_user_association()
             $has_ufsc_hooks = false;
             foreach ($wp_filter[$hook]->callbacks as $priority => $callbacks) {
                 foreach ($callbacks as $callback_key => $callback_data) {
-                    if (strpos($callback_key, 'ufsc_') !== false) {
+                    if (strpos((string) $callback_key, 'ufsc_') !== false) {
                         $has_ufsc_hooks = true;
                         break 2;
                     }

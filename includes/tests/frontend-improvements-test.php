@@ -47,7 +47,7 @@ function ufsc_test_frontend_improvements()
         
         $form_file = UFSC_PLUGIN_PATH . 'includes/frontend/parts/licence-form.php';
         if (file_exists($form_file)) {
-            $form_content = file_get_contents($form_file);
+            $form_content = (string) file_get_contents($form_file);
             $has_cart_workflow = strpos($form_content, 'wc_get_cart_url') !== false;
             $has_nonce_fix = strpos($form_content, 'wp_verify_nonce') !== false;
             $has_enhanced_fields = strpos($form_content, 'ufsc-form-section') !== false;
@@ -73,7 +73,7 @@ function ufsc_test_frontend_improvements()
         
         $dashboard_file = UFSC_PLUGIN_PATH . 'includes/frontend/frontend-club-dashboard.php';
         if (file_exists($dashboard_file)) {
-            $dashboard_content = file_get_contents($dashboard_file);
+            $dashboard_content = (string) file_get_contents($dashboard_file);
             $has_enhanced_directors = strpos($dashboard_content, 'data-role=') !== false;
             $has_prenom_handling = strpos($dashboard_content, '_prenom') !== false;
             
@@ -96,7 +96,7 @@ function ufsc_test_frontend_improvements()
         
         $woo_file = UFSC_PLUGIN_PATH . 'includes/frontend/woocommerce-licence-form.php';
         if (file_exists($woo_file)) {
-            $woo_content = file_get_contents($woo_file);
+            $woo_content = (string) file_get_contents($woo_file);
             $has_url_handling = strpos($woo_content, 'ufsc_handle_licence_url_data') !== false;
             $has_session_management = strpos($woo_content, 'ufsc_pending_licence_data') !== false;
             
@@ -118,7 +118,7 @@ function ufsc_test_frontend_improvements()
         echo "<h3>Test 5: Vérification du contenu CSS amélioré</h3>";
         
         if (file_exists($css_file)) {
-            $css_content = file_get_contents($css_file);
+            $css_content = (string) file_get_contents($css_file);
             $has_form_styling = strpos($css_content, '.ufsc-licence-form-container') !== false;
             $has_directors_styling = strpos($css_content, '.ufsc-dirigeant-card[data-role=') !== false;
             $has_responsive_design = strpos($css_content, '@media (max-width: 768px)') !== false;
@@ -174,7 +174,7 @@ function ufsc_test_frontend_improvements()
         
         $main_file = UFSC_PLUGIN_PATH . 'Plugin_UFSC_GESTION_CLUB_13072025.php';
         if (file_exists($main_file)) {
-            $main_content = file_get_contents($main_file);
+            $main_content = (string) file_get_contents($main_file);
             $has_css_enqueue = strpos($main_content, 'licence-form-enhanced.css') !== false;
             
             if ($has_css_enqueue) {

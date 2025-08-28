@@ -239,7 +239,7 @@ function ufsc_gestion_club_admin_enqueue_scripts($hook)
     
     // Also check for specific page parameters
     $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
-    if ($page && strpos($page, 'ufsc') !== false) {
+    if ($page && strpos((string) $page, 'ufsc') !== false) {
         $is_ufsc_page = true;
     }
     
@@ -832,7 +832,7 @@ function ufsc_enqueue_form_enhancements()
     
     // Check if we're in admin and on a club page
     $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // Always sanitize GET input
-    if (is_admin() && $page && strpos($page, 'ufsc') !== false) {
+    if (is_admin() && $page && strpos((string) $page, 'ufsc') !== false) {
         $should_enqueue = true;
     }
     
@@ -840,7 +840,7 @@ function ufsc_enqueue_form_enhancements()
     if (is_a($post, 'WP_Post') && (
         has_shortcode($post->post_content, 'ufsc_club_form') ||
         has_shortcode($post->post_content, 'ufsc_affiliation_form') ||
-        strpos($post->post_content, 'ufsc_render_club_form') !== false
+        strpos((string) ($post->post_content ?? ''), 'ufsc_render_club_form') !== false
     )) {
         $should_enqueue = true;
     }
@@ -1653,7 +1653,7 @@ function ufsc_handle_upload_club_attestation() {
     $old_file_url = get_post_meta($club_id, "_ufsc_attestation_{$type}", true);
     $old_file_path = null;
     if ($old_file_url) {
-        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
     }
     
     // Move uploaded file to uploads directory
@@ -1704,7 +1704,7 @@ function ufsc_handle_upload_club_attestation() {
         // Delete old file if it exists
         $old_file_url = get_post_meta($club_id, "_ufsc_attestation_{$type}", true);
         if ($old_file_url) {
-            $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+            $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
             if ($old_file_path && file_exists($old_file_path) && $old_file_path !== $file_path) {
                 unlink($old_file_path);
             }
@@ -1854,7 +1854,7 @@ function ufsc_handle_upload_licence_attestation() {
     $old_file_url = $licence->attestation_url ?? null;
     $old_file_path = null;
     if ($old_file_url) {
-        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', $old_file_url);
+        $old_file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $ufsc_dir . '/', (string) $old_file_url);
     }
     
     // Move uploaded file
@@ -1910,7 +1910,7 @@ function ufsc_handle_delete_licence_attestation() {
     // Delete file from filesystem
     if (!empty($licence->attestation_url)) {
         $upload_dir = wp_upload_dir();
-        $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', $licence->attestation_url);
+        $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', (string) $licence->attestation_url);
         
         if (file_exists($file_path)) {
             if (!unlink($file_path) && defined('WP_DEBUG') && WP_DEBUG) {
@@ -1981,13 +1981,13 @@ function ufsc_handle_licence_attestation_download() {
 
     // Get file path from URL
     $upload_dir = wp_upload_dir();
-    $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', $licence->attestation_url);
+    $file_path = str_replace($upload_dir['baseurl'] . '/ufsc-attestations/', $upload_dir['basedir'] . '/ufsc-attestations/', (string) $licence->attestation_url);
 
     // Security check: ensure file is within attestations directory
     $realpath = realpath($file_path);
     $allowed_dir = realpath($upload_dir['basedir'] . '/ufsc-attestations/');
     
-    if (!$realpath || !$allowed_dir || strpos($realpath, $allowed_dir) !== 0) {
+    if (!$realpath || !$allowed_dir || strpos((string) $realpath, (string) $allowed_dir) !== 0) {
         wp_die('Chemin de fichier non autorisé', 'Erreur', ['response' => 403]);
     }
 

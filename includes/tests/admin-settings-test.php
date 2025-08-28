@@ -105,14 +105,14 @@ function display_ufsc_admin_settings_test_results() {
     
     echo '<div style="background: #fff; padding: 20px; border: 1px solid #ccd0d4; border-radius: 4px;">';
     foreach ($results as $test_name => $result) {
-        $color = strpos($result, 'PASS') === 0 ? 'green' : 'red';
-        echo '<p style="color: ' . $color . ';"><strong>' . ucfirst(str_replace('_', ' ', $test_name)) . ':</strong> ' . esc_html($result) . '</p>';
+        $color = strpos((string) $result, 'PASS') === 0 ? 'green' : 'red';
+        echo '<p style="color: ' . $color . ';"><strong>' . ucfirst(str_replace('_', ' ', (string) $test_name)) . ':</strong> ' . esc_html($result) . '</p>';
     }
     echo '</div>';
     
     $total_tests = count($results);
     $passed_tests = count(array_filter($results, function($result) {
-        return strpos($result, 'PASS') === 0;
+        return strpos((string) $result, 'PASS') === 0;
     }));
     
     echo '<p><strong>Summary:</strong> ' . $passed_tests . '/' . $total_tests . ' tests passed.</p>';

@@ -209,7 +209,7 @@ function ufsc_test_frontend_fixes()
         }
 
         $output = ufsc_club_dashboard_content();
-        if (strpos($output, 'Veuillez vous connecter pour créer votre club.') !== false) {
+        if (strpos((string) $output, 'Veuillez vous connecter pour créer votre club.') !== false) {
             echo "<p>✅ Le message de connexion est affiché pour les invités.</p>";
             $tests_passed++;
         } else {

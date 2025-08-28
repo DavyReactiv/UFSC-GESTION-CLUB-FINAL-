@@ -24,7 +24,7 @@ function ufsc_test_license_form_harmonization() {
     
     $form_file = UFSC_PLUGIN_PATH . 'includes/frontend/parts/licence-form.php';
     if (file_exists($form_file)) {
-        $form_content = file_get_contents($form_file);
+        $form_content = (string) file_get_contents($form_file);
         
         // Check if error message is fixed
         $has_correct_error = strpos($form_content, 'Champs obligatoires manquants') !== false;
@@ -50,7 +50,7 @@ function ufsc_test_license_form_harmonization() {
     $results['tests_total']++;
     
     if (file_exists($form_file)) {
-        $form_content = file_get_contents($form_file);
+        $form_content = (string) file_get_contents($form_file);
         
         // Required fields that should be present
         $required_fields = [
@@ -86,7 +86,7 @@ function ufsc_test_license_form_harmonization() {
     $results['tests_total']++;
     
     if (file_exists($form_file)) {
-        $form_content = file_get_contents($form_file);
+        $form_content = (string) file_get_contents($form_file);
         
         // Checkbox fields that should be present
         $checkbox_fields = [
@@ -127,7 +127,7 @@ function ufsc_test_license_form_harmonization() {
     $results['tests_total']++;
     
     if (file_exists($form_file)) {
-        $form_content = file_get_contents($form_file);
+        $form_content = (string) file_get_contents($form_file);
         
         // Check if data preparation includes new fields
         $data_fields_check = [

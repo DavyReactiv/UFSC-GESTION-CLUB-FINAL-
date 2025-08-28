@@ -168,6 +168,6 @@ function ufsc_display_test_results() {
 }
 
 // Only show test results on UFSC admin pages in debug mode
-if (is_admin() && isset($_GET['page']) && strpos($_GET['page'], 'ufsc') !== false) {
+if (is_admin() && isset($_GET['page']) && strpos((string) $_GET['page'], 'ufsc') !== false) {
     add_action('admin_notices', 'ufsc_display_test_results');
 }
