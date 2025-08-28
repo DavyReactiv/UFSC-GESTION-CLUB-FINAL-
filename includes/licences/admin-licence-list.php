@@ -91,15 +91,40 @@ $result = $repo->search([
     'per_page'=> $filters['per_page'],
 ]);
 
-$license_data = is_wp_error($result) ? [
-    'data' => [],
-    'total' => 0,
-    'per_page' => $filters['per_page'],
-] : [
-    'data' => $result['items'],
-    'total' => $result['total'],
-    'per_page' => $result['per_page'],
-];
+$list_table = new UFSC_Licence_List_Table($club_id);
+
+if (!is_wp_error($result) && isset($result['items']) && is_array($result['items'])) {
+    $expected_cols = array_diff(array_keys($list_table->get_columns()), ['cb', 'actions']);
+    $items = array_map(
+        static function ($item) use ($expected_cols) {
+            foreach ($expected_cols as $col) {
+                if (!array_key_exists($col, $item)) {
+                    if ($col === 'date_licence' && isset($item['date_inscription'])) {
+                        $item[$col] = $item['date_inscription'];
+                    } elseif ($col === 'quota' && isset($item['is_included'])) {
+                        $item[$col] = $item['is_included'];
+                    } else {
+                        $item[$col] = '';
+                    }
+                }
+            }
+            return $item;
+        },
+        $result['items']
+    );
+
+    $license_data = [
+        'data' => $items,
+        'total' => $result['total'],
+        'per_page' => $result['per_page'],
+    ];
+} else {
+    $license_data = [
+        'data' => [],
+        'total' => 0,
+        'per_page' => $filters['per_page'],
+    ];
+}
 
 $no_license_notice = '';
 if (empty($license_data['data'])) {
@@ -130,8 +155,11 @@ if (empty($license_data['data'])) {
         '</p></div>';
 }
 
-$list_table = new UFSC_Licence_List_Table($club_id);
-$list_table->set_external_data($license_data['data'], $license_data['total'], $license_data['per_page']);
+if (!empty($license_data['data'])) {
+    $list_table->set_external_data($license_data['data'], $license_data['total'], $license_data['per_page']);
+} else {
+    $list_table->set_external_data([], 0, $license_data['per_page']);
+}
 $list_table->prepare_items();
 
 // 📤 Export CSV
