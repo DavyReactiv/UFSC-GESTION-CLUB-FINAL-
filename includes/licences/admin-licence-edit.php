@@ -8,6 +8,32 @@ if (!defined('ABSPATH')) {
 require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
 require_once UFSC_PLUGIN_PATH . 'includes/licences/validation.php';
 
+/**
+ * Enqueue assets for the licence edit admin page.
+ */
+function ufsc_enqueue_admin_licence_edit_assets($hook)
+{
+    if ('admin_page_ufsc-modifier-licence' !== $hook) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'ufsc-licence-form-style',
+        UFSC_PLUGIN_URL . 'assets/css/form-licence.css',
+        [],
+        UFSC_PLUGIN_VERSION
+    );
+
+    wp_enqueue_script(
+        'ufsc-licence-form-script',
+        UFSC_PLUGIN_URL . 'assets/js/form-licence.js',
+        ['jquery'],
+        UFSC_PLUGIN_VERSION,
+        true
+    );
+}
+add_action('admin_enqueue_scripts', 'ufsc_enqueue_admin_licence_edit_assets');
+
 global $wpdb;
 // Support legacy ?edit_licence= parameter while preferring ?licence_id=
 if (isset($_GET['licence_id'])) {
@@ -122,20 +148,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 }
 
 // Enqueue the license form CSS and JS
-wp_enqueue_style(
-    'ufsc-licence-form-style',
-    UFSC_PLUGIN_URL . 'assets/css/form-licence.css',
-    [],
-    UFSC_PLUGIN_VERSION
-);
-
-wp_enqueue_script(
-    'ufsc-licence-form-script',
-    UFSC_PLUGIN_URL . 'assets/js/form-licence.js',
-    ['jquery'],
-    UFSC_PLUGIN_VERSION,
-    true
-);
 ?>
 
 <div class="wrap ufsc-ui">
