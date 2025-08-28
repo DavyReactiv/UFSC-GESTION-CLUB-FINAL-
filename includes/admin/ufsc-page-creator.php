@@ -151,10 +151,6 @@ function ufsc_admin_init_page_check() {
 // Hook into admin_init for lazy page creation check
 add_action('admin_init', 'ufsc_admin_init_page_check');
 
-// Register activation hook - this will be called from the main plugin file
-if (defined('UFSC_PLUGIN_MAIN_FILE')) {
-    register_activation_hook(UFSC_PLUGIN_MAIN_FILE, 'ufsc_ensure_frontend_pages');
-}
 
 /**
  * Retrieve the URL of the automatically created "Connexion Club" page.

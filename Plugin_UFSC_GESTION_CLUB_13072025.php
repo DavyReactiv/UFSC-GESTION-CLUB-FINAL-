@@ -30,7 +30,20 @@ define('UFSC_PLUGIN_PATH', plugin_dir_path(__FILE__));
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
-add_action('plugins_loaded', 'ufsc_run_migrations');
+
+// === Activation tasks ===
+if (!function_exists('ufsc_activate_plugin')) {
+    function ufsc_activate_plugin() {
+        if (function_exists('ufsc_run_migrations')) {
+            ufsc_run_migrations();
+        }
+        if (function_exists('ufsc_ensure_frontend_pages')) {
+            ufsc_ensure_frontend_pages();
+        }
+    }
+}
+register_activation_hook(__FILE__, 'ufsc_activate_plugin');
+
 // === Capabilities on activation ===
 if (!function_exists('ufsc_add_caps_on_activate')) {
     function ufsc_add_caps_on_activate() {

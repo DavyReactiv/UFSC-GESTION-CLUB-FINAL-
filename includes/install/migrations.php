@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) exit;
 if (!function_exists('ufsc_run_migrations')) {
 function ufsc_run_migrations() {
     global $wpdb;
+    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     $charset = $wpdb->get_charset_collate();
     $dbv_opt = 'ufsc_db_schema_version';
     $current = get_option($dbv_opt, '');
@@ -67,24 +68,21 @@ function ufsc_run_migrations() {
 
     // Logs table
     $logs_table = $wpdb->prefix . 'ufsc_licence_logs';
-    $exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $logs_table)) === $logs_table;
-    if (!$exists) {
-        $sql = "CREATE TABLE {$logs_table} (
-            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-            licence_id bigint(20) unsigned NOT NULL,
-            old_status varchar(50) NULL,
-            new_status varchar(50) NOT NULL,
-            user_id bigint(20) unsigned NULL,
-            created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            request_ip varchar(64) NULL,
-            user_agent varchar(191) NULL,
-            PRIMARY KEY (id),
-            KEY licence_id (licence_id),
-            KEY new_status (new_status),
-            KEY created_at (created_at)
-        ) {$charset};";
-        $wpdb->query($sql);
-    }
+    $sql = "CREATE TABLE {$logs_table} (
+        id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+        licence_id bigint(20) unsigned NOT NULL,
+        old_status varchar(50) NULL,
+        new_status varchar(50) NOT NULL,
+        user_id bigint(20) unsigned NULL,
+        created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        request_ip varchar(64) NULL,
+        user_agent varchar(191) NULL,
+        PRIMARY KEY (id),
+        KEY licence_id (licence_id),
+        KEY new_status (new_status),
+        KEY created_at (created_at)
+    ) {$charset};";
+    dbDelta($sql);
 
     if ($current !== $target) {
         update_option($dbv_opt, $target, true);
