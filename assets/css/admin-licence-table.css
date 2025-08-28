@@ -109,14 +109,18 @@
 }
 
 /* Base table configuration */
-.ufsc-licences-table {
+#licenses-table-club,
+#licenses-table-global {
     table-layout: auto;
 }
 
 /* Allow cell content to wrap normally */
-.ufsc-licences-table th,
-.ufsc-licences-table td {
+#licenses-table-club th,
+#licenses-table-club td,
+#licenses-table-global th,
+#licenses-table-global td {
     white-space: normal !important;
+    overflow-wrap: break-word;
 }
 
 /* Table styling improvements - Applicable to both licenses tables */
@@ -140,7 +144,7 @@
     padding: 10px 8px;
     border-bottom: 1px solid #dee2e6;
     vertical-align: middle;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Empty state styling */
