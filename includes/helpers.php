@@ -1131,6 +1131,33 @@ function ufsc_login_link_shortcode() {
     $login_url = function_exists('ufsc_get_login_page_url') ? ufsc_get_login_page_url() : false;
 
     if (!$login_url) {
+        if (current_user_can('manage_options')) {
+            $action_url = wp_nonce_url(
+                admin_url('admin-post.php?action=ufsc_recreate_frontend_pages'),
+                'ufsc_recreate_frontend_pages'
+            );
+            return '<div class="ufsc-missing-login-page">' .
+                esc_html__('La page de connexion club est manquante.', 'plugin-ufsc-gestion-club-13072025') .
+                ' <a href="' . esc_url($action_url) . '">' .
+                esc_html__('Créer automatiquement', 'plugin-ufsc-gestion-club-13072025') .
+                '</a></div>';
+        }
+        return '';
+    }
+
+    $response = wp_remote_head($login_url, array('timeout' => 3));
+    if (is_wp_error($response) || 404 === wp_remote_retrieve_response_code($response)) {
+        if (current_user_can('manage_options')) {
+            $action_url = wp_nonce_url(
+                admin_url('admin-post.php?action=ufsc_recreate_frontend_pages'),
+                'ufsc_recreate_frontend_pages'
+            );
+            return '<div class="ufsc-missing-login-page">' .
+                esc_html__('La page de connexion club est introuvable.', 'plugin-ufsc-gestion-club-13072025') .
+                ' <a href="' . esc_url($action_url) . '">' .
+                esc_html__('Créer automatiquement', 'plugin-ufsc-gestion-club-13072025') .
+                '</a></div>';
+        }
         return '';
     }
 
