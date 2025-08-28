@@ -12,16 +12,37 @@
  */
 
 jQuery(document).ready(function($) {
+    function dataTablesAvailable() {
+        return typeof $.fn.DataTable !== 'undefined';
+    }
+
+    function showFallback(selector) {
+        const $table = $(selector);
+        if (!$table.length) return;
+        const $tbody = $table.find('tbody');
+        if ($tbody.find('tr').length === 0) {
+            const colspan = $table.find('thead th').length || 1;
+            $tbody.html('<tr><td colspan="' + colspan + '">Aucune licence trouvée</td></tr>');
+        }
+        $table.show();
+    }
+
     // Attendre que tous les scripts DataTables soient chargés
-    if (typeof $.fn.DataTable === 'undefined') {
+    if (!dataTablesAvailable()) {
         console.warn('DataTables non disponible - attente...');
         setTimeout(function() {
+            if (!dataTablesAvailable()) {
+                console.warn('DataTables toujours indisponible - utilisation de la table HTML');
+                showFallback('#licenses-table-club');
+                showFallback('#licenses-table-global');
+                return;
+            }
             initializeClubLicensesTable();
             initializeGlobalLicensesTable();
         }, 500);
         return;
     }
-    
+
     initializeClubLicensesTable();
     initializeGlobalLicensesTable();
     
@@ -183,7 +204,7 @@ jQuery(document).ready(function($) {
             });
         } catch (error) {
             console.error('❌ ERREUR lors de l\'initialisation DataTables', context, ':', error);
-            
+
             // Essayer une initialisation de base en cas d'échec
             console.log('🔄 Tentative d\'initialisation basique pour', context, '...');
             try {
@@ -196,6 +217,7 @@ jQuery(document).ready(function($) {
                 console.log('✅ Initialisation basique réussie pour', context);
             } catch (basicError) {
                 console.error('❌ Échec de l\'initialisation basique pour', context, ':', basicError);
+                showFallback(tableId);
             }
         }
     }
