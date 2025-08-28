@@ -191,6 +191,7 @@ function ufsc_load_admin_files() {
     }
 }
 add_action('admin_init', 'ufsc_load_admin_files', 0);
+
 /**
  * Load frontend specific files.
  */
@@ -277,7 +278,10 @@ register_activation_hook(__FILE__, 'ufsc_activate_migrations');
  * Runs a lightweight check against the ufsc_clubs table and logs any
  * database errors instead of stopping execution.
  */
+
+
 function ufsc_admin_bootstrap() {}
+
 
 function ufsc_admin_boot() {
     global $wpdb;
