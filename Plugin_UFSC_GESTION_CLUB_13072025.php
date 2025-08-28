@@ -208,10 +208,199 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')
  * Bootstrap admin functionality by instantiating required classes.
  */
 function ufsc_admin_bootstrap() {
-    new UFSC_Menu();
     UFSC_Document_Manager::get_instance();
 }
 add_action('admin_init', 'ufsc_admin_bootstrap');
+
+/**
+ * Helper to invoke methods from UFSC_Menu without registering additional hooks.
+ *
+ * @param string $method Method name to call on UFSC_Menu.
+ */
+function ufsc_call_menu_method($method)
+{
+    $menu = new UFSC_Menu(false);
+    if (method_exists($menu, $method)) {
+        $menu->$method();
+    }
+}
+
+// Wrapper callbacks for menu pages.
+function ufsc_render_dashboard_page() { ufsc_call_menu_method('render_dashboard_page'); }
+function ufsc_render_liste_clubs_page() { ufsc_call_menu_method('render_liste_clubs_page'); }
+function ufsc_render_ajouter_club_page() { ufsc_call_menu_method('render_ajouter_club_page'); }
+function ufsc_render_clubs_trash_page() { ufsc_call_menu_method('render_clubs_trash_page'); }
+function ufsc_render_export_clubs_page() { ufsc_call_menu_method('render_export_clubs_page'); }
+function ufsc_render_licence_add_admin_page() { ufsc_call_menu_method('render_licence_add_admin_page'); }
+function ufsc_render_liste_licences_page() { ufsc_call_menu_method('render_liste_licences_page'); }
+function ufsc_render_ajouter_licence_page() { ufsc_call_menu_method('render_ajouter_licence_page'); }
+function ufsc_render_licences_trash_page() { ufsc_call_menu_method('render_licences_trash_page'); }
+function ufsc_render_export_licences_page() { ufsc_call_menu_method('render_export_licences_page'); }
+function ufsc_render_stats_page() { ufsc_call_menu_method('render_stats_page'); }
+function ufsc_render_settings_page() { ufsc_call_menu_method('render_settings_page'); }
+function ufsc_render_edit_club_page() { ufsc_call_menu_method('render_edit_club_page'); }
+function ufsc_render_view_club_page() { ufsc_call_menu_method('render_view_club_page'); }
+function ufsc_render_modifier_licence_page() { ufsc_call_menu_method('render_modifier_licence_page'); }
+function ufsc_render_view_licence_page() { ufsc_call_menu_method('render_view_licence_page'); }
+function ufsc_render_voir_licences_page() { ufsc_call_menu_method('render_voir_licences_page'); }
+
+/**
+ * Register UFSC admin menu and submenus.
+ */
+function ufsc_register_menu()
+{
+    add_menu_page(
+        __('UFSC', 'ufsc-gestion-club-final'),
+        __('UFSC', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-dashboard',
+        'ufsc_render_dashboard_page',
+        'dashicons-groups',
+        25
+    );
+
+    // Dashboard
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Tableau de bord', 'ufsc-gestion-club-final'),
+        __('Tableau de bord', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-dashboard',
+        'ufsc_render_dashboard_page'
+    );
+
+    // Clubs
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Tous les clubs', 'ufsc-gestion-club-final'),
+        __('Clubs', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-clubs',
+        'ufsc_render_liste_clubs_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Ajouter un club', 'ufsc-gestion-club-final'),
+        __('Ajouter un club', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-club-add',
+        'ufsc_render_ajouter_club_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Clubs supprimés', 'ufsc-gestion-club-final'),
+        __('Clubs supprimés', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-clubs-trash',
+        'ufsc_render_clubs_trash_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Exporter les clubs', 'ufsc-gestion-club-final'),
+        __('Exporter les clubs', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-clubs-export',
+        'ufsc_render_export_clubs_page'
+    );
+
+    // Licences
+    add_submenu_page(
+        'plugin-ufsc-gestion-club-13072025',
+        'Ajouter une licence',
+        'Ajouter une licence',
+        UFSC_MANAGE_LICENSES_CAP,
+        'ufsc_license_add_admin',
+        'ufsc_render_licence_add_admin_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Toutes les licences', 'ufsc-gestion-club-final'),
+        __('Licences', 'ufsc-gestion-club-final'),
+        UFSC_MANAGE_LICENSES_CAP,
+        'ufsc-licences',
+        'ufsc_render_liste_licences_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Ajouter une licence', 'ufsc-gestion-club-final'),
+        __('Ajouter une licence', 'ufsc-gestion-club-final'),
+        UFSC_MANAGE_LICENSES_CAP,
+        'ufsc-licence-add',
+        'ufsc_render_ajouter_licence_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Licences supprimées', 'ufsc-gestion-club-final'),
+        __('Licences supprimées', 'ufsc-gestion-club-final'),
+        UFSC_MANAGE_LICENSES_CAP,
+        'ufsc-licences-trash',
+        'ufsc_render_licences_trash_page'
+    );
+
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Exporter les licences', 'ufsc-gestion-club-final'),
+        __('Exporter les licences', 'ufsc-gestion-club-final'),
+        UFSC_MANAGE_LICENSES_CAP,
+        'ufsc-licences-export',
+        'ufsc_render_export_licences_page'
+    );
+
+    // Statistiques
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Statistiques', 'ufsc-gestion-club-final'),
+        __('Statistiques', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-stats',
+        'ufsc_render_stats_page'
+    );
+
+    // Settings
+    add_submenu_page(
+        'ufsc-dashboard',
+        __('Réglages', 'ufsc-gestion-club-final'),
+        __('Réglages', 'ufsc-gestion-club-final'),
+        'manage_ufsc',
+        'ufsc-settings',
+        'ufsc_render_settings_page'
+    );
+
+    // Hidden legacy slugs for backward compatibility
+    add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_dashboard', 'ufsc_render_dashboard_page');
+    add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-liste-clubs', 'ufsc_render_liste_clubs_page');
+    add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc-ajouter-club', 'ufsc_render_ajouter_club_page');
+    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_licenses_admin', 'ufsc_render_liste_licences_page');
+    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_license_add_admin', 'ufsc_render_licence_add_admin_page');
+
+    // Hidden forms
+    add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_edit_club', 'ufsc_render_edit_club_page');
+    add_submenu_page(null, '', '', 'manage_ufsc', 'ufsc_view_club', 'ufsc_render_view_club_page');
+    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc-modifier-licence', 'ufsc_render_modifier_licence_page');
+    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_view_licence', 'ufsc_render_view_licence_page');
+    add_submenu_page(null, '', '', UFSC_MANAGE_LICENSES_CAP, 'ufsc_voir_licences', 'ufsc_render_voir_licences_page');
+}
+
+add_action('admin_menu', 'ufsc_register_menu', 9);
+
+// Register settings and enqueue scripts without instantiating menu on admin_init.
+function ufsc_menu_register_settings()
+{
+    ufsc_call_menu_method('register_settings');
+}
+add_action('admin_init', 'ufsc_menu_register_settings');
+
+function ufsc_menu_enqueue_admin_scripts()
+{
+    ufsc_call_menu_method('enqueue_admin_scripts');
+}
+add_action('admin_enqueue_scripts', 'ufsc_menu_enqueue_admin_scripts');
 
     /**
      * Load text domain for translations
