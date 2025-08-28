@@ -193,20 +193,25 @@ if (file_exists(UFSC_PLUGIN_PATH . 'includes/shortcodes-front.php')) {
 }
 
 /**
-* Initialize the menu and document manager
-     */
-    // Licences direct shortcode & ajax (added)
-    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
-        require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
-    }
-    if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
-        require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
-    }
+ * Initialize admin components.
+ * This includes menu registration and document management.
+ */
+// Licences direct shortcode & ajax (added)
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licenses-direct.php';
+}
+if (file_exists(UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php')) {
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licenses-direct.php';
+}
 
-    if (is_admin()) {
-        new UFSC_Menu();
-        UFSC_Document_Manager::get_instance();
-    }
+/**
+ * Bootstrap admin functionality by instantiating required classes.
+ */
+function ufsc_admin_bootstrap() {
+    new UFSC_Menu();
+    UFSC_Document_Manager::get_instance();
+}
+add_action('admin_init', 'ufsc_admin_bootstrap');
 
     /**
      * Load text domain for translations
