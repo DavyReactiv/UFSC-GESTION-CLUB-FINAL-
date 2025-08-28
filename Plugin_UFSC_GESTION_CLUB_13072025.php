@@ -2389,7 +2389,12 @@ function ufsc_run_migrations() {
     // Ensure columns exist for licences
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'statut'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN statut VARCHAR(20) NOT NULL DEFAULT 'brouillon'");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN statut VARCHAR(20) NOT NULL DEFAULT %s",
+                'brouillon'
+            )
+        );
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'date_creation'));
     if (!$col) {
@@ -2397,18 +2402,42 @@ function ufsc_run_migrations() {
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'club_id'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT 0");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN club_id BIGINT UNSIGNED NOT NULL DEFAULT %d",
+                0
+            )
+        );
     }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_lic} LIKE %s", 'payment_status'));
     if (!$col) {
-        $wpdb->query("ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'");
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_lic} ADD COLUMN payment_status VARCHAR(20) NOT NULL DEFAULT %s",
+                'pending'
+            )
+        );
     }
 
     // Ensure columns for clubs logo
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_total'));
-    if (!$col) { $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN pack_credits_total INT NOT NULL DEFAULT 0"); }
+    if (!$col) {
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_total INT NOT NULL DEFAULT %d",
+                0
+            )
+        );
+    }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'pack_credits_used'));
-    if (!$col) { $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN pack_credits_used INT NOT NULL DEFAULT 0"); }
+    if (!$col) {
+        $wpdb->query(
+            $wpdb->prepare(
+                "ALTER TABLE {$t_club} ADD COLUMN pack_credits_used INT NOT NULL DEFAULT %d",
+                0
+            )
+        );
+    }
     $col = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$t_club} LIKE %s", 'logo_attachment_id'));
     if (!$col) {
         $wpdb->query("ALTER TABLE {$t_club} ADD COLUMN logo_attachment_id BIGINT UNSIGNED NULL");
