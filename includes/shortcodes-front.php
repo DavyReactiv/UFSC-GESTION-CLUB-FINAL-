@@ -735,20 +735,20 @@ function ufsc_render_club_account_form($club, $atts) {
                     
                     foreach ($documents as $field => $label):
                         $doc_value = $club->{$field} ?? '';
-                        if (!empty($doc_value)):
-                            $doc_url = ufsc_resolve_document_url($doc_value);
-                            if ($doc_url):
+                        $status = !empty($doc_value) ? '✅ Transmis' : '⏳ En cours';
+                        $doc_url = !empty($doc_value) ? ufsc_resolve_document_url($doc_value) : '';
                     ?>
                     <div class="ufsc-document-item">
                         <span class="ufsc-document-name"><?php echo esc_html($label); ?></span>
-                        <a href="<?php echo esc_url($doc_url); ?>" class="ufsc-btn ufsc-btn-small ufsc-btn-outline" target="_blank">
-                            <?php esc_html_e('Télécharger', 'plugin-ufsc-gestion-club-13072025'); ?>
-                        </a>
+                        <span class="ufsc-document-status"><?php echo esc_html($status); ?></span>
+                        <?php if (!empty($doc_url)): ?>
+                            <a href="<?php echo esc_url($doc_url); ?>" class="ufsc-btn ufsc-btn-small ufsc-btn-outline" target="_blank">
+                                <?php esc_html_e('Télécharger', 'plugin-ufsc-gestion-club-13072025'); ?>
+                            </a>
+                        <?php endif; ?>
                     </div>
-                    <?php 
-                            endif;
-                        endif;
-                    endforeach; 
+                    <?php
+                    endforeach;
                     ?>
                 </div>
             </div>

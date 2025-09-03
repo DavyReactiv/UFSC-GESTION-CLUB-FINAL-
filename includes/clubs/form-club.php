@@ -26,12 +26,12 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
     $regions = require plugin_dir_path(__FILE__) . '../../data/regions.php';
     $statuts = ['Actif', 'Inactif', 'En cours de validation', 'Archivé', 'Refusé'];
     $docs = [
-        'statuts' => "Statuts du club",
-        'recepisse' => "Récépissé de déclaration",
-        'jo' => "Parution au JO",
-        'pv_ag' => "Dernier PV d'AG",
-        'cer' => "Contrat d'engagement républicain",
-        'attestation_cer' => "Attestation liée au CER"
+        'statuts' => ['label' => "Statuts du club", 'field' => 'doc_statuts'],
+        'recepisse' => ['label' => "Récépissé de déclaration", 'field' => 'doc_recepisse'],
+        'jo' => ['label' => "Parution au JO", 'field' => 'doc_jo'],
+        'pv_ag' => ['label' => "Dernier PV d'AG", 'field' => 'doc_pv_ag'],
+        'cer' => ['label' => "Contrat d'engagement républicain", 'field' => 'doc_cer'],
+        'attestation_cer' => ['label' => "Attestation liée au CER", 'field' => 'doc_attestation_cer']
     ];
     $roles = [
         'president' => 'Président',
@@ -142,8 +142,9 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
             if ($is_affiliation) {
                 $required_docs = ['statuts', 'recepisse', 'cer'];
                 foreach ($required_docs as $doc) {
-                    if (empty($club->{$doc}) && empty($_FILES[$doc]['name'])) {
-                        $errors[] = 'Le document "' . $docs[$doc] . '" est obligatoire pour l\'affiliation.';
+                    $field = $docs[$doc]['field'];
+                    if (empty($club->{$field}) && empty($_FILES[$doc]['name'])) {
+                        $errors[] = 'Le document "' . $docs[$doc]['label'] . '" est obligatoire pour l\'affiliation.';
                     }
                 }
             }
@@ -186,34 +187,9 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                             }
                         }
 
-                        // Traitement des documents
-                        foreach ($docs as $key => $label) {
-                            if (!empty($_FILES[$key]['name'])) {
-                                $file = $_FILES[$key];
-
-                                // Vérification du type de fichier
-                                $allowed_types = ['image/jpeg', 'image/png', 'application/pdf'];
-                                if (!in_array($file['type'], $allowed_types)) {
-                                    continue; // Ignorer les fichiers non autorisés
-                                }
-
-                                // Utiliser WordPress pour gérer l'upload
-                                if (!function_exists('wp_handle_upload')) {
-                                    require_once(ABSPATH . 'wp-admin/includes/file.php');
-                                }
-
-                                // Upload via WordPress
-                                $upload_overrides = array('test_form' => false);
-                                $movefile = wp_handle_upload($file, $upload_overrides);
-
-                                if ($movefile && !isset($movefile['error'])) {
-                                    // Fichier uploadé avec succès
-                                    $doc_url = $movefile['url'];
-                                    if (method_exists($club_manager, 'update_club_document')) {
-                                        $club_manager->update_club_document($club_id, $key, $doc_url);
-                                    }
-                                }
-                            }
+                        // Traitement des documents via le gestionnaire centralisé
+                        if (function_exists('ufsc_handle_club_file_uploads')) {
+                            ufsc_handle_club_file_uploads($club_id, $_FILES);
                         }
                     }
 
@@ -821,18 +797,19 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                 </div>
                 <div class="ufsc-form-section-body">
                     <div class="ufsc-form-grid">
-                        <?php foreach ($docs as $key => $label):
+                        <?php foreach ($docs as $key => $info):
                             $is_required = $is_affiliation && in_array($key, ['statuts', 'recepisse', 'cer']);
                             if (!$is_required) { continue; }
+                            $current = $club->{$info['field']} ?? '';
                         ?>
                             <div class="ufsc-form-row">
-                                <label for="<?php echo $key; ?>"><?php echo $label; ?> <span class="ufsc-form-required">*</span></label>
+                                <label for="<?php echo $key; ?>"><?php echo $info['label']; ?> <span class="ufsc-form-required">*</span></label>
                                 <div>
-                                    <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*" <?php echo empty($club->{$key}) ? 'required' : ''; ?>>
-                                    <?php if (isset($club->{$key}) && !empty($club->{$key})): ?>
+                                    <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*" <?php echo empty($current) ? 'required' : ''; ?>>
+                                    <?php if (!empty($current)): ?>
                                         <div class="ufsc-form-hint">
                                             <i class="dashicons dashicons-yes-alt"></i> Document déjà téléchargé.
-                                            <a href="<?php echo esc_url($club->{$key}); ?>" target="_blank">Voir le document</a>
+                                            <a href="<?php echo esc_url($current); ?>" target="_blank">Voir le document</a>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -843,18 +820,19 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                     <details class="ufsc-optional-fields">
                         <summary>Documents optionnels</summary>
                         <div class="ufsc-form-grid">
-                            <?php foreach ($docs as $key => $label):
+                            <?php foreach ($docs as $key => $info):
                                 $is_required = $is_affiliation && in_array($key, ['statuts', 'recepisse', 'cer']);
                                 if ($is_required) { continue; }
+                                $current = $club->{$info['field']} ?? '';
                             ?>
                                 <div class="ufsc-form-row">
-                                    <label for="<?php echo $key; ?>"><?php echo $label; ?></label>
+                                    <label for="<?php echo $key; ?>"><?php echo $info['label']; ?></label>
                                     <div>
                                         <input type="file" name="<?php echo $key; ?>" id="<?php echo $key; ?>" accept=".pdf,image/*">
-                                        <?php if (isset($club->{$key}) && !empty($club->{$key})): ?>
+                                        <?php if (!empty($current)): ?>
                                             <div class="ufsc-form-hint">
                                                 <i class="dashicons dashicons-yes-alt"></i> Document déjà téléchargé.
-                                                <a href="<?php echo esc_url($club->{$key}); ?>" target="_blank">Voir le document</a>
+                                                <a href="<?php echo esc_url($current); ?>" target="_blank">Voir le document</a>
                                             </div>
                                         <?php endif; ?>
                                     </div>
