@@ -83,3 +83,7 @@ msgstr ""
 
 msgid "Settings saved successfully."
 msgstr ""
+
+# Licence deletion messages
+msgid "Suppression autorisée uniquement pour les brouillons ou les licences en attente."
+msgstr ""
