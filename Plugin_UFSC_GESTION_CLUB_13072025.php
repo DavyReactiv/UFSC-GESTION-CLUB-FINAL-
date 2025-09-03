@@ -339,6 +339,8 @@ function ufsc_load_frontend_files() {
         require_once UFSC_PLUGIN_PATH . 'includes/frontend/ajax/licence-drafts.php';
     }
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/hooks/form-capture.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/handlers/submit-licence.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/handlers/delete-licence.php';
     require_once UFSC_PLUGIN_PATH . 'includes/diag/endpoint.php';
 
     $assets = UFSC_PLUGIN_PATH . 'includes/class-ufsc-assets.php';
