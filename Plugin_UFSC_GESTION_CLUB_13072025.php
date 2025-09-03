@@ -1085,9 +1085,12 @@ function ufsc_handle_save_club_ajax() {
                 'timestamp' => current_time('mysql')
             ];
 
-            // Send notification email for new clubs
+            // Send notification email for new clubs and preload checkout
             if (!$is_edit && !is_admin()) {
                 ufsc_send_club_notification_email($fresh_club_data);
+
+                // Automatically preload affiliation product in WooCommerce cart
+                ufsc_add_affiliation_to_cart($club_id);
             }
 
             wp_send_json_success($response_data);
