@@ -83,3 +83,7 @@ msgstr "Mise à jour de la base de données requise."
 
 msgid "Settings saved successfully."
 msgstr "Paramètres sauvegardés avec succès."
+
+#: includes/frontend/ajax/licenses-direct.php
+msgid "Suppression autorisée uniquement pour les brouillons ou les licences en attente."
+msgstr "Suppression autorisée uniquement pour les brouillons ou les licences en attente."
