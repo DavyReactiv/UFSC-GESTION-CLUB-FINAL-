@@ -37,6 +37,7 @@ function ufsc_update_dirigeant_handler()
         'reduction_benevole'       => isset($_POST['reduction_benevole']) ? 1 : 0,
         'reduction_postier'        => isset($_POST['reduction_postier']) ? 1 : 0,
         'identifiant_laposte'      => sanitize_text_field(wp_unslash($_POST['identifiant_laposte'])),
+        'identifiant_laposte_flag' => isset($_POST['identifiant_laposte_flag']) ? 1 : (!empty($_POST['identifiant_laposte']) ? 1 : 0),
         'profession'               => sanitize_text_field(wp_unslash($_POST['profession'])),
         'fonction_publique'        => isset($_POST['fonction_publique']) ? 1 : 0,
         'diffusion_image'          => isset($_POST['diffusion_image']) ? 1 : 0,
@@ -52,6 +53,14 @@ function ufsc_update_dirigeant_handler()
         'assurance_dommage_corporel' => isset($_POST['assurance_dommage_corporel']) ? 1 : 0,
         'assurance_assistance'       => isset($_POST['assurance_assistance']) ? 1 : 0,
     ];
+
+    if (!isset($_POST['identifiant_laposte_flag']) && in_array($data['identifiant_laposte'], array('0','1'), true)) {
+        $data['identifiant_laposte_flag'] = (int) $data['identifiant_laposte'];
+        $data['identifiant_laposte'] = '';
+    }
+    if (empty($data['identifiant_laposte_flag'])) {
+        $data['identifiant_laposte'] = '';
+    }
 
     // 💾 Mise à jour base de données
     $updated = $wpdb->update($table, $data, ['id' => $licence_id]);

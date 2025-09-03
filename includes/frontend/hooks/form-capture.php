@@ -20,10 +20,22 @@ add_action('template_redirect', function(){
     global $wpdb; $t = $wpdb->prefix.'ufsc_licences';
     $club_id = (int) $wpdb->get_var($wpdb->prepare('SELECT club_id FROM '.$wpdb->prefix.'ufsc_user_clubs WHERE user_id=%d LIMIT 1', get_current_user_id()));
 
-    $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');
+    $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','identifiant_laposte_flag','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');
     $data = array();
     foreach ($fields as $f){ $v = isset($_POST[$f])?wp_unslash($_POST[$f]):''; $data[$f] = is_string($v)?sanitize_text_field($v):$v; }
     $data['email'] = sanitize_email($data['email']);
+
+    if (!isset($data['identifiant_laposte_flag']) || $data['identifiant_laposte_flag'] === '') {
+        if (isset($data['identifiant_laposte']) && in_array($data['identifiant_laposte'], array('0','1'), true)) {
+            $data['identifiant_laposte_flag'] = (int) $data['identifiant_laposte'];
+            $data['identifiant_laposte'] = '';
+        } else {
+            $data['identifiant_laposte_flag'] = empty($data['identifiant_laposte']) ? 0 : 1;
+        }
+    }
+    if (empty($data['identifiant_laposte_flag'])) {
+        $data['identifiant_laposte'] = '';
+    }
 
     $licence_id = isset($_POST['licence_id'])?absint($_POST['licence_id']):0;
     if ($licence_id){

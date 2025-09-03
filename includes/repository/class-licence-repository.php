@@ -110,6 +110,10 @@ class UFSC_Licence_Repository
         $licence = $this->wpdb->get_row(
             $this->wpdb->prepare("SELECT * FROM {$this->table} WHERE id = %d", $id)
         );
+        if ($licence && isset($licence->identifiant_laposte) && in_array($licence->identifiant_laposte, array('0','1'), true)) {
+            $licence->identifiant_laposte_flag = (int) $licence->identifiant_laposte;
+            $licence->identifiant_laposte = '';
+        }
         if ($licence) {
             wp_cache_set($id, $licence, 'ufsc_licences');
         }

@@ -2593,6 +2593,7 @@ class UFSC_Menu
                     'reduction_benevole'         => isset($_POST['reduction_benevole']) ? intval($_POST['reduction_benevole']) : 0,
                     'reduction_postier'          => isset($_POST['reduction_postier']) ? intval($_POST['reduction_postier']) : 0,
                     'identifiant_laposte'        => isset($_POST['identifiant_laposte']) ? sanitize_text_field($_POST['identifiant_laposte']) : '',
+                    'identifiant_laposte_flag'   => isset($_POST['identifiant_laposte_flag']) ? intval($_POST['identifiant_laposte_flag']) : (!empty($_POST['identifiant_laposte']) ? 1 : 0),
                     'profession'                 => isset($_POST['profession']) ? sanitize_text_field($_POST['profession']) : '',
                     'fonction_publique'          => isset($_POST['fonction_publique']) ? intval($_POST['fonction_publique']) : 0,
                     'competition'                => isset($_POST['competition']) ? intval($_POST['competition']) : 0,

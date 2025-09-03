@@ -46,7 +46,10 @@
         <td><input type="text" name="profession" value="<?php echo isset($current_licence) ? esc_attr($current_licence->profession) : ''; ?>" class="regular-text"></td></tr>
 
     <tr><th><label for="identifiant_laposte">Identifiant La Poste</label></th>
-        <td><input type="text" name="identifiant_laposte" value="<?php echo isset($current_licence) ? esc_attr($current_licence->identifiant_laposte) : ''; ?>" class="regular-text"></td></tr>
+        <td>
+            <input type="text" name="identifiant_laposte" value="<?php echo isset($current_licence) ? esc_attr($current_licence->identifiant_laposte) : ''; ?>" class="regular-text">
+            <input type="hidden" name="identifiant_laposte_flag" value="<?php echo !empty($current_licence->identifiant_laposte_flag) ? '1' : '0'; ?>">
+        </td></tr>
 
     <tr><th><label for="region">Région</label></th>
         <td>

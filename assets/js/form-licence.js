@@ -1,25 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-toggle fields based on reduction selections
     const reductionPostier = document.querySelector('#reduction_postier');
+    const laposteFlag = document.querySelector('input[name="identifiant_laposte_flag"]');
     if (reductionPostier) {
         const laposteField = document.querySelector('#identifiant_laposte')?.closest('.ufsc-form-field');
         const toggleLaposte = () => {
-            if (reductionPostier.checked) {
-                if (laposteField) {
-                    laposteField.style.display = '';
-                    const input = laposteField.querySelector('input');
-                    if (input) input.required = true;
-                }
-            } else {
-                if (laposteField) {
-                    laposteField.style.display = 'none';
-                    const input = laposteField.querySelector('input');
-                    if (input) input.required = false;
-                }
+            const show = reductionPostier.checked;
+            if (laposteField) {
+                laposteField.style.display = show ? '' : 'none';
+                const input = laposteField.querySelector('input[type="text"]');
+                if (input) input.required = show;
+            }
+            if (laposteFlag) {
+                laposteFlag.value = show ? '1' : '0';
             }
         };
         reductionPostier.addEventListener('change', toggleLaposte);
         toggleLaposte();
+        const laposteInput = document.querySelector('#identifiant_laposte');
+        if (laposteInput && laposteFlag) {
+            laposteInput.addEventListener('input', () => {
+                laposteFlag.value = laposteInput.value.trim() ? '1' : (reductionPostier.checked ? '1' : '0');
+            });
+        }
     }
 
     // Auto-toggle delegataire license number field
