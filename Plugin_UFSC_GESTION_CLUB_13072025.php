@@ -221,6 +221,7 @@ if ( ! is_admin() ) {
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licence-button-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-menu-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-form.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/recent-licences-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/dashboard-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licences-shortcode.php';
@@ -363,6 +364,16 @@ function ufsc_load_frontend_files() {
     }
 }
 add_action('init', 'ufsc_load_frontend_files', 0);
+
+// Redirect new registrations to the club creation page
+add_filter('registration_redirect', 'ufsc_redirect_after_registration', 10, 2);
+function ufsc_redirect_after_registration($redirect_to, $user) {
+    $club_form = ufsc_get_safe_page_url('club_form');
+    if ($club_form['available']) {
+        return $club_form['url'];
+    }
+    return $redirect_to;
+}
 /**
  * Bootstrap admin functionality and verify database connection.
  *

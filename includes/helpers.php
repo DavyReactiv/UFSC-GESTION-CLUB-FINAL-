@@ -630,7 +630,7 @@ function ufsc_check_frontend_access($context = 'general')
     
     // Get user's club
     $club = ufsc_get_user_club($user_id);
-    
+
     if (!$club) {
         // Allow managers to bypass club check
         if (function_exists('ufsc_safe_current_user_can') && ufsc_safe_current_user_can('ufsc_manage', $user_id)) {
@@ -664,7 +664,21 @@ function ufsc_check_frontend_access($context = 'general')
             'club' => null
         ];
     }
-    
+
+    // If club exists but affiliation hasn't been paid, block dashboard access
+    if ($context === 'dashboard' && isset($club->statut) && $club->statut === 'En cours de création') {
+        $pay_url = add_query_arg('ufsc_pay_affiliation', $club->id, home_url('/'));
+        $pay_button = '<a href="' . esc_url($pay_url) . '" class="ufsc-btn ufsc-btn-primary">'
+            . esc_html__('Payer l\'affiliation', 'plugin-ufsc-gestion-club-13072025') . '</a>';
+        return [
+            'allowed' => false,
+            'error_message' => '<div class="ufsc-alert ufsc-alert-warning"><p>'
+                . esc_html__('Votre club n\'est pas encore affilié.', 'plugin-ufsc-gestion-club-13072025')
+                . '</p><p>' . $pay_button . '</p></div>',
+            'club' => $club
+        ];
+    }
+
     return [
         'allowed' => true,
         'error_message' => '',

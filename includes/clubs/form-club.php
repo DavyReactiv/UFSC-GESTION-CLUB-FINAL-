@@ -242,8 +242,8 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
                 echo '<p>Votre club a été enregistré avec succès.</p>';
 
                 if ($is_frontend) {
-                    echo '<p><a href="' . esc_url(get_permalink(get_option('ufsc_affiliation_page_id'))) . '" class="ufsc-btn ufsc-btn-red">
-                        Procéder à l\'affiliation du club</a></p>';
+                    $pay_url = add_query_arg('ufsc_pay_affiliation', $club_id, home_url('/'));
+                    echo '<p><a href="' . esc_url($pay_url) . '" class="ufsc-btn ufsc-btn-red">Payer l\'affiliation</a></p>';
                 }
 
                 echo '</div>';
