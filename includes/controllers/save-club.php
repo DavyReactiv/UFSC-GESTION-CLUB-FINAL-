@@ -4,10 +4,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-function ufsc_handle_club_submission()
+function ufsc_handle_save_club()
 {
+    $redirect = wp_get_referer() ?: admin_url();
+
     if (!isset($_POST['ufsc_club_nonce']) || !wp_verify_nonce(wp_unslash($_POST['ufsc_club_nonce']), 'ufsc_save_club')) {
-        wp_die(__('Security check failed.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect($redirect);
+        exit;
+    }
+
+    if (!current_user_can('ufsc_manage_own')) {
+        wp_safe_redirect($redirect);
+        exit;
     }
 
     global $wpdb;
@@ -21,6 +29,11 @@ function ufsc_handle_club_submission()
         $club_id = intval(wp_unslash($_POST['club_id']));
     }
     $is_edit = $club_id > 0;
+
+    if ($is_edit && !current_user_can('ufsc_manage') && !ufsc_verify_club_access($club_id)) {
+        wp_safe_redirect($redirect);
+        exit;
+    }
 
     $data = [
         'nom' => sanitize_text_field(wp_unslash($_POST['nom'])),
@@ -180,4 +193,4 @@ function ufsc_handle_club_submission()
     wp_redirect(admin_url('admin.php?page=ufsc_voir_clubs&success=1'));
     exit;
 }
-add_action('admin_post_ufsc_save_club', 'ufsc_handle_club_submission');
+add_action('admin_post_ufsc_save_club', 'ufsc_handle_save_club');
