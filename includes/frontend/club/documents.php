@@ -160,76 +160,68 @@ function ufsc_render_club_documents($club)
         'statuts' => [
             'title' => 'Statuts du club',
             'description' => 'Statuts officiels de votre association',
-            'field' => 'statuts'
+            'field' => 'doc_statuts'
         ],
         'recepisse' => [
             'title' => 'Récépissé de déclaration',
             'description' => 'Récépissé de déclaration en préfecture',
-            'field' => 'recepisse'
+            'field' => 'doc_recepisse'
         ],
         'jo' => [
             'title' => 'Parution au Journal Officiel',
             'description' => 'Justificatif de parution au JO',
-            'field' => 'jo'
+            'field' => 'doc_jo'
         ],
         'pv_ag' => [
             'title' => 'Dernier PV d\'Assemblée Générale',
             'description' => 'Procès-verbal de la dernière AG',
-            'field' => 'pv_ag'
+            'field' => 'doc_pv_ag'
         ],
         'cer' => [
             'title' => 'Contrat d\'Engagement Républicain',
             'description' => 'CER signé par le club',
-            'field' => 'cer'
+            'field' => 'doc_cer'
         ],
         'attestation_cer' => [
             'title' => 'Attestation liée au CER',
             'description' => 'Attestation complémentaire au CER',
-            'field' => 'attestation_cer'
+            'field' => 'doc_attestation_cer'
         ]
     ];
 
-    $has_documents = false;
     $documents_grid = '<div class="ufsc-documents-grid">';
 
     foreach ($club_docs as $doc_key => $doc_info) {
         $field_value = $club->{$doc_info['field']} ?? '';
-        
+
+        $documents_grid .= '<div class="ufsc-document-item">';
+        $documents_grid .= '<div class="ufsc-document-icon">';
+        $documents_grid .= '<i class="dashicons dashicons-media-document"></i>';
+        $documents_grid .= '</div>';
+        $documents_grid .= '<div class="ufsc-document-info">';
+        $documents_grid .= '<h4>' . esc_html($doc_info['title']) . '</h4>';
+        $documents_grid .= '<p>' . esc_html($doc_info['description']) . '</p>';
+        $documents_grid .= '</div>';
+        $documents_grid .= '<div class="ufsc-document-actions">';
+
+        // Status badge
         if (!empty($field_value)) {
-            $has_documents = true;
-            $documents_grid .= '<div class="ufsc-document-item">';
-            $documents_grid .= '<div class="ufsc-document-icon">';
-            $documents_grid .= '<i class="dashicons dashicons-media-document"></i>';
-            $documents_grid .= '</div>';
-            $documents_grid .= '<div class="ufsc-document-info">';
-            $documents_grid .= '<h4>' . esc_html($doc_info['title']) . '</h4>';
-            $documents_grid .= '<p>' . esc_html($doc_info['description']) . '</p>';
-            $documents_grid .= '</div>';
-            $documents_grid .= '<div class="ufsc-document-actions">';
-            
-            // Secure document view link
+            $documents_grid .= '<span class="ufsc-badge ufsc-badge-success">✅ Transmis</span>';
             $view_url = ufsc_get_secure_document_url($field_value, $club->id);
             $documents_grid .= '<a href="' . esc_url($view_url) . '" target="_blank" class="ufsc-btn">';
             $documents_grid .= '<i class="dashicons dashicons-visibility"></i> Voir';
             $documents_grid .= '</a>';
-            
-            $documents_grid .= '</div>';
-            $documents_grid .= '</div>';
+        } else {
+            $documents_grid .= '<span class="ufsc-badge ufsc-badge-pending">⏳ En cours</span>';
         }
+
+        $documents_grid .= '</div>';
+        $documents_grid .= '</div>';
     }
 
     $documents_grid .= '</div>';
 
-    if (!$has_documents) {
-        $output .= '<div class="ufsc-empty-state">';
-        $output .= '<div class="ufsc-empty-icon"><i class="dashicons dashicons-media-document"></i></div>';
-        $output .= '<h3>Aucun document transmis</h3>';
-        $output .= '<p>Vous n\'avez pas encore transmis de documents pour votre club.</p>';
-        $output .= '<p>Ces documents sont généralement fournis lors du processus d\'affiliation.</p>';
-        $output .= '</div>';
-    } else {
-        $output .= $documents_grid;
-    }
+    $output .= $documents_grid;
 
     // Document upload form for club members
     $output .= '<div class="ufsc-document-upload">';
@@ -730,12 +722,12 @@ function ufsc_process_document_update()
 
     // Document fields mapping
     $doc_fields = [
-        'statuts' => 'statuts',
-        'recepisse' => 'recepisse', 
-        'jo' => 'jo',
-        'pv_ag' => 'pv_ag',
-        'cer' => 'cer',
-        'attestation_cer' => 'attestation_cer'
+        'statuts' => 'doc_statuts',
+        'recepisse' => 'doc_recepisse',
+        'jo' => 'doc_jo',
+        'pv_ag' => 'doc_pv_ag',
+        'cer' => 'doc_cer',
+        'attestation_cer' => 'doc_attestation_cer'
     ];
 
     $uploaded_files = [];
@@ -745,25 +737,33 @@ function ufsc_process_document_update()
     foreach ($doc_fields as $field_key => $db_field) {
         if (!empty($_FILES[$field_key]['name'])) {
             $file = $_FILES[$field_key];
-            
-            // Validate file
-            $validation = ufsc_validate_document_upload($file);
+
+            // Validate file using central validator
+            $validation = UFSC_Upload_Validator::validate_document($file, $club->id, $field_key);
             if (is_wp_error($validation)) {
                 $errors[] = "Erreur pour {$field_key}: " . $validation->get_error_message();
                 continue;
             }
+
+            // Override filename with secure name
+            $file['name'] = $validation['filename'];
 
             // Handle upload
             if (!function_exists('wp_handle_upload')) {
                 require_once(ABSPATH . 'wp-admin/includes/file.php');
             }
 
-            $upload_overrides = ['test_form' => false];
+            $upload_overrides = [
+                'test_form' => false,
+                'unique_filename_callback' => function() use ($validation) {
+                    return $validation['filename'];
+                }
+            ];
             $movefile = wp_handle_upload($file, $upload_overrides);
 
             if ($movefile && !isset($movefile['error'])) {
                 // Update club document field
-                $club_manager->update_club_field($club->id, $db_field, $movefile['url']);
+                $club_manager->update_club_document($club->id, $field_key, $movefile['url']);
                 $uploaded_files[] = $field_key;
             } else {
                 $errors[] = "Erreur d'upload pour {$field_key}: " . ($movefile['error'] ?? 'Erreur inconnue');
@@ -790,30 +790,6 @@ function ufsc_process_document_update()
 
     wp_redirect($redirect_url);
     exit;
-}
-
-/**
- * Validate document upload
- *
- * @param array $file File array from $_FILES
- * @return bool|WP_Error True if valid, WP_Error if invalid
- */
-function ufsc_validate_document_upload($file)
-{
-    // Check file size (5MB max)
-    if ($file['size'] > 5 * 1024 * 1024) {
-        return new WP_Error('file_too_large', 'Le fichier est trop volumineux (5MB maximum)');
-    }
-
-    // Check file type
-    $allowed_types = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
-    $file_type = wp_check_filetype($file['name']);
-    
-    if (!in_array($file['type'], $allowed_types) && !in_array($file_type['type'], $allowed_types)) {
-        return new WP_Error('invalid_file_type', 'Type de fichier non autorisé. Utilisez PDF, JPG ou PNG.');
-    }
-
-    return true;
 }
 
 // Register AJAX handlers for document downloads using attestation system
