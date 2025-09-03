@@ -15,8 +15,8 @@ $club = $access_check['club'];
 
 // Handle form submission - different actions based on button clicked
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST'
-    && isset($_POST['ufsc_add_licence_front_nonce'])
-    && wp_verify_nonce(wp_unslash($_POST['ufsc_add_licence_front_nonce']), 'ufsc_add_licence_front')
+    && isset($_POST['ufsc_add_licence_nonce'])
+    && wp_verify_nonce(wp_unslash($_POST['ufsc_add_licence_nonce']), 'ufsc_add_licence')
 ) {
     // Determine action based on submitted button
     $action = 'cart';
@@ -229,9 +229,10 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
         <?php endif; ?>
         
         <div class="ufsc-card-body">
-            <form method="post" class="ufsc-form ufsc-licence-form">
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ufsc-form ufsc-licence-form">
                 <div id="ufsc-form-status" class="ufsc-form-status" role="status" aria-live="polite" aria-atomic="true"></div>
-                <?php wp_nonce_field('ufsc_add_licence_front', 'ufsc_add_licence_front_nonce'); ?>
+                <?php wp_nonce_field('ufsc_add_licence', 'ufsc_add_licence_nonce'); ?>
+                <input type="hidden" name="action" value="ufsc_add_licence">
                 
                 <div class="ufsc-form-section">
                     <h4 class="ufsc-form-section-title">Informations personnelles</h4>
@@ -513,7 +514,7 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
                 
                 <div class="ufsc-form-actions">
                     <div class="ufsc-form-actions-primary">
-                        <button type="submit" name="ufsc_add_licence_front" class="ufsc-btn ufsc-btn-red ufsc-btn-large">
+                        <button type="submit" name="ufsc_add_licence" class="ufsc-btn ufsc-btn-red ufsc-btn-large">
                             <i class="dashicons dashicons-cart"></i>
                             Ajouter au panier
                         </button>

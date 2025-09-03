@@ -42,6 +42,8 @@ if (!defined('UFSC_MANAGE_LICENSES_CAP')) {
 require_once UFSC_PLUGIN_PATH . 'includes/helpers.php';
 
 require_once UFSC_PLUGIN_PATH . 'includes/install/migrations.php';
+require_once UFSC_PLUGIN_PATH . 'includes/controllers/save-club.php';
+require_once UFSC_PLUGIN_PATH . 'includes/controllers/save-licence.php';
 
 
 // === Activation tasks ===
