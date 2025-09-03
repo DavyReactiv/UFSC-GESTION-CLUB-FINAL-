@@ -92,6 +92,12 @@
               <button class="ufscx-btn ufscx-btn-primary" data-a="pay" data-id="${r.id}" aria-label="Envoyer la licence ${r.id} au paiement">Envoyer au paiement</button>
             `;
           }
+          if(status==='en_attente'){
+            return `
+              <button class="ufscx-btn ufscx-btn-soft" data-a="edit" data-id="${r.id}" aria-label="Modifier la licence ${r.id}">Modifier</button>
+              <button class="ufscx-btn ufscx-btn-soft" data-a="delete" data-id="${r.id}" aria-label="Supprimer la licence ${r.id}">Supprimer</button>
+            `;
+          }
           if(status==='in_cart'){
             return `<button class="ufscx-btn ufscx-btn-soft" data-a="viewcart" data-id="${r.id}" aria-label="Voir le panier de la licence ${r.id}">Voir panier</button>`;
           }
