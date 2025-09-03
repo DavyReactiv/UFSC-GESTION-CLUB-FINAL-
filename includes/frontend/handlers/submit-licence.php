@@ -1,21 +1,27 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-function ufsc_handle_front_licence_submit(){
+function ufsc_handle_save_licence(){
     if (!isset($_POST['action']) || $_POST['action']!=='ufsc_submit_licence') return;
-    $nonce = isset($_POST['ufsc_nonce']) ? $_POST['ufsc_nonce'] : '';
+
+    $redirect = wp_get_referer() ?: home_url('/');
+
+    $nonce = isset($_POST['ufsc_nonce']) ? sanitize_text_field(wp_unslash($_POST['ufsc_nonce'])) : '';
     if (!wp_verify_nonce($nonce, 'ufsc_add_licence_nonce')){
-        wp_die(__('Nonce invalide.','plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect($redirect);
+        exit;
     }
-    if (!is_user_logged_in()){ wp_safe_redirect( wp_login_url() ); exit; }
-    if (!current_user_can('read')){
-        wp_die(__('Permissions insuffisantes.','plugin-ufsc-gestion-club-13072025'));
+
+    if (!is_user_logged_in() || !current_user_can('ufsc_manage_own')){
+        wp_safe_redirect(wp_login_url($redirect));
+        exit;
     }
 
     $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');
     $data = array(); foreach($fields as $f){ $v = isset($_POST[$f])?wp_unslash($_POST[$f]):''; if($f==='email') $data[$f]=sanitize_email($v); elseif($f==='tel_mobile') $data[$f]=preg_replace('/[^0-9\s\.\-\+]/','',$v); else $data[$f]=sanitize_text_field($v); }
 
     global $wpdb; $club_id = 0; $club_id = (int) $wpdb->get_var($wpdb->prepare('SELECT club_id FROM '.$wpdb->prefix.'ufsc_user_clubs WHERE user_id=%d LIMIT 1', get_current_user_id()));
+    if (!$club_id) { wp_safe_redirect($redirect); exit; }
     $table = $wpdb->prefix.'ufsc_licences';
 
     // === UFSC quota check: 10 crédits + 3 membres du bureau obligatoires ===
@@ -26,12 +32,13 @@ function ufsc_handle_front_licence_submit(){
     $included_total = (int) get_option('ufsc_included_quota_per_pack', 10);
     $included_remaining = max(0, $included_total - $total_count);
     $is_included = $included_remaining > 0 ? 1 : 0;
-    if ($bureau_count < 3 && !$is_bureau){ wp_die(__('Veuillez d\'abord renseigner Président, Secrétaire et Trésorier (3 licences bureau incluses).','plugin-ufsc-gestion-club-13072025')); }
+    if ($bureau_count < 3 && !$is_bureau){ wp_safe_redirect($redirect); exit; }
 
     // Create / update in DB with statut en_attente unless already validated
     $licence_id_edit = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     if ($licence_id_edit){
         $current_statut = $wpdb->get_var($wpdb->prepare("SELECT statut FROM {$table} WHERE id=%d AND club_id=%d", $licence_id_edit, $club_id));
+        if ($current_statut === null){ wp_safe_redirect($redirect); exit; }
         if ($current_statut === 'validee'){
             $wpdb->update($table, $data, array('id'=>$licence_id_edit, 'club_id'=>$club_id));
         } else {
@@ -55,5 +62,5 @@ function ufsc_handle_front_licence_submit(){
         wp_safe_redirect( add_query_arg('ufsc_pay_licence', $licence_id, home_url('/') ) ); exit;
     } else { wp_die(__('Produit Licence non configuré.','plugin-ufsc-gestion-club-13072025')); }
 }
-add_action('admin_post_nopriv_ufsc_submit_licence','ufsc_handle_front_licence_submit');
-add_action('admin_post_ufsc_submit_licence','ufsc_handle_front_licence_submit');
+add_action('admin_post_nopriv_ufsc_submit_licence','ufsc_handle_save_licence');
+add_action('admin_post_ufsc_submit_licence','ufsc_handle_save_licence');

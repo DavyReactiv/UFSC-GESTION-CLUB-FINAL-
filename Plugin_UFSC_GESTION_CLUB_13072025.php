@@ -796,13 +796,19 @@ function ufsc_handle_restore_licence() {
 }
 
 // Change license status AJAX handler
-add_action('wp_ajax_ufsc_change_licence_status', 'ufsc_handle_change_licence_status');
-function ufsc_handle_change_licence_status() {
-    // Verify nonce first
-    check_ajax_referer('ufsc_admin_nonce', 'ufsc_nonce');
+add_action('wp_ajax_ufsc_change_licence_status', 'ufsc_update_licence_status');
+function ufsc_update_licence_status() {
+    $redirect = wp_get_referer() ?: admin_url('admin.php?page=ufsc_licenses_admin');
+
+    $nonce = isset($_POST['ufsc_nonce']) ? sanitize_text_field(wp_unslash($_POST['ufsc_nonce'])) : '';
+    if ( ! wp_verify_nonce( $nonce, 'ufsc_admin_nonce' ) ) {
+        wp_safe_redirect( $redirect );
+        exit;
+    }
 
     if (!current_user_can('ufsc_manage_own')) {
-        wp_send_json_error(__('Access denied.', 'plugin-ufsc-gestion-club-13072025'), 403);
+        wp_safe_redirect( $redirect );
+        exit;
     }
 
     $licence_id = isset($_POST['licence_id']) ? absint(wp_unslash($_POST['licence_id'])) : 0;
@@ -810,15 +816,25 @@ function ufsc_handle_change_licence_status() {
     $reason = isset($_POST['reason']) ? sanitize_textarea_field(wp_unslash($_POST['reason'])) : '';
 
     if (!$licence_id) {
-        wp_send_json_error(__('Invalid request.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect( $redirect );
+        exit;
     }
 
-    ufscsn_require_manage_licence($licence_id);
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/club-permissions.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/licences/class-licence-manager.php';
+    $club_id = ufscsn_resolve_club_id_sanitized();
+    $licence_manager = new UFSC_Licence_Manager();
+    $licence = $licence_manager->get_licence_by_id($licence_id);
+    if ( ! $licence || intval($licence->club_id) !== intval($club_id) ) {
+        wp_safe_redirect( $redirect );
+        exit;
+    }
 
     // Validate status
     $valid_statuses = ['brouillon', 'en_attente', 'validee', 'refusee'];
     if (!in_array($new_status, $valid_statuses)) {
-        wp_send_json_error(__('Invalid status.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect( $redirect );
+        exit;
     }
 
     if (!class_exists('UFSC_Licence_Repository')) {
@@ -2830,23 +2846,39 @@ add_action('woocommerce_order_status_changed', function($order_id, $from, $to, $
 /**
  * Handle licence deletion.
  */
-function ufsc_admin_post_delete_licence() {
+function ufsc_delete_licence() {
+
+    $redirect = wp_get_referer() ?: admin_url('admin.php?page=ufsc_licenses_admin');
 
     if ( ! current_user_can('ufsc_manage_own') ) {
-
-        wp_die(__('Accès refusé.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect( $redirect );
+        exit;
     }
 
     $licence_id = isset($_GET['licence_id']) ? absint( wp_unslash( $_GET['licence_id'] ) ) : 0;
     if ( ! $licence_id ) {
-        wp_die(__('ID de licence invalide.', 'plugin-ufsc-gestion-club-13072025'));
+        wp_safe_redirect( $redirect );
+        exit;
     }
 
-    check_admin_referer('ufsc_delete_licence_' . $licence_id);
+    $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
+    if ( ! wp_verify_nonce( $nonce, 'ufsc_delete_licence_' . $licence_id ) ) {
+        wp_safe_redirect( $redirect );
+        exit;
+    }
 
+    require_once UFSC_PLUGIN_PATH . 'includes/helpers/club-permissions.php';
     require_once UFSC_PLUGIN_PATH . 'includes/licences/class-ufsc-licenses-repository.php';
-    $repo = new UFSC_Licenses_Repository();
-    $success = $repo->soft_delete($licence_id);
+    $repo      = new UFSC_Licenses_Repository();
+    $licence   = $repo->get( $licence_id );
+    $club_id   = ufscsn_resolve_club_id_sanitized();
+
+    if ( ! $licence || intval( $licence->club_id ) !== intval( $club_id ) ) {
+        wp_safe_redirect( $redirect );
+        exit;
+    }
+
+    $success = $repo->soft_delete( $licence_id );
 
     $message  = $success ? 'deleted' : 'delete_error';
     $redirect = add_query_arg([
@@ -2858,7 +2890,7 @@ function ufsc_admin_post_delete_licence() {
     wp_safe_redirect($redirect);
     exit;
 }
-add_action('admin_post_ufsc_delete_licence', 'ufsc_admin_post_delete_licence');
+add_action('admin_post_ufsc_delete_licence', 'ufsc_delete_licence');
 
 /**
  * Handle licence reassignment.
