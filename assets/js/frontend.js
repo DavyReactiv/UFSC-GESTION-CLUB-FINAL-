@@ -357,13 +357,33 @@ jQuery(document).ready(function ($) {
                     $(this).remove();
                 });
             });
-            
+
             // Handle retry buttons
             $(document).on('click', '.ufsc-retry-btn', function() {
                 const $form = $(this).closest('.ufsc-form');
                 if ($form.length) {
                     UFSCDataSync.submitClubForm($form);
                 }
+            });
+
+            // Handle "Payer mon affiliation" CTA
+            $(document).on('click', '.ufsc-pay-affiliation', function(e) {
+                e.preventDefault();
+                const clubId = $(this).data('club-id') || 0;
+
+                $.post(UFSCDataSync.config.ajaxUrl, {
+                    action: 'ufsc_add_affiliation_to_cart',
+                    club_id: clubId,
+                    nonce: UFSCDataSync.config.nonce
+                }).done(function(response) {
+                    if (response.success && response.data.redirect) {
+                        window.location.href = response.data.redirect;
+                    } else if (response.data && response.data.message) {
+                        ufscToast(response.data.message, 'error');
+                    }
+                }).fail(function() {
+                    ufscToast('Erreur lors de l\'ajout au panier', 'error');
+                });
             });
         },
 

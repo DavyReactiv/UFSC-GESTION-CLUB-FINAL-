@@ -32,7 +32,8 @@ function ufsc_render_product_button($product_id, $label, $classes = '', $context
         'show_tooltip' => true,
         'check_club_status' => true,
         'redirect_url' => '',
-        'button_type' => 'link' // 'link', 'button', 'form'
+        'button_type' => 'link', // 'link', 'button', 'form'
+        'extra_attrs' => ''
     ];
     $options = wp_parse_args($options, $defaults);
 
@@ -119,19 +120,21 @@ function ufsc_render_product_button($product_id, $label, $classes = '', $context
         $button_attrs .= ' title="' . esc_attr($tooltip) . '"';
     }
 
+    $extra_attrs = !empty($options['extra_attrs']) ? ' ' . $options['extra_attrs'] : '';
+
     switch ($options['button_type']) {
         case 'button':
-            return '<button type="button" class="' . esc_attr($button_classes) . '"' . $button_attrs . ' onclick="window.location.href=\'' . esc_url($final_url) . '\'">' . 
+            return '<button type="button" class="' . esc_attr($button_classes) . '"' . $button_attrs . $extra_attrs . ' onclick="window.location.href=\'' . esc_url($final_url) . '\'">' .
                    esc_html($label) . '</button>';
 
         case 'form':
             return '<form method="get" action="' . esc_url($final_url) . '" style="display:inline;">
-                    <button type="submit" class="' . esc_attr($button_classes) . '"' . $button_attrs . '>' . esc_html($label) . '</button>
+                    <button type="submit" class="' . esc_attr($button_classes) . '"' . $button_attrs . $extra_attrs . '>' . esc_html($label) . '</button>
                     </form>';
 
         case 'link':
         default:
-            return '<a href="' . esc_url($final_url) . '" class="' . esc_attr($button_classes) . '"' . $button_attrs . '>' . 
+            return '<a href="' . esc_url($final_url) . '" class="' . esc_attr($button_classes) . '"' . $button_attrs . $extra_attrs . '>' .
                    esc_html($label) . '</a>';
     }
 }
@@ -206,10 +209,17 @@ function ufsc_generate_affiliation_button($args = [])
     // Determine if this is a renewal
     $user_id = get_current_user_id();
     $existing_club = $user_id ? ufsc_get_user_club($user_id) : null;
-    
+
     if ($existing_club && !ufsc_is_club_active($existing_club)) {
         $args['label'] = 'Renouveler l\'affiliation';
     }
+
+    $extra_attrs = '';
+    if ($existing_club) {
+        $extra_attrs = 'data-club-id="' . intval($existing_club->id) . '"';
+    }
+
+    $args['classes'] .= ' ufsc-pay-affiliation';
 
     return ufsc_render_product_button(
         ufsc_get_affiliation_product_id_safe(),
@@ -217,7 +227,8 @@ function ufsc_generate_affiliation_button($args = [])
         $args['classes'],
         $args['context'],
         [
-            'check_club_status' => false // Affiliation doesn't require existing active club
+            'check_club_status' => false, // Affiliation doesn't require existing active club
+            'extra_attrs' => $extra_attrs
         ]
     );
 }

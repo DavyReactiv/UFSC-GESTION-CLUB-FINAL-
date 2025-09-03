@@ -1050,6 +1050,12 @@ function ufsc_handle_save_club_ajax() {
                 'timestamp' => current_time('mysql')
             ];
 
+            // Trigger affiliation payment flow for new clubs
+            if (!$is_edit && function_exists('ufsc_add_affiliation_to_cart')) {
+                ufsc_add_affiliation_to_cart($club_id, false);
+                $response_data['redirect_url'] = wc_get_checkout_url();
+            }
+
             // Send notification email for new clubs
             if (!$is_edit && !is_admin()) {
                 ufsc_send_club_notification_email($fresh_club_data);
