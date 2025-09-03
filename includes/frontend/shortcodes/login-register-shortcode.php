@@ -307,3 +307,4 @@ function ufsc_get_dashboard_url() {
 
 // Register the shortcode
 add_shortcode('ufsc_login_register', 'ufsc_login_register_shortcode');
+add_shortcode('ufsc_login_form', 'ufsc_login_register_shortcode');

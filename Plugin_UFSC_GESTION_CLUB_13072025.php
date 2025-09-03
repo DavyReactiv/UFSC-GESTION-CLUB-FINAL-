@@ -222,6 +222,9 @@ if ( ! is_admin() ) {
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-menu-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/recent-licences-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/dashboard-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licences-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-profile-shortcode.php';
 
     // New modular club dashboard
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/club/dashboard.php';
@@ -304,6 +307,9 @@ function ufsc_load_frontend_files() {
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-menu-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/login-register-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/recent-licences-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/dashboard-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/licences-shortcode.php';
+    require_once UFSC_PLUGIN_PATH . 'includes/frontend/shortcodes/club-profile-shortcode.php';
     require_once UFSC_PLUGIN_PATH . 'includes/frontend/club/dashboard.php';
     require_once UFSC_PLUGIN_PATH . 'includes/shortcodes.php';
     require_once UFSC_PLUGIN_PATH . 'includes/shortcodes-attestations.php';
