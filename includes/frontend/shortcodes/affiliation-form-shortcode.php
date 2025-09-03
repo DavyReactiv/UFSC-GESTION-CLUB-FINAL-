@@ -62,117 +62,143 @@ function ufsc_formulaire_affiliation_shortcode($atts)
 add_shortcode('ufsc_formulaire_affiliation', 'ufsc_formulaire_affiliation_shortcode');
 
 /**
- * Fonction pour ajouter automatiquement le produit d'affiliation au panier
+ * Ajouter le produit d'affiliation au panier WooCommerce.
+ *
+ * @param int         $club_id   ID du club à affilier.
+ * @param string|null $club_name Nom du club (optionnel). Si non fourni, il sera récupéré.
+ *
+ * @return bool Succès ou échec de l'ajout au panier.
  */
 if (!function_exists('ufsc_add_affiliation_to_cart')) {
-    function ufsc_add_affiliation_to_cart($club_id)
+    function ufsc_add_affiliation_to_cart($club_id, $club_name = null)
     {
-        // ID du produit "Pack Affiliation"
-        $product_id = ufsc_get_affiliation_product_id_safe();
+        if (!function_exists('WC')) {
+            return false;
+        }
 
+        $product_id = ufsc_get_affiliation_product_id_safe();
         if (!$product_id) {
             return false;
         }
 
-        // Vider le panier actuel
+        // Récupérer le nom du club si non fourni
+        if (empty($club_name)) {
+            $club_manager = UFSC_Club_Manager::get_instance();
+            $club        = $club_manager->get_club($club_id);
+            if ($club) {
+                $club_name = $club->nom;
+            }
+        }
+
         WC()->cart->empty_cart();
 
-        // Ajouter le produit au panier avec les métadonnées du club
-        $cart_item_data = array(
-            'ufsc_club_id' => $club_id,
-            'ufsc_affiliation_type' => 'new_club'
-        );
+        $cart_item_data = [
+            'ufsc_club_id'    => $club_id,
+            'ufsc_product_type' => 'affiliation',
+        ];
 
-        // Ajouter au panier
-        WC()->cart->add_to_cart($product_id, 1, 0, array(), $cart_item_data);
+        if (!empty($club_name)) {
+            $cart_item_data['ufsc_club_nom'] = $club_name;
+        }
 
-        return true;
+        $added = WC()->cart->add_to_cart($product_id, 1, 0, [], $cart_item_data);
+
+        return (bool) $added;
     }
 }
 
 /**
- * Traitement de la commande terminée
+ * Traiter la commande d'affiliation lorsqu'elle est payée.
  */
 if (!function_exists('ufsc_process_affiliation_order')) {
     function ufsc_process_affiliation_order($order_id)
     {
         $order = wc_get_order($order_id);
 
-        // Vérifier si la commande est terminée
-        if (!$order || $order->get_status() !== 'completed') {
+        if (!$order || !in_array($order->get_status(), ['completed', 'processing'])) {
             return;
         }
 
-        // Parcourir les articles de la commande
         foreach ($order->get_items() as $item) {
-            $club_id = wc_get_order_item_meta($item->get_id(), 'ufsc_club_id', true);
-            $affiliation_type = wc_get_order_item_meta($item->get_id(), 'ufsc_affiliation_type', true);
+            $product_id = $item->get_product_id();
 
-            if ($club_id && $affiliation_type === 'new_club') {
-                // Mettre à jour le club comme "En attente de validation"
-                $club_manager = UFSC_Club_Manager::get_instance();
-                $club = $club_manager->get_club($club_id);
+            if ($product_id == ufsc_get_affiliation_product_id_safe()) {
+                $club_id = $item->get_meta('ufsc_club_id');
 
-                if ($club) {
-                    // Mise à jour du statut et date d'affiliation
-                    $club_data = array(
-                        'statut' => 'En attente de validation',
-                        'date_affiliation' => current_time('mysql'),
-                        'quota_licences' => 10 // Pack initial de 10 licences
-                    );
+                if ($club_id) {
+                    $club_manager = UFSC_Club_Manager::get_instance();
+                    $club         = $club_manager->get_club($club_id);
 
-                    $club_manager->update_club($club_id, $club_data);
+                    if ($club) {
+                        $club_data = [
+                            'statut'          => 'En attente de validation',
+                            'date_affiliation' => current_time('mysql'),
+                            'quota_licences'  => 10,
+                        ];
 
-                    // Créer automatiquement les licences pour les dirigeants
-                    $dirigeants = ['president', 'secretaire', 'tresorier'];
-                    foreach ($dirigeants as $role) {
-                        $prenom = $club->{$role . '_prenom'} ?? '';
-                        $nom = $club->{$role . '_nom'} ?? '';
-                        $email = $club->{$role . '_email'} ?? '';
-                        
-                        if (!empty($prenom) && !empty($nom) && !empty($email)) {
-                            $licence_data = [
-                                'club_id' => $club_id,
-                                'nom' => $nom,
-                                'prenom' => $prenom,
-                                'email' => $email,
-                                'telephone' => $club->{$role . '_tel'},
-                                'fonction' => ucfirst($role),
-                                'statut' => 'active',
-                                'date_creation' => current_time('mysql'),
-                                'date_expiration' => gmdate('Y-m-d', strtotime('+1 year')),
-                                'type' => 'dirigeant'
-                            ];
+                        $club_manager->update_club($club_id, $club_data);
 
-                            $club_manager->add_licence($licence_data);
+                        // Générer un numéro d'affiliation si absent
+                        if (empty($club->num_affiliation)) {
+                            $year            = gmdate('Y');
+                            $count           = $club_manager->get_club_count_for_year($year);
+                            $num_affiliation = sprintf('UFSC-%s-%03d', $year, $count + 1);
+                            $club_manager->update_club($club_id, ['num_affiliation' => $num_affiliation]);
                         }
-                    }
 
-                    // Notification à l'administrateur
-                    $admin_email = get_option('admin_email');
-                    $subject = 'Nouvelle affiliation club UFSC payée';
-                    $message = "Une nouvelle affiliation a été payée pour le club : {$club->nom}\n\n";
-                    $message .= "Commande : #{$order_id}\n";
-                    $message .= "Montant : {$order->get_total()} €\n\n";
-                    $message .= "Veuillez valider ce club dans l'administration.";
+                        // Créer automatiquement les licences pour les dirigeants
+                        $dirigeants = ['president', 'secretaire', 'tresorier'];
+                        foreach ($dirigeants as $role) {
+                            $prenom = $club->{$role . '_prenom'} ?? '';
+                            $nom    = $club->{$role . '_nom'} ?? '';
+                            $email  = $club->{$role . '_email'} ?? '';
 
-                    wp_mail($admin_email, $subject, $message);
+                            if (!empty($prenom) && !empty($nom) && !empty($email)) {
+                                $licence_data = [
+                                    'club_id'        => $club_id,
+                                    'nom'            => $nom,
+                                    'prenom'         => $prenom,
+                                    'email'          => $email,
+                                    'telephone'      => $club->{$role . '_tel'},
+                                    'fonction'       => ucfirst($role),
+                                    'statut'         => 'pending',
+                                    'date_creation'  => current_time('mysql'),
+                                    'date_expiration' => gmdate('Y-m-d', strtotime('+1 year')),
+                                    'type'           => 'dirigeant',
+                                    'order_id'       => $order_id,
+                                ];
 
-                    // Notification au club
-                    if (!empty($club->email)) {
-                        $subject = 'Votre affiliation UFSC est en cours de traitement';
-                        $message = "Bonjour,\n\n";
-                        $message .= "Nous avons bien reçu votre paiement d'affiliation pour le club : {$club->nom}.\n\n";
-                        $message .= "Votre dossier est en cours de traitement et sera validé dans les meilleurs délais.\n";
-                        $message .= "Vous recevrez une notification dès que votre affiliation sera validée.\n\n";
-                        $message .= "Cordialement,\n";
-                        $message .= "L'équipe UFSC";
+                                $club_manager->add_licence($licence_data);
+                            }
+                        }
 
-                        wp_mail($club->email, $subject, $message);
+                        // Notifications
+                        $admin_email = get_option('admin_email');
+                        $subject     = 'Nouvelle affiliation club UFSC payée';
+                        $message     = "Une nouvelle affiliation a été payée pour le club : {$club->nom}\n\n";
+                        $message    .= "Commande : #{$order_id}\n";
+                        $message    .= "Montant : {$order->get_total()} €\n\n";
+                        $message    .= "Veuillez valider ce club dans l'administration.";
+
+                        wp_mail($admin_email, $subject, $message);
+
+                        if (!empty($club->email)) {
+                            $subject = 'Votre affiliation UFSC est en cours de traitement';
+                            $message = "Bonjour,\n\n";
+                            $message .= "Nous avons bien reçu votre paiement d'affiliation pour le club : {$club->nom}.\n\n";
+                            $message .= "Votre dossier est en cours de traitement et sera validé dans les meilleurs délais.\n";
+                            $message .= "Vous recevrez une notification dès que votre affiliation sera validée.\n\n";
+                            $message .= "Cordialement,\n";
+                            $message .= "L'équipe UFSC";
+
+                            wp_mail($club->email, $subject, $message);
+                        }
                     }
                 }
             }
         }
     }
 }
+
 add_action('woocommerce_order_status_completed', 'ufsc_process_affiliation_order');
+add_action('woocommerce_order_status_processing', 'ufsc_process_affiliation_order');
