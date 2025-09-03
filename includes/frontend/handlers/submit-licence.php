@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-function ufsc_handle_front_licence_submit(){
+function ufsc_handle_save_licence(){
     if (!isset($_POST['action']) || $_POST['action']!=='ufsc_submit_licence') return;
     $nonce = isset($_POST['ufsc_nonce']) ? $_POST['ufsc_nonce'] : '';
     if (!wp_verify_nonce($nonce, 'ufsc_add_licence_nonce')){
@@ -31,15 +31,24 @@ function ufsc_handle_front_licence_submit(){
     // Create / update in DB with statut en_attente unless already validated
     $licence_id_edit = isset($_POST['licence_id']) ? absint($_POST['licence_id']) : 0;
     if ($licence_id_edit){
-        $current_statut = $wpdb->get_var($wpdb->prepare("SELECT statut FROM {$table} WHERE id=%d AND club_id=%d", $licence_id_edit, $club_id));
-        if ($current_statut === 'validee'){
+        $row = $wpdb->get_row($wpdb->prepare("SELECT statut, payment_status, club_id FROM {$table} WHERE id=%d", $licence_id_edit));
+        if (!$row || (int) $row->club_id !== $club_id){
+            wp_die(__('Licence introuvable.','plugin-ufsc-gestion-club-13072025'));
+        }
+        if ($row->statut === 'validee' || ($row->payment_status ?? '') === 'paid'){
+            $redirect = add_query_arg([
+                'view_licence' => $licence_id_edit,
+                'notice'      => 'locked',
+            ], wp_get_referer() ?: home_url('/'));
+            wp_safe_redirect($redirect); exit;
+        }
+        if ($row->statut === 'validee'){
             $wpdb->update($table, $data, array('id'=>$licence_id_edit, 'club_id'=>$club_id));
         } else {
             $wpdb->update($table, array_merge($data, array('statut'=>'en_attente')), array('id'=>$licence_id_edit, 'club_id'=>$club_id));
         }
         $licence_id = $licence_id_edit;
-    }
-    else {
+    } else {
         $wpdb->insert($table, array_merge($data, array('club_id'=>$club_id,'statut'=>'en_attente','date_creation'=>current_time('mysql'))));
         $licence_id = (int)$wpdb->insert_id;
     }
@@ -55,5 +64,5 @@ function ufsc_handle_front_licence_submit(){
         wp_safe_redirect( add_query_arg('ufsc_pay_licence', $licence_id, home_url('/') ) ); exit;
     } else { wp_die(__('Produit Licence non configuré.','plugin-ufsc-gestion-club-13072025')); }
 }
-add_action('admin_post_nopriv_ufsc_submit_licence','ufsc_handle_front_licence_submit');
-add_action('admin_post_ufsc_submit_licence','ufsc_handle_front_licence_submit');
+add_action('admin_post_nopriv_ufsc_submit_licence','ufsc_handle_save_licence');
+add_action('admin_post_ufsc_submit_licence','ufsc_handle_save_licence');
