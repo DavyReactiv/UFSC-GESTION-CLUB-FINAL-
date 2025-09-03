@@ -49,7 +49,7 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
         $form_submitted = true;
 
         // Vérification du nonce
-        if (!isset($_POST['ufsc_club_nonce']) || !wp_verify_nonce(wp_unslash($_POST['ufsc_club_nonce']), 'ufsc_save_club')) {
+        if (!isset($_POST['ufsc_save_club_nonce']) || !wp_verify_nonce(wp_unslash($_POST['ufsc_save_club_nonce']), 'ufsc_save_club')) {
             $errors[] = 'Erreur de sécurité. Veuillez recharger la page.';
         } else {
             // Récupération des données de base
@@ -327,8 +327,9 @@ function ufsc_render_club_form($club_id = 0, $is_frontend = false, $is_affiliati
         <h2 class="ufsc-section-title"><?php echo esc_html($form_title); ?></h2>
         <?php endif; ?>
         
-        <form method="post" enctype="multipart/form-data" class="ufsc-form" data-ajax-enabled="true" data-is-affiliation="<?php echo $is_affiliation ? 'true' : 'false'; ?>">
-            <?php wp_nonce_field('ufsc_save_club', 'ufsc_club_nonce'); ?>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="ufsc-form" data-ajax-enabled="true" data-is-affiliation="<?php echo $is_affiliation ? 'true' : 'false'; ?>">
+            <?php wp_nonce_field('ufsc_save_club', 'ufsc_save_club_nonce'); ?>
+            <input type="hidden" name="action" value="ufsc_save_club">
             <input type="hidden" name="ufsc_save_club_submit" value="1">
             
             <?php if ($is_edit): ?>
