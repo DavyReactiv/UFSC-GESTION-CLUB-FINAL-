@@ -23,7 +23,7 @@ if (!defined('UFSC_LICENCE_PRODUCT_ID')) {
  * @return bool Succès ou échec
  */
 if (!function_exists('ufsc_add_affiliation_to_cart')) {
-    function ufsc_add_affiliation_to_cart($club_id)
+    function ufsc_add_affiliation_to_cart($club_id, $auto_redirect = true)
     {
         if (!function_exists('WC')) {
             return false;
@@ -47,12 +47,41 @@ if (!function_exists('ufsc_add_affiliation_to_cart')) {
             'ufsc_product_type' => 'affiliation'
         ];
 
-        // Ajouter au panier (using configurable product ID)
+        // Ajouter au panier
         $added = WC()->cart->add_to_cart(ufsc_get_affiliation_product_id_safe(), 1, 0, [], $cart_item_data);
 
-        return $added;
+        if (!$added) {
+            return false;
+        }
+
+        if ($auto_redirect) {
+            $checkout_url = wc_get_checkout_url();
+
+            if (wp_doing_ajax()) {
+                wp_send_json_success(['redirect' => $checkout_url]);
+            }
+
+            wp_safe_redirect($checkout_url);
+            exit;
+        }
+
+        return true;
     }
 }
+
+// AJAX handler wrapper
+function ufsc_ajax_add_affiliation_to_cart()
+{
+    $club_id = isset($_POST['club_id']) ? intval($_POST['club_id']) : 0;
+
+    if (!$club_id) {
+        wp_send_json_error('Invalid club ID');
+    }
+
+    ufsc_add_affiliation_to_cart($club_id);
+}
+add_action('wp_ajax_ufsc_add_affiliation_to_cart', 'ufsc_ajax_add_affiliation_to_cart');
+add_action('wp_ajax_nopriv_ufsc_add_affiliation_to_cart', 'ufsc_ajax_add_affiliation_to_cart');
 
 /**
  * Personnaliser le titre du produit dans le panier
