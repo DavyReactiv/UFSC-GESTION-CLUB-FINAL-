@@ -37,7 +37,7 @@ function ufsc_handle_save_licence() {
 
     $allowed_fields = [
         'nom', 'prenom', 'sexe', 'date_naissance', 'email', 'adresse', 'suite_adresse',
-        'code_postal', 'ville', 'tel_fixe', 'tel_mobile', 'profession', 'identifiant_laposte',
+        'code_postal', 'ville', 'tel_fixe', 'tel_mobile', 'profession', 'identifiant_laposte', 'identifiant_laposte_flag',
         'region', 'numero_licence_delegataire', 'note', 'fonction'
     ];
 
@@ -52,7 +52,7 @@ function ufsc_handle_save_licence() {
     }
 
     $checkboxes = [
-        'reduction_benevole', 'reduction_postier', 'fonction_publique', 'competition',
+        'reduction_benevole', 'reduction_postier', 'identifiant_laposte_flag', 'fonction_publique', 'competition',
         'licence_delegataire', 'diffusion_image', 'infos_fsasptt', 'infos_asptt',
         'infos_cr', 'infos_partenaires', 'honorabilite', 'assurance_dommage_corporel',
         'assurance_assistance'

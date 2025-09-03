@@ -53,6 +53,7 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
     'reduction_postier_num' => 'reduction_postier_num',
     'identifiant_laposte' => 'identifiant_laposte',
     'identifiant_laposte_num' => 'identifiant_laposte_num',
+    'identifiant_laposte_flag' => 'identifiant_laposte_flag',
     'fonction_publique' => 'fonction_publique',
     'fonction_publique_num' => 'fonction_publique_num',
     'assurance_dommage_corporel' => 'assurance_dommage_corporel',
@@ -70,9 +71,29 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
   }
 
   // Booleans
-  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire','reduction_benevole','reduction_postier','identifiant_laposte','fonction_publique','assurance_dommage_corporel','assurance_assistance');
+  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire','reduction_benevole','reduction_postier','identifiant_laposte_flag','fonction_publique','assurance_dommage_corporel','assurance_assistance');
   foreach ($bools as $k){
     $data[$k] = !empty($_POST[$k]) ? 1 : 0;
+  }
+
+  // Back-compat: accept identifiant_laposte_num as primary value
+  if (!isset($data['identifiant_laposte']) && isset($data['identifiant_laposte_num'])) {
+    $data['identifiant_laposte'] = $data['identifiant_laposte_num'];
+  }
+
+  // Soft migrate legacy boolean identifiant_laposte
+  if (!isset($_POST['identifiant_laposte_flag']) && isset($data['identifiant_laposte']) && in_array($data['identifiant_laposte'], array('0', '1'), true)) {
+    $data['identifiant_laposte_flag'] = (int) $data['identifiant_laposte'];
+    $data['identifiant_laposte'] = isset($data['identifiant_laposte_num']) ? $data['identifiant_laposte_num'] : '';
+  }
+
+  // Keep identifiant_laposte_num synced for backward compatibility
+  if (isset($data['identifiant_laposte']) && !isset($data['identifiant_laposte_num'])) {
+    $data['identifiant_laposte_num'] = $data['identifiant_laposte'];
+  }
+
+  if (empty($data['identifiant_laposte_flag'])) {
+    $data['identifiant_laposte'] = '';
   }
 
   // Merge extras
@@ -82,7 +103,7 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
   $flag_num = array(
     'reduction_benevole'   => 'reduction_benevole_num',
     'reduction_postier'    => 'reduction_postier_num',
-    'identifiant_laposte'  => 'identifiant_laposte_num',
+    'identifiant_laposte_flag'  => 'identifiant_laposte_num',
     'fonction_publique'    => 'fonction_publique_num',
     'licence_delegataire'  => 'licence_delegataire_num',
   );

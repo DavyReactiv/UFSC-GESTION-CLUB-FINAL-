@@ -17,8 +17,20 @@ function ufsc_handle_save_licence(){
         exit;
     }
 
-    $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');
+    $fields = array('nom','prenom','date_naissance','sexe','lieu_naissance','email','adresse','suite_adresse','code_postal','ville','tel_mobile','identifiant_laposte','identifiant_laposte_flag','profession','fonction','competition','licence_delegataire','numero_licence_delegataire','diffusion_image','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','honorabilite','assurance_dommage_corporel','assurance_assistance','ufsc_rules_ack');
     $data = array(); foreach($fields as $f){ $v = isset($_POST[$f])?wp_unslash($_POST[$f]):''; if($f==='email') $data[$f]=sanitize_email($v); elseif($f==='tel_mobile') $data[$f]=preg_replace('/[^0-9\s\.\-\+]/','',$v); else $data[$f]=sanitize_text_field($v); }
+
+    if (!isset($data['identifiant_laposte_flag']) || $data['identifiant_laposte_flag'] === '') {
+        if (isset($data['identifiant_laposte']) && in_array($data['identifiant_laposte'], array('0','1'), true)) {
+            $data['identifiant_laposte_flag'] = (int) $data['identifiant_laposte'];
+            $data['identifiant_laposte'] = '';
+        } else {
+            $data['identifiant_laposte_flag'] = empty($data['identifiant_laposte']) ? 0 : 1;
+        }
+    }
+    if (empty($data['identifiant_laposte_flag'])) {
+        $data['identifiant_laposte'] = '';
+    }
 
     global $wpdb; $club_id = 0; $club_id = (int) $wpdb->get_var($wpdb->prepare('SELECT club_id FROM '.$wpdb->prefix.'ufsc_user_clubs WHERE user_id=%d LIMIT 1', get_current_user_id()));
     if (!$club_id) { wp_safe_redirect($redirect); exit; }

@@ -163,6 +163,7 @@ function ufsc_add_licence_data_to_cart_item($cart_item_data, $product_id, $varia
         // Autres informations
         'profession' => isset($_POST['ufsc_licence_profession']) ? sanitize_text_field(wp_unslash($_POST['ufsc_licence_profession'])) : '',
         'identifiant_laposte' => isset($_POST['ufsc_licence_identifiant_laposte']) ? sanitize_text_field(wp_unslash($_POST['ufsc_licence_identifiant_laposte'])) : '',
+        'identifiant_laposte_flag' => isset($_POST['ufsc_licence_identifiant_laposte_flag']) ? (int) wp_unslash($_POST['ufsc_licence_identifiant_laposte_flag']) : (!empty($_POST['ufsc_licence_identifiant_laposte']) ? 1 : 0),
         'region' => isset($_POST['ufsc_licence_region']) ? sanitize_text_field(wp_unslash($_POST['ufsc_licence_region'])) : '',
         'numero_licence_delegataire' => isset($_POST['ufsc_licence_numero_licence_delegataire']) ? sanitize_text_field(wp_unslash($_POST['ufsc_licence_numero_licence_delegataire'])) : '',
         'note' => isset($_POST['ufsc_licence_note']) ? sanitize_textarea_field(wp_unslash($_POST['ufsc_licence_note'])) : '',
@@ -172,6 +173,7 @@ function ufsc_add_licence_data_to_cart_item($cart_item_data, $product_id, $varia
     $checkboxes = [
         'reduction_benevole',
         'reduction_postier',
+        'identifiant_laposte_flag',
         'fonction_publique',
         'competition',
         'licence_delegataire',

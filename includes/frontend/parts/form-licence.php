@@ -184,6 +184,7 @@ require_once plugin_dir_path(__FILE__) . '../../helpers.php';
                 <div class="ufsc-form-field">
                     <label for="identifiant_laposte"><?php _e('Identifiant La Poste', 'plugin-ufsc-gestion-club-13072025'); ?></label>
                     <input type="text" name="identifiant_laposte" id="identifiant_laposte" value="<?php echo $current_licence ? esc_attr($current_licence->identifiant_laposte) : ''; ?>">
+                    <input type="hidden" name="identifiant_laposte_flag" value="<?php echo !empty($current_licence->identifiant_laposte_flag) ? '1' : '0'; ?>">
                     <span class="help-text"><?php _e('Nécessaire pour la réduction postier', 'plugin-ufsc-gestion-club-13072025'); ?></span>
                 </div>
             </div>

@@ -339,6 +339,7 @@ $quota_percentage = $quota_total > 0 ? min(100, ($licences_count / $quota_total)
                             <label for="identifiant_laposte">Identifiant La Poste</label>
                             <input type="text" name="identifiant_laposte" id="identifiant_laposte" class="ufsc-form-input"
                                    value="<?php echo isset($_POST['identifiant_laposte']) ? esc_attr($_POST['identifiant_laposte']) : ''; ?>">
+                            <input type="hidden" name="identifiant_laposte_flag" value="<?php echo !empty($_POST['identifiant_laposte_flag']) ? '1' : '0'; ?>">
                         </div>
                     </div>
                     
