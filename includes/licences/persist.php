@@ -46,11 +46,15 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
     'infos_cr' => 'infos_cr',
     'infos_partenaires' => 'infos_partenaires',
     'licence_delegataire' => 'licence_delegataire',
-    'numero_licence_delegataire' => 'numero_licence_delegataire',
+    'licence_delegataire_num' => 'licence_delegataire_num',
     'reduction_benevole' => 'reduction_benevole',
+    'reduction_benevole_num' => 'reduction_benevole_num',
     'reduction_postier' => 'reduction_postier',
+    'reduction_postier_num' => 'reduction_postier_num',
     'identifiant_laposte' => 'identifiant_laposte',
+    'identifiant_laposte_num' => 'identifiant_laposte_num',
     'fonction_publique' => 'fonction_publique',
+    'fonction_publique_num' => 'fonction_publique_num',
     'assurance_dommage_corporel' => 'assurance_dommage_corporel',
     'assurance_assistance' => 'assurance_assistance',
     'note' => 'note',
@@ -66,13 +70,27 @@ function ufsc_persist_licence_from_post($club_id, $licence_id = 0, $extra = arra
   }
 
   // Booleans
-  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire','reduction_benevole','reduction_postier','fonction_publique','assurance_dommage_corporel','assurance_assistance');
+  $bools = array('competition','diffusion_image','honorabilite','infos_fsasptt','infos_asptt','infos_cr','infos_partenaires','licence_delegataire','reduction_benevole','reduction_postier','identifiant_laposte','fonction_publique','assurance_dommage_corporel','assurance_assistance');
   foreach ($bools as $k){
     $data[$k] = !empty($_POST[$k]) ? 1 : 0;
   }
 
   // Merge extras
   foreach ((array)$extra as $k=>$v){ $data[$k] = $v; }
+
+  // Clear *_num fields when corresponding flag is off
+  $flag_num = array(
+    'reduction_benevole'   => 'reduction_benevole_num',
+    'reduction_postier'    => 'reduction_postier_num',
+    'identifiant_laposte'  => 'identifiant_laposte_num',
+    'fonction_publique'    => 'fonction_publique_num',
+    'licence_delegataire'  => 'licence_delegataire_num',
+  );
+  foreach ($flag_num as $flag => $num){
+    if (empty($data[$flag])){
+      $data[$num] = '';
+    }
+  }
 
   // Ensure creation date for new rows
   if (empty($licence_id) && empty($data['date_creation'])){
