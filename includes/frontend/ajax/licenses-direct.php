@@ -42,8 +42,8 @@ function ufscx_delete_draft(){
     if (!$club_id || (int)$row->club_id !== (int)$club_id){
         wp_send_json_error(['message'=>esc_html__('Non autorisé', 'ufsc-domain')],403);
     }
-    if (!in_array(strtolower($row->statut), ['brouillon','draft'], true)){
-        wp_send_json_error(['message'=>esc_html__('Suppression autorisée uniquement pour les brouillons.', 'ufsc-domain')]);
+    if (!in_array(strtolower($row->statut), ['brouillon','draft','en_attente'], true)){
+        wp_send_json_error(['message'=>esc_html__('Suppression autorisée uniquement pour les brouillons ou en attente.', 'ufsc-domain')]);
     }
     $wpdb->delete($t, ['id'=>$id]);
     wp_send_json_success(['deleted'=>true]);

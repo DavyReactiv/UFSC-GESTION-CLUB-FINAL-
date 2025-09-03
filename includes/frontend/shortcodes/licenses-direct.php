@@ -148,7 +148,8 @@ function ufscx_licences_direct_shortcode($atts){
           <option value="">Statut : Tous</option>
           <option value="validee">Validée</option>
           <option value="brouillon">Brouillon</option>
-          <option value="pending_payment">En attente</option>
+          <option value="en_attente">En attente</option>
+          <option value="pending_payment">En attente de paiement</option>
         </select>
         <select id="ufscx-cat">
           <option value="">Catégorie : Tous</option>
