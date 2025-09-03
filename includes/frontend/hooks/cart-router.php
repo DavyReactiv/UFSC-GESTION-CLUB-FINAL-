@@ -44,3 +44,28 @@ add_action('template_redirect', function(){
         wp_safe_redirect( wc_get_checkout_url() ); exit;
     }
 });
+
+/**
+ * Route front pour ajouter l'affiliation au panier et rediriger vers le paiement.
+ * Utilisation : /?ufsc_pay_affiliation=ID_CLUB
+ */
+add_action('template_redirect', function(){
+    if (empty($_GET['ufsc_pay_affiliation'])) return;
+    if (!is_user_logged_in()) { wp_safe_redirect( wp_login_url( wc_get_checkout_url() ) ); exit; }
+
+    $club_id = absint( wp_unslash( $_GET['ufsc_pay_affiliation'] ) );
+    $club_manager = UFSC_Club_Manager::get_instance();
+    $club = $club_manager->get_club($club_id);
+    if (!$club) { wp_safe_redirect( home_url('/') ); exit; }
+
+    if (class_exists('WC')){
+        if (!WC()->cart) wc_load_cart();
+        $data = array(
+            'ufsc_club_id' => $club_id,
+            'ufsc_club_nom' => $club->nom,
+            'ufsc_product_type' => 'affiliation',
+        );
+        WC()->cart->add_to_cart( ufsc_get_affiliation_product_id_safe(), 1, 0, array(), $data );
+        wp_safe_redirect( wc_get_checkout_url() ); exit;
+    }
+});
